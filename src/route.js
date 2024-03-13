@@ -1,0 +1,624 @@
+import React, { useEffect, useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity
+} from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/Ionicons';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import LinearGradient from 'react-native-linear-gradient';
+import HomeScreen from './Screens/Home/HomeScreen';
+import AboutUs from './Screens/SideMenu/AboutUs';
+import ContactUs from './Screens/SideMenu/ContactUs';
+import NotificationList from './Screens/SideMenu/NotificationList';
+import TermsCondition from './Screens/SideMenu/TermsCondition';
+import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
+import SavedJobs from './Screens/Home/SavedJobs';
+import Color from './Global/Color';
+import ChatScreen from './Screens/Home/ChatScreen';
+import ProfileScreen from './Screens/Profile/ProfileScreen';
+import LogoTitle, { PrimeLogoTitle } from './Components/LogoTitle';
+import { NavigationDrawerStructure } from './Components/Nav/NavDrawer';
+import Login from './Screens/Auth/Login';
+import Register from './Screens/Auth/Register';
+import { Media } from './Global/Media';
+import { Poppins } from './Global/FontFamily';
+import FAQs from './Screens/SideMenu/FAQs';
+
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+export const HomeStack = () => {
+  // const getNotificationData = async () => {
+  //   try {
+  //     var data = 'user_id=' + user_id;
+  //     const notifyData = await fetchData.getNotification(data);
+  //     if (notifyData) {
+  //       setNotifyData(notifyData);
+  //     }
+  //   } catch (error) {
+  //     console.log('catch in getNotification_Data : ', error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const notify = setInterval(() => {
+  //     getNotificationData();
+  //     unreadNotify();
+  //   }, 2000);
+  //   return () => {
+  //     clearInterval(notify);
+  //   };
+  // }, [notifyData, userData, unreadCount]);
+
+  // const [unreadCount, setUnreadCount] = useState(0);
+
+  // const unreadNotify = async () => {
+  //   let unreadNotifications = notifyData?.filter(
+  //     notification => notification.isRead == 1,
+  //   );
+  //   setUnreadCount(unreadNotifications.length);
+  // };
+
+  return (
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={({ navigation }) => ({
+          headerTitle: props => <LogoTitle {...props} />,
+          // headerTitle: 'Albion',
+          headerTitleAlign: 'center',
+          headerTintColor: 'white',
+          headerStyle: { backgroundColor: Color.primary, elevation: 0 },
+          headerLeft: () => (
+            <NavigationDrawerStructure navigation={navigation} />
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="AboutUs"
+        component={AboutUs}
+        options={({ navigation, route }) => ({
+          headerTitle: 'About Us',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="ContactUs"
+        component={ContactUs}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Contact Us',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="FAQs"
+        component={FAQs}
+        options={({ navigation, route }) => ({
+          headerTitle: 'FAQs',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="NotificationList"
+        component={NotificationList}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Notifications List',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="TermsCondition"
+        component={TermsCondition}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Terms & Conditions',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="PrivacyPolicy"
+        component={PrivacyPolicy}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Privacy Policy',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const UpgradeStack = () => {
+  return (
+    <Stack.Navigator initialRouteName="Prime">
+      <Stack.Screen
+        name="Applied Jobs"
+        component={SavedJobs}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Applied Jobs',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+          headerRight: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Image
+                source={{ uri: Media.albionlogo }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  resizeMode: 'contain',
+                }}
+              />
+            </View>
+          ),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const WishStack = () => {
+  return (
+    <Stack.Navigator initialRouteName="wish">
+      <Stack.Screen
+        name="wish"
+        component={ChatScreen}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Saved Jobs',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+          headerRight: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Image
+                source={{ uri: Media.albionlogo }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  resizeMode: 'contain',
+                }}
+              />
+            </View>
+          ),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+
+export const Auth = () => {
+  // getHash()
+  //   .then(hash => {
+  //     console.log('Use this hash to construct otp message', hash);
+  //   })
+  //   .catch(error => console.log(error));
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: true }}>
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const ProfileStack = () => {
+  // const userData = useSelector(state => state.UserReducer.userData);
+  // var { user_id } = userData;
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Profile',
+          headerTitleStyle: { color: Color.black, fontFamily: Poppins.SemiBold },
+          headerTitleAlign: 'center',
+          headerStyle: { backgroundColor: Color.white },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.primary}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+          headerRight: () =>
+            <TouchableOpacity
+              style={{ marginHorizontal: 10 }}>
+              <Text
+                style={{
+                  fontFamily: Poppins.SemiBold,
+                  fontSize: 18,
+                  color: Color.primary,
+                }}>
+                Edit
+              </Text>
+            </TouchableOpacity>
+          ,
+          headerRightContainerStyle: { marginRight: 10 },
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const TabNavigator = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'HomeTab') {
+            return focused ? (
+              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+                <View
+                  style={{
+                    // backgroundColor: Color.white,
+                    width: 50,
+                    height: 50,
+                    // borderRadius: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    bottom: 5,
+                  }}>
+                  <LinearGradient
+                    colors={
+                      focused
+                        ? ['#0033A0', '#3272fa']
+                        : [Color.smokeyGrey, Color.smokeyGrey]
+                    }
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 50,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Icon name={'home'} size={25} color={Color.white} />
+                  </LinearGradient>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginBottom: -15,
+                    color: focused ? Color.primary : Color.black,
+                    // backgroundColor: Color.lightYellow,
+                    paddingHorizontal: 10,
+                    paddingVertical: 2,
+                    borderRadius: 50,
+                  }}>
+                  Home
+                </Text>
+              </View>
+            ) : (
+              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+                <Icon name={'home'} size={25} color={color} />
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginBottom: -5,
+                    color: focused ? '#8C193F' : '#000',
+                  }}>
+                  Home
+                </Text>
+              </View>
+            );
+          } else if (route.name === 'AppliedJobs') {
+            return focused ? (
+              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+                <View
+                  style={{
+                    // backgroundColor: Color.white,
+                    width: 50,
+                    height: 50,
+                    // borderRadius: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    bottom: 5,
+                  }}>
+                  <LinearGradient
+                    colors={
+                      focused
+                        ? ['#0033A0', '#3272fa']
+                        : [Color.smokeyGrey, Color.smokeyGrey]
+                    }
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 50,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <MCIcon
+                      name={'brightness-percent'}
+                      size={25}
+                      color={Color.white}
+                    />
+                  </LinearGradient>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginBottom: -15,
+                    color: focused ? Color.primary : Color.black,
+                    // backgroundColor: Color.lightYellow,
+                    paddingHorizontal: 10,
+                    paddingVertical: 2,
+                    borderRadius: 50,
+                  }}>
+                  Applied Jobs
+                </Text>
+              </View>
+            ) : (
+              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+                <MCIcon name={'brightness-percent'} size={25} color={color} />
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginBottom: -5,
+                    color: focused ? Color.primary : Color.black,
+                  }}>
+                  Applied Jobs
+                </Text>
+              </View>
+            );
+          } else if (route.name === 'SavedJobs') {
+            return focused ? (
+              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+                <View
+                  style={{
+                    // backgroundColor: Color.white,
+                    width: 50,
+                    height: 50,
+                    // borderRadius: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    bottom: 5,
+                  }}>
+                  <LinearGradient
+                    colors={
+                      focused
+                        ? ['#0033A0', '#3272fa']
+                        : [Color.smokeyGrey, Color.smokeyGrey]
+                    }
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 50,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <MCIcon
+                      name={'brightness-percent'}
+                      size={25}
+                      color={Color.white}
+                    />
+                  </LinearGradient>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginBottom: -15,
+                    color: focused ? Color.primary : Color.black,
+                    // backgroundColor: Color.lightYellow,
+                    paddingHorizontal: 10,
+                    paddingVertical: 2,
+                    borderRadius: 50,
+                  }}>
+                  Saved Jobs
+                </Text>
+              </View>
+            ) : (
+              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+                <MCIcon name={'brightness-percent'} size={25} color={color} />
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginBottom: -5,
+                    color: focused ? Color.primary : Color.black,
+                  }}>
+                  Saved Jobs
+                </Text>
+              </View>
+            );
+          }
+          else if (route.name === 'ProfileTab') {
+            return focused ? (
+              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+                <View
+                  style={{
+                    // backgroundColor: Color.white,
+                    width: 50,
+                    height: 50,
+                    // borderRadius: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    bottom: 5,
+                  }}>
+                  <LinearGradient
+                    colors={
+                      focused
+                        ? ['#0033A0', '#3272fa']
+                        : [Color.smokeyGrey, Color.smokeyGrey]
+                    }
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 50,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Icon
+                      name={'person-circle-outline'}
+                      size={25}
+                      color={Color.white}
+                    />
+                  </LinearGradient>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginBottom: -15,
+                    color: focused ? Color.primary : Color.black,
+                    // backgroundColor: Color.lightYellow,
+                    paddingHorizontal: 10,
+                    paddingVertical: 2,
+                    borderRadius: 50,
+                  }}>
+                  Profile
+                </Text>
+              </View>
+            ) : (
+              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+                <Icon name={'person-circle-outline'} size={25} color={color} />
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginBottom: -5,
+                    color: focused ? Color.primary : Color.black,
+                  }}>
+                  Profile
+                </Text>
+              </View>
+            );
+          }
+
+          // You can return any component that you like here!
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: Color.primary,
+        tabBarInactiveTintColor: Color.smokeyGrey,
+      })}>
+      <Tab.Screen
+        name="HomeTab"
+        component={HomeStack}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="AppliedJobs"
+        component={UpgradeStack}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="SavedJobs"
+        component={WishStack}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="ProfileTab"
+        component={ProfileStack}
+        options={{ headerShown: false }}
+      />
+    </Tab.Navigator>
+  );
+};
+
+export default TabNavigator;
