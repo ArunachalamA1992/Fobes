@@ -6,7 +6,8 @@ import { Media } from '../Global/Media';
 const LogoTitle = () => {
   return (
     <Image
-      source={{ uri: Media.mainlogo }}
+      source={{ uri: Media.fobes_white }}
+      // source={require('../assets/logos/fobes_logo.png')}
       style={{ width: 150, height: 40, resizeMode: 'contain' }}
     />
   );

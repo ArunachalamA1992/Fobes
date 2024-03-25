@@ -98,6 +98,10 @@ export const Media = {
     'https://albion-backend.s3.ap-south-1.amazonaws.com/Mobile+Apk+Banners/assets/assets/Loans/loan4.jpg',
 
   //Logo
+  fobes_white: "https://albion-backend.s3.ap-south-1.amazonaws.com/Fobes/fobes_white.png",
+  fobes_blue: "https://albion-backend.s3.ap-south-1.amazonaws.com/Fobes/fobes.png",
+  fobes_main: "https://albion-backend.s3.ap-south-1.amazonaws.com/Fobes/fobes_new.png",
+
 
   albionlogo:
     'https://albion-backend.s3.ap-south-1.amazonaws.com/Mobile+Apk+Banners/assets/assets/Logo/albionlogo.png',

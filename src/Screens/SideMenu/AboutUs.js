@@ -162,10 +162,10 @@ const AboutUs = () => {
                     </View>
 
                     <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginVertical: 30 }}>
-                        <View style={{ flex: 0, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
                             <Image
-                                source={{ uri: Media.albionlogo }}
-                                style={{ width: 60, height: 60, resizeMode: 'contain' }}
+                                source={{ uri: Media.fobes_main }}
+                                style={{ width: '100%', height: 60, resizeMode: 'contain' }}
                             />
                         </View>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 10 }}>

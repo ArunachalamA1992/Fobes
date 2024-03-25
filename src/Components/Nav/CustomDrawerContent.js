@@ -287,18 +287,27 @@ const CustomDrawerContent = props => {
                   marginVertical: Platform.OS == 'ios' ? 5 : 0,
                 }}
                 numberOfLines={1}>
-                *****
+                Demo User
               </Text>
               <Text
                 style={{
                   fontSize: 14,
                   color: Color.white,
                   fontFamily: Poppins.SemiBold,
-                  textTransform: 'capitalize',
                   marginHorizontal: 10,
                   marginVertical: Platform.OS == 'ios' ? 5 : 0,
                 }}>
-                9876543210
+                demo@gmail.com
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: Color.white,
+                  fontFamily: Poppins.SemiBold,
+                  marginHorizontal: 10,
+                  marginVertical: Platform.OS == 'ios' ? 5 : 0,
+                }}>
+                +91 98765 43210
               </Text>
             </View>
 
@@ -324,15 +333,13 @@ const CustomDrawerContent = props => {
               }}
               onPress={() => {
                 setItemSelected('Home');
-                // props.navigation.navigate('Home');
+                props.navigation.navigate('Home');
               }}>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
                 iconname={itemSelected === 'Home' ? 'home' : 'home'}
-                icon_size={itemSelected === 'Home' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'Home' ? Color.white : Color.grey
-                }
+                icon_size={itemSelected === 'Home' ? 24 : 22}
+                icon_color={itemSelected === 'Home' ? Color.white : Color.primary}
               />
               <Text
                 style={{
@@ -340,7 +347,8 @@ const CustomDrawerContent = props => {
                   width: 150,
                   marginLeft: 10,
                   color: itemSelected === 'Home' ? Color.white : Color.black,
-                  fontFamily: itemSelected === 'Home' ? 'bold' : 'normal',
+                  fontFamily: itemSelected === 'Home' ? Poppins.Bold : Poppins.Medium,
+                  top: 4
                 }}>
                 Home
               </Text>
@@ -348,11 +356,7 @@ const CustomDrawerContent = props => {
           </View>
 
           <View
-            style={{
-              backgroundColor:
-                itemSelected === 'favorite' ? Color.primary : Color.white,
-              marginVertical: 5,
-            }}>
+            style={{ backgroundColor: itemSelected === 'favorite' ? Color.primary : Color.white, marginVertical: 5 }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -367,20 +371,17 @@ const CustomDrawerContent = props => {
               }}>
               <Iconviewcomponent
                 Icontag={'MaterialIcons'}
-                iconname={itemSelected === 'favorite' ? 'favorite' : 'favorite-outline'}
-                icon_size={itemSelected === 'favorite' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'favorite' ? Color.white : Color.grey
-                }
+                iconname={itemSelected === 'favorite' ? 'favorite' : 'favorite'}
+                icon_size={itemSelected === 'favorite' ? 24 : 22}
+                icon_color={itemSelected === 'favorite' ? Color.white : Color.primary}
               />
               <Text
                 style={{
                   fontSize: 14,
                   width: 150,
                   marginLeft: 10,
-                  color:
-                    itemSelected === 'favorite' ? Color.white : Color.black,
-                  fontWeight: itemSelected === 'favorite' ? 'bold' : 'normal',
+                  color: itemSelected === 'favorite' ? Color.white : Color.black,
+                  fontFamily: itemSelected === 'favorite' ? Poppins.Bold : Poppins.Medium,
                 }}>
                 Favorite Jobs
               </Text>
@@ -388,11 +389,7 @@ const CustomDrawerContent = props => {
           </View>
 
           <View
-            style={{
-              backgroundColor:
-                itemSelected === 'job' ? Color.primary : Color.white,
-              marginVertical: 5,
-            }}>
+            style={{ backgroundColor: itemSelected === 'job' ? Color.primary : Color.white, marginVertical: 5 }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -407,25 +404,18 @@ const CustomDrawerContent = props => {
               }}>
               <Iconviewcomponent
                 Icontag={'MaterialCommunityIcons'}
-                iconname={
-                  itemSelected === 'job' ? 'file-document-edit' : 'file-document-edit-outline'
-                }
-                icon_size={itemSelected === 'job' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'job' ? Color.white : Color.grey
-                }
+                iconname={itemSelected === 'job' ? 'file-document-edit' : 'file-document-edit-outline'}
+                icon_size={itemSelected === 'job' ? 24 : 22}
+                icon_color={itemSelected === 'job' ? Color.white : Color.primary}
               />
               <Text
                 style={{
                   fontSize: 14,
                   width: 150,
                   marginLeft: 10,
-                  color:
-                    itemSelected === 'job'
-                      ? Color.white
-                      : Color.black,
-                  fontWeight:
-                    itemSelected === 'job' ? 'bold' : 'normal',
+                  color: itemSelected === 'job' ? Color.white : Color.black,
+                  fontFamily: itemSelected === 'job' ? Poppins.Bold : Poppins.Medium,
+                  top: 3
                 }}>
                 Job Alert
               </Text>
@@ -433,11 +423,7 @@ const CustomDrawerContent = props => {
           </View>
 
           <View
-            style={{
-              backgroundColor:
-                itemSelected === 'AboutUs' ? Color.primary : Color.white,
-              marginVertical: 5,
-            }}>
+            style={{ backgroundColor: itemSelected === 'AboutUs' ? Color.primary : Color.white, marginVertical: 5 }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -452,25 +438,18 @@ const CustomDrawerContent = props => {
               }}>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
-                iconname={
-                  itemSelected === 'AboutUs'
-                    ? 'information-circle'
-                    : 'information-circle-outline'
-                }
-                icon_size={itemSelected === 'AboutUs' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'AboutUs' ? Color.white : Color.grey
-                }
+                iconname={itemSelected === 'AboutUs' ? 'help-circle' : 'help-circle-outline'}
+                icon_size={itemSelected === 'AboutUs' ? 26 : 24}
+                icon_color={itemSelected === 'AboutUs' ? Color.white : Color.primary}
               />
-
               <Text
                 style={{
                   fontSize: 14,
                   width: 150,
                   marginLeft: 10,
-                  color:
-                    itemSelected === 'AboutUs' ? Color.white : Color.black,
-                  fontWeight: itemSelected === 'AboutUs' ? 'bold' : 'normal',
+                  color: itemSelected === 'AboutUs' ? Color.white : Color.black,
+                  fontFamily: itemSelected === 'AboutUs' ? Poppins.Bold : Poppins.Medium,
+                  top: 1
                 }}>
                 About Us
               </Text>
@@ -478,11 +457,7 @@ const CustomDrawerContent = props => {
           </View>
 
           <View
-            style={{
-              backgroundColor:
-                itemSelected === 'Contact' ? Color.primary : Color.white,
-              marginVertical: 5,
-            }}>
+            style={{ backgroundColor: itemSelected === 'Contact' ? Color.primary : Color.white, marginVertical: 5, }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -496,25 +471,19 @@ const CustomDrawerContent = props => {
                 props.navigation.navigate('ContactUs');
               }}>
               <Iconviewcomponent
-                Icontag={'AntDesign'}
-                iconname={
-                  itemSelected === 'Contact'
-                    ? 'contacts'
-                    : 'contacts'
-                }
-                icon_size={itemSelected === 'Contact' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'Contact' ? Color.white : Color.grey
-                }
+                Icontag={'MaterialCommunityIcons'}
+                iconname={itemSelected === 'Contact' ? 'contacts' : 'contacts-outline'}
+                icon_size={itemSelected === 'Contact' ? 24 : 22}
+                icon_color={itemSelected === 'Contact' ? Color.white : Color.primary}
               />
               <Text
                 style={{
                   fontSize: 14,
                   width: 150,
                   marginLeft: 10,
-                  color:
-                    itemSelected === 'Contact' ? Color.white : Color.black,
-                  fontWeight: itemSelected === 'Contact' ? 'bold' : 'normal',
+                  color: itemSelected === 'Contact' ? Color.white : Color.black,
+                  fontFamily: itemSelected === 'Contact' ? Poppins.Bold : Poppins.Medium,
+                  top: 1
                 }}>
                 Contact Us
               </Text>
@@ -522,11 +491,7 @@ const CustomDrawerContent = props => {
           </View>
 
           <View
-            style={{
-              backgroundColor:
-                itemSelected === 'FAQs' ? Color.primary : Color.white,
-              marginVertical: 5,
-            }}>
+            style={{ backgroundColor: itemSelected === 'FAQs' ? Color.primary : Color.white, marginVertical: 5, }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -541,24 +506,18 @@ const CustomDrawerContent = props => {
               }}>
               <Iconviewcomponent
                 Icontag={'MaterialCommunityIcons'}
-                iconname={
-                  itemSelected === 'FAQs'
-                    ? 'frequently-asked-questions'
-                    : 'frequently-asked-questions'
-                }
-                icon_size={itemSelected === 'FAQs' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'FAQs' ? Color.white : Color.grey
-                }
+                iconname={itemSelected === 'FAQs' ? 'frequently-asked-questions' : 'frequently-asked-questions'}
+                icon_size={itemSelected === 'FAQs' ? 24 : 22}
+                icon_color={itemSelected === 'FAQs' ? Color.white : Color.primary}
               />
               <Text
                 style={{
                   fontSize: 14,
                   width: 150,
                   marginLeft: 10,
-                  color:
-                    itemSelected === 'FAQs' ? Color.white : Color.black,
-                  fontWeight: itemSelected === 'FAQs' ? 'bold' : 'normal',
+                  color: itemSelected === 'FAQs' ? Color.white : Color.black,
+                  fontFamily: itemSelected === 'FAQs' ? Poppins.Bold : Poppins.Medium,
+                  top: 1
                 }}>
                 FAQs
               </Text>
@@ -566,13 +525,7 @@ const CustomDrawerContent = props => {
           </View>
 
           <View
-            style={{
-              backgroundColor:
-                itemSelected === 'termscondition'
-                  ? Color.primary
-                  : Color.white,
-              marginVertical: 5,
-            }}>
+            style={{ backgroundColor: itemSelected === 'termscondition' ? Color.primary : Color.white, marginVertical: 0 }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -587,14 +540,9 @@ const CustomDrawerContent = props => {
               }}>
               <Iconviewcomponent
                 Icontag={'MaterialCommunityIcons'}
-                iconname={
-                  itemSelected === 'termscondition'
-                    ? 'content-save-all'
-                    : 'content-copy'
-                }
-                icon_size={itemSelected === 'termscondition' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'termscondition' ? Color.white : Color.grey
+                iconname={itemSelected === 'termscondition' ? 'content-save-all' : 'content-copy'}
+                icon_size={itemSelected === 'termscondition' ? 24 : 22}
+                icon_color={itemSelected === 'termscondition' ? Color.white : Color.primary
                 }
               />
               <Text
@@ -602,12 +550,9 @@ const CustomDrawerContent = props => {
                   fontSize: 14,
                   width: 150,
                   marginLeft: 10,
-                  color:
-                    itemSelected === 'termscondition'
-                      ? Color.white
-                      : Color.black,
-                  fontWeight:
-                    itemSelected === 'termscondition' ? 'bold' : 'normal',
+                  color: itemSelected === 'termscondition' ? Color.white : Color.black,
+                  fontFamily: itemSelected === 'termscondition' ? Poppins.Bold : Poppins.Medium,
+                  top: 1
                 }}>
                 Terms & Conditions
               </Text>
@@ -616,11 +561,7 @@ const CustomDrawerContent = props => {
 
 
           <View
-            style={{
-              backgroundColor:
-                itemSelected === 'PrivacyPolicy' ? Color.primary : Color.white,
-              marginVertical: 5,
-            }}>
+            style={{ backgroundColor: itemSelected === 'PrivacyPolicy' ? Color.primary : Color.white, marginVertical: 5 }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -635,37 +576,25 @@ const CustomDrawerContent = props => {
               }}>
               <Iconviewcomponent
                 Icontag={'MaterialIcons'}
-                iconname={
-                  itemSelected === 'PrivacyPolicy' ? 'policy' : 'policy'
-                }
-                icon_size={itemSelected === 'PrivacyPolicy' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'PrivacyPolicy' ? Color.white : Color.grey
-                }
+                iconname={itemSelected === 'PrivacyPolicy' ? 'policy' : 'policy'}
+                icon_size={itemSelected === 'PrivacyPolicy' ? 26 : 24}
+                icon_color={itemSelected === 'PrivacyPolicy' ? Color.white : Color.primary}
               />
               <Text
                 style={{
                   fontSize: 14,
                   width: 150,
                   marginLeft: 10,
-                  color:
-                    itemSelected === 'PrivacyPolicy'
-                      ? Color.white
-                      : Color.black,
-                  fontWeight:
-                    itemSelected === 'PrivacyPolicy' ? 'bold' : 'normal',
+                  color: itemSelected === 'PrivacyPolicy' ? Color.white : Color.black,
+                  fontFamily: itemSelected === 'PrivacyPolicy' ? Poppins.Bold : Poppins.Medium,
+                  top: 1
                 }}>
                 Privacy Policy
               </Text>
             </TouchableOpacity>
           </View>
           {/* <View style={{ width: '90%', height: 0.5, marginVertical: 5, backgroundColor: '#666', justifyContent: 'center', alignSelf: 'center' }}></View> */}
-          <View
-            style={{
-              backgroundColor:
-                itemSelected === 'share' ? Color.primary : Color.white,
-              marginVertical: 5,
-            }}>
+          <View style={{ backgroundColor: itemSelected === 'share' ? Color.primary : Color.white, marginVertical: 0, }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -680,15 +609,9 @@ const CustomDrawerContent = props => {
               }}>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
-                iconname={
-                  itemSelected === 'share'
-                    ? 'share-social-sharp'
-                    : 'share-social'
-                }
-                icon_size={itemSelected === 'share' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'share' ? Color.white : Color.grey
-                }
+                iconname={itemSelected === 'share' ? 'share-social-sharp' : 'share-social'}
+                icon_size={itemSelected === 'share' ? 24 : 22}
+                icon_color={itemSelected === 'share' ? Color.white : Color.primary}
               />
               <Text
                 style={{
@@ -696,7 +619,8 @@ const CustomDrawerContent = props => {
                   width: 150,
                   marginLeft: 10,
                   color: itemSelected === 'share' ? Color.white : Color.black,
-                  fontWeight: itemSelected === 'share' ? 'bold' : 'normal',
+                  fontFamily: itemSelected === 'share' ? Poppins.Bold : Poppins.Medium,
+                  top: 1
                 }}>
                 Share the app
               </Text>
@@ -704,11 +628,7 @@ const CustomDrawerContent = props => {
           </View>
 
           <View
-            style={{
-              backgroundColor:
-                itemSelected === 'Settings' ? Color.primary : Color.white,
-              marginVertical: 5,
-            }}>
+            style={{ backgroundColor: itemSelected === 'Settings' ? Color.primary : Color.white, marginVertical: 5 }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -722,15 +642,9 @@ const CustomDrawerContent = props => {
               }}>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
-                iconname={
-                  itemSelected === 'Settings'
-                    ? 'settings'
-                    : 'settings'
-                }
-                icon_size={itemSelected === 'Settings' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'Settings' ? Color.white : Color.grey
-                }
+                iconname={itemSelected === 'Settings' ? 'settings' : 'settings'}
+                icon_size={itemSelected === 'Settings' ? 24 : 22}
+                icon_color={itemSelected === 'Settings' ? Color.white : Color.primary}
               />
               <Text
                 style={{
@@ -738,7 +652,8 @@ const CustomDrawerContent = props => {
                   width: 150,
                   marginLeft: 10,
                   color: itemSelected === 'Settings' ? Color.white : Color.black,
-                  fontWeight: itemSelected === 'Settings' ? 'bold' : 'normal',
+                  fontFamily: itemSelected === 'Settings' ? Poppins.Bold : Poppins.Medium,
+                  top: 1
                 }}>
                 Settings
               </Text>
@@ -746,11 +661,7 @@ const CustomDrawerContent = props => {
           </View>
 
           <View
-            style={{
-              backgroundColor:
-                itemSelected === 'Logout' ? Color.primary : Color.white,
-              marginVertical: 5,
-            }}>
+            style={{ backgroundColor: itemSelected === 'Logout' ? Color.primary : Color.white, marginVertical: 5 }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -761,18 +672,13 @@ const CustomDrawerContent = props => {
               }}
               onPress={() => {
                 setItemSelected('Logout');
+                props.navigation.navigate('Auth');
               }}>
               <Iconviewcomponent
                 Icontag={'AntDesign'}
-                iconname={
-                  itemSelected === 'Logout'
-                    ? 'logout'
-                    : 'logout'
-                }
-                icon_size={itemSelected === 'Logout' ? 22 : 18}
-                icon_color={
-                  itemSelected === 'Logout' ? Color.white : Color.grey
-                }
+                iconname={itemSelected === 'Logout' ? 'logout' : 'logout'}
+                icon_size={itemSelected === 'Logout' ? 24 : 22}
+                icon_color={itemSelected === 'Logout' ? Color.white : Color.primary}
               />
               <Text
                 style={{
@@ -780,7 +686,7 @@ const CustomDrawerContent = props => {
                   width: 150,
                   marginLeft: 10,
                   color: itemSelected === 'Logout' ? Color.white : Color.black,
-                  fontWeight: itemSelected === 'Logout' ? 'bold' : 'normal',
+                  fontFamily: itemSelected === 'Settings' ? Poppins.Bold : Poppins.Medium,
                 }}>
                 Log Out
               </Text>

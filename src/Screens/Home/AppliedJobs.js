@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 // create a component
-const ChatScreen = () => {
+const AppliedJobs = () => {
     return (
         <View style={styles.container}>
-            <Text>Chat Screen</Text>
+            <Text>Applied Jobs</Text>
         </View>
     );
 };
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default ChatScreen;
+export default AppliedJobs;

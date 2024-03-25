@@ -12,9 +12,7 @@ const SplashScreen = () => {
         try {
             // setIsLoading(true);
             const SplashLoad = setTimeout(() => {
-                // checkForUpdates();
                 navigation.navigate("OnboardOne");
-                // setIsLoading(false);
             }, 3000);
             return () => {
                 clearInterval(SplashLoad);
@@ -37,11 +35,11 @@ const SplashScreen = () => {
     return (
         <View style={styles.container}>
             <Animated.Image
-                source={require('./assets/logos/mainlogo.png')}
+                source={require('./assets/logos/fobes_logo.png')}
                 style={[styles.image, { transform: [{ scale: imageScale }] }]}
             />
             <Animated.Text
-                style={[{ fontSize: 20, color: Color.primary, fontFamily: Poppins.SemiBold, paddingVertical: 10 }, { transform: [{ scale: imageScale }] }]}
+                style={[{ fontSize: 20, color: Color.primary, fontFamily: Poppins.SemiBold }, { transform: [{ scale: imageScale }] }]}
             >
                 Fobes
             </Animated.Text>
@@ -54,11 +52,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: Color.primary,
     },
     image: {
-        width: 130,
-        height: 130,
+        width: 180,
+        height: 180,
+        resizeMode: 'contain'
     },
 });
 

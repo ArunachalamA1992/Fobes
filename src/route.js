@@ -9,6 +9,7 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
+import F5Icon from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,9 +19,7 @@ import ContactUs from './Screens/SideMenu/ContactUs';
 import NotificationList from './Screens/SideMenu/NotificationList';
 import TermsCondition from './Screens/SideMenu/TermsCondition';
 import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
-import SavedJobs from './Screens/Home/SavedJobs';
 import Color from './Global/Color';
-import ChatScreen from './Screens/Home/ChatScreen';
 import ProfileScreen from './Screens/Profile/ProfileScreen';
 import LogoTitle, { PrimeLogoTitle } from './Components/LogoTitle';
 import { NavigationDrawerStructure } from './Components/Nav/NavDrawer';
@@ -29,6 +28,10 @@ import Register from './Screens/Auth/Register';
 import { Media } from './Global/Media';
 import { Poppins } from './Global/FontFamily';
 import FAQs from './Screens/SideMenu/FAQs';
+import AppliedJobs from './Screens/Home/AppliedJobs';
+import SavedJobs from './Screens/Home/SavedJobs';
+import { Iconviewcomponent } from './Components/Icontag';
+import { Badge } from 'react-native-paper';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -71,13 +74,22 @@ export const HomeStack = () => {
         name="Home"
         component={HomeScreen}
         options={({ navigation }) => ({
-          headerTitle: props => <LogoTitle {...props} />,
-          // headerTitle: 'Albion',
-          headerTitleAlign: 'center',
-          headerTintColor: 'white',
+          headerTitle: '',
+          headerTitleStyle: { color: Color.white },
           headerStyle: { backgroundColor: Color.primary, elevation: 0 },
           headerLeft: () => (
             <NavigationDrawerStructure navigation={navigation} />
+          ),
+          headerRight: () => (
+            <TouchableOpacity style={{ right: 10 }}>
+              <Badge style={{ position: 'absolute', top: -10, right: -5, zIndex: 1000 }}>05</Badge>
+              <Iconviewcomponent
+                Icontag={'Ionicons'}
+                iconname={'notifications-sharp'}
+                icon_size={26}
+                icon_color={Color.white}
+              />
+            </TouchableOpacity>
           ),
         })}
       />
@@ -202,12 +214,12 @@ export const HomeStack = () => {
   );
 };
 
-export const UpgradeStack = () => {
+export const AppliedStack = () => {
   return (
     <Stack.Navigator initialRouteName="Prime">
       <Stack.Screen
-        name="Applied Jobs"
-        component={SavedJobs}
+        name="AppliedJobs"
+        component={AppliedJobs}
         options={({ navigation, route }) => ({
           headerTitle: 'Applied Jobs',
           headerTitleStyle: { color: Color.white },
@@ -225,10 +237,9 @@ export const UpgradeStack = () => {
           headerRight: () => (
             <View style={{ marginHorizontal: 10 }}>
               <Image
-                source={{ uri: Media.albionlogo }}
+                source={{ uri: Media.fobes_white }}
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 100, height: 40,
                   resizeMode: 'contain',
                 }}
               />
@@ -240,12 +251,12 @@ export const UpgradeStack = () => {
   );
 };
 
-export const WishStack = () => {
+export const SavedStack = () => {
   return (
-    <Stack.Navigator initialRouteName="wish">
+    <Stack.Navigator initialRouteName="SavedJobs">
       <Stack.Screen
-        name="wish"
-        component={ChatScreen}
+        name="SavedJobs"
+        component={SavedJobs}
         options={({ navigation, route }) => ({
           headerTitle: 'Saved Jobs',
           headerTitleStyle: { color: Color.white },
@@ -263,10 +274,9 @@ export const WishStack = () => {
           headerRight: () => (
             <View style={{ marginHorizontal: 10 }}>
               <Image
-                source={{ uri: Media.albionlogo }}
+                source={{ uri: Media.fobes_white }}
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 100, height: 40,
                   resizeMode: 'contain',
                 }}
               />
@@ -277,6 +287,52 @@ export const WishStack = () => {
     </Stack.Navigator>
   );
 };
+
+export const ProfileStack = () => {
+  // const userData = useSelector(state => state.UserReducer.userData);
+  // var { user_id } = userData;
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Profile',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          // headerTitleStyle: { color: Color.black, fontFamily: Poppins.SemiBold },
+          headerTitleAlign: 'center',
+          // headerStyle: { backgroundColor: Color.white },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+          headerRight: () =>
+            <TouchableOpacity
+              style={{ marginHorizontal: 10 }}>
+              <Text
+                style={{
+                  fontFamily: Poppins.SemiBold,
+                  fontSize: 18,
+                  color: Color.white,
+                }}>
+                Edit
+              </Text>
+            </TouchableOpacity>
+          ,
+          headerRightContainerStyle: { marginRight: 10 },
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
 
 
 export const Auth = () => {
@@ -296,49 +352,6 @@ export const Auth = () => {
         name="Register"
         component={Register}
         options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-};
-
-export const ProfileStack = () => {
-  // const userData = useSelector(state => state.UserReducer.userData);
-  // var { user_id } = userData;
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={({ navigation, route }) => ({
-          headerTitle: 'Profile',
-          headerTitleStyle: { color: Color.black, fontFamily: Poppins.SemiBold },
-          headerTitleAlign: 'center',
-          headerStyle: { backgroundColor: Color.white },
-          headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
-              <Icon
-                name="arrow-back"
-                size={30}
-                color={Color.primary}
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
-          headerRight: () =>
-            <TouchableOpacity
-              style={{ marginHorizontal: 10 }}>
-              <Text
-                style={{
-                  fontFamily: Poppins.SemiBold,
-                  fontSize: 18,
-                  color: Color.primary,
-                }}>
-                Edit
-              </Text>
-            </TouchableOpacity>
-          ,
-          headerRightContainerStyle: { marginRight: 10 },
-        })}
       />
     </Stack.Navigator>
   );
@@ -407,7 +420,7 @@ const TabNavigator = () => {
                 </Text>
               </View>
             );
-          } else if (route.name === 'AppliedJobs') {
+          } else if (route.name === 'ApplyJobs') {
             return focused ? (
               <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
                 <View
@@ -603,13 +616,13 @@ const TabNavigator = () => {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="AppliedJobs"
-        component={UpgradeStack}
+        name="ApplyJobs"
+        component={AppliedStack}
         options={{ headerShown: false }}
       />
       <Tab.Screen
         name="SavedJobs"
-        component={WishStack}
+        component={SavedStack}
         options={{ headerShown: false }}
       />
       <Tab.Screen

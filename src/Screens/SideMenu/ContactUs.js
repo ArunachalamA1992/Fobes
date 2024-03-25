@@ -401,14 +401,14 @@ const ContactUs = () => {
                                     </View>
 
                                     <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', marginVertical: 30, marginBottom: 50 }}>
-                                        <View style={{ flex: 0, justifyContent: 'center', alignItems: 'center' }}>
+                                        <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
                                             <Image
-                                                source={{ uri: Media.albionlogo }}
-                                                style={{ width: 60, height: 60, resizeMode: 'contain' }}
+                                                source={{ uri: Media.fobes_main }}
+                                                style={{ width: '100%', height: 60, resizeMode: 'contain' }}
                                             />
                                         </View>
                                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 10 }}>
-                                            <Text style={{ textAlign: 'left', fontSize: 18, color: Color.primary, fontFamily: 'Poppins-SemiBold' }}>Fobes Skill Itech Private Limited</Text>
+                                            <Text style={{ textAlign: 'justify', fontSize: 18, color: Color.primary, fontFamily: 'Poppins-SemiBold' }}>Fobes Skill Itech Private Limited</Text>
                                             <Text style={{ textAlign: 'justify', fontSize: 14, color: '#666', fontFamily: 'Poppins-Regular' }} >You are hired! Get yourself registered. The top companies in the league are hiring now.</Text>
                                         </View>
                                     </View>

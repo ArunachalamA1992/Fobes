@@ -1,5 +1,6 @@
 export default {
-  primary: '#0033A0',
+  primary: '#00339A',
+  // primary: '#0033A0',00339A
   black: '#000',
   white: '#fff',
   routeColor: '#655F5F',

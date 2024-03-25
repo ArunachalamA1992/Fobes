@@ -11,21 +11,21 @@ const OnboardOne = () => {
     const navigation = useNavigation();
     return (
         <View style={styles.container}>
-            <View style={{ flex: 2, }}>
-                <Image source={{ uri: 'https://cdni.iconscout.com/illustration/premium/thumb/online-job-search-4836622-4032953.png' }} style={{ width: '100%', height: '100%', resizeMode: 'contain' }} />
+            <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
+                <Image
+                    source={require('../../assets/images/fobes_onboard.png')}
+                    // source={{ uri: 'https://cdni.iconscout.com/illustration/premium/thumb/online-job-search-4836622-4032953.png' }}
+                    style={{ width: '100%', height: '100%', resizeMode: 'cover' }} />
             </View>
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
-                <View style={{ justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'white' }}>
-                    <Text style={{ fontSize: 20, fontFamily: Poppins.SemiBold, color: Color.primary, textAlign: 'center' }}>Grab the Oppurtunity</Text>
-                    <Text style={{ fontSize: 15, fontFamily: Poppins.Regular, color: Color.cloudyGrey, textAlign: 'center' }} numberOfLines={5}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</Text>
+            <View style={{ flex: 1.3, justifyContent: 'flex-start', alignItems: 'center' }}>
+                <View style={{ flex: 1, width: '100%', justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'white' }}>
+                    <Text style={{ width: '80%', fontSize: 20, fontFamily: Poppins.SemiBold, color: Color.black, textAlign: 'center', textTransform: 'capitalize' }}>Let's set sail towards your goals!</Text>
+                    <Text style={{ width: '80%', fontSize: 15, fontFamily: Poppins.Regular, color: Color.routeColor, textAlign: 'center', paddingVertical: 5 }} numberOfLines={2}>Thrilled to have you onboard! Let's explore new career horizons together.</Text>
                 </View>
-                <View style={{ justifyContent: 'flex-end', alignItems: 'center', bottom: 0, backgroundColor: 'white', paddingVertical: 20 }}>
-                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-                        {/* <TouchableOpacity style={{ paddingHorizontal: 20, padding: 10, }}>
-                            <Text style={{ fontSize: 16, color: '#666', fontFamily: Poppins.SemiBold }}>Prev</Text>
-                        </TouchableOpacity> */}
-                        <TouchableOpacity onPress={() => navigation.navigate("OnboardTwo")} style={{ paddingHorizontal: 20, padding: 10, }}>
-                            <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold }}>Next</Text>
+                <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', bottom: 0, backgroundColor: 'white' }}>
+                    <View style={{ width: '85%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Auth")} style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', backgroundColor: Color.primary, borderRadius: 5 }}>
+                            <Text style={{ fontSize: 16, color: Color.white, fontFamily: Poppins.SemiBold, textTransform: 'uppercase' }}>Get Started</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
