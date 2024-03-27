@@ -1,6 +1,7 @@
 export default {
   primary: '#00339A',
   // primary: '#0033A0',00339A
+  secondary: '#0033A0',
   black: '#000',
   white: '#fff',
   routeColor: '#655F5F',
@@ -30,5 +31,5 @@ export default {
   almond: '#F0E3CD',
   lightYellow: '#FFC72C',
   darkBlue: '#19398C',
-  purple: '#A020F0'
+  purple: '#A020F0',
 };

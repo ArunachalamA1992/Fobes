@@ -1,13 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity
-} from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import F5Icon from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -21,68 +15,45 @@ import TermsCondition from './Screens/SideMenu/TermsCondition';
 import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
 import Color from './Global/Color';
 import ProfileScreen from './Screens/Profile/ProfileScreen';
-import LogoTitle, { PrimeLogoTitle } from './Components/LogoTitle';
-import { NavigationDrawerStructure } from './Components/Nav/NavDrawer';
+import LogoTitle, {PrimeLogoTitle} from './Components/LogoTitle';
+import {NavigationDrawerStructure} from './Components/Nav/NavDrawer';
 import Login from './Screens/Auth/Login';
 import Register from './Screens/Auth/Register';
-import { Media } from './Global/Media';
-import { Poppins } from './Global/FontFamily';
+import {Media} from './Global/Media';
+import {Poppins} from './Global/FontFamily';
 import FAQs from './Screens/SideMenu/FAQs';
 import AppliedJobs from './Screens/Home/AppliedJobs';
 import SavedJobs from './Screens/Home/SavedJobs';
-import { Iconviewcomponent } from './Components/Icontag';
-import { Badge } from 'react-native-paper';
+import {Iconviewcomponent} from './Components/Icontag';
+import {Badge} from 'react-native-paper';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const HomeStack = () => {
-  // const getNotificationData = async () => {
-  //   try {
-  //     var data = 'user_id=' + user_id;
-  //     const notifyData = await fetchData.getNotification(data);
-  //     if (notifyData) {
-  //       setNotifyData(notifyData);
-  //     }
-  //   } catch (error) {
-  //     console.log('catch in getNotification_Data : ', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const notify = setInterval(() => {
-  //     getNotificationData();
-  //     unreadNotify();
-  //   }, 2000);
-  //   return () => {
-  //     clearInterval(notify);
-  //   };
-  // }, [notifyData, userData, unreadCount]);
-
-  // const [unreadCount, setUnreadCount] = useState(0);
-
-  // const unreadNotify = async () => {
-  //   let unreadNotifications = notifyData?.filter(
-  //     notification => notification.isRead == 1,
-  //   );
-  //   setUnreadCount(unreadNotifications.length);
-  // };
-
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={({ navigation }) => ({
+        options={({navigation}) => ({
           headerTitle: '',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary, elevation: 0 },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary, elevation: 0},
           headerLeft: () => (
-            <NavigationDrawerStructure navigation={navigation} />
+            <NavigationDrawerStructure navigation={navigation} home={true} />
           ),
           headerRight: () => (
-            <TouchableOpacity style={{ right: 10 }}>
-              <Badge style={{ position: 'absolute', top: -10, right: -5, zIndex: 1000 }}>05</Badge>
+            <TouchableOpacity style={{right: 10}}>
+              <Badge
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: -5,
+                  zIndex: 1000,
+                }}>
+                05
+              </Badge>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
                 iconname={'notifications-sharp'}
@@ -97,12 +68,12 @@ export const HomeStack = () => {
       <Stack.Screen
         name="AboutUs"
         component={AboutUs}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerTitle: 'About Us',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
@@ -116,12 +87,12 @@ export const HomeStack = () => {
       <Stack.Screen
         name="ContactUs"
         component={ContactUs}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerTitle: 'Contact Us',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
@@ -135,12 +106,12 @@ export const HomeStack = () => {
       <Stack.Screen
         name="FAQs"
         component={FAQs}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerTitle: 'FAQs',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
@@ -155,12 +126,12 @@ export const HomeStack = () => {
       <Stack.Screen
         name="NotificationList"
         component={NotificationList}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerTitle: 'Notifications List',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
@@ -175,12 +146,12 @@ export const HomeStack = () => {
       <Stack.Screen
         name="TermsCondition"
         component={TermsCondition}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerTitle: 'Terms & Conditions',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
@@ -194,12 +165,12 @@ export const HomeStack = () => {
       <Stack.Screen
         name="PrivacyPolicy"
         component={PrivacyPolicy}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerTitle: 'Privacy Policy',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
@@ -220,12 +191,12 @@ export const AppliedStack = () => {
       <Stack.Screen
         name="AppliedJobs"
         component={AppliedJobs}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerTitle: 'Applied Jobs',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
@@ -235,11 +206,12 @@ export const AppliedStack = () => {
             </View>
           ),
           headerRight: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Image
-                source={{ uri: Media.fobes_white }}
+                source={{uri: Media.fobes_white}}
                 style={{
-                  width: 100, height: 40,
+                  width: 100,
+                  height: 40,
                   resizeMode: 'contain',
                 }}
               />
@@ -257,12 +229,12 @@ export const SavedStack = () => {
       <Stack.Screen
         name="SavedJobs"
         component={SavedJobs}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerTitle: 'Saved Jobs',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
@@ -272,11 +244,12 @@ export const SavedStack = () => {
             </View>
           ),
           headerRight: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Image
-                source={{ uri: Media.fobes_white }}
+                source={{uri: Media.fobes_white}}
                 style={{
-                  width: 100, height: 40,
+                  width: 100,
+                  height: 40,
                   resizeMode: 'contain',
                 }}
               />
@@ -289,33 +262,23 @@ export const SavedStack = () => {
 };
 
 export const ProfileStack = () => {
-  // const userData = useSelector(state => state.UserReducer.userData);
-  // var { user_id } = userData;
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
-        options={({ navigation, route }) => ({
-          headerTitle: 'Profile',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
-          // headerTitleStyle: { color: Color.black, fontFamily: Poppins.SemiBold },
+        options={({navigation, route}) => ({
+          headerTitle: '',
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.white},
+          headerTitleStyle: {color: Color.black, fontFamily: Poppins.SemiBold},
           headerTitleAlign: 'center',
-          // headerStyle: { backgroundColor: Color.white },
+          headerStyle: {backgroundColor: Color.white},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
-              <Icon
-                name="arrow-back"
-                size={30}
-                color={Color.white}
-                onPress={() => navigation.goBack()}
-              />
-            </View>
+            <NavigationDrawerStructure navigation={navigation} home={false} />
           ),
-          headerRight: () =>
-            <TouchableOpacity
-              style={{ marginHorizontal: 10 }}>
+          headerRight: () => (
+            <TouchableOpacity style={{marginHorizontal: 10}}>
               <Text
                 style={{
                   fontFamily: Poppins.SemiBold,
@@ -325,33 +288,26 @@ export const ProfileStack = () => {
                 Edit
               </Text>
             </TouchableOpacity>
-          ,
-          headerRightContainerStyle: { marginRight: 10 },
+          ),
+          headerRightContainerStyle: {marginRight: 10},
         })}
       />
     </Stack.Navigator>
   );
 };
 
-
-
 export const Auth = () => {
-  // getHash()
-  //   .then(hash => {
-  //     console.log('Use this hash to construct otp message', hash);
-  //   })
-  //   .catch(error => console.log(error));
   return (
-    <Stack.Navigator screenOptions={{ headerShown: true }}>
+    <Stack.Navigator screenOptions={{headerShown: true}}>
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Register"
         component={Register}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );
@@ -360,55 +316,13 @@ export const Auth = () => {
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
           if (route.name === 'HomeTab') {
-            return focused ? (
-              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-                <View
-                  style={{
-                    // backgroundColor: Color.white,
-                    width: 50,
-                    height: 50,
-                    // borderRadius: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: 5,
-                  }}>
-                  <LinearGradient
-                    colors={
-                      focused
-                        ? ['#0033A0', '#3272fa']
-                        : [Color.smokeyGrey, Color.smokeyGrey]
-                    }
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Icon name={'home'} size={25} color={Color.white} />
-                  </LinearGradient>
-                </View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginBottom: -15,
-                    color: focused ? Color.primary : Color.black,
-                    // backgroundColor: Color.lightYellow,
-                    paddingHorizontal: 10,
-                    paddingVertical: 2,
-                    borderRadius: 50,
-                  }}>
-                  Home
-                </Text>
-              </View>
-            ) : (
-              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+            return (
+              <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <Icon name={'home'} size={25} color={color} />
                 <Text
                   style={{
@@ -421,54 +335,8 @@ const TabNavigator = () => {
               </View>
             );
           } else if (route.name === 'ApplyJobs') {
-            return focused ? (
-              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-                <View
-                  style={{
-                    // backgroundColor: Color.white,
-                    width: 50,
-                    height: 50,
-                    // borderRadius: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: 5,
-                  }}>
-                  <LinearGradient
-                    colors={
-                      focused
-                        ? ['#0033A0', '#3272fa']
-                        : [Color.smokeyGrey, Color.smokeyGrey]
-                    }
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <MCIcon
-                      name={'brightness-percent'}
-                      size={25}
-                      color={Color.white}
-                    />
-                  </LinearGradient>
-                </View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginBottom: -15,
-                    color: focused ? Color.primary : Color.black,
-                    // backgroundColor: Color.lightYellow,
-                    paddingHorizontal: 10,
-                    paddingVertical: 2,
-                    borderRadius: 50,
-                  }}>
-                  Applied Jobs
-                </Text>
-              </View>
-            ) : (
-              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+            return (
+              <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <MCIcon name={'brightness-percent'} size={25} color={color} />
                 <Text
                   style={{
@@ -481,54 +349,8 @@ const TabNavigator = () => {
               </View>
             );
           } else if (route.name === 'SavedJobs') {
-            return focused ? (
-              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-                <View
-                  style={{
-                    // backgroundColor: Color.white,
-                    width: 50,
-                    height: 50,
-                    // borderRadius: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: 5,
-                  }}>
-                  <LinearGradient
-                    colors={
-                      focused
-                        ? ['#0033A0', '#3272fa']
-                        : [Color.smokeyGrey, Color.smokeyGrey]
-                    }
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <MCIcon
-                      name={'brightness-percent'}
-                      size={25}
-                      color={Color.white}
-                    />
-                  </LinearGradient>
-                </View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginBottom: -15,
-                    color: focused ? Color.primary : Color.black,
-                    // backgroundColor: Color.lightYellow,
-                    paddingHorizontal: 10,
-                    paddingVertical: 2,
-                    borderRadius: 50,
-                  }}>
-                  Saved Jobs
-                </Text>
-              </View>
-            ) : (
-              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+            return (
+              <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <MCIcon name={'brightness-percent'} size={25} color={color} />
                 <Text
                   style={{
@@ -540,56 +362,9 @@ const TabNavigator = () => {
                 </Text>
               </View>
             );
-          }
-          else if (route.name === 'ProfileTab') {
-            return focused ? (
-              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-                <View
-                  style={{
-                    // backgroundColor: Color.white,
-                    width: 50,
-                    height: 50,
-                    // borderRadius: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: 5,
-                  }}>
-                  <LinearGradient
-                    colors={
-                      focused
-                        ? ['#0033A0', '#3272fa']
-                        : [Color.smokeyGrey, Color.smokeyGrey]
-                    }
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Icon
-                      name={'person-circle-outline'}
-                      size={25}
-                      color={Color.white}
-                    />
-                  </LinearGradient>
-                </View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    marginBottom: -15,
-                    color: focused ? Color.primary : Color.black,
-                    // backgroundColor: Color.lightYellow,
-                    paddingHorizontal: 10,
-                    paddingVertical: 2,
-                    borderRadius: 50,
-                  }}>
-                  Profile
-                </Text>
-              </View>
-            ) : (
-              <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+          } else if (route.name === 'ProfileTab') {
+            return (
+              <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <Icon name={'person-circle-outline'} size={25} color={color} />
                 <Text
                   style={{
@@ -602,8 +377,6 @@ const TabNavigator = () => {
               </View>
             );
           }
-
-          // You can return any component that you like here!
           return <Icon name={iconName} size={size} color={color} />;
         },
         tabBarShowLabel: false,
@@ -613,22 +386,22 @@ const TabNavigator = () => {
       <Tab.Screen
         name="HomeTab"
         component={HomeStack}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Tab.Screen
         name="ApplyJobs"
         component={AppliedStack}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Tab.Screen
         name="SavedJobs"
         component={SavedStack}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Tab.Screen
         name="ProfileTab"
         component={ProfileStack}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
     </Tab.Navigator>
   );
