@@ -20,6 +20,8 @@ import {
     LayoutAnimation,
     LogBox,
     Modal,
+    Button,
+    Dimensions,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -32,9 +34,19 @@ import Color from '../../Global/Color';
 import { Poppins } from '../../Global/FontFamily';
 
 
+import FIcon from 'react-native-vector-icons/FontAwesome';
+import F6Icon from 'react-native-vector-icons/FontAwesome6';
+import Icon from 'react-native-vector-icons/Ionicons';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CircularProgress from 'react-native-circular-progress-indicator';
+
+
 LogBox.ignoreAllLogs();
 
+// const TabBarHeight = 50;
 const HeaderHeight = 150;
+const windowHeight = Dimensions.get('window').height;
+
 // create a component
 const HomeScreen = () => {
 
@@ -183,6 +195,30 @@ const HomeScreen = () => {
         { id: 3, title: 'RecommendedJobs', data: ['RecommendedJobs'] },
     ]);
 
+    const [profileCompletion] = useState([
+        {
+            id: 1,
+            name: 'Add resume',
+            subname: 'Boost profile for your dream job with a standout resume',
+            btname: 'Upload Resume',
+            icon: 'card-account-details-outline',
+        },
+        {
+            id: 2,
+            name: 'Add Your Best Works',
+            subname: 'Highlight your best works to strengthen your profile',
+            btname: 'Add Projects',
+            icon: 'folder-open',
+        },
+        {
+            id: 1,
+            name: 'Personal Details',
+            subname: 'Add personal details to enrich your profile',
+            btname: 'Add Details',
+            icon: 'card-account-details-outline',
+        },
+    ]);
+
     useEffect(() => {
         scrollY.addListener(({ value }) => {
             const curRoute = routes[tabIndex].key;
@@ -253,6 +289,43 @@ const HomeScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+
+            <View style={{ width: scr_width, backgroundColor: Color.primary, alignItems: 'center' }}>
+                <TouchableOpacity
+                    style={{
+                        marginHorizontal: 5,
+                        borderColor: Color.lightgrey,
+                        marginVertical: 10,
+                        borderWidth: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderRadius: 5,
+                        width: '95%',
+                        height: 50, backgroundColor: Color.white,
+                        paddingHorizontal: 10, marginVertical: 20
+                    }}>
+                    <Text
+                        style={{
+                            flex: 1,
+                            fontSize: 16,
+                            paddingTop: 2,
+                            color: Color.cloudyGrey,
+                            fontFamily: Poppins.Medium,
+                        }}
+                        numberOfLines={1}>
+                        {`Search Jobs`}
+                    </Text>
+                    <View style={[styles.numberCountryCode, { textAlign: 'center', alignSelf: 'center', alignContent: 'center', alignItems: 'center', top: 10 }]}>
+                        <Iconviewcomponent
+                            Icontag={'Feather'}
+                            iconname={'search'}
+                            icon_size={28}
+                            icon_color={Color.black}
+                        />
+                    </View>
+
+                </TouchableOpacity>
+            </View>
             <Animated.SectionList
                 sections={BuySection}
                 scrollEnabled={true}
@@ -265,6 +338,12 @@ const HomeScreen = () => {
                         useNativeDriver: true,
                     },
                 )}
+                // contentContainerStyle={{
+                //     paddingTop: HeaderHeight,
+                //     paddingHorizontal: 5,
+                //     minHeight: windowHeight - TabBarHeight,
+                //     // flexGrow: 1,
+                // }}
                 onMomentumScrollBegin={onMomentumScrollBegin}
                 onScrollEndDrag={onScrollEndDrag}
                 onMomentumScrollEnd={onMomentumScrollEnd}
@@ -275,43 +354,8 @@ const HomeScreen = () => {
                         case 'Apply Albion Home Online':
                             return (
                                 <View style={{ width: scr_width, backgroundColor: 'white' }}>
-                                    <View style={{ width: scr_width, backgroundColor: Color.primary, alignItems: 'center' }}>
-                                        <TouchableOpacity
-                                            style={{
-                                                marginHorizontal: 5,
-                                                borderColor: Color.lightgrey,
-                                                marginVertical: 10,
-                                                borderWidth: 1,
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                borderRadius: 5,
-                                                width: '95%',
-                                                height: 50, backgroundColor: Color.white,
-                                                paddingHorizontal: 10, marginVertical: 20
-                                            }}>
-                                            <Text
-                                                style={{
-                                                    flex: 1,
-                                                    fontSize: 16,
-                                                    paddingTop: 2,
-                                                    color: Color.cloudyGrey,
-                                                    fontFamily: Poppins.Medium,
-                                                }}
-                                                numberOfLines={1}>
-                                                {`Search Jobs`}
-                                            </Text>
-                                            <View style={[styles.numberCountryCode, { textAlign: 'center', alignSelf: 'center', alignContent: 'center', alignItems: 'center', top: 10 }]}>
-                                                <Iconviewcomponent
-                                                    Icontag={'Feather'}
-                                                    iconname={'search'}
-                                                    icon_size={28}
-                                                    icon_color={Color.black}
-                                                />
-                                            </View>
 
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View
+                                    {/* <View
                                         style={{
                                             width: '100%',
                                             alignItems: 'center',
@@ -326,6 +370,138 @@ const HomeScreen = () => {
                                                 }}
                                             />
                                         </View>
+                                    </View> */}
+
+                                    <View
+                                        style={{
+                                            marginVertical: 20,
+                                            padding: 10,
+                                            backgroundColor: '#D9F2FE',
+                                        }}>
+                                        <View
+                                            style={{
+                                                marginVertical: 10,
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                            }}>
+                                            <CircularProgress
+                                                value={77}
+                                                radius={40}
+                                                progressValueColor={'#000'}
+                                                valueSuffix="%"
+                                                titleColor={Color.black}
+                                                activeStrokeColor="#0BA02C"
+                                                activeStrokeWidth={15}
+                                                inActiveStrokeWidth={15}
+                                                activeStrokeSecondaryColor={'#0BA02C'}
+                                            />
+                                            <View
+                                                style={{
+                                                    flex: 1,
+                                                    padding: 10,
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        fontFamily: Poppins.Medium,
+                                                        fontSize: 18,
+                                                        color: Color.black,
+                                                    }}>
+                                                    Profile Score
+                                                </Text>
+                                                <Text
+                                                    style={{
+                                                        fontFamily: Poppins.Medium,
+                                                        fontSize: 14,
+                                                        color: Color.cloudyGrey,
+                                                    }}>
+                                                    Boost your profile for your dream job
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                                            <View
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                }}>
+                                                {profileCompletion?.map((item, index) => {
+                                                    return (
+                                                        <View
+                                                            key={index}
+                                                            style={{
+                                                                flex: 1,
+                                                                backgroundColor: Color.white,
+                                                                marginHorizontal: 10,
+                                                                padding: 10,
+                                                                borderRadius: 10,
+                                                                width: 280,
+                                                                alignItems: 'flex-end',
+                                                            }}>
+                                                            <View
+                                                                style={{
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'flex-end',
+                                                                    backgroundColor: '#DEFCE4',
+                                                                    paddingHorizontal: 10,
+                                                                    padding: 5,
+                                                                    borderRadius: 10,
+                                                                }}>
+                                                                <Text
+                                                                    style={{
+                                                                        fontFamily: Poppins.Bold,
+                                                                        fontSize: 12,
+                                                                        color: Color.green,
+                                                                    }}>
+                                                                    Boost 10%
+                                                                </Text>
+                                                            </View>
+                                                            <View
+                                                                key={index}
+                                                                style={{
+                                                                    flexDirection: 'row',
+                                                                    alignItems: 'flex-start',
+                                                                }}>
+                                                                <MCIcon name={item.icon} size={40} color={Color.blue} />
+                                                                <View
+                                                                    style={{
+                                                                        flex: 1,
+                                                                        marginHorizontal: 10,
+                                                                    }}>
+                                                                    <Text
+                                                                        style={{
+                                                                            fontFamily: Poppins.Medium,
+                                                                            fontSize: 16,
+                                                                            color: Color.black,
+                                                                        }}>
+                                                                        {item?.name}
+                                                                    </Text>
+                                                                    <Text
+                                                                        style={{
+                                                                            flex: 1,
+                                                                            fontFamily: Poppins.Medium,
+                                                                            fontSize: 14,
+                                                                            color: Color.black,
+                                                                            marginVertical: 5,
+                                                                        }}>
+                                                                        {item?.subname}
+                                                                    </Text>
+                                                                    <Button
+                                                                        title={item.btname}
+                                                                        mode="contained"
+                                                                        onPress={() => console.log('Pressed')}
+                                                                        style={{
+                                                                            marginVertical: 10,
+                                                                        }}>
+                                                                        {/* {item.btname} */}
+                                                                    </Button>
+                                                                </View>
+                                                            </View>
+                                                        </View>
+                                                    );
+                                                })}
+                                            </View>
+                                        </ScrollView>
                                     </View>
                                 </View>
                             );
