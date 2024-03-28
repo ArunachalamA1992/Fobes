@@ -1,5 +1,6 @@
 export default {
   primary: '#00339A',
+  secondary: '#0033A0',
   // primary: '#0033A0',00339A
   black: '#000',
   white: '#fff',
@@ -15,7 +16,7 @@ export default {
   softPeach: '#FFF2E0',
   yellow: '#F7A02F',
   lightGreen: '#DDFFDF',
-  lightBlack: '#333',
+  lightBlack: '#333333',
   smokeyGrey: '#737373',
   blue: '#2B6DD0',
   Dune: '#323232',

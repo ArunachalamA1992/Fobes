@@ -32,6 +32,11 @@ import AppliedJobs from './Screens/Home/AppliedJobs';
 import SavedJobs from './Screens/Home/SavedJobs';
 import { Iconviewcomponent } from './Components/Icontag';
 import { Badge } from 'react-native-paper';
+import JobListScreen from './Screens/Home/JobListScreen';
+import DetailedScreen from './Screens/Home/DetailedScreen';
+import ApplyJob from './Screens/SubPages/ApplyJob';
+import CompanyList from './Screens/Home/CompanyList';
+import CompanyDetails from './Screens/Home/CompanyDetails';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -210,6 +215,117 @@ export const HomeStack = () => {
           ),
         })}
       />
+
+      <Stack.Screen
+        name="JobListScreen"
+        component={JobListScreen}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Job List',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="DetailedScreen"
+        component={DetailedScreen}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Detailed Screen',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+          headerRight: () => (
+            <TouchableOpacity style={{ right: 10 }}>
+              <Iconviewcomponent
+                Icontag={'AntDesign'}
+                iconname={'sharealt'}
+                icon_size={26}
+                icon_color={Color.white}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="ApplyJob"
+        component={ApplyJob}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Apply Job',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="CompanyList"
+        component={CompanyList}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Company List',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="CompanyDetails"
+        component={CompanyDetails}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Company Details',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+
     </Stack.Navigator>
   );
 };
@@ -370,15 +486,15 @@ const TabNavigator = () => {
                 <View
                   style={{
                     // backgroundColor: Color.white,
-                    width: 50,
-                    height: 50,
+                    // width: 50,
+                    // height: 50,
                     // borderRadius: 50,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: 5,
+                    // position: 'absolute',
+                    // bottom: 5,
                   }}>
-                  <LinearGradient
+                  {/* <LinearGradient
                     colors={
                       focused
                         ? ['#0033A0', '#3272fa']
@@ -390,14 +506,14 @@ const TabNavigator = () => {
                       borderRadius: 50,
                       alignItems: 'center',
                       justifyContent: 'center',
-                    }}>
-                    <Icon name={'home'} size={25} color={Color.white} />
-                  </LinearGradient>
+                    }}> */}
+                  <Icon name={'home'} size={25} color={Color.primary} />
+                  {/* </LinearGradient> */}
                 </View>
                 <Text
                   style={{
                     fontSize: 12,
-                    marginBottom: -15,
+                    // marginBottom: -15,
                     color: focused ? Color.primary : Color.black,
                     // backgroundColor: Color.lightYellow,
                     paddingHorizontal: 10,
@@ -426,15 +542,15 @@ const TabNavigator = () => {
                 <View
                   style={{
                     // backgroundColor: Color.white,
-                    width: 50,
-                    height: 50,
+                    // width: 50,
+                    // height: 50,
                     // borderRadius: 50,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: 5,
+                    // position: 'absolute',
+                    // bottom: 5,
                   }}>
-                  <LinearGradient
+                  {/* <LinearGradient
                     colors={
                       focused
                         ? ['#0033A0', '#3272fa']
@@ -446,18 +562,25 @@ const TabNavigator = () => {
                       borderRadius: 50,
                       alignItems: 'center',
                       justifyContent: 'center',
-                    }}>
-                    <MCIcon
-                      name={'brightness-percent'}
-                      size={25}
-                      color={Color.white}
-                    />
-                  </LinearGradient>
+                    }}> */}
+                  {/* <MCIcon
+                    name={'brightness-percent'}
+                    size={25}
+                    color={Color.primary}
+                  /> */}
+                  <Iconviewcomponent
+                    Icontag={'FontAwesome5'}
+                    iconname={'location-arrow'}
+                    icon_size={25}
+                    icon_color={Color.primary}
+                  />
+
+                  {/* </LinearGradient> */}
                 </View>
                 <Text
                   style={{
                     fontSize: 12,
-                    marginBottom: -15,
+                    // marginBottom: -15,
                     color: focused ? Color.primary : Color.black,
                     // backgroundColor: Color.lightYellow,
                     paddingHorizontal: 10,
@@ -469,7 +592,13 @@ const TabNavigator = () => {
               </View>
             ) : (
               <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-                <MCIcon name={'brightness-percent'} size={25} color={color} />
+                {/* <MCIcon name={'brightness-percent'} size={25} color={color} /> */}
+                <Iconviewcomponent
+                  Icontag={'FontAwesome5'}
+                  iconname={'location-arrow'}
+                  icon_size={25}
+                  icon_color={color}
+                />
                 <Text
                   style={{
                     fontSize: 12,
@@ -486,15 +615,15 @@ const TabNavigator = () => {
                 <View
                   style={{
                     // backgroundColor: Color.white,
-                    width: 50,
-                    height: 50,
+                    // width: 50,
+                    // height: 50,
                     // borderRadius: 50,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: 5,
+                    // position: 'absolute',
+                    // bottom: 5,
                   }}>
-                  <LinearGradient
+                  {/* <LinearGradient
                     colors={
                       focused
                         ? ['#0033A0', '#3272fa']
@@ -506,18 +635,24 @@ const TabNavigator = () => {
                       borderRadius: 50,
                       alignItems: 'center',
                       justifyContent: 'center',
-                    }}>
-                    <MCIcon
-                      name={'brightness-percent'}
-                      size={25}
-                      color={Color.white}
-                    />
-                  </LinearGradient>
+                    }}> */}
+                  {/* <MCIcon
+                    name={'brightness-percent'}
+                    size={25}
+                    color={Color.primary}
+                  /> */}
+                  <Iconviewcomponent
+                    Icontag={'Ionicons'}
+                    iconname={'bookmark'}
+                    icon_size={25}
+                    icon_color={Color.primary}
+                  />
+                  {/* </LinearGradient> */}
                 </View>
                 <Text
                   style={{
                     fontSize: 12,
-                    marginBottom: -15,
+                    // marginBottom: -15,
                     color: focused ? Color.primary : Color.black,
                     // backgroundColor: Color.lightYellow,
                     paddingHorizontal: 10,
@@ -529,7 +664,13 @@ const TabNavigator = () => {
               </View>
             ) : (
               <View style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-                <MCIcon name={'brightness-percent'} size={25} color={color} />
+                {/* <MCIcon name={'brightness-percent'} size={25} color={color} /> */}
+                <Iconviewcomponent
+                  Icontag={'Ionicons'}
+                  iconname={'bookmark-outline'}
+                  icon_size={25}
+                  icon_color={color}
+                />
                 <Text
                   style={{
                     fontSize: 12,
@@ -547,15 +688,15 @@ const TabNavigator = () => {
                 <View
                   style={{
                     // backgroundColor: Color.white,
-                    width: 50,
-                    height: 50,
+                    // width: 50,
+                    // height: 50,
                     // borderRadius: 50,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: 5,
+                    // position: 'absolute',
+                    // bottom: 5,
                   }}>
-                  <LinearGradient
+                  {/* <LinearGradient
                     colors={
                       focused
                         ? ['#0033A0', '#3272fa']
@@ -567,18 +708,18 @@ const TabNavigator = () => {
                       borderRadius: 50,
                       alignItems: 'center',
                       justifyContent: 'center',
-                    }}>
-                    <Icon
-                      name={'person-circle-outline'}
-                      size={25}
-                      color={Color.white}
-                    />
-                  </LinearGradient>
+                    }}> */}
+                  <Icon
+                    name={'person-circle-outline'}
+                    size={25}
+                    color={Color.primary}
+                  />
+                  {/* </LinearGradient> */}
                 </View>
                 <Text
                   style={{
                     fontSize: 12,
-                    marginBottom: -15,
+                    // marginBottom: -15,
                     color: focused ? Color.primary : Color.black,
                     // backgroundColor: Color.lightYellow,
                     paddingHorizontal: 10,

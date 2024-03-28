@@ -39,6 +39,7 @@ const HeaderHeight = 150;
 const HomeScreen = () => {
 
     const dispatch = useDispatch();
+    const navigation = useNavigation()
     const [netInfo_State, setNetinfo] = useState(true);
     const [selectTab, setSelectTab] = useState('FullTime');
 
@@ -50,28 +51,114 @@ const HomeScreen = () => {
 
     const [ActionSelect, setActionSelect] = useState([
         {
-            id: 1,
-            name: 'Property',
+            id: 0,
+            job_name: 'Business Development Executive',
             image: Media.propertyMain,
             subImage: Media.propertysub,
+            job_type: 'Full Time',
+            job_post_date: '1 day ago',
+            job_comp_logo: '',
+            job_comp_name: 'Wipro Technologies ',
+            job_comp_book_status: true,
+            job_comp_salary: '₹10k -  ₹20 k',
+            job_comp_applicant: '500',
+
+        },
+        {
+            id: 1,
+            job_name: 'Mobile App Development',
+            image: Media.AuctionMain,
+            subImage: Media.AuctionSub,
+            job_type: 'Full Time',
+            job_post_date: '3 days ago',
+            job_comp_logo: '',
+            job_comp_name: 'TCS',
+            job_comp_book_status: false,
+            job_comp_salary: '₹40k -  ₹70 k',
+            job_comp_applicant: '250',
         },
         {
             id: 2,
-            name: 'Actions',
+            job_name: 'Graphics Designer',
+            image: Media.propertyMain,
+            subImage: Media.propertysub,
+            job_type: 'Freelance',
+            job_post_date: '1 day ago',
+            job_comp_logo: '',
+            job_comp_name: 'KGISL Group',
+            job_comp_book_status: false,
+            job_comp_salary: '₹30k -  ₹50 k',
+            job_comp_applicant: '50',
+        },
+        {
+            id: 3,
+            job_name: 'Website designer',
             image: Media.AuctionMain,
             subImage: Media.AuctionSub,
+            job_type: 'Full Time',
+            job_post_date: '4 days ago',
+            job_comp_logo: '',
+            job_comp_name: 'Brightway Group Tech',
+            job_comp_book_status: false,
+            job_comp_salary: '₹25k -  ₹60 k',
+            job_comp_applicant: '7',
+        },
+        {
+            id: 4,
+            job_name: 'SEO Analyst',
+            image: Media.AuctionMain,
+            subImage: Media.AuctionSub,
+            job_type: 'Part Time',
+            job_post_date: '2 days ago',
+            job_comp_logo: '',
+            job_comp_name: 'Avanexa Technologies',
+            job_comp_book_status: false,
+            job_comp_salary: '₹15k -  ₹30 k',
+            job_comp_applicant: '15',
+        },
+    ]);
+
+    const [topCompany, setTopCompany] = useState([
+        {
+            id: 0,
+            comp_logo: Media.propertyMain,
+            comp_name: 'Calibre Infotech',
+            comp_address: 'Coimbatore',
+            comp_offer_count: '10',
+            image: Media.propertyMain,
+
         },
         {
             id: 1,
-            name: 'Property',
+            comp_logo: Media.propertyMain,
+            comp_name: 'Calibre Infotech',
+            comp_address: 'Coimbatore',
+            comp_offer_count: '10',
             image: Media.propertyMain,
-            subImage: Media.propertysub,
         },
         {
             id: 2,
-            name: 'Actions',
-            image: Media.AuctionMain,
-            subImage: Media.AuctionSub,
+            comp_logo: Media.propertyMain,
+            comp_name: 'Calibre Infotech',
+            comp_address: 'Coimbatore',
+            comp_offer_count: '10',
+            image: Media.propertyMain,
+        },
+        {
+            id: 3,
+            comp_logo: Media.propertyMain,
+            comp_name: 'Calibre Infotech',
+            comp_address: 'Coimbatore',
+            comp_offer_count: '10',
+            image: Media.propertyMain,
+        },
+        {
+            id: 4,
+            comp_logo: Media.propertyMain,
+            comp_name: 'Calibre Infotech',
+            comp_address: 'Coimbatore',
+            comp_offer_count: '10',
+            image: Media.propertyMain,
         },
     ]);
 
@@ -92,6 +179,8 @@ const HomeScreen = () => {
         },
         { id: 2, title: 'Check your Eligibility', data: ['Check your Eligibility'] },
         { id: 3, title: 'How it works', data: ['How it works'] },
+        { id: 3, title: 'Banner', data: ['Banner'] },
+        { id: 3, title: 'RecommendedJobs', data: ['RecommendedJobs'] },
     ]);
 
     useEffect(() => {
@@ -104,16 +193,16 @@ const HomeScreen = () => {
         };
     }, []);
 
-    useEffect(() => {
-        try {
-            const unsubscribe = NetInfo.addEventListener(state => {
-                setNetinfo(state.isConnected);
-            });
-            return () => unsubscribe;
-        } catch (error) {
-            console.log("catch in use_effect's Home_Loan : ", error);
-        }
-    }, []);
+    // useEffect(() => {
+    //     try {
+    //         const unsubscribe = NetInfo.addEventListener(state => {
+    //             setNetinfo(state.isConnected);
+    //         });
+    //         return () => unsubscribe;
+    //     } catch (error) {
+    //         console.log("catch in use_effect's Home_Screen : ", error);
+    //     }
+    // }, []);
 
     const onMomentumScrollBegin = () => {
         isListGliding.current = true;
@@ -262,13 +351,13 @@ const HomeScreen = () => {
 
                                         <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10 }}>
                                             <TouchableOpacity onPress={() => { setSelectTab("FullTime") }} style={{ padding: 8, paddingHorizontal: 20, borderRadius: 30, marginTop: 2, backgroundColor: selectTab === "FullTime" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Text style={{ color: selectTab === "FullTime" ? Color.white : Color.black, textAlign: 'center', fontSize: 14, fontFamily: Poppins.SemiBold }}>Full Time</Text>
+                                                <Text style={{ color: selectTab === "FullTime" ? Color.white : Color.black, textAlign: 'center', fontSize: 12, fontFamily: Poppins.SemiBold }}>Full Time</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity onPress={() => { setSelectTab("PartTime") }} style={{ padding: 8, paddingHorizontal: 20, borderRadius: 30, marginTop: 2, backgroundColor: selectTab === "PartTime" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Text style={{ color: selectTab === "PartTime" ? Color.white : Color.black, textAlign: 'center', fontSize: 14, fontFamily: Poppins.SemiBold }}>Part Time</Text>
+                                                <Text style={{ color: selectTab === "PartTime" ? Color.white : Color.black, textAlign: 'center', fontSize: 12, fontFamily: Poppins.SemiBold }}>Part Time</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity onPress={() => { setSelectTab("Freelance") }} style={{ padding: 8, paddingHorizontal: 20, borderRadius: 30, marginTop: 2, backgroundColor: selectTab === "Freelance" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Text style={{ color: selectTab === "Freelance" ? Color.white : Color.black, textAlign: 'center', fontSize: 14, fontFamily: Poppins.SemiBold }}>Freelance</Text>
+                                                <Text style={{ color: selectTab === "Freelance" ? Color.white : Color.black, textAlign: 'center', fontSize: 12, fontFamily: Poppins.SemiBold }}>Freelance</Text>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
@@ -283,14 +372,14 @@ const HomeScreen = () => {
                                             <Text
                                                 style={{
 
-                                                    fontSize: 16,
+                                                    fontSize: 14,
                                                     color: 'black',
                                                     fontFamily: Poppins.Regular,
                                                     paddingHorizontal: 10,
                                                 }}>
                                                 You Might Like
                                             </Text>
-                                            <TouchableOpacity>
+                                            <TouchableOpacity onPress={() => navigation.navigate("JobListScreen")}>
                                                 <Text
                                                     style={{
                                                         fontSize: 16,
@@ -302,32 +391,81 @@ const HomeScreen = () => {
                                                 </Text>
                                             </TouchableOpacity>
                                         </View>
-                                        <View style={{ width: '95%', alignItems: 'center', paddingVertical: 10 }}>
+                                        <View style={{ width: '97%', alignItems: 'center', paddingVertical: 10 }}>
                                             <FlatList
                                                 data={ActionSelect}
                                                 keyExtractor={(item, index) => item + index}
                                                 renderItem={({ item, index }) => {
                                                     return (
-                                                        <TouchableOpacity
+                                                        <TouchableOpacity onPress={() => navigation.navigate("DetailedScreen")}
                                                             key={index}
                                                             style={{
-                                                                width: 150, height: 100,
+                                                                width: 300,
                                                                 alignItems: 'center',
                                                                 justifyContent: 'center',
                                                                 borderColor: Color.lightgrey,
                                                                 borderWidth: 1,
-                                                                padding: 5, margin: 5,
-                                                                borderRadius: 10,
+                                                                padding: 10, margin: 5,
+                                                                borderRadius: 5,
                                                             }}>
-                                                            <Image
-                                                                source={{ uri: item.image }}
-                                                                style={{
-                                                                    width: 50,
-                                                                    height: 50,
-                                                                    resizeMode: 'contain',
-                                                                }}
-                                                            />
-                                                            <Text>{item.name}</Text>
+
+                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
+
+                                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                                    <Iconviewcomponent
+                                                                        Icontag={'Ionicons'}
+                                                                        iconname={'time-outline'}
+                                                                        icon_size={20}
+                                                                        icon_color={Color.Venus}
+                                                                    />
+                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
+                                                                </View>
+                                                            </View>
+                                                            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
+                                                                <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
+                                                                    <Image
+                                                                        source={{ uri: item.image }}
+                                                                        style={{
+                                                                            width: 35,
+                                                                            height: 35,
+                                                                            resizeMode: 'contain',
+                                                                        }}
+                                                                    />
+                                                                </View>
+                                                                <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
+                                                                    <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
+                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify' }} numberOfLines={1}>{item.job_comp_name}</Text>
+                                                                </View>
+                                                                <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
+                                                                    <Iconviewcomponent
+                                                                        Icontag={'FontAwesome'}
+                                                                        iconname={'bookmark-o'}
+                                                                        icon_size={22}
+                                                                        icon_color={Color.Venus}
+                                                                    />
+                                                                </View>
+                                                            </View>
+                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Salary/Month</Text>
+                                                                    <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
+                                                                </View>
+                                                                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} >Applicant</Text>
+                                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                                        <Image
+                                                                            source={require('../../assets/images/vector.png')}
+                                                                            style={{
+                                                                                width: 20,
+                                                                                height: 20,
+                                                                                resizeMode: 'contain',
+                                                                            }}
+                                                                        />
+                                                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_applicant}</Text>
+                                                                    </View>
+                                                                </View>
+                                                            </View>
                                                         </TouchableOpacity>
                                                     );
                                                 }}
@@ -342,6 +480,83 @@ const HomeScreen = () => {
                             );
                         case 'How it works':
                             return (
+                                <View style={{ width: scr_width, height: height, alignSelf: 'center', alignItems: 'center', backgroundColor: 'white', }}>
+                                    <View style={{ width: '100%', marginVertical: 10, alignItems: 'center', }}>
+                                        <View style={{ width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Text
+                                                style={{
+                                                    fontSize: 16,
+                                                    color: 'black',
+                                                    fontFamily: 'Poppins-SemiBold',
+                                                    paddingHorizontal: 10,
+                                                }}>
+                                                Top Companies
+                                            </Text>
+                                            <TouchableOpacity onPress={() => navigation.navigate("CompanyList")}>
+                                                <Text
+                                                    style={{
+                                                        fontSize: 16,
+                                                        color: '#0033A0',
+                                                        fontFamily: Poppins.SemiBold,
+                                                        paddingHorizontal: 10,
+                                                    }}>
+                                                    See All
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+
+                                        <View style={{ width: '95%', alignItems: 'center', paddingVertical: 10 }}>
+                                            <FlatList
+                                                data={topCompany}
+                                                keyExtractor={(item, index) => item + index}
+                                                renderItem={({ item, index }) => {
+                                                    return (
+                                                        <TouchableOpacity
+                                                            key={index}
+                                                            style={{
+                                                                width: 180,
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                borderColor: Color.white,
+                                                                borderWidth: 0.5,
+                                                                padding: 5, margin: 5,
+                                                                borderRadius: 10, elevation: 1,
+                                                                backgroundColor: '#EFFAFF'
+                                                            }}>
+                                                            <Image
+                                                                source={{ uri: item.comp_logo }}
+                                                                style={{
+                                                                    width: 80,
+                                                                    height: 80,
+                                                                    resizeMode: 'contain',
+                                                                }}
+                                                            />
+                                                            <Text style={{ fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, paddingVertical: 5 }}>{item.comp_name}</Text>
+                                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                                <Iconviewcomponent
+                                                                    Icontag={'Fontisto'}
+                                                                    iconname={'map-marker-alt'}
+                                                                    icon_size={20}
+                                                                    icon_color={Color.Venus}
+                                                                />
+                                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.comp_address}</Text>
+                                                            </View>
+                                                            <Text style={{ fontSize: 15, color: Color.primary, fontFamily: Poppins.Medium, textDecorationLine: 'underline', paddingVertical: 5 }}>{item.comp_offer_count} Jobs Open</Text>
+                                                        </TouchableOpacity>
+                                                    );
+                                                }}
+                                                horizontal={true}
+                                                showsHorizontalScrollIndicator={false}
+                                            />
+                                        </View>
+
+
+                                    </View>
+
+                                </View>
+                            );
+                        case 'Banner':
+                            return (
                                 <View
                                     style={{
                                         width: scr_width,
@@ -353,46 +568,136 @@ const HomeScreen = () => {
                                     <View
                                         style={{
                                             width: '100%',
-                                            marginVertical: 10,
                                             alignItems: 'center',
                                         }}>
-                                        <Text
-                                            style={{
-                                                width: '95%',
-                                                fontSize: 16,
-                                                color: 'black',
-                                                fontFamily: 'Poppins-SemiBold',
-                                                paddingHorizontal: 10,
-                                            }}>
-                                            Explore by Categories
-                                        </Text>
+                                        <View style={{ width: '95%', }}>
+                                            <Image
+                                                source={require('../../assets/images/banner.png')}
+                                                style={{
+                                                    width: '100%',
+                                                    height: 180,
+                                                    resizeMode: 'contain',
+                                                }}
+                                            />
+                                        </View>
+                                    </View>
 
-                                        <View style={{ width: '95%', alignItems: 'center', paddingVertical: 10 }}>
+                                </View>
+                            );
+                        case 'RecommendedJobs':
+                            return (
+                                <View
+                                    style={{
+                                        width: scr_width,
+                                        height: height,
+                                        alignSelf: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: 'white',
+                                    }}>
+                                    <View
+                                        style={{
+                                            width: '95%',
+                                            marginVertical: 10,
+                                            alignItems: 'center'
+                                        }}>
+                                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Text
+                                                style={{
+                                                    // width: '90%',
+                                                    fontSize: 16,
+                                                    color: 'black',
+                                                    fontFamily: 'Poppins-SemiBold',
+                                                    paddingHorizontal: 10,
+                                                }}>
+                                                Recommended Jobs
+                                            </Text>
+                                            <TouchableOpacity onPress={() => navigation.navigate("JobListScreen")}>
+                                                <Text
+                                                    style={{
+                                                        fontSize: 16,
+                                                        color: '#0033A0',
+                                                        fontFamily: Poppins.SemiBold,
+                                                        paddingHorizontal: 10,
+                                                    }}>
+                                                    See All
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={{ width: '97%', alignItems: 'center', paddingVertical: 10 }}>
                                             <FlatList
                                                 data={ActionSelect}
                                                 keyExtractor={(item, index) => item + index}
                                                 renderItem={({ item, index }) => {
                                                     return (
-                                                        <TouchableOpacity
+                                                        <TouchableOpacity onPress={() => navigation.navigate("JobListScreen")}
                                                             key={index}
                                                             style={{
-                                                                width: 150, height: 100,
+                                                                width: 300,
                                                                 alignItems: 'center',
                                                                 justifyContent: 'center',
                                                                 borderColor: Color.lightgrey,
                                                                 borderWidth: 1,
-                                                                padding: 5, margin: 5,
-                                                                borderRadius: 10,
+                                                                padding: 10, margin: 5,
+                                                                borderRadius: 5,
                                                             }}>
-                                                            <Image
-                                                                source={{ uri: item.image }}
-                                                                style={{
-                                                                    width: 50,
-                                                                    height: 50,
-                                                                    resizeMode: 'contain',
-                                                                }}
-                                                            />
-                                                            <Text>{item.name}</Text>
+
+                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
+
+                                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                                    <Iconviewcomponent
+                                                                        Icontag={'Ionicons'}
+                                                                        iconname={'time-outline'}
+                                                                        icon_size={20}
+                                                                        icon_color={Color.Venus}
+                                                                    />
+                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
+                                                                </View>
+                                                            </View>
+                                                            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
+                                                                <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
+                                                                    <Image
+                                                                        source={{ uri: item.image }}
+                                                                        style={{
+                                                                            width: 35,
+                                                                            height: 35,
+                                                                            resizeMode: 'contain',
+                                                                        }}
+                                                                    />
+                                                                </View>
+                                                                <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
+                                                                    <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
+                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify' }} numberOfLines={1}>{item.job_comp_name}</Text>
+                                                                </View>
+                                                                <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
+                                                                    <Iconviewcomponent
+                                                                        Icontag={'FontAwesome'}
+                                                                        iconname={'bookmark-o'}
+                                                                        icon_size={22}
+                                                                        icon_color={Color.Venus}
+                                                                    />
+                                                                </View>
+                                                            </View>
+                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Salary/Month</Text>
+                                                                    <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
+                                                                </View>
+                                                                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} >Applicant</Text>
+                                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                                        <Image
+                                                                            source={require('../../assets/images/vector.png')}
+                                                                            style={{
+                                                                                width: 20,
+                                                                                height: 20,
+                                                                                resizeMode: 'contain',
+                                                                            }}
+                                                                        />
+                                                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_applicant}</Text>
+                                                                    </View>
+                                                                </View>
+                                                            </View>
                                                         </TouchableOpacity>
                                                     );
                                                 }}

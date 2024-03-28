@@ -627,7 +627,7 @@ const CustomDrawerContent = props => {
             </TouchableOpacity>
           </View>
 
-          <View
+          {/* <View
             style={{ backgroundColor: itemSelected === 'Settings' ? Color.primary : Color.white, marginVertical: 5 }}>
             <TouchableOpacity
               style={{
@@ -658,7 +658,7 @@ const CustomDrawerContent = props => {
                 Settings
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           <View
             style={{ backgroundColor: itemSelected === 'Logout' ? Color.primary : Color.white, marginVertical: 5 }}>

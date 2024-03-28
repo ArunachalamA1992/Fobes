@@ -5,6 +5,7 @@ import { scr_height, scr_width } from '../../Utils/Dimensions';
 import { Poppins } from '../../Global/FontFamily';
 import Color from '../../Global/Color';
 import { useNavigation } from '@react-navigation/native';
+import { Iconviewcomponent } from '../../Components/Icontag';
 
 // create a component
 const OnboardOne = () => {
@@ -13,19 +14,25 @@ const OnboardOne = () => {
         <View style={styles.container}>
             <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
                 <Image
-                    source={require('../../assets/images/fobes_onboard.png')}
+                    source={require('../../assets/images/onboard_1.png')}
                     // source={{ uri: 'https://cdni.iconscout.com/illustration/premium/thumb/online-job-search-4836622-4032953.png' }}
                     style={{ width: '100%', height: '100%', resizeMode: 'cover' }} />
             </View>
-            <View style={{ flex: 1.3, justifyContent: 'flex-start', alignItems: 'center' }}>
-                <View style={{ flex: 1, width: '100%', justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'white' }}>
-                    <Text style={{ width: '80%', fontSize: 20, fontFamily: Poppins.SemiBold, color: Color.black, textAlign: 'center', textTransform: 'capitalize' }}>Let's set sail towards your goals!</Text>
-                    <Text style={{ width: '80%', fontSize: 15, fontFamily: Poppins.Regular, color: Color.routeColor, textAlign: 'center', paddingVertical: 5 }} numberOfLines={2}>Thrilled to have you onboard! Let's explore new career horizons together.</Text>
+            <View style={{ flex: 1.2, justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', paddingVertical: 10 }}>
+                    <Text style={{ width: '80%', fontSize: 20, fontFamily: Poppins.SemiBold, color: Color.primary, textAlign: 'center', textTransform: 'capitalize' }}>Grab the Oppurtunity</Text>
+                    <Text style={{ width: '80%', fontSize: 14, fontFamily: Poppins.Regular, color: Color.routeColor, textAlign: 'center', paddingVertical: 5 }} numberOfLines={2}>Thrilled to have you onboard! Let's explore new career horizons together.</Text>
                 </View>
-                <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', bottom: 0, backgroundColor: 'white' }}>
-                    <View style={{ width: '85%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                        <TouchableOpacity onPress={() => navigation.navigate("Auth")} style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', backgroundColor: Color.primary, borderRadius: 5 }}>
-                            <Text style={{ fontSize: 16, color: Color.white, fontFamily: Poppins.SemiBold, textTransform: 'uppercase' }}>Get Started</Text>
+                <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', bottom: 0, backgroundColor: 'white' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', }}>
+                        <TouchableOpacity onPress={() => navigation.navigate("OnboardTwo")} style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: Color.primary, borderRadius: 50 }}>
+                            {/* <Text style={{ fontSize: 16, color: Color.white, fontFamily: Poppins.SemiBold, textTransform: 'uppercase' }}>Get Started</Text> */}
+                            <Iconviewcomponent
+                                Icontag={'Ionicons'}
+                                iconname={'chevron-forward-outline'}
+                                icon_size={26}
+                                icon_color={Color.white}
+                            />
                         </TouchableOpacity>
                     </View>
                 </View>

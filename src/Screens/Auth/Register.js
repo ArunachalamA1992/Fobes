@@ -9,15 +9,20 @@ import { useTheme } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 // create a component
 const Register = () => {
 
     const navigation = useNavigation();
+
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [emailValidError, setEmailValidError] = useState('');
     const [password, setPassword] = useState('');
     const { colors } = useTheme();
+
 
 
     const handleValidEmail = val => {
@@ -33,9 +38,9 @@ const Register = () => {
 
     const signIn = () => {                          // <= Added this function
 
-        if (email != "" && password != "") {
+        if (username != "" && email != "" && phone != "" && password != "") {
             console.log("Email ----- :" + email + " Pass -------- :" + password);
-            ToastAndroid.show("Login Successfully", ToastAndroid.SHORT)
+            ToastAndroid.show("Register Successfully", ToastAndroid.SHORT)
         }
         else {
             console.log("Please fill mandatory fields");
@@ -51,88 +56,114 @@ const Register = () => {
 
 
     return (
-        <View style={styles.container}>
-            <View style={{ flex: 1, width: '100%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: Color.white }}>
-                <Image
-                    source={{ uri: Media.albionlogo }}
-                    style={{ width: 60, height: 60, resizeMode: 'contain' }}
-                />
-                <View style={{ paddingHorizontal: 10 }}>
-                    <Text style={{ fontSize: 22, color: Color.black, fontFamily: Poppins.Bold, paddingVertical: 20 }}>Register Account</Text>
+        <KeyboardAwareScrollView>
+            <View style={styles.container}>
+                <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: Color.white }}>
+
+                    <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Image
+                            // source={{ uri: Media.logo }}
+                            source={require('../../assets/logos/fobes.png')}
+                            style={{ width: '35%', height: '35%', resizeMode: 'contain' }}
+                        />
+
+                    </View>
+                    <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center', bottom: 0 }}>
+                        <Text style={{ width: '100%', textAlign: 'center', fontSize: 18, paddingHorizontal: 10, color: Color.routeColor, fontFamily: Poppins.Bold, marginTop: 20 }}>Let's Get Started !</Text>
+                        <Text style={{ width: '100%', textAlign: 'center', fontSize: 15, paddingHorizontal: 10, color: Color.routeColor, fontFamily: Poppins.Light }}>by creating a free account</Text>
+                    </View>
+                </View>
+                <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center', backgroundColor: Color.white }}>
+                    <Animated.View style={{ width: '95%', alignItems: 'center', marginVertical: 10 }}>
+                        <Text style={{ width: '100%', textAlign: 'left', fontFamily: Poppins.Medium, paddingVertical: 5, fontSize: 14, color: Color.cloudyGrey }}>Enter your Name *</Text>
+
+                        <View style={[styles.NumberBoxConatiner, { marginVertical: 0 }]}>
+                            <TextInput
+                                style={[styles.numberTextBox, { paddingHorizontal: 10, }]}
+                                placeholder="Enter your Name"
+                                placeholderTextColor={Color.transparantBlack}
+                                value={username}
+                                onChangeText={text => {
+                                    setUsername(text);
+                                    // handleValidEmail(value);
+                                }}
+                                keyboardType='name-phone-pad'
+                            />
+                        </View>
+                        {/* {emailValidError ?  */}
+                        {/* <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontSize: 14, color: 'red' }}>Enter your name</Text> */}
+                        {/* : null} */}
+
+                        <View style={{ width: '100%', marginVertical: 5 }}>
+                            <Text style={{ width: '100%', textAlign: 'left', fontFamily: Poppins.Medium, paddingVertical: 5, fontSize: 14, color: Color.cloudyGrey }}>Enter your E-mail *</Text>
+                            <View style={[styles.NumberBoxConatiner, { marginVertical: 0 }]}>
+                                <TextInput
+                                    style={[styles.numberTextBox, { paddingHorizontal: 10, }]}
+                                    placeholder="Enter your E-mail"
+                                    placeholderTextColor={Color.transparantBlack}
+                                    onChangeText={text => {
+                                        setEmail(text);
+                                        handleValidEmail(text);
+                                    }}
+                                    keyboardType="email-address"
+                                />
+                            </View>
+                            {emailValidError ?
+                                <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontSize: 14, color: 'red' }}>{emailValidError}</Text>
+                                : null}
+                        </View>
+
+                        <View style={{ width: '100%', marginVertical: 5 }}>
+                            <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontFamily: Poppins.Medium, fontSize: 14, color: Color.cloudyGrey }}>Enter your Phone Number *</Text>
+                            <View style={[styles.NumberBoxConatiner, { marginVertical: 0 }]}>
+                                <TextInput
+                                    style={[styles.numberTextBox, { paddingHorizontal: 10, }]}
+                                    placeholder="Enter your Phone"
+                                    placeholderTextColor={Color.transparantBlack}
+                                    value={phone}
+                                    onChangeText={(text) => setPhone(text)}
+                                    keyboardType='number-pad'
+                                    maxLength={10}
+                                />
+                            </View>
+                            {/* <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontSize: 14, color: 'red' }}>Enter your phone number</Text> */}
+                        </View>
+
+                        <View style={{ width: '100%', marginVertical: 5 }}>
+                            <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontFamily: Poppins.Medium, fontSize: 14, color: Color.cloudyGrey }}>Enter your Password *</Text>
+                            <View style={[styles.NumberBoxConatiner, { marginVertical: 0 }]}>
+                                <TextInput
+                                    style={[styles.numberTextBox, { paddingHorizontal: 10, }]}
+                                    placeholder="Enter your Password"
+                                    placeholderTextColor={Color.transparantBlack}
+                                    secureTextEntry={true}
+                                    value={password}
+                                    onChangeText={(text) => setPassword(text)}
+                                    keyboardType='name-phone-pad'
+                                />
+                            </View>
+                            {/* <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontSize: 14, color: 'red' }}>Enter your password</Text> */}
+                        </View>
+
+                        <TouchableOpacity
+                            onPress={() => signIn()}
+                            style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', marginVertical: 20, borderRadius: 50 }}>
+                            <LinearGradient colors={['#0033A0', '#3272fa']} style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 50 }}>
+                                <Text style={{ fontSize: 16, color: Color.white, textAlign: 'center' }}>REGISTER</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    </Animated.View >
+                </View>
+                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', bottom: 0 }}>
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+                        <Text style={{ fontSize: 15, color: Color.cloudyGrey, fontFamily: Poppins.Medium, textAlign: 'center' }}>Already have an account? </Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                            <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, textAlign: 'center', textDecorationLine: 'underline' }}>Login Now</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
-            <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center', backgroundColor: Color.white }}>
-                <Animated.View style={{ width: '95%', alignItems: 'center', marginVertical: 10 }}>
-
-                    <View style={[styles.NumberBoxConatiner, { marginVertical: 10 }]}>
-                        <TextInput
-                            style={styles.numberTextBox}
-                            placeholder="Enter your Name"
-                            placeholderTextColor={Color.cloudyGrey}
-                            // onChangeText={(email) => setEmail(email)}
-                            onChangeText={value => {
-                                setEmail(value);
-                                handleValidEmail(value);
-                            }}
-                        />
-                    </View>
-                    <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 10, fontSize: 14, color: 'red' }}>Enter your Name</Text>
-
-                    <View style={[styles.NumberBoxConatiner, { marginVertical: 10 }]}>
-                        <TextInput
-                            style={styles.numberTextBox}
-                            placeholder="Enter your E-mail"
-                            placeholderTextColor={Color.cloudyGrey}
-                            // onChangeText={(email) => setEmail(email)}
-                            onChangeText={value => {
-                                setEmail(value);
-                                handleValidEmail(value);
-                            }}
-                        />
-                    </View>
-                    {/* {emailValidError ? <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 10, fontSize: 14, color: 'red' }}>{emailValidError}</Text> : null} */}
-                    <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 10, fontSize: 14, color: 'red' }}>Enter your E-mail</Text>
-
-                    <View style={[styles.NumberBoxConatiner, { marginVertical: 10 }]}>
-                        <TextInput
-                            style={styles.numberTextBox}
-                            placeholder="Enter your Password"
-                            placeholderTextColor={Color.cloudyGrey}
-                            secureTextEntry={true}
-                            onChangeText={(password) => setPassword(password)}
-                        />
-                    </View>
-                    <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 10, fontSize: 14, color: 'red' }}>Enter your Password</Text>
-
-                    <View style={[styles.NumberBoxConatiner, { marginVertical: 10 }]}>
-                        <TextInput
-                            style={styles.numberTextBox}
-                            placeholder="Enter your Confirm Password"
-                            placeholderTextColor={Color.cloudyGrey}
-                            secureTextEntry={true}
-                            onChangeText={(password) => setPassword(password)}
-                        />
-                    </View>
-                    <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 10, fontSize: 14, color: 'red' }}>Enter your Confirm Password</Text>
-
-                    <TouchableOpacity
-                        // onPress={() => signIn()} 
-                        style={{ width: '100%', height: 45, justifyContent: 'center', alignItems: 'center', marginVertical: 20 }}>
-                        <LinearGradient colors={['#0033A0', '#3272fa']} style={[{ width: '100%', height: 45, justifyContent: 'center', alignItems: 'center' }, styles.NumberBoxConatiner]}>
-                            <Text style={{ fontSize: 16, color: Color.white, textAlign: 'center' }}>REGISTER</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                </Animated.View >
-            </View>
-            <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center', bottom: 0 }}>
-                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
-                    <Text style={{ fontSize: 15, color: Color.cloudyGrey, fontFamily: Poppins.SemiBold, textAlign: 'center' }}>Already have an account? </Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, textAlign: 'center', textDecorationLine: 'underline' }}>Login Now</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </View>
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -166,8 +197,8 @@ const styles = StyleSheet.create({
         flex: 1,
         display: "flex",
         height: 50,
-        borderLeftColor: Color.Venus,
-        borderLeftWidth: 1,
+        // borderLeftColor: Color.Venus,
+        // borderLeftWidth: 1,
         color: Color.black,
         fontSize: 14,
         padding: 5,
