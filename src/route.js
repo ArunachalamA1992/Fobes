@@ -30,11 +30,13 @@ import ApplyJob from './Screens/SubPages/ApplyJob';
 import CompanyList from './Screens/Home/CompanyList';
 import CompanyDetails from './Screens/Home/CompanyDetails';
 import SavedJobScreen from './Screens/Home/SavedJobScreen';
+import FilterScreen from './Screens/Home/FilterScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const HomeStack = () => {
+
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
@@ -130,7 +132,7 @@ export const HomeStack = () => {
       />
 
       <Stack.Screen
-        name="NotificationList"
+        name="Notification"
         component={NotificationList}
         options={({ navigation, route }) => ({
           headerTitle: 'Notifications List',
@@ -299,7 +301,27 @@ export const HomeStack = () => {
         })}
       />
 
-    </Stack.Navigator>
+      <Stack.Screen
+        name="Filter"
+        component={FilterScreen}
+        options={({ navigation, route }) => ({
+          headerTitle: 'Filter',
+          headerTitleStyle: { color: Color.white },
+          headerStyle: { backgroundColor: Color.primary },
+          headerLeft: () => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.white}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+
+    </Stack.Navigator>  
   );
 };
 
