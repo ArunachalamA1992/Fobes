@@ -25,51 +25,21 @@ import Color from './Global/Color';
 import TabNavigator, { Auth } from './route';
 import SplashScreen from './SplashScreen';
 import Store from './Redux/Store';
-import { navigationRef } from '../RootNavigation';
 import DetailedScreen from './Screens/Home/DetailedScreen';
 import { Iconviewcomponent } from './Components/Icontag';
+import {navigationRef} from '../RootNavigation';
+import AppliedJobs from './Screens/Home/Jobs/AppliedJobs';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Media} from './Global/Media';
+import JobStatus from './Screens/Home/Jobs/JobStatus';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const MyDrawer = () => {
-  // useEffect(() => {
-  //   const handleInitialUrl = async () => {
-  //     const initialUrl = await Linking.getInitialURL();
-  //     if (initialUrl) {
-  //       const reviewMatch = initialUrl.match(/\/review\/(\d+)/);
-  //       if (reviewMatch) {
-  //         const p_id = reviewMatch[1];
-  //         navigationRef.current?.navigate('SingleProperty', { p_id });
-  //       }
-  //     }
-  //   };
-
-  //   handleInitialUrl();
-  // }, []);
-
-  // useEffect(() => {
-  //   const handleDeepLink = ({ url }) => {
-  //     // Parse the URL and navigate to the appropriate screen
-  //     // Example: /review/456
-  //     const reviewMatch = url.match(/\/review\/(\d+)/);
-  //     if (reviewMatch) {
-  //       const p_id = reviewMatch[1];
-  //       navigationRef.current?.navigate('SingleProperty', { p_id });
-  //     }
-  //   };
-
-  //   const subscription = Linking.addEventListener('url', handleDeepLink);
-
-  //   return () => {
-  //     // Remove the event listener when the component unmounts
-  //     subscription.remove();
-  //   };
-  // }, []);
-
   return (
     <PaperProvider>
-      <NavigationContainer ref={navigationRef}>
+      <NavigationContainer>
         <Drawer.Navigator
           initialRouteName="Home"
           screenOptions={{ swipeEnabled: false }}
@@ -100,8 +70,7 @@ const MainApp = () => {
   return (
     <>
       <StatusBar backgroundColor={Color.primary} />
-      <Stack.Navigator initialRouteName="Splash">
-        {/* Property Screens */}
+      <Stack.Navigator initialRouteName="TabNavigator">
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
@@ -164,6 +133,70 @@ const MainApp = () => {
                   icon_color={Color.white}
                 />
               </TouchableOpacity>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="AppliedJobs"
+          component={AppliedJobs}
+          options={({navigation, route}) => ({
+            headerTitle: 'Applied Jobs',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {color: Color.white},
+            headerStyle: {backgroundColor: Color.primary},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.white}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+            headerRight: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Image
+                  source={{uri: Media.fobes_white}}
+                  style={{
+                    width: 100,
+                    height: 40,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="JobStatus"
+          component={JobStatus}
+          options={({navigation, route}) => ({
+            headerTitle: 'Applied Jobs Status',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {color: Color.white},
+            headerStyle: {backgroundColor: Color.primary},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.white}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+            headerRight: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Image
+                  source={{uri: Media.fobes_white}}
+                  style={{
+                    width: 100,
+                    height: 40,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </View>
             ),
           })}
         />
