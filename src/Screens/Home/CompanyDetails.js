@@ -404,7 +404,8 @@ const CompanyDetails = () => {
                                     <View style={{ position: 'absolute', top: 90, marginHorizontal: 10, width: 100, height: 100, elevation: 2, padding: 10, backgroundColor: Color.white, borderRadius: 50 }}>
                                         <Image
                                             // source={Media.albionlogo}
-                                            source={{ uri: Media.albionlogo }}
+                                            // source={{ uri: Media.albionlogo }}
+                                            source={require('../../assets/logos/user.png')}
                                             style={{
                                                 width: '100%',
                                                 height: '100%',
@@ -419,10 +420,10 @@ const CompanyDetails = () => {
                             return (
                                 <View style={{ width: '100%', alignItems: 'center', marginTop: 50 }}>
                                     <View style={{ width: '95%', marginVertical: 10, alignItems: 'center', }}>
-                                        <Text style={{ width: '100%', fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, paddingHorizontal: 10, }}>
+                                        <Text style={{ width: '100%', fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, fontWeight: '900', paddingHorizontal: 10, letterSpacing: 0.3 }}>
                                             Business Development Executive
                                         </Text>
-                                        <Text style={{ width: '100%', fontSize: 14, color: Color.cloudyGrey, fontFamily: Poppins.Light, paddingHorizontal: 10, paddingVertical: 2 }}>
+                                        <Text style={{ width: '100%', fontSize: 14, color: Color.cloudyGrey, fontFamily: Poppins.Light, paddingHorizontal: 10, paddingVertical: 2, letterSpacing: 0.3 }}>
                                             Avanexa Technologies
                                         </Text>
 
@@ -433,8 +434,8 @@ const CompanyDetails = () => {
                                                 icon_size={20}
                                                 icon_color={Color.sunShade}
                                             />
-                                            <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>4.5</Text>
-                                            <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>(500+ reviews)</Text>
+                                            <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.3 }}>4.5</Text>
+                                            <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.3 }}>(500+ reviews)</Text>
                                         </View>
 
                                         <View style={{ width: '100%', paddingVertical: 5, alignItems: 'center', marginTop: 10 }}>
@@ -449,8 +450,8 @@ const CompanyDetails = () => {
                                                         />
                                                     </View>
                                                     <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                        <Text style={{ width: '100%', textAlign: 'center', fontSize: 16, color: Color.primary, fontFamily: Poppins.Bold, paddingHorizontal: 5 }}>Private</Text>
-                                                        <Text style={{ width: '100%', fontSize: 13, textAlign: 'center', color: Color.secondary, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} numberOfLines={2}>Organization Type</Text>
+                                                        <Text style={{ width: '100%', textAlign: 'center', fontSize: 16, color: Color.primary, fontFamily: Poppins.Bold, paddingHorizontal: 5, letterSpacing: 0.3 }}>Private</Text>
+                                                        <Text style={{ width: '100%', fontSize: 13, textAlign: 'center', color: Color.secondary, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.3 }} numberOfLines={2}>Organization Type</Text>
                                                     </View>
                                                 </View>
                                                 <View style={{ width: 10, height: '100%', backgroundColor: Color.white }}></View>
@@ -485,7 +486,7 @@ const CompanyDetails = () => {
                                                     fontSize: 16,
                                                     color: 'black',
                                                     fontFamily: 'Poppins-SemiBold',
-                                                    paddingHorizontal: 10,
+                                                    paddingHorizontal: 10, fontWeight: '900',
                                                 }}>
                                                 About Company
                                             </Text>
@@ -496,29 +497,29 @@ const CompanyDetails = () => {
 
                                         <View style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Phone</Text>
-                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium }}>+91 74185 55205</Text>
+                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Light, letterSpacing: 0.3 }}>Phone</Text>
+                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium, letterSpacing: 0.3, lineHeight: 25 }}>+91 74185 55205</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Email</Text>
-                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium }}>info@oddinfotech.com</Text>
+                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Light, letterSpacing: 0.3 }}>Email</Text>
+                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium, letterSpacing: 0.3, lineHeight: 25 }}>info@oddinfotech.com</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Website</Text>
-                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium }}>Https://www.oddinfotech.com/</Text>
+                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Light, letterSpacing: 0.3 }}>Website</Text>
+                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium, letterSpacing: 0.3, lineHeight: 25 }}>Https://www.oddinfotech.com/</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Address</Text>
-                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium }}>37/1, First Floor Rajeshwari Nager Udayampalayam Main Road, Nava India Rd, Coimbatore, Tamil Nadu 641028</Text>
+                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Light, letterSpacing: 0.3 }}>Address</Text>
+                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium, letterSpacing: 0.3, lineHeight: 25 }}>37/1, First Floor Rajeshwari Nager Udayampalayam Main Road, Nava India Rd, Coimbatore, Tamil Nadu 641028</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -530,7 +531,7 @@ const CompanyDetails = () => {
 
                                         <View style={{ width: '100%', paddingHorizontal: 10, marginTop: 10 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Follow Us</Text>
+                                                <Text style={{ fontSize: 14, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Follow Us</Text>
 
                                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', paddingVertical: 10 }}>
                                                     <TouchableOpacity style={{ width: 44, height: 44, justifyContent: 'center', alignItems: 'center', backgroundColor: '#0a66c2', borderRadius: 50, marginHorizontal: 5 }}>
@@ -577,7 +578,7 @@ const CompanyDetails = () => {
                                 <View style={{ width: scr_width, alignItems: 'center', backgroundColor: 'white' }}>
                                     <View style={{ width: '95%', marginVertical: 10, alignItems: 'center' }}>
                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Text style={{ fontSize: 16, color: 'black', fontFamily: 'Poppins-SemiBold', paddingHorizontal: 10, }}>
+                                            <Text style={{ fontSize: 16, color: 'black', fontFamily: 'Poppins-SemiBold', paddingHorizontal: 10, fontWeight: '900', }}>
                                                 Current Openings
                                             </Text>
                                         </View>
@@ -603,7 +604,7 @@ const CompanyDetails = () => {
 
                                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                                             <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center' }}>
-                                                                <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
+                                                                <Text style={{ padding: 10, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 13, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium, letterSpacing: 0.3 }}>{item.job_type}</Text>
                                                             </View>
                                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                 <Iconviewcomponent
@@ -612,7 +613,7 @@ const CompanyDetails = () => {
                                                                     icon_size={20}
                                                                     icon_color={Color.Venus}
                                                                 />
-                                                                <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
+                                                                <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.3 }}>{item.job_post_date}</Text>
                                                             </View>
                                                         </View>
 
@@ -620,7 +621,8 @@ const CompanyDetails = () => {
                                                         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
                                                             <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
                                                                 <Image
-                                                                    source={{ uri: item.image }}
+                                                                    // source={{ uri: item.image }}
+                                                                    source={require('../../assets/logos/user.png')}
                                                                     style={{
                                                                         width: 40,
                                                                         height: 40,
@@ -629,8 +631,8 @@ const CompanyDetails = () => {
                                                                 />
                                                             </View>
                                                             <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
-                                                                <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.SemiBold, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
-                                                                <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={1}>{item.job_comp_name}</Text>
+                                                                <Text style={{ width: '100%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify', fontWeight: '700', letterSpacing: 0.3 }} numberOfLines={2}>{item.job_name}</Text>
+                                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify', letterSpacing: 0.3 }} numberOfLines={1}>{item.job_comp_name}</Text>
                                                             </View>
                                                             <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
                                                                 <Iconviewcomponent
@@ -641,14 +643,14 @@ const CompanyDetails = () => {
                                                                 />
                                                             </View>
                                                         </View>
-                                                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 10 }}>
+                                                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10 }}>
                                                             <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Salary / Month</Text>
-                                                                <Text style={{ fontSize: 17, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
+                                                                <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, fontWeight: '700', paddingHorizontal: 5, letterSpacing: 0.3 }}>Salary / Month</Text>
+                                                                <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, fontWeight: '700', paddingHorizontal: 5, paddingVertical: 5, letterSpacing: 0.3 }}>{item.job_comp_salary}</Text>
                                                             </View>
                                                             <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} >Applicant</Text>
-                                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                                <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, fontWeight: '700', paddingHorizontal: 5, letterSpacing: 0.3 }} >Applicant</Text>
+                                                                <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
                                                                     <Image
                                                                         source={require('../../assets/images/vector.png')}
                                                                         style={{
@@ -657,7 +659,7 @@ const CompanyDetails = () => {
                                                                             resizeMode: 'contain',
                                                                         }}
                                                                     />
-                                                                    <Text style={{ fontSize: 17, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_applicant}</Text>
+                                                                    <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, fontWeight: '700', paddingHorizontal: 5, letterSpacing: 0.3 }}>{item.job_comp_applicant}</Text>
                                                                 </View>
                                                             </View>
                                                         </View>

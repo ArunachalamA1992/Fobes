@@ -410,16 +410,16 @@ const DetailedScreen = () => {
                                             marginVertical: 10,
                                             alignItems: 'center',
                                         }}>
-                                        <Text style={{ width: '100%', fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, paddingHorizontal: 10, }}>
+                                        <Text style={{ width: '100%', fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, paddingHorizontal: 10, letterSpacing: 0.5 }}>
                                             Business Development Executive
                                         </Text>
-                                        <Text style={{ width: '100%', fontSize: 14, color: Color.cloudyGrey, fontFamily: Poppins.Light, paddingHorizontal: 10, }}>
+                                        <Text style={{ width: '100%', fontSize: 14, color: Color.cloudyGrey, fontFamily: Poppins.Light, paddingHorizontal: 10, letterSpacing: 0.5, paddingVertical: 5 }}>
                                             Avanexa Technologies
                                         </Text>
 
                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', paddingVertical: 5 }}>
-                                            <View style={{ backgroundColor: '#DEFCE4', padding: 7, paddingHorizontal: 20, borderRadius: 5 }}>
-                                                <Text style={{ fontSize: 14, color: '#0BA02C', }}>Full Time</Text>
+                                            <View style={{ backgroundColor: '#DEFCE4', padding: 10, paddingHorizontal: 20, borderRadius: 5 }}>
+                                                <Text style={{ fontSize: 15, color: '#0BA02C', }}>Full Time</Text>
                                             </View>
                                             <View style={{ flexDirection: 'row', backgroundColor: 'white', padding: 10, paddingHorizontal: 20, borderRadius: 5 }}>
                                                 <Iconviewcomponent
@@ -499,7 +499,7 @@ const DetailedScreen = () => {
                                         </View>
                                     </View>
 
-                                    <View style={{ width: '95%', marginVertical: 0, alignItems: 'center' }}>
+                                    <View style={{ width: '95%', alignItems: 'center' }}>
                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <Text
                                                 style={{
@@ -513,11 +513,11 @@ const DetailedScreen = () => {
                                             </Text>
                                         </View>
                                         <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 10 }}>
-                                            <Text style={{ fontSize: 14, color: '#666', textAlign: 'left', marginHorizontal: 10, fontFamily: 'Poppins-Regular', letterSpacing: 0.5, lineHeight: 25 }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</Text>
+                                            <Text style={{ fontSize: 14, color: '#666', textAlign: 'left', fontFamily: 'Poppins-Regular', letterSpacing: 0.5, lineHeight: 25, paddingVertical: 5 }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</Text>
                                         </View>
                                     </View>
 
-                                    <View style={{ width: '95%', marginTop: 20, alignItems: 'center' }}>
+                                    <View style={{ width: '95%', marginVertical: 10, alignItems: 'center' }}>
                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <Text
                                                 style={{
@@ -531,7 +531,7 @@ const DetailedScreen = () => {
                                             </Text>
                                         </View>
 
-                                        <View style={{ width: '100%', alignItems: 'center', paddingVertical: 10 }}>
+                                        <View style={{ width: '100%', alignItems: 'center' }}>
                                             {qualifyData.map((item, index) => {
                                                 return (
                                                     <View style={{ width: '100%', alignItems: 'flex-start' }}>
@@ -545,7 +545,7 @@ const DetailedScreen = () => {
                                         </View>
                                     </View>
 
-                                    <View style={{ width: '95%', marginTop: 20, alignItems: 'center' }}>
+                                    <View style={{ width: '95%', alignItems: 'center' }}>
                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <Text
                                                 style={{
@@ -600,7 +600,7 @@ const DetailedScreen = () => {
                                                                 borderRadius: 10, elevation: 0,
                                                                 backgroundColor: '#DEFCE4'
                                                             }}>
-                                                            <Text style={{ fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Regular, padding: 5 }} numberOfLines={2}>{item.benefit_data}</Text>
+                                                            <Text style={{ fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Regular, padding: 5, letterSpacing: 0.3 }} numberOfLines={2}>{item.benefit_data}</Text>
                                                         </View>
                                                     );
                                                 }}
@@ -614,42 +614,42 @@ const DetailedScreen = () => {
                             return (
                                 <View style={{ width: scr_width, alignItems: 'center', backgroundColor: 'white', }}>
                                     <View style={{ width: '95%', marginVertical: 10, padding: 10, alignItems: 'center', alignSelf: 'center', alignContent: 'center', backgroundColor: '#EDF9FF' }}>
-                                        <Text style={{ width: '100%', fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, paddingHorizontal: 0, }}>
+                                        <Text style={{ width: '100%', fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, letterSpacing: 0.3, paddingTop: 5 }}>
                                             Job Overview
                                         </Text>
 
-                                        <View style={{ width: '100%', paddingHorizontal: 10 }}>
+                                        <View style={{ width: '100%', paddingHorizontal: 10, paddingVertical: 5 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 12, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Job Role</Text>
-                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium }}>Business Devlopment Executive</Text>
+                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light, letterSpacing: 0.3 }}>Job Role</Text>
+                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium, letterSpacing: 0.3 }}>Business Devlopment Executive</Text>
                                             </View>
                                         </View>
 
-                                        <View style={{ width: '100%', paddingHorizontal: 10 }}>
+                                        <View style={{ width: '100%', paddingHorizontal: 10, paddingVertical: 5 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 12, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Education</Text>
-                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium }}>Bachelor Degree</Text>
+                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light, letterSpacing: 0.3 }}>Education</Text>
+                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium, letterSpacing: 0.3 }}>Bachelor Degree</Text>
                                             </View>
                                         </View>
 
-                                        <View style={{ width: '100%', paddingHorizontal: 10 }}>
+                                        <View style={{ width: '100%', paddingHorizontal: 10, paddingVertical: 5 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 12, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Total vacancies</Text>
-                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium }}>3</Text>
+                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light, letterSpacing: 0.3 }}>Total vacancies</Text>
+                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium, letterSpacing: 0.3 }}>3</Text>
                                             </View>
                                         </View>
 
-                                        <View style={{ width: '100%', paddingHorizontal: 10 }}>
+                                        <View style={{ width: '100%', paddingHorizontal: 10, paddingVertical: 5 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 12, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Experience</Text>
-                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium }}>1 Year</Text>
+                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light, letterSpacing: 0.3 }}>Experience</Text>
+                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium, letterSpacing: 0.3 }}>1 Year</Text>
                                             </View>
                                         </View>
 
-                                        <View style={{ width: '100%', paddingHorizontal: 10 }}>
+                                        <View style={{ width: '100%', paddingHorizontal: 10, paddingVertical: 5 }}>
                                             <View style={{ paddingVertical: 5, }}>
-                                                <Text style={{ fontSize: 12, color: Color.cloudyGrey, fontFamily: Poppins.Light }}>Job Expire</Text>
-                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium }}>2weeks 4Days</Text>
+                                                <Text style={{ fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Light, letterSpacing: 0.3 }}>Job Expire</Text>
+                                                <Text style={{ fontSize: 15, color: Color.lightBlack, fontFamily: Poppins.Medium, letterSpacing: 0.3 }}>2weeks 4Days</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -751,20 +751,20 @@ const DetailedScreen = () => {
                                                             borderRadius: 5,
                                                         }}>
 
-                                                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
+                                                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
                                                             <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
                                                                 <Image
                                                                     source={{ uri: item.image }}
                                                                     style={{
-                                                                        width: 40,
-                                                                        height: 40,
+                                                                        width: 35,
+                                                                        height: 35,
                                                                         resizeMode: 'contain',
                                                                     }}
                                                                 />
                                                             </View>
                                                             <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
-                                                                <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.SemiBold, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
-                                                                <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={1}>{item.job_comp_name}</Text>
+                                                                <Text style={{ width: '100%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify', fontWeight: '700', letterSpacing: 0.3 }} numberOfLines={2}>{item.job_name}</Text>
+                                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify', letterSpacing: 0.3 }} numberOfLines={1}>{item.job_comp_name}</Text>
                                                             </View>
                                                             <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
                                                                 <Iconviewcomponent
@@ -784,7 +784,7 @@ const DetailedScreen = () => {
                                                                     icon_size={20}
                                                                     icon_color={Color.primary}
                                                                 />
-                                                                <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_comp_loc}</Text>
+                                                                <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.3 }}>{item.job_comp_loc}</Text>
                                                             </View>
                                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                 <Iconviewcomponent
@@ -793,18 +793,18 @@ const DetailedScreen = () => {
                                                                     icon_size={20}
                                                                     icon_color={Color.primary}
                                                                 />
-                                                                <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
+                                                                <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.3 }}>{item.job_comp_salary}</Text>
                                                             </View>
-                                                            <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
+                                                            <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 13, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium, letterSpacing: 0.3 }}>{item.job_type}</Text>
                                                         </View>
 
                                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                                             <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Salary / Month</Text>
-                                                                <Text style={{ fontSize: 17, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
+                                                                <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, fontWeight: '700', paddingHorizontal: 5, letterSpacing: 0.3 }}>Salary / Month</Text>
+                                                                <Text style={{ fontSize: 17, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5, fontWeight: '800', letterSpacing: 0.3 }}>{item.job_comp_salary}</Text>
                                                             </View>
                                                             <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} >Applicant</Text>
+                                                                <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, fontWeight: '700', paddingHorizontal: 5, letterSpacing: 0.3 }} >Applicant</Text>
                                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                     <Image
                                                                         source={require('../../assets/images/vector.png')}
@@ -814,7 +814,7 @@ const DetailedScreen = () => {
                                                                             resizeMode: 'contain',
                                                                         }}
                                                                     />
-                                                                    <Text style={{ fontSize: 17, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_applicant}</Text>
+                                                                    <Text style={{ fontSize: 17, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5, fontWeight: '800', letterSpacing: 0.3 }}>{item.job_comp_applicant}</Text>
                                                                 </View>
                                                             </View>
                                                         </View>

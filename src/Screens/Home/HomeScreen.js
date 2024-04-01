@@ -414,7 +414,7 @@ const HomeScreen = () => {
                                                     style={{
                                                         fontFamily: Poppins.Medium,
                                                         fontSize: 18,
-                                                        color: Color.black,
+                                                        color: Color.black, letterSpacing: 0.3
                                                     }}>
                                                     Profile Score
                                                 </Text>
@@ -422,7 +422,7 @@ const HomeScreen = () => {
                                                     style={{
                                                         fontFamily: Poppins.Medium,
                                                         fontSize: 14,
-                                                        color: Color.cloudyGrey,
+                                                        color: Color.cloudyGrey, lineHeight: 25, letterSpacing: 0.3
                                                     }}>
                                                     Boost your profile for your dream job
                                                 </Text>
@@ -445,7 +445,7 @@ const HomeScreen = () => {
                                                                 marginHorizontal: 10,
                                                                 padding: 10,
                                                                 borderRadius: 10,
-                                                                width: 280,
+                                                                width: 300,
                                                                 alignItems: 'flex-end',
                                                             }}>
                                                             <View
@@ -453,15 +453,15 @@ const HomeScreen = () => {
                                                                     justifyContent: 'center',
                                                                     alignItems: 'flex-end',
                                                                     backgroundColor: '#DEFCE4',
-                                                                    paddingHorizontal: 10,
-                                                                    padding: 5,
-                                                                    borderRadius: 10,
+                                                                    paddingHorizontal: 15,
+                                                                    padding: 8,
+                                                                    borderRadius: 5,
                                                                 }}>
                                                                 <Text
                                                                     style={{
                                                                         fontFamily: Poppins.Bold,
                                                                         fontSize: 12,
-                                                                        color: Color.green,
+                                                                        color: Color.green, letterSpacing: 0.3
                                                                     }}>
                                                                     Boost 10%
                                                                 </Text>
@@ -472,7 +472,7 @@ const HomeScreen = () => {
                                                                     flexDirection: 'row',
                                                                     alignItems: 'flex-start',
                                                                 }}>
-                                                                <MCIcon name={item.icon} size={40} color={Color.blue} />
+                                                                <MCIcon name={item.icon} size={36} color={Color.blue} style={{ padding: 10 }} />
                                                                 <View
                                                                     style={{
                                                                         flex: 1,
@@ -482,7 +482,7 @@ const HomeScreen = () => {
                                                                         style={{
                                                                             fontFamily: Poppins.Medium,
                                                                             fontSize: 16,
-                                                                            color: Color.black,
+                                                                            color: Color.black, letterSpacing: 0.3
                                                                         }}>
                                                                         {item?.name}
                                                                     </Text>
@@ -491,8 +491,8 @@ const HomeScreen = () => {
                                                                             flex: 1,
                                                                             fontFamily: Poppins.Medium,
                                                                             fontSize: 14,
-                                                                            color: Color.black,
-                                                                            marginVertical: 5,
+                                                                            color: Color.cloudyGrey,
+                                                                            marginVertical: 5, lineHeight: 22, letterSpacing: 0.3
                                                                         }}>
                                                                         {item?.subname}
                                                                     </Text>
@@ -501,7 +501,7 @@ const HomeScreen = () => {
                                                                         mode="contained"
                                                                         onPress={() => console.log('Pressed')}
                                                                         style={{
-                                                                            marginVertical: 10,
+                                                                            marginVertical: 15,
                                                                         }}>
                                                                         {/* {item.btname} */}
                                                                     </Button>
@@ -518,50 +518,32 @@ const HomeScreen = () => {
                         case 'Check your Eligibility':
                             return (
                                 <View style={{ width: '100%', alignItems: 'center' }}>
-                                    <View
-                                        style={{
-                                            width: '100%',
-                                            marginVertical: 10,
-                                            alignItems: 'center',
-                                        }}>
-                                        <Text
-                                            style={{
-                                                width: '95%',
-                                                fontSize: 16,
-                                                color: 'black',
-                                                fontFamily: 'Poppins-SemiBold',
-                                                paddingHorizontal: 10,
-                                            }}>
+                                    <View style={{ width: '100%', marginVertical: 10, alignItems: 'center', }}>
+                                        <Text style={{ width: '95%', textAlign: 'left', paddingHorizontal: 10, fontSize: 18, color: Color.black, fontWeight: 'bold', letterSpacing: 0.5 }}>
                                             Explore by Categories
                                         </Text>
 
-                                        <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10 }}>
-                                            <TouchableOpacity onPress={() => { setSelectTab("FullTime") }} style={{ padding: 8, paddingHorizontal: 20, borderRadius: 30, marginTop: 2, backgroundColor: selectTab === "FullTime" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
+                                        <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginVertical: 10 }}>
+                                            <TouchableOpacity onPress={() => { setSelectTab("FullTime") }} style={{ padding: 12, paddingHorizontal: 20, borderRadius: 30, marginVertical: 5, backgroundColor: selectTab === "FullTime" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
                                                 <Text style={{ color: selectTab === "FullTime" ? Color.white : Color.black, textAlign: 'center', fontSize: 12, fontFamily: Poppins.SemiBold }}>Full Time</Text>
                                             </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { setSelectTab("PartTime") }} style={{ padding: 8, paddingHorizontal: 20, borderRadius: 30, marginTop: 2, backgroundColor: selectTab === "PartTime" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
+                                            <TouchableOpacity onPress={() => { setSelectTab("PartTime") }} style={{ padding: 12, paddingHorizontal: 20, borderRadius: 30, marginVertical: 5, backgroundColor: selectTab === "PartTime" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
                                                 <Text style={{ color: selectTab === "PartTime" ? Color.white : Color.black, textAlign: 'center', fontSize: 12, fontFamily: Poppins.SemiBold }}>Part Time</Text>
                                             </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { setSelectTab("Freelance") }} style={{ padding: 8, paddingHorizontal: 20, borderRadius: 30, marginTop: 2, backgroundColor: selectTab === "Freelance" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
+                                            <TouchableOpacity onPress={() => { setSelectTab("Freelance") }} style={{ padding: 12, paddingHorizontal: 20, borderRadius: 30, marginVertical: 5, backgroundColor: selectTab === "Freelance" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
                                                 <Text style={{ color: selectTab === "Freelance" ? Color.white : Color.black, textAlign: 'center', fontSize: 12, fontFamily: Poppins.SemiBold }}>Freelance</Text>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
 
-                                    <View
-                                        style={{
-                                            width: '95%',
-                                            marginVertical: 10,
-                                            alignItems: 'center'
-                                        }}>
+                                    <View style={{ width: '95%', alignItems: 'center' }}>
                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <Text
                                                 style={{
-
                                                     fontSize: 14,
-                                                    color: 'black',
+                                                    color: Color.cloudyGrey,
                                                     fontFamily: Poppins.Regular,
-                                                    paddingHorizontal: 10,
+                                                    paddingHorizontal: 10, fontWeight: '700'
                                                 }}>
                                                 You Might Like
                                             </Text>
@@ -571,13 +553,13 @@ const HomeScreen = () => {
                                                         fontSize: 16,
                                                         color: '#0033A0',
                                                         fontFamily: Poppins.SemiBold,
-                                                        paddingHorizontal: 10,
+                                                        paddingHorizontal: 10, fontWeight: '700'
                                                     }}>
                                                     See All
                                                 </Text>
                                             </TouchableOpacity>
                                         </View>
-                                        <View style={{ width: '97%', alignItems: 'center', paddingVertical: 10 }}>
+                                        <View style={{ width: '97%', alignItems: 'center', marginVertical: 10 }}>
                                             <FlatList
                                                 data={ActionSelect}
                                                 keyExtractor={(item, index) => item + index}
@@ -586,7 +568,7 @@ const HomeScreen = () => {
                                                         <TouchableOpacity onPress={() => navigation.navigate("DetailedScreen")}
                                                             key={index}
                                                             style={{
-                                                                width: 300,
+                                                                width: 320,
                                                                 alignItems: 'center',
                                                                 justifyContent: 'center',
                                                                 borderColor: Color.lightgrey,
@@ -596,7 +578,7 @@ const HomeScreen = () => {
                                                             }}>
 
                                                             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
+                                                                <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 13, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
 
                                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                     <Iconviewcomponent
@@ -605,7 +587,7 @@ const HomeScreen = () => {
                                                                         icon_size={20}
                                                                         icon_color={Color.Venus}
                                                                     />
-                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
+                                                                    <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
                                                                 </View>
                                                             </View>
                                                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
@@ -621,25 +603,25 @@ const HomeScreen = () => {
                                                                     />
                                                                 </View>
                                                                 <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
-                                                                    <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
-                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify' }} numberOfLines={1}>{item.job_comp_name}</Text>
+                                                                    <Text style={{ width: '100%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.Medium, fontWeight: '800', letterSpacing: 0.3, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
+                                                                    <Text style={{ fontSize: 14, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify', letterSpacing: 0.2, }} numberOfLines={1}>{item.job_comp_name}</Text>
                                                                 </View>
                                                                 <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
                                                                     <Iconviewcomponent
                                                                         Icontag={'FontAwesome'}
                                                                         iconname={'bookmark-o'}
-                                                                        icon_size={22}
+                                                                        icon_size={24}
                                                                         icon_color={Color.Venus}
                                                                     />
                                                                 </View>
                                                             </View>
                                                             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                                                 <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Salary/Month</Text>
-                                                                    <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
+                                                                    <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.2, fontWeight: '700', }}>Salary / Month</Text>
+                                                                    <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5, fontWeight: '800', letterSpacing: 0.2, }}>{item.job_comp_salary}</Text>
                                                                 </View>
                                                                 <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} >Applicant</Text>
+                                                                    <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.2, fontWeight: '700', }} >Applicant</Text>
                                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                         <Image
                                                                             source={require('../../assets/images/vector.png')}
@@ -649,7 +631,7 @@ const HomeScreen = () => {
                                                                                 resizeMode: 'contain',
                                                                             }}
                                                                         />
-                                                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_applicant}</Text>
+                                                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5, fontWeight: '800', letterSpacing: 0.2, }}>{item.job_comp_applicant}</Text>
                                                                     </View>
                                                                 </View>
                                                             </View>
@@ -672,10 +654,7 @@ const HomeScreen = () => {
                                         <View style={{ width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <Text
                                                 style={{
-                                                    fontSize: 16,
-                                                    color: 'black',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    paddingHorizontal: 10,
+                                                    textAlign: 'left', paddingHorizontal: 10, fontSize: 18, color: Color.black, fontWeight: 'bold', letterSpacing: 0.5
                                                 }}>
                                                 Top Companies
                                             </Text>
@@ -685,7 +664,7 @@ const HomeScreen = () => {
                                                         fontSize: 16,
                                                         color: '#0033A0',
                                                         fontFamily: Poppins.SemiBold,
-                                                        paddingHorizontal: 10,
+                                                        paddingHorizontal: 10, fontWeight: '700'
                                                     }}>
                                                     See All
                                                 </Text>
@@ -719,7 +698,7 @@ const HomeScreen = () => {
                                                                     resizeMode: 'contain',
                                                                 }}
                                                             />
-                                                            <Text style={{ fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, paddingVertical: 5 }}>{item.comp_name}</Text>
+                                                            <Text style={{ fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, paddingVertical: 5, fontWeight: '800', lineHeight: 22, letterSpacing: 0.2 }}>{item.comp_name}</Text>
                                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                 <Iconviewcomponent
                                                                     Icontag={'Fontisto'}
@@ -727,9 +706,9 @@ const HomeScreen = () => {
                                                                     icon_size={20}
                                                                     icon_color={Color.Venus}
                                                                 />
-                                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.comp_address}</Text>
+                                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5, fontWeight: '700', lineHeight: 22, letterSpacing: 0.2 }}>{item.comp_address}</Text>
                                                             </View>
-                                                            <Text style={{ fontSize: 15, color: Color.primary, fontFamily: Poppins.Medium, textDecorationLine: 'underline', paddingVertical: 5 }}>{item.comp_offer_count} Jobs Open</Text>
+                                                            <Text style={{ fontSize: 15, color: Color.primary, fontFamily: Poppins.Medium, textDecorationLine: 'underline', paddingVertical: 5, fontWeight: '700', lineHeight: 22, letterSpacing: 0.2 }}>{item.comp_offer_count} Jobs Open</Text>
                                                         </TouchableOpacity>
                                                     );
                                                 }}
@@ -785,17 +764,12 @@ const HomeScreen = () => {
                                     <View
                                         style={{
                                             width: '95%',
-                                            marginVertical: 10,
-                                            alignItems: 'center'
+                                            alignItems: 'center', marginVertical: 15
                                         }}>
                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <Text
                                                 style={{
-                                                    // width: '90%',
-                                                    fontSize: 16,
-                                                    color: 'black',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    paddingHorizontal: 10,
+                                                    textAlign: 'left', paddingHorizontal: 10, fontSize: 18, color: Color.black, fontWeight: 'bold', letterSpacing: 0.5
                                                 }}>
                                                 Recommended Jobs
                                             </Text>
@@ -805,7 +779,7 @@ const HomeScreen = () => {
                                                         fontSize: 16,
                                                         color: '#0033A0',
                                                         fontFamily: Poppins.SemiBold,
-                                                        paddingHorizontal: 10,
+                                                        paddingHorizontal: 10, fontWeight: '700'
                                                     }}>
                                                     See All
                                                 </Text>
@@ -820,7 +794,7 @@ const HomeScreen = () => {
                                                         <TouchableOpacity onPress={() => navigation.navigate("JobListScreen")}
                                                             key={index}
                                                             style={{
-                                                                width: 300,
+                                                                width: 320,
                                                                 alignItems: 'center',
                                                                 justifyContent: 'center',
                                                                 borderColor: Color.lightgrey,
@@ -830,7 +804,7 @@ const HomeScreen = () => {
                                                             }}>
 
                                                             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
+                                                                <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 13, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
 
                                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                     <Iconviewcomponent
@@ -839,7 +813,7 @@ const HomeScreen = () => {
                                                                         icon_size={20}
                                                                         icon_color={Color.Venus}
                                                                     />
-                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
+                                                                    <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
                                                                 </View>
                                                             </View>
                                                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
@@ -855,25 +829,25 @@ const HomeScreen = () => {
                                                                     />
                                                                 </View>
                                                                 <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
-                                                                    <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
-                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify' }} numberOfLines={1}>{item.job_comp_name}</Text>
+                                                                    <Text style={{ width: '100%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.Medium, fontWeight: '800', letterSpacing: 0.3, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
+                                                                    <Text style={{ fontSize: 14, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify', letterSpacing: 0.2, }} numberOfLines={1}>{item.job_comp_name}</Text>
                                                                 </View>
                                                                 <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
                                                                     <Iconviewcomponent
                                                                         Icontag={'FontAwesome'}
                                                                         iconname={'bookmark-o'}
-                                                                        icon_size={22}
+                                                                        icon_size={24}
                                                                         icon_color={Color.Venus}
                                                                     />
                                                                 </View>
                                                             </View>
                                                             <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                                                 <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Salary/Month</Text>
-                                                                    <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
+                                                                    <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.2, fontWeight: '700', }}>Salary / Month</Text>
+                                                                    <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5, fontWeight: '800', letterSpacing: 0.2, }}>{item.job_comp_salary}</Text>
                                                                 </View>
                                                                 <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} >Applicant</Text>
+                                                                    <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.2, fontWeight: '700', }} >Applicant</Text>
                                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                         <Image
                                                                             source={require('../../assets/images/vector.png')}
@@ -883,7 +857,7 @@ const HomeScreen = () => {
                                                                                 resizeMode: 'contain',
                                                                             }}
                                                                         />
-                                                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_applicant}</Text>
+                                                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5, fontWeight: '800', letterSpacing: 0.2, }}>{item.job_comp_applicant}</Text>
                                                                     </View>
                                                                 </View>
                                                             </View>

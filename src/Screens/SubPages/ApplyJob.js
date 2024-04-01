@@ -113,6 +113,7 @@ const ApplyJob = () => {
                                         setUsername(text);
                                     }}
                                     keyboardType='name-phone-pad'
+                                    autoFocus={username.length == '' ? false : true}
                                 />
                             </View>
                             {/* {emailValidError ?  */}
@@ -148,7 +149,7 @@ const ApplyJob = () => {
                                         value={phone}
                                         keyboardType="phone-pad"
                                         maxLength={10}
-                                        autoFocus={phone.length == 10 ? false : true}
+                                        // autoFocus={phone.length == 10 ? false : true}
                                         onChangeText={(text) => setPhone(text)}
                                         style={{
                                             flex: 1,
@@ -182,10 +183,12 @@ const ApplyJob = () => {
                                     <Text style={{ fontSize: 14, color: Color.primary, textAlign: 'center', fontFamily: Poppins.Medium }}>Browse Files</Text>
                                 </TouchableOpacity>
                             </View>
-
-                            <Text style={{ width: '100%', fontSize: 14, color: Color.cloudyGrey, textAlign: 'left', fontFamily: Poppins.Medium, paddingVertical: 5 }}>{fileName}</Text>
-
-                            <View style={{ width: '100%', marginVertical: 5 }}>
+                            {fileName != "" ?
+                                <Text style={{ width: '100%', fontSize: 14, color: Color.cloudyGrey, textAlign: 'left', fontFamily: Poppins.Medium, paddingVertical: 5 }}>{fileName}</Text>
+                                :
+                                <Text style={{ width: '100%', fontSize: 14, color: Color.cloudyGrey, textAlign: 'left', fontFamily: Poppins.Medium, paddingVertical: 5 }}>(file name.pdf)</Text>
+                            }
+                            <View style={{ width: '100%', marginVertical: 0 }}>
                                 <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontFamily: Poppins.Medium, fontSize: 14, color: Color.cloudyGrey }}>Cover Letter</Text>
                                 <View
                                     style={{

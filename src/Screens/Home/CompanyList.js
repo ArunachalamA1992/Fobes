@@ -97,9 +97,10 @@ const CompanyList = () => {
                                 }}>
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 10 }}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <View style={{ width: 70, height: 70, backgroundColor: Color.Venus, borderRadius: 50, padding: 10 }}>
+                                        <View style={{ width: 70, height: 70, backgroundColor: Color.white, borderRadius: 50, padding: 0 }}>
                                             <Image
-                                                source={{ uri: item.comp_logo }}
+                                                // source={{ uri: item.comp_logo }}
+                                                source={require('../../assets/logos/user.png')}
                                                 style={{
                                                     width: '100%',
                                                     height: '100%',

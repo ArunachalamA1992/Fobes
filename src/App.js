@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   LogBox,
   StatusBar,
@@ -11,21 +11,23 @@ import {
   Pressable,
 } from 'react-native';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomDrawerContent from './Components/Nav/CustomDrawerContent';
-import {Provider, useDispatch, useSelector} from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 
-import {Provider as PaperProvider} from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 import OnboardOne from './Screens/Onboarding/OnboardOne';
 import OnboardTwo from './Screens/Onboarding/OnboardTwo';
 import OnboardThree from './Screens/Onboarding/OnboardThree';
 import Color from './Global/Color';
-import TabNavigator, {Auth} from './route';
+import TabNavigator, { Auth } from './route';
 import SplashScreen from './SplashScreen';
 import Store from './Redux/Store';
-import {navigationRef} from '../RootNavigation';
+import { navigationRef } from '../RootNavigation';
+import DetailedScreen from './Screens/Home/DetailedScreen';
+import { Iconviewcomponent } from './Components/Icontag';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -70,12 +72,12 @@ const MyDrawer = () => {
       <NavigationContainer ref={navigationRef}>
         <Drawer.Navigator
           initialRouteName="Home"
-          screenOptions={{swipeEnabled: false}}
+          screenOptions={{ swipeEnabled: false }}
           drawerContent={props => <CustomDrawerContent {...props} />}>
           <Drawer.Screen
             name="Home"
             component={MainApp}
-            options={{headerShown: false}}
+            options={{ headerShown: false }}
           />
         </Drawer.Navigator>
       </NavigationContainer>
@@ -103,32 +105,67 @@ const MainApp = () => {
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="OnboardOne"
           component={OnboardOne}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="OnboardTwo"
           component={OnboardTwo}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="OnboardThree"
           component={OnboardThree}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Auth"
           component={Auth}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="TabNavigator"
           component={TabNavigator}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailedScreen"
+          component={DetailedScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: 'Detailed Screen',
+            headerTitleStyle: { color: Color.white },
+            headerStyle: { backgroundColor: Color.primary },
+            headerLeft: () => (
+              <TouchableOpacity style={{ marginHorizontal: 10 }} onPress={() => navigation.goBack()}>
+                {/* <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.white}
+                  onPress={() => navigation.goBack()}
+                /> */}
+                <Iconviewcomponent
+                  Icontag={'Ionicons'}
+                  iconname={'arrow-back'}
+                  icon_size={30}
+                  icon_color={Color.white}
+                />
+              </TouchableOpacity>
+            ),
+            headerRight: () => (
+              <TouchableOpacity style={{ right: 10 }}>
+                <Iconviewcomponent
+                  Icontag={'AntDesign'}
+                  iconname={'sharealt'}
+                  icon_size={26}
+                  icon_color={Color.white}
+                />
+              </TouchableOpacity>
+            ),
+          })}
         />
       </Stack.Navigator>
     </>

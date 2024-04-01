@@ -106,6 +106,43 @@ const JobListScreen = () => {
     return (
         <View style={styles.container}>
             <View style={{ width: '100%', height: scr_height * 0.8 - 10, alignItems: 'center' }}>
+
+                <View style={{ width: '100%', flexDirection: 'row', width: scr_width, backgroundColor: Color.primary, justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity activeOpacity={0.5}
+                        style={{
+                            marginHorizontal: 5,
+                            borderColor: Color.lightgrey,
+                            marginVertical: 10,
+                            borderWidth: 1,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderRadius: 5,
+                            width: '90%',
+                            height: 50, backgroundColor: Color.white,
+                            paddingHorizontal: 10, marginVertical: 20
+                        }}>
+                        <View style={[styles.numberCountryCode, { textAlign: 'center', alignSelf: 'center', alignContent: 'center', alignItems: 'center', top: 10 }]}>
+                            <Iconviewcomponent
+                                Icontag={'Feather'}
+                                iconname={'search'}
+                                icon_size={28}
+                                icon_color={Color.Venus}
+                            />
+                        </View>
+                        <Text
+                            style={{
+                                flex: 1,
+                                fontSize: 16,
+                                paddingTop: 2, paddingHorizontal: 10,
+                                color: Color.Venus,
+                                fontFamily: Poppins.Medium,
+                            }}
+                            numberOfLines={1}>
+                            {`Search Jobs`}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
                 <FlatList
                     data={ActionSelect}
                     keyExtractor={(item, index) => item + index}
@@ -124,7 +161,7 @@ const JobListScreen = () => {
                                 }}>
 
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
+                                    <Text style={{ padding: 10, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 13, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium, letterSpacing: 0.3 }}>{item.job_type}</Text>
 
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Iconviewcomponent
@@ -133,13 +170,14 @@ const JobListScreen = () => {
                                             icon_size={20}
                                             icon_color={Color.Venus}
                                         />
-                                        <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
+                                        <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.3 }}>{item.job_post_date}</Text>
                                     </View>
                                 </View>
                                 <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
                                     <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
                                         <Image
-                                            source={{ uri: item.image }}
+                                            // source={{ uri: item.image }}
+                                            source={require('../../assets/logos/user.png')}
                                             style={{
                                                 width: 35,
                                                 height: 35,
@@ -148,8 +186,8 @@ const JobListScreen = () => {
                                         />
                                     </View>
                                     <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
-                                        <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
-                                        <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify' }} numberOfLines={1}>{item.job_comp_name}</Text>
+                                        <Text style={{ width: '100%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify', fontWeight: '700', letterSpacing: 0.3 }} numberOfLines={2}>{item.job_name}</Text>
+                                        <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify', letterSpacing: 0.3 }} numberOfLines={1}>{item.job_comp_name}</Text>
                                     </View>
                                     <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
                                         <Iconviewcomponent
@@ -162,12 +200,12 @@ const JobListScreen = () => {
                                 </View>
                                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                        <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Salary/Month</Text>
-                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
+                                        <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.3 }}>Salary / Month</Text>
+                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5, paddingVertical: 5, letterSpacing: 0.3 }}>{item.job_comp_salary}</Text>
                                     </View>
                                     <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                        <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} >Applicant</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, letterSpacing: 0.3 }} >Applicant</Text>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
                                             <Image
                                                 source={require('../../assets/images/vector.png')}
                                                 style={{
@@ -176,7 +214,7 @@ const JobListScreen = () => {
                                                     resizeMode: 'contain',
                                                 }}
                                             />
-                                            <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_applicant}</Text>
+                                            <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5, letterSpacing: 0.3 }}>{item.job_comp_applicant}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -196,6 +234,15 @@ const styles = StyleSheet.create({
         width: scr_width,
         height: scr_height, alignItems: 'center',
         backgroundColor: Color.white,
+    },
+    numberCountryCode: {
+        height: 48,
+        color: Color.black,
+        fontSize: 16,
+        fontFamily: Poppins.SemiBold,
+        textAlign: "center",
+        alignItems: "center",
+        paddingTop: 0
     },
 });
 

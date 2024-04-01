@@ -82,10 +82,10 @@ const Login = () => {
                         <View style={styles.NumberBoxConatiner}>
                             <View style={styles.numberCountryCode}>
                                 <Iconviewcomponent
-                                    Icontag={'Feather'}
+                                    Icontag={'Ionicons'}
                                     iconname={'mail'}
-                                    icon_size={22}
-                                    iconstyle={{ color: Color.transparantBlack }}
+                                    icon_size={30}
+                                    iconstyle={{ color: Color.cloudyGrey }}
                                 />
                             </View>
                             {/* <Text style={styles.numberCountryCode}>+91</Text> */}
@@ -107,14 +107,14 @@ const Login = () => {
                             <Text style={{ width: '100%', textAlign: 'left', fontSize: 14, color: Color.black, fontFamily: Poppins.Light }}>Enter Password *</Text>
 
                             <View style={[styles.NumberBoxConatiner, { marginVertical: 5 }]}>
-                                <TouchableOpacity onPress={() => setPasswordvisibility(!password_visible)} style={styles.numberCountryCode}>
+                                <View style={styles.numberCountryCode}>
                                     <Iconviewcomponent
                                         Icontag={'Feather'}
-                                        iconname={password_visible ? 'lock' : 'unlock'}
-                                        icon_size={22}
-                                        iconstyle={{ color: Color.transparantBlack }}
+                                        iconname={'lock'}
+                                        icon_size={26}
+                                        iconstyle={{ color: Color.cloudyGrey }}
                                     />
-                                </TouchableOpacity>
+                                </View>
                                 <TextInput
                                     style={email ? styles.numberTextBox : styles.placeTextBox}
                                     placeholder="Enter your Password"
@@ -125,13 +125,13 @@ const Login = () => {
                                     onChangeText={(password) => setPassword(password)}
                                 />
 
-                                {/* <TouchableOpacity style={styles.numberCountryCode} onPress={() => setPasswordvisibility(!password_visible)} >
-                            <Iconviewcomponent
-                                Icontag={'Feather'}
-                                iconname={password_visible ? 'lock' : 'unlock'}
-                                icon_size={15}
-                                iconstyle={{ color: Color.black, padding: 5 }} />
-                        </TouchableOpacity> */}
+                                <TouchableOpacity style={styles.numberCountryCode} onPress={() => setPasswordvisibility(!password_visible)} >
+                                    <Iconviewcomponent
+                                        Icontag={'Entypo'}
+                                        iconname={password_visible ? 'eye' : 'eye-with-line'}
+                                        icon_size={26}
+                                        iconstyle={{ color: Color.black, padding: 5 }} />
+                                </TouchableOpacity>
                             </View>
                         </View>
                         <TouchableOpacity style={{ width: '100%', justifyContent: 'flex-end', alignItems: 'center', marginTop: 5 }}>
@@ -197,16 +197,16 @@ const styles = StyleSheet.create({
     },
     numberCountryCode: {
         height: 50,
-        backgroundColor: Color.transparantBlack,
+        // backgroundColor: Color.transparantBlack,
         color: Color.black,
         marginHorizontal: 0,
         fontSize: 14,
         fontFamily: Poppins.SemiBold,
         textAlign: "center",
         alignItems: "center",
-        padding: 10,
-        paddingTop: 15,
-        paddingHorizontal: 15
+        padding: 5,
+        paddingTop: 10,
+        paddingHorizontal: 10
     },
     numberTextBox: {
         flex: 1,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         // borderLeftColor: Color.transparantBlack,
         // borderLeftWidth: 1,
         color: Color.black,
-        fontSize: 14, letterSpacing: 1,
+        fontSize: 15, letterSpacing: 1,
         padding: 5,
         paddingTop: 5, paddingHorizontal: 10,
         fontFamily: Poppins.SemiBold,
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
         borderLeftColor: Color.transparantBlack,
         borderLeftWidth: 1,
         color: Color.black,
-        fontSize: 14, letterSpacing: 1,
+        fontSize: 15, letterSpacing: 1,
         padding: 5,
         paddingTop: 5, paddingHorizontal: 10,
         fontFamily: Poppins.Light,

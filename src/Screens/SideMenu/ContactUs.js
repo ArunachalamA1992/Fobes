@@ -6,6 +6,7 @@ import { Media } from '../../Global/Media';
 import { scr_width } from '../../Utils/Dimensions';
 import { useDispatch } from 'react-redux';
 import { Iconviewcomponent } from '../../Components/Icontag';
+import { Poppins } from '../../Global/FontFamily';
 
 // create a component
 
@@ -119,120 +120,62 @@ const ContactUs = () => {
                     switch (item) {
                         case 'Apply Albion Home Online':
                             return (
-                                <View style={{ width: scr_width, backgroundColor: 'white' }}>
-                                    <View style={{ width: scr_width }}>
+                                <View style={{ width: '100%', backgroundColor: 'white' }}>
+                                    <View style={{ width: scr_width, elevation: 2, borderRadius: 0 }}>
                                         <Image
-                                            source={{ uri: Media.home_loan_bann }}
+                                            source={{ uri: Media.contactUs }}
                                             style={{
                                                 width: scr_width,
-                                                height: 220,
-                                                resizeMode: 'cover',
+                                                height: 150,
+                                                resizeMode: 'contain',
                                             }}
                                         />
                                     </View>
-                                    <View
-                                        style={{
-                                            width: '100',
-                                            alignItems: 'center',
-                                        }}>
+                                    <View style={{ width: '100%', alignItems: 'center' }}>
 
-                                        {/* <View style={{ width: '100%', alignItems: 'center', paddingVertical: 10 }}>
-                                            <Text
-                                                style={{
-                                                    width: '95%',
-                                                    fontSize: 16,
-                                                    color: Color.cloudyGrey,
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    lineHeight: 25,
-                                                    textAlign: 'justify'
-                                                }}>
-                                                For further queries, comments, or requests, please feel free to
-                                            </Text>
-                                        </View> */}
-                                        <View style={{ width: '100%', marginVertical: 10, alignItems: 'center' }}>
-                                            {/* <Text style={{ width: '95%', fontSize: 18, color: 'black', fontFamily: 'Poppins-SemiBold' }}>Contact Us</Text> */}
-                                            <Text style={{ width: '95%', fontSize: 16, color: '#666', fontFamily: 'Poppins-Regular', paddingTop: 10 }}>For any other queries and feedback can reach us with below address </Text>
+                                        <View style={{ width: '95%', marginVertical: 10, alignItems: 'center' }}>
+                                            <Text style={{ fontSize: 16, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'left', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>For any other queries and feedback can reach us with below address </Text>
 
                                             <TouchableOpacity style={{ width: '95%', flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
                                                 <View style={{ width: 45, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 50, borderColor: Color.primary, borderWidth: 1 }}>
                                                     <Iconviewcomponent
                                                         Icontag={'Feather'}
                                                         iconname={'phone-call'}
-                                                        icon_size={20}
+                                                        icon_size={22}
                                                         iconstyle={{ color: Color.primary }}
                                                     />
                                                 </View>
-                                                <Text style={{ fontSize: 18, color: 'black', fontFamily: 'Poppins-SemiBold', paddingHorizontal: 10 }}>+91 9943300100</Text>
+                                                <Text style={{ fontSize: 18, color: Color.lightBlack, textAlign: 'justify', fontWeight: '600', lineHeight: 22, letterSpacing: 0.5, paddingHorizontal: 10 }}>+91 994-330-0100</Text>
                                             </TouchableOpacity>
 
-                                            <TouchableOpacity style={{ width: '95%', flexDirection: 'row', alignItems: 'center' }}>
+                                            <TouchableOpacity style={{ width: '95%', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
                                                 <View style={{ width: 45, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 50, borderColor: Color.primary, borderWidth: 1 }}>
                                                     <Iconviewcomponent
                                                         Icontag={'Ionicons'}
                                                         iconname={'mail'}
-                                                        icon_size={20}
+                                                        icon_size={22}
                                                         iconstyle={{ color: Color.primary }}
                                                     />
                                                 </View>
-                                                <Text style={{ width: '95%', fontSize: 18, color: 'black', fontFamily: 'Poppins-SemiBold', paddingHorizontal: 10 }}>admin@fobes.in</Text>
+                                                <Text style={{ fontSize: 18, color: Color.lightBlack, textAlign: 'justify', fontWeight: '600', lineHeight: 22, letterSpacing: 0.5, paddingHorizontal: 10 }}>admin@fobes.in</Text>
                                             </TouchableOpacity>
                                         </View>
 
                                         <View style={{ width: '95%', paddingHorizontal: 10, marginTop: 10, paddingVertical: 10 }}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 18,
-                                                    color: 'black',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                }}>
+                                            <Text style={{ fontSize: 18, color: Color.black, fontWeight: 'bold', letterSpacing: 0.5 }}>
                                                 Registered Address:
                                             </Text>
-                                            <Text
-                                                style={{
-                                                    fontSize: 15,
-                                                    color: '#666',
-                                                    textAlign: 'justify',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    lineHeight: 25, paddingHorizontal: 10, paddingVertical: 5
-                                                }}>
+                                            <Text style={{ fontSize: 15, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>
                                                 Level 5, Tamarai Tech Park,</Text>
-                                            <Text
-                                                style={{
-                                                    fontSize: 15,
-                                                    color: '#666',
-                                                    textAlign: 'justify',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    lineHeight: 25, paddingHorizontal: 10, paddingVertical: 5
-                                                }}>
+                                            <Text style={{ fontSize: 15, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>
                                                 S.P. Plot No. 16-19 & 20 A, </Text>
-                                            <Text
-                                                style={{
-                                                    fontSize: 15,
-                                                    color: '#666',
-                                                    textAlign: 'justify',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    lineHeight: 25, paddingHorizontal: 10, paddingVertical: 5
-                                                }}>
+                                            <Text style={{ fontSize: 15, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>
                                                 Thiru Vi Ka Industrial Estate, Inner Ring Road,                                             </Text>
 
-                                            <Text
-                                                style={{
-                                                    fontSize: 15,
-                                                    color: '#666',
-                                                    textAlign: 'justify',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    lineHeight: 25, paddingHorizontal: 10, paddingVertical: 5
-                                                }}>
+                                            <Text style={{ fontSize: 15, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>
                                                 Guindy, Chennai,
                                             </Text>
-                                            <Text
-                                                style={{
-                                                    fontSize: 15,
-                                                    color: '#666',
-                                                    textAlign: 'justify',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    lineHeight: 25, paddingHorizontal: 10, paddingVertical: 5
-                                                }}>
+                                            <Text style={{ fontSize: 15, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>
                                                 Tamil Nadu, 600 032, India.
                                             </Text>
                                         </View>
@@ -243,152 +186,115 @@ const ContactUs = () => {
                             return (
                                 <View
                                     style={{
-                                        width: scr_width,
+                                        width: '100%',
                                         height: height,
-                                        alignSelf: 'center',
                                         alignItems: 'center',
                                         backgroundColor: 'white',
                                     }}>
-                                    <View
-                                        style={{
-                                            width: '100%',
-                                            marginVertical: 10,
-                                            alignItems: 'center',
-                                        }}>
-                                        <Text
-                                            style={{
-                                                width: '95%',
-                                                fontSize: 18,
-                                                color: 'black',
-                                                fontFamily: 'Poppins-SemiBold',
-                                                paddingHorizontal: 10,
-                                            }}>
+                                    <View style={{ width: '100%', marginVertical: 10, alignItems: 'center', }}>
+                                        <Text style={{ width: '100%', paddingHorizontal: 20, fontSize: 18, color: Color.black, fontWeight: 'bold', letterSpacing: 0.5 }}>
                                             Get In Touch
                                         </Text>
 
-                                        <Text
-                                            style={{
-                                                width: '90%',
-                                                fontSize: 14,
-                                                color: '#666',
-                                                fontFamily: 'Poppins-Regular',
-                                                padding: 5,
-                                            }}>
-                                            Enter Your Name
-                                        </Text>
-                                        <View style={styles.NumberBoxConatiner}>
-                                            <TextInput
-                                                placeholder="Enter Your Name"
-                                                placeholderTextColor={Color.grey}
-                                                value={""}
-                                                keyboardType="name-phone-pad"
-                                                maxLength={10}
-                                                onChangeText={text => {
-                                                    console.log("text --------- :", text);
-                                                }}
-                                                style={styles.numberTextBox}
-                                            />
+                                        <View style={{ width: '100%', paddingHorizontal: 15, alignItems: 'center' }}>
+                                            <Text style={{ width: '100%', paddingHorizontal: 10, fontSize: 15, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>
+                                                Enter Your Name
+                                            </Text>
+                                            <View style={styles.NumberBoxConatiner}>
+                                                <TextInput
+                                                    placeholder="Enter Your Name"
+                                                    placeholderTextColor={Color.grey}
+                                                    value={""}
+                                                    keyboardType="name-phone-pad"
+                                                    maxLength={10}
+                                                    onChangeText={text => {
+                                                        console.log("text --------- :", text);
+                                                    }}
+                                                    style={styles.numberTextBox}
+                                                />
+                                            </View>
                                         </View>
                                         {/* <Text style={styles.invalidLogin}>{error}</Text> */}
 
-                                        <Text
-                                            style={{
-                                                width: '90%',
-                                                fontSize: 14,
-                                                color: '#666',
-                                                fontFamily: 'Poppins-Regular',
-                                                padding: 5, marginTop: 10
-                                            }}>
-                                            Enter Your E-mail
-                                        </Text>
-                                        <View style={styles.NumberBoxConatiner}>
-                                            <TextInput
-                                                placeholder="Enter Your Email"
-                                                placeholderTextColor={Color.grey}
-                                                value={""}
-                                                keyboardType="email-address"
-                                                maxLength={10}
-                                                onChangeText={text => {
-                                                    console.log("text --------- :", text);
-                                                }}
-                                                style={styles.numberTextBox}
-                                            />
+                                        <View style={{ width: '100%', paddingHorizontal: 15, alignItems: 'center' }}>
+                                            <Text style={{ width: '100%', paddingHorizontal: 10, fontSize: 15, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>
+                                                Enter Your E-mail
+                                            </Text>
+                                            <View style={styles.NumberBoxConatiner}>
+                                                <TextInput
+                                                    placeholder="Enter Your Email"
+                                                    placeholderTextColor={Color.grey}
+                                                    value={""}
+                                                    keyboardType="email-address"
+                                                    maxLength={10}
+                                                    onChangeText={text => {
+                                                        console.log("text --------- :", text);
+                                                    }}
+                                                    style={styles.numberTextBox}
+                                                />
+                                            </View>
                                         </View>
 
-
-                                        <Text
-                                            style={{
-                                                width: '90%',
-                                                fontSize: 14,
-                                                color: '#666',
-                                                marginTop: 20,
-                                                fontFamily: 'Poppins-Regular',
-                                                padding: 5,
-                                            }}>
-                                            Enter your Subjects
-                                        </Text>
-                                        <View style={[styles.incomeBoxConatiner, { width: '88%' }]}>
-                                            <TextInput
-                                                placeholder="Enter your Subjects"
-                                                placeholderTextColor={Color.grey}
-                                                value={""}
-                                                keyboardType="name-phone-pad"
-                                                maxLength={10}
-                                                onChangeText={(text) => {
-                                                    // setIncome(text);
-                                                    console.log("text --------- :", text);
-                                                }}
-                                                style={styles.numberTextBox}
-                                            />
+                                        <View style={{ width: '100%', paddingHorizontal: 15, alignItems: 'center' }}>
+                                            <Text style={{ width: '100%', paddingHorizontal: 10, fontSize: 15, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>
+                                                Enter your Subjects
+                                            </Text>
+                                            <View style={[styles.incomeBoxConatiner, { width: '95%' }]}>
+                                                <TextInput
+                                                    placeholder="Enter your Subjects"
+                                                    placeholderTextColor={Color.grey}
+                                                    value={""}
+                                                    keyboardType="name-phone-pad"
+                                                    maxLength={10}
+                                                    onChangeText={(text) => {
+                                                        // setIncome(text);
+                                                        console.log("text --------- :", text);
+                                                    }}
+                                                    style={styles.numberTextBox}
+                                                />
+                                            </View>
                                         </View>
-
-                                        <Text
-                                            style={{
-                                                width: '90%',
-                                                fontSize: 14,
-                                                color: '#666',
-                                                marginTop: 20,
-                                                fontFamily: 'Poppins-Regular',
-                                                padding: 5,
-                                            }}>
-                                            Enter your Message
-                                        </Text>
-                                        <View style={{ width: '88%' }}>
-                                            <TextInput
-                                                placeholder="Enter your Message ..."
-                                                placeholderTextColor={Color.cloudyGrey}
-                                                value={""}
-                                                textAlignVertical="top"
-                                                onChangeText={text => {
-                                                    console.log("message ============= :", text)
-                                                }}
-                                                // onContentSizeChange={event => {
-                                                //   setCardHeight(
-                                                //     Math.max(150, event.nativeEvent.contentSize.height),
-                                                //   );
-                                                // }}
-                                                multiline
-                                                style={{
-                                                    fontSize: 15,
-                                                    flex: 1,
-                                                    color: Color.black,
-                                                    padding: 10,
-                                                    height: 150,
-                                                    borderWidth: 1,
-                                                    borderColor: Color.cloudyGrey,
-                                                    marginVertical: 5,
-                                                    borderRadius: 5,
-                                                }}
-                                            />
+                                        <View style={{ width: '100%', paddingHorizontal: 15, alignItems: 'center' }}>
+                                            <Text style={{ width: '100%', paddingHorizontal: 10, fontSize: 15, color: Color.routeColor, textAlign: 'justify', fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>
+                                                Enter your Message
+                                            </Text>
+                                            <View style={{ width: '95%' }}>
+                                                <TextInput
+                                                    placeholder="Enter your Message ..."
+                                                    placeholderTextColor={Color.cloudyGrey}
+                                                    value={""}
+                                                    textAlignVertical="top"
+                                                    onChangeText={text => {
+                                                        console.log("message ============= :", text)
+                                                    }}
+                                                    // onContentSizeChange={event => {
+                                                    //   setCardHeight(
+                                                    //     Math.max(150, event.nativeEvent.contentSize.height),
+                                                    //   );
+                                                    // }}
+                                                    multiline
+                                                    style={{
+                                                        fontSize: 15,
+                                                        flex: 1,
+                                                        color: Color.cloudyGrey,
+                                                        padding: 10,
+                                                        height: 150,
+                                                        borderWidth: 1,
+                                                        borderColor: Color.cloudyGrey,
+                                                        marginVertical: 5,
+                                                        borderRadius: 5,
+                                                    }}
+                                                />
+                                            </View>
                                         </View>
 
 
                                         <TouchableOpacity
                                             activeOpacity={0.7}
                                             style={{
-                                                width: '88%',
+                                                width: '90%',
                                                 height: 50,
-                                                marginVertical: 10,
+                                                marginVertical: 20,
                                                 backgroundColor: Color.primary,
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
@@ -400,16 +306,16 @@ const ContactUs = () => {
                                         </TouchableOpacity>
                                     </View>
 
-                                    <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', marginVertical: 30, marginBottom: 50 }}>
-                                        <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
+                                    <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
+                                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                             <Image
-                                                source={{ uri: Media.fobes_main }}
-                                                style={{ width: '100%', height: 60, resizeMode: 'contain' }}
+                                                source={require('../../assets/logos/user.png')}
+                                                style={{ width: 100, height: 100, resizeMode: 'contain' }}
                                             />
                                         </View>
-                                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 10 }}>
-                                            <Text style={{ textAlign: 'justify', fontSize: 18, color: Color.primary, fontFamily: 'Poppins-SemiBold' }}>Fobes Skill Itech Private Limited</Text>
-                                            <Text style={{ textAlign: 'justify', fontSize: 14, color: '#666', fontFamily: 'Poppins-Regular' }} >You are hired! Get yourself registered. The top companies in the league are hiring now.</Text>
+                                        <View style={{ flex: 3, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 10 }}>
+                                            <Text style={{ width: '100%', textAlign: 'left', fontSize: 18, color: Color.primary, fontWeight: 'bold', letterSpacing: 0.2 }}>Fobes Skill Itech Private Limited</Text>
+                                            <Text style={{ width: '100%', textAlign: 'justify', fontSize: 14, color: Color.cloudyGrey, fontFamily: Poppins.Regular, lineHeight: 20, letterSpacing: 0.5, paddingVertical: 5 }} >You are hired! Get yourself registered. The top companies in the league are hiring now.</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -430,7 +336,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#2c3e50',
     },
     NumberBoxConatiner: {
-        width: '88%',
+        width: '95%',
         borderColor: Color.grey,
         borderWidth: 1,
         paddingStart: 10,
@@ -441,7 +347,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     incomeBoxConatiner: {
-        width: '88%',
+        width: '95%',
         borderColor: Color.grey,
         borderWidth: 1,
         paddingStart: 10,

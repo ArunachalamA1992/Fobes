@@ -6,6 +6,7 @@ import { Media } from '../../Global/Media';
 import { scr_width } from '../../Utils/Dimensions';
 import { useDispatch } from 'react-redux';
 import { Iconviewcomponent } from '../../Components/Icontag';
+import { Poppins } from '../../Global/FontFamily';
 
 // create a component
 
@@ -122,128 +123,128 @@ const TermsCondition = () => {
                                 <View style={{ width: scr_width, backgroundColor: 'white' }}>
                                     <View style={{ width: scr_width }}>
                                         <Image
-                                            source={{ uri: Media.home_loan_bann }}
+                                            source={{ uri: Media.terms }}
                                             style={{
                                                 width: scr_width,
-                                                height: 220,
-                                                resizeMode: 'cover',
+                                                height: 150,
+                                                resizeMode: 'contain',
                                             }}
                                         />
                                     </View>
-                                    <View style={{ width: '100%', }}>
+                                    <View style={{ width: '100%', alignItems: 'center' }}>
 
                                         <View style={{ width: '100%', paddingVertical: 10, marginTop: 10, paddingHorizontal: 10 }}>
-                                            <Text style={{ width: '100%', textAlign: 'justify', fontSize: 17, color: '#333', lineHeight: 25, fontFamily: 'Poppins-SemiBold' }}>Welcome to our Job Portal website! Before using our services, please read these Terms and Conditions carefully. By using our website, you agree to comply with and be bound by these Terms and Conditions.</Text>
+                                            <Text style={{ width: '100%', textAlign: 'justify', fontSize: 17, color: Color.lightBlack, lineHeight: 25, letterSpacing: 0.5, fontWeight: '800' }}>Welcome to our Job Portal website! Before using our services, please read these Terms and Conditions carefully. By using our website, you agree to comply with and be bound by these Terms and Conditions.</Text>
                                         </View>
 
                                         <View style={{ width: '100%', marginVertical: 10, }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>Use of Our Services</Text>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700', letterSpacing: 0.2 }}>Use of Our Services</Text>
                                             </View>
                                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>Our Job Portal website provides a platform for job seekers and employers to connect. We do not guarantee employment or any specific job offers. We reserve the right to suspend or terminate your account if we suspect fraudulent or inappropriate activity.</Text>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>Our Job Portal website provides a platform for job seekers and employers to connect. We do not guarantee employment or any specific job offers. We reserve the right to suspend or terminate your account if we suspect fraudulent or inappropriate activity.</Text>
                                             </View>
                                         </View>
 
 
                                         <View style={{ width: '100%', marginVertical: 10, }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>User Accounts</Text>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700' }}>User Accounts</Text>
                                             </View>
                                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>To access certain features of our website, you must create an account. You are responsible for maintaining the confidentiality of your account login information and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account.</Text>
-                                            </View>
-                                        </View>
-
-                                        <View style={{ width: '100%', marginVertical: 10, }}>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>Job Listings</Text>
-                                            </View>
-                                            <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>Employers are solely responsible for the accuracy and content of their job listings. We do not endorse or guarantee any job listings, and we are not responsible for any losses or damages incurred as a result of using our services.</Text>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>To access certain features of our website, you must create an account. You are responsible for maintaining the confidentiality of your account login information and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account.</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', marginVertical: 10, }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>User Content</Text>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700' }}>Job Listings</Text>
                                             </View>
                                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>By submitting any content to our website, you grant us a non-exclusive, worldwide, royalty-free, transferable license to use, reproduce, distribute, and display the content in connection with our services.You represent and warrant that the content you submit does not infringe on any third-party rights.</Text>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>Employers are solely responsible for the accuracy and content of their job listings. We do not endorse or guarantee any job listings, and we are not responsible for any losses or damages incurred as a result of using our services.</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', marginVertical: 10, }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>Intellectual Property</Text>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700' }}>User Content</Text>
                                             </View>
                                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>All content on our website, including but not limited to text, graphics, logos, and images, is the property of our company or our licensors and is protected by copyright laws. You may not use any content from our website without our express written permission.</Text>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>By submitting any content to our website, you grant us a non-exclusive, worldwide, royalty-free, transferable license to use, reproduce, distribute, and display the content in connection with our services.You represent and warrant that the content you submit does not infringe on any third-party rights.</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', marginVertical: 10, }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>Disclaimer of Warranties</Text>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700' }}>Intellectual Property</Text>
                                             </View>
                                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>We do not warrant that our services will be uninterrupted or error-free. We make no representations or warranties of any kind, express or implied, as to the operation of our website or the information, content, materials, or products included on our website.</Text>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>All content on our website, including but not limited to text, graphics, logos, and images, is the property of our company or our licensors and is protected by copyright laws. You may not use any content from our website without our express written permission.</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', marginVertical: 10, }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>Limitation of Liability</Text>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700' }}>Disclaimer of Warranties</Text>
                                             </View>
                                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>We will not be liable for any damages of any kind arising from the use of our website, including but not limited to direct, indirect, incidental, punitive, and consequential damages.</Text>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>We do not warrant that our services will be uninterrupted or error-free. We make no representations or warranties of any kind, express or implied, as to the operation of our website or the information, content, materials, or products included on our website.</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', marginVertical: 10, }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>Indemnification</Text>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700' }}>Limitation of Liability</Text>
                                             </View>
                                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>You agree to indemnify, defend, and hold harmless our company, its affiliates, officers, directors, employees, agents, and licensors from and against all claims, liabilities, expenses, damages, and losses, including reasonable attorneys' fees, arising out of or in connection with your use of our services.</Text>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>We will not be liable for any damages of any kind arising from the use of our website, including but not limited to direct, indirect, incidental, punitive, and consequential damages.</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', marginVertical: 10, }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>Governing Law</Text>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700' }}>Indemnification</Text>
                                             </View>
                                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>These Terms and Conditions shall be governed by and construed in accordance with the laws of the jurisdiction in which our company is located, without giving effect to any principles of conflicts of law.</Text>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>You agree to indemnify, defend, and hold harmless our company, its affiliates, officers, directors, employees, agents, and licensors from and against all claims, liabilities, expenses, damages, and losses, including reasonable attorneys' fees, arising out of or in connection with your use of our services.</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', marginVertical: 10, }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View>
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>Modifications to Terms and Conditions</Text>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700' }}>Governing Law</Text>
                                             </View>
                                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 16, color: '#666', lineHeight: 25, fontFamily: 'Poppins-Regular' }}>We reserve the right to modify these Terms and Conditions at any time without notice. Your continued use of our website following any changes constitutes your acceptance of the modified Terms and Conditions.</Text>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>These Terms and Conditions shall be governed by and construed in accordance with the laws of the jurisdiction in which our company is located, without giving effect to any principles of conflicts of law.</Text>
+                                            </View>
+                                        </View>
+
+                                        <View style={{ width: '100%', marginVertical: 10, }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
+                                                <View style={{ width: 5, height: 5, backgroundColor: Color.cloudyGrey, borderRadius: 50 }}></View>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '700' }}>Modifications to Terms and Conditions</Text>
+                                            </View>
+                                            <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15 }}>
+                                                <Text style={{ fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5 }}>We reserve the right to modify these Terms and Conditions at any time without notice. Your continued use of our website following any changes constitutes your acceptance of the modified Terms and Conditions.</Text>
                                             </View>
                                         </View>
 
 
                                         <View style={{ width: '100%', marginVertical: 10, alignItems: 'center' }}>
                                             <Text style={{ width: '95%', fontSize: 18, color: 'black', fontFamily: 'Poppins-SemiBold' }}>Contact Us</Text>
-                                            <Text style={{ width: '95%', fontSize: 16, color: '#666', fontFamily: 'Poppins-Regular', paddingTop: 10 }}>For any other queries and feedback can reach us with below address </Text>
+                                            <Text style={{ width: '95%', fontSize: 14, color: Color.routeColor, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10 }}>For any other queries and feedback can reach us with below address </Text>
 
                                             <TouchableOpacity style={{ width: '95%', flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
-                                                <View style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 50, borderColor: Color.primary, borderWidth: 1 }}>
+                                                <View style={{ width: 45, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 50, borderColor: Color.primary, borderWidth: 1 }}>
                                                     <Iconviewcomponent
                                                         Icontag={'Feather'}
                                                         iconname={'phone-call'}
@@ -251,11 +252,11 @@ const TermsCondition = () => {
                                                         iconstyle={{ color: Color.primary }}
                                                     />
                                                 </View>
-                                                <Text style={{ fontSize: 18, color: 'black', fontFamily: 'Poppins-SemiBold', paddingHorizontal: 10 }}>+91 994-330-0100</Text>
+                                                <Text style={{ width: '95%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10, paddingHorizontal: 10 }}>+91 994-330-0100</Text>
                                             </TouchableOpacity>
 
                                             <TouchableOpacity style={{ width: '95%', flexDirection: 'row', alignItems: 'center' }}>
-                                                <View style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 50, borderColor: Color.primary, borderWidth: 1 }}>
+                                                <View style={{ width: 45, height: 45, justifyContent: 'center', alignItems: 'center', borderRadius: 50, borderColor: Color.primary, borderWidth: 1 }}>
                                                     <Iconviewcomponent
                                                         Icontag={'Ionicons'}
                                                         iconname={'mail'}
@@ -263,27 +264,26 @@ const TermsCondition = () => {
                                                         iconstyle={{ color: Color.primary }}
                                                     />
                                                 </View>
-                                                <Text style={{ width: '95%', fontSize: 18, color: 'black', fontFamily: 'Poppins-SemiBold', paddingHorizontal: 10 }}>admin@fobes.in</Text>
+                                                <Text style={{ width: '95%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.Regular, textAlign: 'justify', lineHeight: 22, letterSpacing: 0.5, paddingVertical: 10, paddingHorizontal: 10 }}>admin@fobes.in</Text>
                                             </TouchableOpacity>
                                         </View>
 
-                                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginVertical: 20, marginBottom: 20, paddingHorizontal: 10 }}>
-                                            <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
+                                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
+                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                                 <Image
-                                                    source={{ uri: Media.fobes_main }}
-                                                    style={{ width: '100%', height: 60, resizeMode: 'contain' }}
+                                                    source={require('../../assets/logos/user.png')}
+                                                    style={{ width: 100, height: 100, resizeMode: 'contain' }}
                                                 />
                                             </View>
-                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 10 }}>
-                                                <Text style={{ textAlign: 'justify', fontSize: 18, color: Color.primary, fontFamily: 'Poppins-SemiBold' }}>Fobes Skill Itech Private Limited</Text>
-                                                <Text style={{ textAlign: 'justify', fontSize: 14, color: '#666', fontFamily: 'Poppins-Regular' }} >You are hired! Get yourself registered. The top companies in the league are hiring now.</Text>
+                                            <View style={{ flex: 3, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 10 }}>
+                                                <Text style={{ width: '100%', textAlign: 'left', fontSize: 18, color: Color.primary, fontWeight: 'bold', letterSpacing: 0.2 }}>Fobes Skill Itech Private Limited</Text>
+                                                <Text style={{ width: '100%', textAlign: 'justify', fontSize: 14, color: Color.cloudyGrey, fontFamily: Poppins.Regular, lineHeight: 20, letterSpacing: 0.5, paddingVertical: 5 }} >You are hired! Get yourself registered. The top companies in the league are hiring now.</Text>
                                             </View>
                                         </View>
 
                                         <View style={{ width: '100%', marginVertical: 0, marginBottom: 50 }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, }}>
-                                                {/* <View style={{ width: 5, height: 5, backgroundColor: '#666', borderRadius: 50 }}></View> */}
-                                                <Text style={{ fontSize: 16, color: '#000', textAlign: 'justify', marginHorizontal: 10, fontFamily: 'Poppins-SemiBold', }}>Thank you for using www.fobes.in. If you have any questions or concerns about these Terms and Conditions, please contact us at admin@fobes.in</Text>
+                                                <Text style={{ fontSize: 16, color: Color.lightBlack, textAlign: 'justify', marginHorizontal: 10, fontWeight: '600', lineHeight: 22, letterSpacing: 0.5, }}>Thank you for using www.fobes.in. If you have any questions or concerns about these Terms and Conditions, please contact us at admin@fobes.in</Text>
                                             </View>
                                         </View>
 

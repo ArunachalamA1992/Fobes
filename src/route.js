@@ -50,20 +50,22 @@ export const HomeStack = () => {
             <NavigationDrawerStructure navigation={navigation} home={true} />
           ),
           headerRight: () => (
-            <TouchableOpacity style={{ right: 10 }}>
+            <TouchableOpacity style={{ right: 10 }} onPress={() => navigation.navigate("Notification")}>
               <Badge
+                size={20}
                 style={{
                   position: 'absolute',
                   top: -10,
                   right: -5,
                   zIndex: 1000,
+                  fontSize: 13
                 }}>
-                05
+                06
               </Badge>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
                 iconname={'notifications-sharp'}
-                icon_size={26}
+                icon_size={28}
                 icon_color={Color.white}
               />
             </TouchableOpacity>
@@ -211,7 +213,7 @@ export const HomeStack = () => {
         })}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="DetailedScreen"
         component={DetailedScreen}
         options={({ navigation, route }) => ({
@@ -239,7 +241,7 @@ export const HomeStack = () => {
             </TouchableOpacity>
           ),
         })}
-      />
+      /> */}
 
       <Stack.Screen
         name="ApplyJob"
@@ -321,7 +323,7 @@ export const HomeStack = () => {
         })}
       />
 
-    </Stack.Navigator>  
+    </Stack.Navigator>
   );
 };
 

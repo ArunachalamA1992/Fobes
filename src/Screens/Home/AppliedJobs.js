@@ -151,7 +151,7 @@ const AppliedJobs = () => {
                     keyExtractor={(item, index) => item + index}
                     renderItem={({ item, index }) => {
                         return (
-                            <TouchableOpacity
+                            <TouchableOpacity onPress={() => navigation.navigate("DetailedScreen")}
                                 key={index}
                                 style={{
                                     width: '95%',
@@ -177,8 +177,8 @@ const AppliedJobs = () => {
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
-                                            <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.SemiBold, textAlign: 'justify' }} numberOfLines={2}>{item.apply_job_name}</Text>
-                                            <Text style={{ fontSize: 12, color: Color.darkGrey, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={1}>{item.apply_job_comp_name}</Text>
+                                            <Text style={{ width: '100%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.SemiBold, textAlign: 'justify', fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }} numberOfLines={2}>{item.apply_job_name}</Text>
+                                            <Text style={{ fontSize: 13, color: Color.darkGrey, fontFamily: Poppins.Medium, textAlign: 'justify', fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }} numberOfLines={1}>{item.apply_job_comp_name}</Text>
                                         </View>
                                         <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
                                             <Iconviewcomponent
@@ -198,25 +198,25 @@ const AppliedJobs = () => {
                                             icon_size={20}
                                             icon_color={Color.Venus}
                                         />
-                                        <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.apply_job_comp_loc}</Text>
+                                        <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5, fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }}>{item.apply_job_comp_loc}</Text>
                                     </View>
                                 </View>
 
                                 <View style={{ width: '100%', flexDirection: 'row', paddingVertical: 5, justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', padding: 7, paddingHorizontal: 10, backgroundColor: '#DEFCE4', }}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 7, paddingHorizontal: 10, backgroundColor: '#DEFCE4', }}>
                                         <Iconviewcomponent
                                             Icontag={'Feather'}
                                             iconname={'check'}
                                             icon_size={20}
                                             icon_color={'#0BA02C'}
                                         />
-                                        <Text style={{ fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Applied 2 days ago</Text>
+                                        <Text style={{ fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium, paddingHorizontal: 5, fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }}>Applied 2 days ago</Text>
                                     </View>
                                     <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                        <Text style={{ padding: 7, paddingHorizontal: 10, backgroundColor: '#E9F9F6', fontSize: 12, color: Color.lightBlack, borderRadius: 5, fontFamily: Poppins.Medium }}>{item.apply_job_type}</Text>
+                                        <Text style={{ padding: 7, paddingHorizontal: 10, backgroundColor: '#E9F9F6', fontSize: 12, color: Color.lightBlack, borderRadius: 5, fontFamily: Poppins.Medium, fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }}>{item.apply_job_type}</Text>
                                     </View>
                                     <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                        <Text style={{ padding: 7, paddingHorizontal: 10, backgroundColor: '#E9F9F6', fontSize: 12, color: Color.lightBlack, borderRadius: 5, fontFamily: Poppins.Medium }}>{item.apply_job_comp_salary}</Text>
+                                        <Text style={{ padding: 7, paddingHorizontal: 10, backgroundColor: '#E9F9F6', fontSize: 12, color: Color.lightBlack, borderRadius: 5, fontFamily: Poppins.Medium, fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }}>{item.apply_job_comp_salary}</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>

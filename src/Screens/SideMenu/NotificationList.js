@@ -118,7 +118,7 @@ const NotificationList = () => {
 
     return (
         <View style={styles.container}>
-            <View style={{ width: '95%', height: scr_height * 0.8 - 10 }}>
+            <View style={{ width: '95%', height: scr_height * 0.8 - 10, alignItems: 'center', marginVertical: 10 }}>
                 <FlatList
                     data={ActionSelect}
                     keyExtractor={(item, index) => item + index}
@@ -130,15 +130,13 @@ const NotificationList = () => {
                             <TouchableOpacity
                                 key={index}
                                 style={{
-                                    width: '98%',
-                                    // alignItems: 'center',
-                                    // justifyContent: 'center',
+                                    width: '96%',
                                     borderColor: Color.lightgrey,
                                     borderWidth: 1,
                                     padding: 10, margin: 5,
                                     borderRadius: 5,
                                 }}>
-                                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
+                                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
                                     <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
                                         <Image
                                             source={require('../../assets/images/app_status.png')}
@@ -159,9 +157,9 @@ const NotificationList = () => {
                                                     icon_color={'#0BA02C'}
                                                 /> : null
                                             }
-                                            <Text style={{ width: '100%', fontSize: 16, color: applied, paddingHorizontal: 5, fontFamily: Poppins.SemiBold, textAlign: 'justify', paddingVertical: 5 }} numberOfLines={1}>{item.job_name}</Text>
+                                            <Text style={{ width: '100%', fontSize: 16, color: applied, paddingHorizontal: 5, fontWeight: '800', textAlign: 'justify', paddingVertical: 5, lineHeight: 25, letterSpacing: 0.3 }} numberOfLines={1}>{item.job_name}</Text>
                                         </View>
-                                        <Text style={{ width: '100%', fontSize: 13, color: Color.cloudyGrey, fontFamily: Poppins.Regular, textAlign: 'justify' }} numberOfLines={2}>{item.job_comp_name}</Text>
+                                        <Text style={{ width: '100%', fontSize: 14, color: Color.Venus, fontWeight: '700', textAlign: 'justify', lineHeight: 25, letterSpacing: 0.3 }} numberOfLines={2}>{item.job_comp_name}</Text>
                                     </View>
 
                                 </View>
@@ -172,7 +170,7 @@ const NotificationList = () => {
                                         icon_size={20}
                                         icon_color={Color.primary}
                                     />
-                                    <Text style={{ fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify', paddingHorizontal: 5 }} numberOfLines={2}>{item.job_post_date}</Text>
+                                    <Text style={{ fontSize: 14, color: Color.Venus, fontFamily: Poppins.Medium, textAlign: 'justify', paddingHorizontal: 5, lineHeight: 25, letterSpacing: 0.3 }} numberOfLines={2}>{item.job_post_date}</Text>
                                 </View>
                             </TouchableOpacity>
                         );

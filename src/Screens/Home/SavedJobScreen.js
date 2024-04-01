@@ -158,16 +158,16 @@ const SavedJobScreen = () => {
                                                 }}
                                             />
                                         </View>
-                                        <View style={{ width: '75%', justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
-                                            <Text style={{ width: '100%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={2}>{item.apply_job_name}</Text>
-                                            <Text style={{ fontSize: 12, color: Color.darkGrey, fontFamily: Poppins.Regular, textAlign: 'justify' }} numberOfLines={1}>{item.apply_job_comp_name}</Text>
+                                        <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
+                                            <Text style={{ width: '100%', fontSize: 16, color: Color.lightBlack, fontFamily: Poppins.SemiBold, textAlign: 'justify', fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }} numberOfLines={2}>{item.apply_job_name}</Text>
+                                            <Text style={{ fontSize: 13, color: Color.darkGrey, fontFamily: Poppins.Medium, textAlign: 'justify', fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }} numberOfLines={1}>{item.apply_job_comp_name}</Text>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={{ flex: 0, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
                                         <Iconviewcomponent
                                             Icontag={'Ionicons'}
                                             iconname={'bookmark-outline'}
-                                            icon_size={22}
+                                            icon_size={26}
                                             icon_color={Color.Venus}
                                         />
                                     </TouchableOpacity>
@@ -181,7 +181,7 @@ const SavedJobScreen = () => {
                                             icon_size={20}
                                             icon_color={Color.lightgrey}
                                         />
-                                        <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} numberOfLines={2}>{item.apply_job_comp_loc}</Text>
+                                        <Text style={{ fontSize: 13, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }} numberOfLines={2}>{item.apply_job_comp_loc}</Text>
                                     </View>
                                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                                         <Iconviewcomponent
@@ -190,11 +190,11 @@ const SavedJobScreen = () => {
                                             icon_size={20}
                                             icon_color={Color.lightgrey}
                                         />
-                                        <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} numberOfLines={2}>{item.apply_job_type}</Text>
+                                        <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }} numberOfLines={2}>{item.apply_job_type}</Text>
                                     </View>
                                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                                         <View style={{ width: 8, height: 8, borderRadius: 30, backgroundColor: Color.lightgrey }}></View>
-                                        <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} numberOfLines={2}>{item.apply_job_comp_salary}</Text>
+                                        <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5, fontWeight: '700', letterSpacing: 0.3, lineHeight: 22 }} numberOfLines={2}>{item.apply_job_comp_salary}</Text>
                                     </View>
                                 </View>
                             </View>
