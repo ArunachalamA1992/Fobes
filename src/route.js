@@ -30,20 +30,16 @@ import ApplyJob from './Screens/SubPages/ApplyJob';
 import CompanyList from './Screens/Home/CompanyList';
 import CompanyDetails from './Screens/Home/CompanyDetails';
 import SavedJobScreen from './Screens/Home/SavedJobScreen';
-<<<<<<< HEAD
 import EducationDetails from './Screens/Profile/EducationDetails';
 import EmploymentDetails from './Screens/Profile/EmploymentDetails';
 import SkillScreen from './Screens/Profile/Skills';
 import ProjectScreen from './Screens/Profile/ProjectScreen';
-=======
 import FilterScreen from './Screens/Home/FilterScreen';
->>>>>>> 906f7858bb1ec6cb908dbfd443aaa5c460409834
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const HomeStack = () => {
-
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
@@ -300,12 +296,12 @@ export const HomeStack = () => {
       <Stack.Screen
         name="Filter"
         component={FilterScreen}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerTitle: 'Filter',
-          headerTitleStyle: { color: Color.white },
-          headerStyle: { backgroundColor: Color.primary },
+          headerTitleStyle: {color: Color.white},
+          headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
-            <View style={{ marginHorizontal: 10 }}>
+            <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
@@ -316,8 +312,7 @@ export const HomeStack = () => {
           ),
         })}
       />
-
-    </Stack.Navigator>  
+    </Stack.Navigator>
   );
 };
 
