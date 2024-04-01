@@ -290,8 +290,8 @@ const HomeScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
 
-            <View style={{ width: scr_width, backgroundColor: Color.primary, alignItems: 'center' }}>
-                <TouchableOpacity
+            <View style={{ width: '95%', flexDirection: 'row', width: scr_width, backgroundColor: Color.primary, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity activeOpacity={0.5}
                     style={{
                         marginHorizontal: 5,
                         borderColor: Color.lightgrey,
@@ -300,32 +300,42 @@ const HomeScreen = () => {
                         flexDirection: 'row',
                         alignItems: 'center',
                         borderRadius: 5,
-                        width: '95%',
+                        width: '80%',
                         height: 50, backgroundColor: Color.white,
                         paddingHorizontal: 10, marginVertical: 20
                     }}>
-                    <Text
-                        style={{
-                            flex: 1,
-                            fontSize: 16,
-                            paddingTop: 2,
-                            color: Color.cloudyGrey,
-                            fontFamily: Poppins.Medium,
-                        }}
-                        numberOfLines={1}>
-                        {`Search Jobs`}
-                    </Text>
                     <View style={[styles.numberCountryCode, { textAlign: 'center', alignSelf: 'center', alignContent: 'center', alignItems: 'center', top: 10 }]}>
                         <Iconviewcomponent
                             Icontag={'Feather'}
                             iconname={'search'}
                             icon_size={28}
-                            icon_color={Color.black}
+                            icon_color={Color.Venus}
                         />
                     </View>
+                    <Text
+                        style={{
+                            flex: 1,
+                            fontSize: 16,
+                            paddingTop: 2, paddingHorizontal: 10,
+                            color: Color.Venus,
+                            fontFamily: Poppins.Medium,
+                        }}
+                        numberOfLines={1}>
+                        {`Search Jobs`}
+                    </Text>
+                </TouchableOpacity>
 
+                <TouchableOpacity onPress={() => navigation.navigate("Filter")}
+                    style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: Color.white, padding: 10, margin: 5, borderRadius: 5 }}>
+                    <Iconviewcomponent
+                        Icontag={'MaterialCommunityIcons'}
+                        iconname={'filter-menu-outline'}
+                        icon_size={28}
+                        icon_color={Color.primary}
+                    />
                 </TouchableOpacity>
             </View>
+
             <Animated.SectionList
                 sections={BuySection}
                 scrollEnabled={true}
@@ -601,7 +611,8 @@ const HomeScreen = () => {
                                                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
                                                                 <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
                                                                     <Image
-                                                                        source={{ uri: item.image }}
+                                                                        // source={{ uri: item.image }}
+                                                                        source={require('../../assets/logos/user.png')}
                                                                         style={{
                                                                             width: 35,
                                                                             height: 35,
@@ -700,7 +711,8 @@ const HomeScreen = () => {
                                                                 backgroundColor: '#EFFAFF'
                                                             }}>
                                                             <Image
-                                                                source={{ uri: item.comp_logo }}
+                                                                // source={{ uri: item.comp_logo }}
+                                                                source={require('../../assets/logos/user.png')}
                                                                 style={{
                                                                     width: 80,
                                                                     height: 80,
@@ -833,7 +845,8 @@ const HomeScreen = () => {
                                                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
                                                                 <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
                                                                     <Image
-                                                                        source={{ uri: item.image }}
+                                                                        // source={{ uri: item.image }}
+                                                                        source={require('../../assets/logos/user.png')}
                                                                         style={{
                                                                             width: 35,
                                                                             height: 35,

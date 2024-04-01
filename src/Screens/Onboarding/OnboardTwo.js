@@ -20,8 +20,8 @@ const OnboardTwo = () => {
             </View>
             <View style={{ flex: 1.2, justifyContent: 'center', alignItems: 'center' }}>
                 <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', paddingVertical: 10 }}>
-                    <Text style={{ width: '80%', fontSize: 20, fontFamily: Poppins.SemiBold, color: Color.primary, textAlign: 'center', textTransform: 'capitalize' }}>Grab the Oppurtunity</Text>
-                    <Text style={{ width: '80%', fontSize: 14, fontFamily: Poppins.Regular, color: Color.routeColor, textAlign: 'center', paddingVertical: 5 }} numberOfLines={2}>Thrilled to have you onboard! Let's explore new career horizons together.</Text>
+                    <Text style={{ width: '80%', fontSize: 24, fontFamily: Poppins.SemiBold, color: Color.primary, textAlign: 'center', lineHeight: 25, letterSpacing: 0.5, textTransform: 'capitalize' }}>Grab the Oppurtunity</Text>
+                    <Text style={{ width: '80%', fontSize: 16, fontFamily: Poppins.Regular, color: Color.routeColor, textAlign: 'center', lineHeight: 20, letterSpacing: 0.5, paddingVertical: 10 }} numberOfLines={2}>Thrilled to have you onboard! Let's explore new career horizons together.</Text>
                 </View>
                 <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', bottom: 0, backgroundColor: 'white' }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', }}>

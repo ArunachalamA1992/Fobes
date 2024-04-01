@@ -266,10 +266,11 @@ const CustomDrawerContent = props => {
               justifyContent: 'center',
             }}>
             <Image
-              source={{ uri: Media.Userpng }}
+              // source={{ uri: Media.Userpng }}
+              source={require('../../assets/logos/mainlogo.png')}
               style={{
-                width: 100,
-                height: 100,
+                width: 90,
+                height: 90,
                 resizeMode: 'contain',
                 borderRadius: 100,
               }}
@@ -284,7 +285,7 @@ const CustomDrawerContent = props => {
                   textTransform: 'capitalize',
                   marginVertical: 5,
                   marginHorizontal: 10,
-                  marginVertical: Platform.OS == 'ios' ? 5 : 0,
+                  marginVertical: 5,
                 }}
                 numberOfLines={1}>
                 Demo User
@@ -295,7 +296,7 @@ const CustomDrawerContent = props => {
                   color: Color.white,
                   fontFamily: Poppins.SemiBold,
                   marginHorizontal: 10,
-                  marginVertical: Platform.OS == 'ios' ? 5 : 0,
+                  marginVertical: 2,
                 }}>
                 demo@gmail.com
               </Text>
@@ -305,7 +306,7 @@ const CustomDrawerContent = props => {
                   color: Color.white,
                   fontFamily: Poppins.SemiBold,
                   marginHorizontal: 10,
-                  marginVertical: Platform.OS == 'ios' ? 5 : 0,
+                  marginVertical: 2,
                 }}>
                 +91 98765 43210
               </Text>
@@ -367,7 +368,7 @@ const CustomDrawerContent = props => {
               }}
               onPress={() => {
                 setItemSelected('favorite');
-                // props.navigation.navigate('PropertyAdvice');
+                props.navigation.navigate('SavedJobs');
               }}>
               <Iconviewcomponent
                 Icontag={'MaterialIcons'}
@@ -418,6 +419,40 @@ const CustomDrawerContent = props => {
                   top: 3
                 }}>
                 Job Alert
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{ backgroundColor: itemSelected === 'Notification' ? Color.primary : Color.white, marginVertical: 5 }}>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginHorizontal: 10,
+                paddingVertical: 10,
+                padding: 10,
+              }}
+              onPress={() => {
+                setItemSelected('Notification');
+                props.navigation.navigate('Notification');
+              }}>
+              <Iconviewcomponent
+                Icontag={'Fontisto'}
+                iconname={itemSelected === 'Notification' ? 'bell' : 'bell'}
+                icon_size={itemSelected === 'Notification' ? 26 : 24}
+                icon_color={itemSelected === 'Notification' ? Color.white : Color.primary}
+              />
+              <Text
+                style={{
+                  fontSize: 14,
+                  width: 150,
+                  marginLeft: 10,
+                  color: itemSelected === 'Notification' ? Color.white : Color.black,
+                  fontFamily: itemSelected === 'Notification' ? Poppins.Bold : Poppins.Medium,
+                  top: 1
+                }}>
+                Notification List
               </Text>
             </TouchableOpacity>
           </View>
