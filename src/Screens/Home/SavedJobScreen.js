@@ -1,5 +1,4 @@
-//import liraries
-import React, {useState} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,112 +8,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Poppins} from '../../Global/FontFamily';
+import {Gilmer} from '../../Global/FontFamily';
 import {Iconviewcomponent} from '../../Components/Icontag';
-import {Media} from '../../Global/Media';
+import {ApplyJobData} from '../../Global/Content';
 
 const SavedJobScreen = ({navigation}) => {
-  const [ApplyJobData, setApplyJobData] = useState([
-    {
-      id: 1,
-      apply_job_name: 'Business Development Executive',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.propertysub,
-      apply_job_type: 'Full Time',
-      apply_job_post_date: '1 day ago',
-      apply_apply_job_comp_logo: '',
-      apply_job_comp_name: 'Wipro Technologies ',
-      apply_job_comp_book_status: true,
-      apply_job_comp_salary: '₹10k -  ₹20 k',
-      apply_job_comp_applicant: '500',
-      apply_job_comp_loc: 'Coimbatore, Tamilnadu',
-    },
-    {
-      id: 2,
-      apply_job_name: 'Mobile App Development',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Full Time',
-      apply_job_post_date: '3 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'TCS',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹40k -  ₹70 k',
-      apply_job_comp_applicant: '250',
-      apply_job_comp_loc: 'Chennai, Tamilnadu',
-    },
-    {
-      id: 3,
-      apply_job_name: 'Graphics Designer',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.propertysub,
-      apply_job_type: 'Freelance',
-      apply_job_post_date: '1 day ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'KGISL Group',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹30k -  ₹50 k',
-      apply_job_comp_applicant: '50',
-      apply_job_comp_loc: 'Coimbatore, Tamilnadu',
-    },
-    {
-      id: 4,
-      apply_job_name: 'Website designer',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Full Time',
-      apply_job_post_date: '4 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'Brightway Group Tech',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹25k -  ₹60 k',
-      apply_job_comp_applicant: '7',
-      apply_job_comp_loc: 'Madurai, Tamilnadu',
-    },
-    {
-      id: 5,
-      apply_job_name: 'SEO Analyst',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Part Time',
-      apply_job_post_date: '2 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'Avanexa Technologies',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹15k -  ₹30 k',
-      apply_job_comp_applicant: '15',
-      apply_job_comp_loc: 'Chennai, Tamilnadu',
-    },
-    {
-      id: 6,
-      apply_job_name: 'Website designer',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Full Time',
-      apply_job_post_date: '4 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'Brightway Group Tech',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹25k -  ₹60 k',
-      apply_job_comp_applicant: '7',
-      apply_job_comp_loc: 'Coimbatore, Tamilnadu',
-    },
-    {
-      id: 7,
-      apply_job_name: 'SEO Analyst',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Part Time',
-      apply_job_post_date: '2 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'Avanexa Technologies',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹15k -  ₹30 k',
-      apply_job_comp_applicant: '15',
-      apply_job_comp_loc: 'Madurai, Tamilnadu',
-    },
-  ]);
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -124,7 +22,7 @@ const SavedJobScreen = ({navigation}) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('DetailedScreen');
+                navigation.navigate('DetailedScreen', {item});
               }}
               key={index}
               style={{
@@ -177,35 +75,36 @@ const SavedJobScreen = ({navigation}) => {
                       style={{
                         fontSize: 16,
                         color: Color.lightBlack,
-                        fontFamily: Poppins.Medium,
+                        fontFamily: Gilmer.Medium,
                         textAlign: 'justify',
                       }}
                       numberOfLines={2}>
-                      {item.apply_job_name}
+                      {item.job_name}
                     </Text>
                     <Text
                       style={{
                         fontSize: 12,
                         color: Color.darkGrey,
-                        fontFamily: Poppins.Regular,
+                        fontFamily: Gilmer.Regular,
                         textAlign: 'justify',
                       }}
                       numberOfLines={1}>
-                      {item.apply_job_comp_name}
+                      {item.job_comp_name}
                     </Text>
                   </View>
                 </View>
                 <View
                   style={{
+                    flex: 1,
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: 10,
+                    alignItems: 'flex-end',
+                    paddingHorizontal: 10,
                   }}>
                   <Iconviewcomponent
                     Icontag={'Ionicons'}
                     iconname={'bookmark'}
                     icon_size={22}
-                    icon_color={Color.Venus}
+                    icon_color={Color.primary}
                   />
                 </View>
               </View>
@@ -232,11 +131,11 @@ const SavedJobScreen = ({navigation}) => {
                     style={{
                       fontSize: 12,
                       color: Color.lightBlack,
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                       marginHorizontal: 5,
                     }}
                     numberOfLines={2}>
-                    {item.apply_job_comp_loc}
+                    {item.location}
                   </Text>
                   <View
                     style={{
@@ -255,11 +154,11 @@ const SavedJobScreen = ({navigation}) => {
                       style={{
                         fontSize: 12,
                         color: Color.lightBlack,
-                        fontFamily: Poppins.Medium,
+                        fontFamily: Gilmer.Medium,
                         paddingHorizontal: 5,
                       }}
                       numberOfLines={2}>
-                      {item.apply_job_type}
+                      {item.job_type}
                     </Text>
                   </View>
                 </View>
@@ -280,11 +179,11 @@ const SavedJobScreen = ({navigation}) => {
                     style={{
                       fontSize: 12,
                       color: Color.lightBlack,
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                       paddingHorizontal: 5,
                     }}
                     numberOfLines={2}>
-                    {item.apply_job_post_date}
+                    {item.job_post_date}
                   </Text>
                 </View>
               </View>

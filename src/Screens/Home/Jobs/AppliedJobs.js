@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Color from '../../../Global/Color';
-import {Poppins} from '../../../Global/FontFamily';
+import {Gilmer} from '../../../Global/FontFamily';
 import {Iconviewcomponent} from '../../../Components/Icontag';
 import {Media} from '../../../Global/Media';
 
@@ -178,7 +178,7 @@ const AppliedJobs = ({navigation}) => {
                       style={{
                         fontSize: 16,
                         color: Color.lightBlack,
-                        fontFamily: Poppins.Bold,
+                        fontFamily: Gilmer.Bold,
                         textAlign: 'justify',
                       }}
                       numberOfLines={2}>
@@ -188,7 +188,7 @@ const AppliedJobs = ({navigation}) => {
                       style={{
                         fontSize: 14,
                         color: Color.darkGrey,
-                        fontFamily: Poppins.Medium,
+                        fontFamily: Gilmer.Medium,
                         textAlign: 'justify',
                       }}
                       numberOfLines={1}>
@@ -226,7 +226,7 @@ const AppliedJobs = ({navigation}) => {
                   style={{
                     fontSize: 14,
                     color: Color.Venus,
-                    fontFamily: Poppins.Medium,
+                    fontFamily: Gilmer.Medium,
                     paddingHorizontal: 5,
                   }}>
                   {item.apply_job_comp_loc}
@@ -260,7 +260,7 @@ const AppliedJobs = ({navigation}) => {
                       fontSize: 12,
                       color: Color.black,
                       borderRadius: 5,
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                       paddingHorizontal: 5,
                     }}>
                     Applied 2 days ago
@@ -279,7 +279,7 @@ const AppliedJobs = ({navigation}) => {
                       fontSize: 12,
                       color: Color.lightBlack,
                       borderRadius: 5,
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                     }}>
                     {item.apply_job_type}
                   </Text>
@@ -297,7 +297,7 @@ const AppliedJobs = ({navigation}) => {
                       fontSize: 12,
                       color: Color.lightBlack,
                       borderRadius: 5,
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                     }}>
                     {item.apply_job_comp_salary}
                   </Text>

@@ -1,21 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {
-  LogBox,
-  StatusBar,
-  View,
-  Image,
-  TouchableOpacity,
-  Alert,
-  Modal,
-  Text,
-  Pressable,
-} from 'react-native';
+import React from 'react';
+import {LogBox, StatusBar, View} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawerContent from './Components/Nav/CustomDrawerContent';
-import {Provider, useDispatch, useSelector} from 'react-redux';
+import {Provider} from 'react-redux';
 
 import {Provider as PaperProvider} from 'react-native-paper';
 import OnboardOne from './Screens/Onboarding/OnboardOne';
@@ -25,11 +15,13 @@ import Color from './Global/Color';
 import TabNavigator, {Auth} from './route';
 import SplashScreen from './SplashScreen';
 import Store from './Redux/Store';
-import {navigationRef} from '../RootNavigation';
 import AppliedJobs from './Screens/Home/Jobs/AppliedJobs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Media} from './Global/Media';
 import JobStatus from './Screens/Home/Jobs/JobStatus';
+import Notification from './Screens/Home/Notification';
+import SkillScreen from './Screens/Profile/Skills';
+import Applycompletion from './Screens/SubPages/Applycompletion';
+import BasicDetails from './Screens/Profile/BasicDetails';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -62,13 +54,10 @@ const App = () => {
 };
 
 const MainApp = () => {
-  const [height, setHeight] = useState(undefined);
-  const dispatch = useDispatch();
-
   return (
     <>
       <StatusBar backgroundColor={Color.primary} />
-      <Stack.Navigator initialRouteName="TabNavigator">
+      <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
@@ -117,15 +106,23 @@ const MainApp = () => {
                 />
               </View>
             ),
-            headerRight: () => (
+          })}
+        />
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
+          options={({navigation, route}) => ({
+            headerTitle: 'Notification',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
               <View style={{marginHorizontal: 10}}>
-                <Image
-                  source={{uri: Media.fobes_white}}
-                  style={{
-                    width: 100,
-                    height: 40,
-                    resizeMode: 'contain',
-                  }}
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
                 />
               </View>
             ),
@@ -149,19 +146,52 @@ const MainApp = () => {
                 />
               </View>
             ),
-            headerRight: () => (
+          })}
+        />
+        <Stack.Screen
+          name="Skill"
+          component={SkillScreen}
+          options={({navigation, route}) => ({
+            headerTitle: 'Key Skills',
+            headerTitleStyle: {color: Color.black},
+            headerTitleAlign: 'center',
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
               <View style={{marginHorizontal: 10}}>
-                <Image
-                  source={{uri: Media.fobes_white}}
-                  style={{
-                    width: 100,
-                    height: 40,
-                    resizeMode: 'contain',
-                  }}
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
                 />
               </View>
             ),
           })}
+        />
+        <Stack.Screen
+          name="basicdetails"
+          component={BasicDetails}
+          options={({navigation, route}) => ({
+            headerTitle: 'Basic Details',
+            headerTitleStyle: {color: Color.black},
+            headerTitleAlign: 'center',
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="Applycompletion"
+          component={Applycompletion}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </>

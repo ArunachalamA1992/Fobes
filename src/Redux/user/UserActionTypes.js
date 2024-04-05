@@ -1,0 +1,4 @@
+export const SET_USER_DATA = 'SET_USER_DATA';
+export const SET_COMPLETE_PROFILE = 'SET_COMPLETE_PROFILE';
+export const SET_ASYNC = 'SET_ASYNC';
+export const SET_ONBOARD = 'SET_ONBOARD';

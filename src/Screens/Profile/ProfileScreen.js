@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,19 +11,26 @@ import {
 } from 'react-native';
 import Color from '../../Global/Color';
 import {Media} from '../../Global/Media';
-import {Poppins} from '../../Global/FontFamily';
+import {Gilmer} from '../../Global/FontFamily';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import {Button, Divider} from 'react-native-paper';
-import {pick, keepLocalCopy} from 'react-native-document-picker';
-import RNFetchBlob from 'rn-fetch-blob';
+import {useDispatch, useSelector} from 'react-redux';
+import common_fn from '../../Config/common_fn';
+import {setCompleteProfile} from '../../Redux';
 
 const ProfileScreen = ({navigation}) => {
-  const [selectedResumeFile, setSelectedResumeFile] = useState(null);
   const [resumeVisible, setResumeVisible] = useState(false);
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {name, email, role} = userData;
+  const profile_complete = useSelector(
+    state => state.UserReducer.profile_complete,
+  );
+  var {resume, details, skills} = profile_complete;
   const [profileCompletion] = useState([
     {
       id: 1,
@@ -40,7 +47,7 @@ const ProfileScreen = ({navigation}) => {
       icon: 'folder-open',
     },
     {
-      id: 1,
+      id: 3,
       name: 'Personal Details',
       subname: 'Add personal details to enrich your profile',
       btname: 'Add Details',
@@ -54,39 +61,20 @@ const ProfileScreen = ({navigation}) => {
       location: 'Gandhipuram, Coimbatore, Tamilnadu - India',
       experiance: 'Fresher',
       email: 'Naveenkumar@avanexa.in',
+      website: 'navee.com',
       phone: '9876543211',
     },
   ]);
-  const isResumeUploaded = () => {
-    return selectedResumeFile != null;
-  };
 
-  const filteredProfileCompletion = isResumeUploaded()
-    ? profileCompletion.slice(1)
-    : profileCompletion;
-
-  const profileupdate = async item => {
-    try {
-      if (item?.id == 1) {
-        const [{name, uri}] = await pick();
-        setSelectedResumeFile({name, uri});
-
-        const [copyResult] = await keepLocalCopy({
-          files: [
-            {
-              uri,
-              fileName: name ?? 'fallback-name',
-            },
-          ],
-          destination: 'documentDirectory',
-        });
-        if (copyResult.status === 'success') {
-        }
-      } else if (item?.id == 2) {
-        navigation.navigate('Skill');
-      }
-    } catch (err) {}
-  };
+  const filteredProfileCompletion = profileCompletion.filter(item => {
+    if (resume != null && resume.name?.length > 0 && item.id === 1) {
+      return false;
+    }
+    if (skills?.length > 0 && item.id === 2) {
+      return false;
+    }
+    return true;
+  });
 
   const getExtention = filename => {
     return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined;
@@ -122,24 +110,16 @@ const ProfileScreen = ({navigation}) => {
     //     });
     // });
   };
+
   useEffect(() => {
-    calculateProfileCompletion();
-  }, [profileStatus, selectedResumeFile]);
+    const profiledata = common_fn.calculateProfileCompletion(
+      resume,
+      skills,
+      details,
+    );
+    setProfileStatus(profiledata);
+  }, [profileStatus, resume, skills, details]);
 
-  const calculateProfileCompletion = () => {
-    const totalFields = 3;
-    let completedFields = 0;
-
-    if (selectedResumeFile != null) {
-      completedFields++;
-    }
-    // if (selectedResumeFile?.trim() !== '') {
-    //   completedFields++;
-    // }
-
-    const percentage = (completedFields / totalFields) * 100;
-    setProfileStatus(percentage);
-  };
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -165,29 +145,32 @@ const ProfileScreen = ({navigation}) => {
             <View style={{flex: 1}}>
               <Text
                 style={{
-                  fontFamily: Poppins.SemiBold,
-                  fontSize: 18,
+                  fontFamily: Gilmer.Bold,
+                  fontSize: 20,
                   color: Color.black,
                 }}>
-                Demo User
+                {name}
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 16,
                   color: Color.cloudyGrey,
                 }}>
                 Dream big, work hard, stay focused
               </Text>
             </View>
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('profileIntro');
+              }}
               style={{
                 backgroundColor: '#DBF3FF',
                 padding: 15,
                 borderRadius: 100,
               }}>
               <FIcon name="pencil" size={25} color={Color.blue} />
-            </View>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -203,7 +186,7 @@ const ProfileScreen = ({navigation}) => {
               <FIcon name="briefcase" size={20} color={Color.lightBlack} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.lightBlack,
                   marginHorizontal: 5,
@@ -220,7 +203,7 @@ const ProfileScreen = ({navigation}) => {
               <F6Icon name="location-dot" size={20} color={Color.lightBlack} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.lightBlack,
                   marginHorizontal: 10,
@@ -259,7 +242,7 @@ const ProfileScreen = ({navigation}) => {
               }}>
               <Text
                 style={{
-                  fontFamily: Poppins.Bold,
+                  fontFamily: Gilmer.Bold,
                   fontSize: 16,
                   color: Color.secondary,
                 }}>
@@ -267,7 +250,7 @@ const ProfileScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.secondary,
                 }}>
@@ -293,7 +276,7 @@ const ProfileScreen = ({navigation}) => {
               }}>
               <Text
                 style={{
-                  fontFamily: Poppins.Bold,
+                  fontFamily: Gilmer.Bold,
                   fontSize: 16,
                   color: Color.secondary,
                 }}>
@@ -301,7 +284,7 @@ const ProfileScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.secondary,
                 }}>
@@ -324,14 +307,19 @@ const ProfileScreen = ({navigation}) => {
             }}>
             <CircularProgress
               value={profileStatus}
-              radius={40}
+              radius={30}
               progressValueColor={'#000'}
               valueSuffix="%"
               titleColor={Color.black}
-              activeStrokeColor="#0BA02C"
-              activeStrokeWidth={15}
-              inActiveStrokeWidth={15}
-              activeStrokeSecondaryColor={'#0BA02C'}
+              activeStrokeColor={
+                profileStatus < 40
+                  ? Color.sunShade
+                  : profileStatus < 80
+                  ? Color.green
+                  : '#0BA02C'
+              }
+              activeStrokeWidth={10}
+              inActiveStrokeWidth={10}
             />
             <View
               style={{
@@ -340,7 +328,7 @@ const ProfileScreen = ({navigation}) => {
               }}>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 18,
                   color: Color.black,
                 }}>
@@ -348,7 +336,7 @@ const ProfileScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.cloudyGrey,
                 }}>
@@ -387,7 +375,7 @@ const ProfileScreen = ({navigation}) => {
                       }}>
                       <Text
                         style={{
-                          fontFamily: Poppins.Bold,
+                          fontFamily: Gilmer.Bold,
                           fontSize: 12,
                           color: Color.green,
                         }}>
@@ -408,7 +396,7 @@ const ProfileScreen = ({navigation}) => {
                         }}>
                         <Text
                           style={{
-                            fontFamily: Poppins.Medium,
+                            fontFamily: Gilmer.Medium,
                             fontSize: 16,
                             color: Color.black,
                           }}>
@@ -417,7 +405,7 @@ const ProfileScreen = ({navigation}) => {
                         <Text
                           style={{
                             flex: 1,
-                            fontFamily: Poppins.Medium,
+                            fontFamily: Gilmer.Medium,
                             fontSize: 14,
                             color: Color.black,
                             marginVertical: 5,
@@ -426,8 +414,24 @@ const ProfileScreen = ({navigation}) => {
                         </Text>
                         <Button
                           mode="contained"
-                          onPress={() => {
-                            profileupdate(item);
+                          onPress={async () => {
+                            try {
+                              const data = await common_fn.profileupdate(
+                                item?.id,
+                                navigation,
+                              );
+                              if (data) {
+                                dispatch(
+                                  setCompleteProfile({
+                                    resume: data,
+                                    details: details,
+                                    skills: skills,
+                                  }),
+                                );
+                              }
+                            } catch (err) {
+                              console.error('Error occurred:', err);
+                            }
                           }}
                           style={{
                             marginVertical: 10,
@@ -457,14 +461,17 @@ const ProfileScreen = ({navigation}) => {
               <Text
                 style={{
                   flex: 1,
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 18,
                   color: Color.black,
                   textTransform: 'capitalize',
                 }}>
                 Basic Details
               </Text>
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('basicdetails');
+                }}
                 style={{
                   backgroundColor: '#DBF3FF',
                   paddingHorizontal: 10,
@@ -475,7 +482,7 @@ const ProfileScreen = ({navigation}) => {
                 <FIcon name="pencil" size={18} color={Color.blue} />
                 <Text
                   style={{
-                    fontFamily: Poppins.Medium,
+                    fontFamily: Gilmer.Medium,
                     fontSize: 14,
                     color: Color.blue,
                     marginHorizontal: 5,
@@ -483,7 +490,7 @@ const ProfileScreen = ({navigation}) => {
                   }}>
                   Edit Info
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             {basicDetails?.map((item, index) => {
               return (
@@ -507,7 +514,7 @@ const ProfileScreen = ({navigation}) => {
                     />
                     <Text
                       style={{
-                        fontFamily: Poppins.Medium,
+                        fontFamily: Gilmer.Medium,
                         fontSize: 14,
                         color: Color.lightBlack,
                         marginHorizontal: 10,
@@ -522,14 +529,14 @@ const ProfileScreen = ({navigation}) => {
                       alignItems: 'center',
                       marginVertical: 10,
                     }}>
-                    <Icon
-                      name={'location'}
+                    <F6Icon
+                      name={'location-dot'}
                       size={20}
                       color={Color.lightBlack}
                     />
                     <Text
                       style={{
-                        fontFamily: Poppins.Medium,
+                        fontFamily: Gilmer.Medium,
                         fontSize: 14,
                         color: Color.lightBlack,
                         marginHorizontal: 10,
@@ -547,7 +554,7 @@ const ProfileScreen = ({navigation}) => {
                     <Icon name={'mail'} size={20} color={Color.lightBlack} />
                     <Text
                       style={{
-                        fontFamily: Poppins.Medium,
+                        fontFamily: Gilmer.Medium,
                         fontSize: 14,
                         color: Color.lightBlack,
                         marginHorizontal: 10,
@@ -562,10 +569,32 @@ const ProfileScreen = ({navigation}) => {
                       alignItems: 'center',
                       marginVertical: 10,
                     }}>
+                    <F6Icon
+                      name={'folder-open'}
+                      size={20}
+                      color={Color.lightBlack}
+                    />
+                    <Text
+                      style={{
+                        fontFamily: Gilmer.Medium,
+                        fontSize: 14,
+                        color: Color.lightBlack,
+                        marginHorizontal: 10,
+                      }}>
+                      {item?.website}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      marginHorizontal: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginVertical: 10,
+                    }}>
                     <Icon name={'call'} size={20} color={Color.lightBlack} />
                     <Text
                       style={{
-                        fontFamily: Poppins.Medium,
+                        fontFamily: Gilmer.Medium,
                         fontSize: 14,
                         color: Color.lightBlack,
                         marginHorizontal: 10,
@@ -586,14 +615,14 @@ const ProfileScreen = ({navigation}) => {
               <Text
                 style={{
                   flex: 1,
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 18,
                   color: Color.black,
                   textTransform: 'capitalize',
                 }}>
                 Resume
               </Text>
-              {selectedResumeFile != null && (
+              {resume != null && resume?.name?.length > 0 && (
                 <TouchableOpacity
                   style={{
                     backgroundColor: '#DBF3FF',
@@ -608,7 +637,7 @@ const ProfileScreen = ({navigation}) => {
                   <FIcon name="pencil" size={18} color={Color.blue} />
                   <Text
                     style={{
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                       fontSize: 14,
                       color: Color.blue,
                       marginHorizontal: 5,
@@ -619,7 +648,7 @@ const ProfileScreen = ({navigation}) => {
                 </TouchableOpacity>
               )}
             </View>
-            {selectedResumeFile != null ? (
+            {resume != null && resume?.name?.length > 0 ? (
               <TouchableOpacity
                 onPress={() => {
                   downloadResume();
@@ -637,17 +666,17 @@ const ProfileScreen = ({navigation}) => {
                 <View style={{marginHorizontal: 10, flex: 1}}>
                   <Text
                     style={{
-                      fontFamily: Poppins.SemiBold,
+                      fontFamily: Gilmer.SemiBold,
                       fontSize: 18,
                       color: Color.black,
                       textTransform: 'capitalize',
                       marginHorizontal: 10,
                     }}>
-                    {selectedResumeFile?.name}
+                    {resume?.name}
                   </Text>
                   <Text
                     style={{
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                       fontSize: 14,
                       color: Color.cloudyGrey,
                       textTransform: 'capitalize',
@@ -662,7 +691,7 @@ const ProfileScreen = ({navigation}) => {
               <>
                 <Text
                   style={{
-                    fontFamily: Poppins.Medium,
+                    fontFamily: Gilmer.Medium,
                     fontSize: 14,
                     color: Color.black,
                     textTransform: 'capitalize',
@@ -676,21 +705,19 @@ const ProfileScreen = ({navigation}) => {
                   mode="contained"
                   onPress={async () => {
                     try {
-                      const [{name, uri}] = await pick();
-                      setSelectedResumeFile({name, uri});
-
-                      const [copyResult] = await keepLocalCopy({
-                        files: [
-                          {
-                            uri,
-                            fileName: name ?? 'fallback-name',
-                          },
-                        ],
-                        destination: 'documentDirectory',
-                      });
-                      if (copyResult.status === 'success') {
+                      const data = await common_fn.profileupdate(1, navigation);
+                      if (data) {
+                        dispatch(
+                          setCompleteProfile({
+                            resume: data,
+                            details: details,
+                            skills: skills,
+                          }),
+                        );
                       }
-                    } catch (err) {}
+                    } catch (err) {
+                      console.error('Error occurred:', err);
+                    }
                   }}
                   style={{
                     width: '50%',
@@ -713,25 +740,28 @@ const ProfileScreen = ({navigation}) => {
               <Text
                 style={{
                   flex: 1,
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 18,
                   color: Color.black,
                   textTransform: 'capitalize',
                 }}>
                 biography
               </Text>
-              <View
+              <TouchableOpacity
                 style={{
                   backgroundColor: '#DBF3FF',
                   paddingHorizontal: 10,
                   borderRadius: 50,
                   flexDirection: 'row',
                   alignItems: 'center',
+                }}
+                onPress={() => {
+                  navigation.navigate('basicdetails');
                 }}>
                 <FIcon name="pencil" size={18} color={Color.blue} />
                 <Text
                   style={{
-                    fontFamily: Poppins.Medium,
+                    fontFamily: Gilmer.Medium,
                     fontSize: 14,
                     color: Color.blue,
                     marginHorizontal: 5,
@@ -739,11 +769,11 @@ const ProfileScreen = ({navigation}) => {
                   }}>
                   Edit Info
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <Text
               style={{
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 16,
                 color: Color.black,
                 textTransform: 'capitalize',
@@ -768,7 +798,7 @@ const ProfileScreen = ({navigation}) => {
             <Text
               style={{
                 flex: 1,
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 18,
                 color: Color.black,
                 textTransform: 'capitalize',
@@ -789,13 +819,13 @@ const ProfileScreen = ({navigation}) => {
               <FIcon name="pencil" size={18} color={Color.blue} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.blue,
                   marginHorizontal: 5,
                   marginVertical: 5,
                 }}>
-                Edit Info
+                {skills?.length > 0 ? 'Edit Info' : 'Add Skills'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -803,37 +833,33 @@ const ProfileScreen = ({navigation}) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              flexWrap: 'wrap',
+              marginVertical: 10,
             }}>
-            <Text
-              style={{
-                fontFamily: Poppins.Medium,
-                fontSize: 16,
-                color: Color.black,
-                textTransform: 'capitalize',
-                marginHorizontal: 10,
-                marginVertical: 10,
-                backgroundColor: '#EAEAEF50',
-                padding: 5,
-                borderRadius: 50,
-                paddingHorizontal: 15,
-              }}>
-              UXUI
-            </Text>
-            <Text
-              style={{
-                fontFamily: Poppins.Medium,
-                fontSize: 16,
-                color: Color.black,
-                textTransform: 'capitalize',
-                marginHorizontal: 10,
-                marginVertical: 10,
-                backgroundColor: '#EAEAEF50',
-                padding: 5,
-                borderRadius: 50,
-                paddingHorizontal: 15,
-              }}>
-              Graphic Design
-            </Text>
+            {skills?.map((item, index) => {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    backgroundColor: '#EAEAEF50',
+                    padding: 10,
+                    borderRadius: 50,
+                    marginHorizontal: 10,
+                    marginVertical: 5,
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 16,
+                      color: Color.black,
+                      textTransform: 'capitalize',
+                      paddingHorizontal: 15,
+                    }}>
+                    {item?.name}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
         </View>
         <View
@@ -850,7 +876,7 @@ const ProfileScreen = ({navigation}) => {
             <Text
               style={{
                 flex: 1,
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 18,
                 color: Color.black,
                 textTransform: 'capitalize',
@@ -871,7 +897,7 @@ const ProfileScreen = ({navigation}) => {
               <FIcon name="pencil" size={18} color={Color.blue} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.blue,
                   marginHorizontal: 5,
@@ -895,7 +921,7 @@ const ProfileScreen = ({navigation}) => {
               <FIcon name="pencil" size={18} color={Color.blue} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.blue,
                   marginHorizontal: 5,
@@ -913,36 +939,39 @@ const ProfileScreen = ({navigation}) => {
             }}>
             <Image
               source={Media.user}
-              style={{width: 80, height: 80, resizeMode: 'contain'}}
+              style={{width: 50, height: 50, resizeMode: 'contain'}}
             />
             <View style={{flex: 1}}>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 16,
                   color: Color.black,
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
+                  marginTop: 5,
                 }}>
                 UI designer
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
-                  fontSize: 16,
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 14,
                   color: Color.black,
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
+                  marginTop: 5,
                 }}>
                 Avanexa Technologies - Full Time
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
-                  fontSize: 16,
+                  fontFamily: Gilmer.Regular,
+                  fontSize: 12,
                   color: Color.cloudyGrey,
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
+                  marginTop: 5,
                 }}>
                 Jan 2023 - Present
               </Text>
@@ -963,7 +992,7 @@ const ProfileScreen = ({navigation}) => {
             <Text
               style={{
                 flex: 1,
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 18,
                 color: Color.black,
                 textTransform: 'capitalize',
@@ -984,7 +1013,7 @@ const ProfileScreen = ({navigation}) => {
               <FIcon name="pencil" size={18} color={Color.blue} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.blue,
                   marginHorizontal: 5,
@@ -1008,7 +1037,7 @@ const ProfileScreen = ({navigation}) => {
               <FIcon name="pencil" size={18} color={Color.blue} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.blue,
                   marginHorizontal: 5,
@@ -1026,37 +1055,39 @@ const ProfileScreen = ({navigation}) => {
             }}>
             <Image
               source={Media.user}
-              style={{width: 80, height: 80, resizeMode: 'contain'}}
+              style={{width: 50, height: 50, resizeMode: 'contain'}}
             />
             <View style={{flex: 1}}>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
-                  fontSize: 18,
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 16,
                   color: Color.black,
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
+                  marginTop: 5,
                 }}>
                 B.sc Multimedia and Design
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.black,
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
+                  marginTop: 5,
                 }}>
                 PSG College of Arts and Science, Coimbatore
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
-                  fontSize: 14,
+                  fontFamily: Gilmer.Regular,
+                  fontSize: 12,
                   color: Color.cloudyGrey,
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
-                  marginVertical: 10,
+                  marginTop: 5,
                 }}>
                 2017-2020
               </Text>
@@ -1077,7 +1108,7 @@ const ProfileScreen = ({navigation}) => {
             <Text
               style={{
                 flex: 1,
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 18,
                 color: Color.black,
                 textTransform: 'capitalize',
@@ -1098,7 +1129,7 @@ const ProfileScreen = ({navigation}) => {
               <FIcon name="pencil" size={18} color={Color.blue} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.blue,
                   marginHorizontal: 5,
@@ -1122,7 +1153,7 @@ const ProfileScreen = ({navigation}) => {
               <FIcon name="pencil" size={18} color={Color.blue} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.blue,
                   marginHorizontal: 5,
@@ -1140,36 +1171,39 @@ const ProfileScreen = ({navigation}) => {
             }}>
             <Image
               source={Media.user}
-              style={{width: 80, height: 80, resizeMode: 'contain'}}
+              style={{width: 50, height: 50, resizeMode: 'contain'}}
             />
             <View style={{flex: 1}}>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
-                  fontSize: 18,
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 16,
                   color: Color.black,
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
+                  marginTop: 5,
                 }}>
                 Albion Mobile app
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.black,
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
+                  marginTop: 5,
                 }}>
                 User Research, UI Designing
               </Text>
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
-                  fontSize: 14,
+                  fontFamily: Gilmer.Regular,
+                  fontSize: 12,
                   color: Color.cloudyGrey,
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
+                  marginTop: 5,
                 }}>
                 Jan 2024 - Mar 2024
               </Text>
@@ -1190,14 +1224,14 @@ const ProfileScreen = ({navigation}) => {
             <Text
               style={{
                 flex: 1,
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 18,
                 color: Color.black,
                 textTransform: 'capitalize',
               }}>
               Personal Details
             </Text>
-            <View
+            <TouchableOpacity
               style={{
                 backgroundColor: '#DBF3FF',
                 paddingHorizontal: 10,
@@ -1205,11 +1239,14 @@ const ProfileScreen = ({navigation}) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 marginHorizontal: 5,
+              }}
+              onPress={() => {
+                navigation.navigate('basicdetails');
               }}>
               <FIcon name="pencil" size={18} color={Color.blue} />
               <Text
                 style={{
-                  fontFamily: Poppins.Medium,
+                  fontFamily: Gilmer.Medium,
                   fontSize: 14,
                   color: Color.blue,
                   marginHorizontal: 5,
@@ -1217,12 +1254,12 @@ const ProfileScreen = ({navigation}) => {
                 }}>
                 Edit Info
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, marginVertical: 10}}>
             <Text
               style={{
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 16,
                 color: Color.cloudyGrey,
                 textTransform: 'capitalize',
@@ -1232,7 +1269,7 @@ const ProfileScreen = ({navigation}) => {
             </Text>
             <Text
               style={{
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 16,
                 color: Color.black,
                 textTransform: 'capitalize',
@@ -1241,11 +1278,10 @@ const ProfileScreen = ({navigation}) => {
               Male
             </Text>
           </View>
-          <Divider style={{height: 1, marginVertical: 10}} />
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, marginVertical: 10}}>
             <Text
               style={{
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 16,
                 color: Color.cloudyGrey,
                 textTransform: 'capitalize',
@@ -1255,7 +1291,7 @@ const ProfileScreen = ({navigation}) => {
             </Text>
             <Text
               style={{
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 16,
                 color: Color.black,
                 textTransform: 'capitalize',
@@ -1264,11 +1300,10 @@ const ProfileScreen = ({navigation}) => {
               Single
             </Text>
           </View>
-          <Divider style={{height: 1, marginVertical: 10}} />
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, marginVertical: 10}}>
             <Text
               style={{
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 16,
                 color: Color.cloudyGrey,
                 textTransform: 'capitalize',
@@ -1278,13 +1313,35 @@ const ProfileScreen = ({navigation}) => {
             </Text>
             <Text
               style={{
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 16,
                 color: Color.black,
                 textTransform: 'capitalize',
                 marginHorizontal: 10,
               }}>
               Tamil, English
+            </Text>
+          </View>
+          <View style={{flex: 1, marginVertical: 10}}>
+            <Text
+              style={{
+                fontFamily: Gilmer.Medium,
+                fontSize: 16,
+                color: Color.cloudyGrey,
+                textTransform: 'capitalize',
+                marginHorizontal: 10,
+              }}>
+              Date of Birth
+            </Text>
+            <Text
+              style={{
+                fontFamily: Gilmer.Medium,
+                fontSize: 16,
+                color: Color.black,
+                textTransform: 'capitalize',
+                marginHorizontal: 10,
+              }}>
+              01 - 05 - 1996
             </Text>
           </View>
         </View>
@@ -1316,30 +1373,30 @@ const ProfileScreen = ({navigation}) => {
             }}>
             <Text
               style={{
-                fontFamily: Poppins.Bold,
+                fontFamily: Gilmer.Bold,
                 fontWeight: 'bold',
                 fontSize: 20,
                 color: Color.black,
                 textTransform: 'capitalize',
                 marginHorizontal: 10,
                 textAlign: 'center',
-                marginVerticalL: 10,
+                marginVertical: 10,
               }}>
               Resume
             </Text>
             <Text
               style={{
-                fontFamily: Poppins.Bold,
+                fontFamily: Gilmer.Bold,
                 fontWeight: '600',
                 fontSize: 16,
                 color: Color.cloudyGrey,
                 textTransform: 'capitalize',
                 marginHorizontal: 10,
-                marginVerticalL: 10,
+                marginVertical: 10,
               }}>
               Supported file format DOC,DOCX,PDF,RTF,Maximum file size 2MB
             </Text>
-            {selectedResumeFile != null ? (
+            {resume != null && resume?.name?.length > 0 ? (
               <>
                 <TouchableOpacity
                   onPress={() => {
@@ -1362,17 +1419,17 @@ const ProfileScreen = ({navigation}) => {
                   <View style={{marginHorizontal: 10, flex: 1}}>
                     <Text
                       style={{
-                        fontFamily: Poppins.SemiBold,
+                        fontFamily: Gilmer.SemiBold,
                         fontSize: 18,
                         color: Color.black,
                         textTransform: 'capitalize',
                         marginHorizontal: 10,
                       }}>
-                      {selectedResumeFile?.name}
+                      {resume?.name}
                     </Text>
                     <Text
                       style={{
-                        fontFamily: Poppins.Medium,
+                        fontFamily: Gilmer.Medium,
                         fontSize: 14,
                         color: Color.cloudyGrey,
                         textTransform: 'capitalize',
@@ -1393,7 +1450,13 @@ const ProfileScreen = ({navigation}) => {
                     mode="contained"
                     onPress={async () => {
                       try {
-                        setSelectedResumeFile(null);
+                        dispatch(
+                          setCompleteProfile({
+                            resume: null,
+                            details: details,
+                            skills: skills,
+                          }),
+                        );
                       } catch (err) {}
                     }}
                     style={{
@@ -1407,22 +1470,22 @@ const ProfileScreen = ({navigation}) => {
                     mode="contained"
                     onPress={async () => {
                       try {
-                        const [{name, uri}] = await pick();
-                        setSelectedResumeFile({name, uri});
-                        setResumeVisible(false);
-
-                        const [copyResult] = await keepLocalCopy({
-                          files: [
-                            {
-                              uri,
-                              fileName: name ?? 'fallback-name',
-                            },
-                          ],
-                          destination: 'documentDirectory',
-                        });
-                        if (copyResult.status === 'success') {
+                        const data = await common_fn.profileupdate(
+                          1,
+                          navigation,
+                        );
+                        if (data) {
+                          dispatch(
+                            setCompleteProfile({
+                              resume: data,
+                              details: details,
+                              skills: skills,
+                            }),
+                          );
                         }
-                      } catch (err) {}
+                      } catch (err) {
+                        console.error('Error occurred:', err);
+                      }
                     }}
                     style={{
                       backgroundColor: Color.primary,
@@ -1430,7 +1493,7 @@ const ProfileScreen = ({navigation}) => {
                       alignItems: 'flex-end',
                     }}
                     textColor={Color.white}>
-                    {selectedResumeFile != null
+                    {resume != null && resume?.name?.length > 0
                       ? 'Update Resume'
                       : 'Upload Resume'}
                   </Button>
@@ -1440,7 +1503,7 @@ const ProfileScreen = ({navigation}) => {
               <>
                 <Text
                   style={{
-                    fontFamily: Poppins.Medium,
+                    fontFamily: Gilmer.Medium,
                     fontSize: 14,
                     color: Color.black,
                     textTransform: 'capitalize',
@@ -1454,22 +1517,19 @@ const ProfileScreen = ({navigation}) => {
                   mode="contained"
                   onPress={async () => {
                     try {
-                      const [{name, uri}] = await pick();
-                      setSelectedResumeFile({name, uri});
-                      setResumeVisible(false);
-
-                      const [copyResult] = await keepLocalCopy({
-                        files: [
-                          {
-                            uri,
-                            fileName: name ?? 'fallback-name',
-                          },
-                        ],
-                        destination: 'documentDirectory',
-                      });
-                      if (copyResult.status === 'success') {
+                      const data = await common_fn.profileupdate(1, navigation);
+                      if (data) {
+                        dispatch(
+                          setCompleteProfile({
+                            resume: data,
+                            details: details,
+                            skills: skills,
+                          }),
+                        );
                       }
-                    } catch (err) {}
+                    } catch (err) {
+                      console.error('Error occurred:', err);
+                    }
                   }}
                   style={{
                     backgroundColor: '#DBF3FF',

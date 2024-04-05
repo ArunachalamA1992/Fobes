@@ -1,282 +1,360 @@
-//import liraries
-import React, { Component, useState } from 'react';
+import React, {useState} from 'react';
 import {
-    View, Text, StyleSheet, Image, TextInput, Animated, TouchableOpacity, ToastAndroid, AlertIOS, Platform,
-    KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Animated,
+  TouchableOpacity,
+  ToastAndroid,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 
-import { scr_height, scr_width } from '../../Utils/Dimensions';
+import {scr_height, scr_width} from '../../Utils/Dimensions';
 import Color from '../../Global/Color';
-import { Poppins } from '../../Global/FontFamily';
-import { useNavigation, useTheme } from '@react-navigation/native';
-import { Iconviewcomponent } from '../../Components/Icontag';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-// Import Document Picker
-import DocumentPicker from 'react-native-document-picker';
+import {Gilmer} from '../../Global/FontFamily';
+import {useNavigation, useTheme} from '@react-navigation/native';
+import {Iconviewcomponent} from '../../Components/Icontag';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import DocumentPicker, {pick} from 'react-native-document-picker';
 
-const DismissKeyboard = ({ children }) => (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        {children}
-    </TouchableWithoutFeedback>
+const DismissKeyboard = ({children}) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
 );
 
-// create a component
-const ApplyJob = () => {
+const ApplyJob = ({navigation}) => {
+  const [username, setUsername] = useState('');
+  const [emailValidError, setEmailValidError] = useState('');
+  const [cover, setcover] = useState('');
 
-    const navigation = useNavigation();
-
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [emailValidError, setEmailValidError] = useState('');
-    const [cover, setcover] = useState('');
-    const { colors } = useTheme();
-
-    const [fileName, setfileName] = useState('');
-
-
-    const handleValidEmail = val => {
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-        if (val.length === 0) {
-            setEmailValidError('Email address must be enter');
-        } else if (reg.test(val) === false) {
-            setEmailValidError('Enter valid email address');
-        } else if (reg.test(val) === true) {
-            setEmailValidError('');
-        }
-    };
-
-    async function selectOneFile() {
-        try {
-            const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
-                //There can me more options as well
-                // DocumentPicker.types.allFiles
-                // DocumentPicker.types.images
-                // DocumentPicker.types.plainText
-                // DocumentPicker.types.audio
-                // DocumentPicker.types.pdf
-            });
-            //Printing the log realted to the file
-            console.log('res : ' + JSON.stringify(res));
-            console.log('URI : ' + res[0].uri);
-            console.log('Type : ' + res[0].type);
-            console.log('File Name : ' + res[0].name);
-            console.log('File Size : ' + res[0].size);
-            setfileName(res[0].name)
-        } catch (error) {
-            console.log("catch in selectOne_File : ", error);
-            if (DocumentPicker.isCancel(err)) {
-                //If user canceled the document selection
-                alert('Canceled from single doc picker');
-            } else {
-                //For Unknown Error
-                alert('Unknown Error: ' + JSON.stringify(err));
-                throw err;
-            }
-        }
+  const applyJob = () => {
+    try {
+      // if (username != '' && email != '' && phone != '') {
+      navigation.navigate('Applycompletion');
+      // ToastAndroid.show('Applied Successfully', ToastAndroid.SHORT);
+      // } else {
+      //   ToastAndroid.show('Please Fill Mandatory Fields', ToastAndroid.SHORT);
+      // }
+    } catch (error) {
+      console.log('catch in applyJob_Click : ', error);
     }
+  };
 
-    function applyJobClick() {
-        try {
-            if (username != "" && email != "" && phone != "") {
-                console.log("Username ====== :" + username + " E-mail ===== :" + email + "  phone ===== :" + phone + " cover  ==== :" + cover);
-                ToastAndroid.show("Applied Successfully", ToastAndroid.SHORT)
-            } else {
-                ToastAndroid.show("Please Fill Mandatory Fields", ToastAndroid.SHORT)
-            }
-        } catch (error) {
-            console.log("catch in applyJob_Click : ", error);
-        }
-    }
+  const [applyJobData, setApllyJobData] = useState({
+    name: '',
+    portfolio: '',
+    resume: {},
+    cover_letter: '',
+  });
 
-    return (
-        // <KeyboardAvoidingView
-        //     style={{ flex: 1 }}
-        //     behavior={'position'}
-        //     keyboardVerticalOffset={Platform.OS === "ios" ? 40 : 0}
-        // >
-        <KeyboardAwareScrollView>
-            <DismissKeyboard>
-                <View style={styles.container}>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: Color.white }}>
-                        <Animated.View style={{ width: '95%', alignItems: 'center', marginVertical: 10 }}>
-                            <Text style={{ width: '100%', textAlign: 'left', fontFamily: Poppins.Medium, paddingVertical: 5, fontSize: 14, color: Color.cloudyGrey }}>Full Name *</Text>
+  return (
+    <View style={styles.container}>
+      <View
+        style={{
+          backgroundColor: Color.white,
+        }}>
+        <View style={{marginVertical: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontFamily: Gilmer.Bold,
+                paddingVertical: 5,
+                fontSize: 16,
+                color: Color.black,
+              }}>
+              Full Name{' '}
+            </Text>
+            <Text
+              style={{
+                fontFamily: Gilmer.Bold,
+                paddingVertical: 5,
+                fontSize: 20,
+                color: Color.red,
+              }}>
+              *
+            </Text>
+          </View>
+          <TextInput
+            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            placeholder="Enter your Full Name"
+            placeholderTextColor={Color.transparantBlack}
+            value={applyJobData?.name}
+            onChangeText={text => {
+              setApllyJobData({
+                name: text,
+                portfolio: applyJobData?.portfolio,
+                resume: applyJobData?.resume,
+                cover_letter: applyJobData?.cover_letter,
+              });
+            }}
+            keyboardType="name-phone-pad"
+          />
+        </View>
+        <View style={{marginVertical: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontFamily: Gilmer.Bold,
+                paddingVertical: 5,
+                fontSize: 16,
+                color: Color.black,
+              }}>
+              Portfolio
+            </Text>
+            <Text
+              style={{
+                textAlign: 'left',
+                fontFamily: Gilmer.Regular,
+                paddingVertical: 5,
+                fontSize: 14,
+                color: Color.cloudyGrey,
+              }}>
+              {' '}
+              (Optional)
+            </Text>
+          </View>
+          <TextInput
+            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            placeholder="Provide Portfolio link"
+            placeholderTextColor={Color.transparantBlack}
+            value={applyJobData?.portfolio}
+            onChangeText={text => {
+              setApllyJobData({
+                name: applyJobData?.name,
+                portfolio: text,
+                resume: applyJobData?.resume,
+                cover_letter: applyJobData?.cover_letter,
+              });
+            }}
+            keyboardType="name-phone-pad"
+          />
+        </View>
+        <View style={{marginVertical: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontFamily: Gilmer.Bold,
+                paddingVertical: 5,
+                fontSize: 16,
+                color: Color.black,
+              }}>
+              Upload Resume{' '}
+            </Text>
+            <Text
+              style={{
+                fontFamily: Gilmer.Bold,
+                paddingVertical: 5,
+                fontSize: 20,
+                color: Color.red,
+              }}>
+              *
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={async () => {
+              try {
+                const [{name, uri}] = await pick();
+                setApllyJobData({
+                  name: applyJobData?.name,
+                  portfolio: applyJobData?.portfolio,
+                  resume: {name, uri},
+                  cover_letter: applyJobData?.cover_letter,
+                });
+                console.log('{name, uri}', {name, uri}, applyJobData?.resume);
+              } catch (error) {
+                console.log('error', error);
+              }
+            }}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              minHeight: 130,
+              borderWidth: 1,
+              borderColor: Color.cloudyGrey,
+              borderRadius: 5,
+              borderStyle: 'dashed',
+              marginVertical: 10,
+              padding: 10,
+            }}>
+            {applyJobData?.resume != null &&
+            applyJobData?.resume?.name?.length > 0 ? (
+              <Text
+                style={{
+                  fontFamily: Gilmer.SemiBold,
+                  fontSize: 18,
+                  color: Color.black,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 10,
+                }}>
+                {applyJobData?.resume?.name}
+              </Text>
+            ) : (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Iconviewcomponent
+                  Icontag={'FontAwesome'}
+                  iconname={'folder-open'}
+                  icon_size={30}
+                  icon_color={'#A0C7EB'}
+                />
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: Color.cloudyGrey,
+                    textAlign: 'center',
+                    fontFamily: Gilmer.Medium,
+                    marginVertical: 10,
+                  }}>
+                  File Should be DOC, PDF, JPG
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.primary,
+                    textAlign: 'center',
+                    fontFamily: Gilmer.Bold,
+                  }}>
+                  Browse Files
+                </Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
 
-                            <View style={[styles.NumberBoxConatiner, { marginVertical: 0 }]}>
-                                <TextInput
-                                    style={[styles.numberTextBox, { paddingHorizontal: 10, }]}
-                                    placeholder="Enter your Full Name"
-                                    placeholderTextColor={Color.transparantBlack}
-                                    value={username}
-                                    onChangeText={text => {
-                                        setUsername(text);
-                                    }}
-                                    keyboardType='name-phone-pad'
-                                />
-                            </View>
-                            {/* {emailValidError ?  */}
-                            {/* <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontSize: 14, color: 'red' }}>Enter your name</Text> */}
-                            {/* : null} */}
+        <View style={{marginVertical: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={{
+                paddingVertical: 5,
+                fontFamily: Gilmer.Bold,
+                fontSize: 16,
+                color: Color.black,
+              }}>
+              Cover Letter
+            </Text>
+            <Text
+              style={{
+                textAlign: 'left',
+                fontFamily: Gilmer.Regular,
+                paddingVertical: 5,
+                fontSize: 14,
+                color: Color.cloudyGrey,
+              }}>
+              {' '}
+              (Optional)
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 5,
+              backgroundColor: '#EAEAEF50',
+              // borderWidth: 1,
+              // borderColor: Color.cloudyGrey,
+              borderRadius: 5,
+            }}>
+            <TextInput
+              placeholder="Enter your Cover Letter"
+              placeholderTextColor={Color.cloudyGrey}
+              multiline={true}
+              value={cover}
+              onChangeText={text => {
+                setApllyJobData({
+                  name: applyJobData?.name,
+                  portfolio: applyJobData?.portfolio,
+                  resume: applyJobData?.resume,
+                  cover_letter: text,
+                });
+              }}
+              returnKeyType={'done'}
+              style={{
+                color: 'black',
+                minHeight: 100,
+                fontSize: 16,
+                textAlign: 'justify',
+                fontFamily: Gilmer.Medium,
+                paddingHorizontal: 10,
+              }}
+              textAlignVertical="top"
+              showSoftInputOnFocus={true}
+            />
+          </View>
+        </View>
 
-                            <View style={{ width: '100%', marginVertical: 5 }}>
-                                <Text style={{ width: '100%', textAlign: 'left', fontFamily: Poppins.Medium, paddingVertical: 5, fontSize: 14, color: Color.cloudyGrey }}>E-mail *</Text>
-                                <View style={[styles.NumberBoxConatiner, { marginVertical: 0 }]}>
-                                    <TextInput
-                                        style={[styles.numberTextBox, { paddingHorizontal: 10, }]}
-                                        placeholder="Enter your E-mail"
-                                        placeholderTextColor={Color.transparantBlack}
-                                        onChangeText={text => {
-                                            setEmail(text);
-                                            handleValidEmail(text);
-                                        }}
-                                        keyboardType="email-address"
-                                    />
-                                </View>
-                                {emailValidError ?
-                                    <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontSize: 14, color: 'red' }}>{emailValidError}</Text>
-                                    : null}
-                            </View>
-
-                            <View style={{ width: '100%', marginVertical: 5 }}>
-                                <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontFamily: Poppins.Medium, fontSize: 14, color: Color.cloudyGrey }}>Phone *</Text>
-                                <View style={styles.NumberBoxConatiner}>
-                                    <Text style={styles.numberCountryCode}>+91</Text>
-                                    <TextInput
-                                        placeholder="Enter your Phone Number"
-                                        placeholderTextColor={Color.Venus}
-                                        value={phone}
-                                        keyboardType="phone-pad"
-                                        maxLength={10}
-                                        autoFocus={phone.length == 10 ? false : true}
-                                        onChangeText={(text) => setPhone(text)}
-                                        style={{
-                                            flex: 1,
-                                            display: "flex",
-                                            height: 50,
-                                            borderLeftColor: Color.Venus,
-                                            borderLeftWidth: 1,
-                                            color: Color.black,
-                                            fontSize: 14,
-                                            padding: 5,
-                                            paddingTop: 7, paddingHorizontal: 10,
-                                            fontFamily: Poppins.SemiBold,
-                                            alignItems: "flex-start",
-                                        }}
-                                    />
-                                </View>
-                                {/* <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontSize: 14, color: 'red' }}>Enter your phone number</Text> */}
-                            </View>
-
-                            <View style={{ width: '100%', marginVertical: 5 }}>
-                                <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontFamily: Poppins.Medium, fontSize: 14, color: Color.cloudyGrey }}>Upload Resume</Text>
-                                <TouchableOpacity onPress={() => selectOneFile()} style={{ justifyContent: 'center', alignItems: 'center', minHeight: 130, borderWidth: 1, borderColor: Color.cloudyGrey, borderRadius: 5, }}>
-                                    <Iconviewcomponent
-                                        Icontag={'SimpleLineIcons'}
-                                        iconname={'cloud-upload'}
-                                        icon_size={22}
-                                        icon_color={Color.lightBlack}
-                                        iconstyle={{ padding: 5 }}
-                                    />
-                                    <Text style={{ fontSize: 12, color: Color.cloudyGrey, textAlign: 'center', fontFamily: Poppins.Light }}>File Should be DOC, PDF, JPG</Text>
-                                    <Text style={{ fontSize: 14, color: Color.primary, textAlign: 'center', fontFamily: Poppins.Medium }}>Browse Files</Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <Text style={{ width: '100%', fontSize: 14, color: Color.cloudyGrey, textAlign: 'left', fontFamily: Poppins.Medium, paddingVertical: 5 }}>{fileName}</Text>
-
-                            <View style={{ width: '100%', marginVertical: 5 }}>
-                                <Text style={{ width: '100%', textAlign: 'left', paddingVertical: 5, fontFamily: Poppins.Medium, fontSize: 14, color: Color.cloudyGrey }}>Cover Letter</Text>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        marginTop: 5,
-                                        backgroundColor: 'white',
-                                        borderWidth: 1,
-                                        borderColor: Color.cloudyGrey,
-                                        borderRadius: 5,
-                                    }}>
-                                    <TextInput
-                                        placeholder="Enter your Cover Letter"
-                                        placeholderTextColor={Color.cloudyGrey}
-                                        multiline={true}
-                                        value={cover}
-                                        onChangeText={text => setcover(text)}
-                                        returnKeyType={'done'}
-                                        style={{
-                                            width: '100%',
-                                            color: 'black',
-                                            minHeight: 100,
-                                            maxHeight: 160,
-                                            fontSize: 16,
-                                            padding: 10,
-                                            textAlign: 'justify',
-                                            lineHeight: 25, letterSpacing: 0.5
-                                        }}
-                                        textAlignVertical='top'
-                                        showSoftInputOnFocus={true}
-                                    />
-                                </View>
-                            </View>
-
-                            <TouchableOpacity onPress={() => applyJobClick()}
-                                style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', backgroundColor: Color.primary, marginVertical: 20, borderRadius: 50 }}>
-                                <Text style={{ fontSize: 16, color: Color.white, textAlign: 'center' }}>Apply Now</Text>
-                            </TouchableOpacity>
-                        </Animated.View >
-                    </View>
-                </View>
-            </DismissKeyboard>
-        </KeyboardAwareScrollView>
-    );
+        <TouchableOpacity
+          onPress={() => {
+            applyJob();
+          }}
+          style={{
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: Color.primary,
+            marginVertical: 20,
+            borderRadius: 50,
+          }}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: Color.white,
+              textAlign: 'center',
+              fontFamily: Gilmer.Bold,
+            }}>
+            Apply Now
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 };
 
-// define your styles
 const styles = StyleSheet.create({
-    container: {
-        width: scr_width,
-        height: scr_height,
-        backgroundColor: Color.white,
-    },
-    NumberBoxConatiner: {
-        display: "flex",
-        borderColor: Color.Venus,
-        borderWidth: 1,
-        height: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderRadius: 5,
-    },
-    numberCountryCode: {
-        color: Color.Venus,
-        marginHorizontal: 10,
-        fontSize: 14,
-        fontFamily: Poppins.SemiBold,
-        textAlign: "center",
-        alignItems: "center",
-        padding: 5,
-        paddingTop: 7,
-    },
-    numberTextBox: {
-        flex: 1,
-        display: "flex",
-        height: 50,
-        // borderLeftColor: Color.Venus,
-        // borderLeftWidth: 1,
-        color: Color.black,
-        fontSize: 14,
-        padding: 5,
-        paddingTop: 7,
-        fontFamily: Poppins.SemiBold,
-        alignItems: "flex-start",
-    },
-    input: {
-        margin: 5,
-        minHeight: 100,
-        maxHeight: 200,
-    },
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: Color.white,
+  },
+  NumberBoxConatiner: {
+    borderColor: Color.Venus,
+    borderWidth: 1,
+    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  numberCountryCode: {
+    color: Color.Venus,
+    marginHorizontal: 10,
+    fontSize: 14,
+    fontFamily: Gilmer.SemiBold,
+    textAlign: 'center',
+    alignItems: 'center',
+    padding: 5,
+    paddingTop: 7,
+  },
+  numberTextBox: {
+    height: 50,
+    color: Color.black,
+    fontSize: 14,
+    padding: 5,
+    paddingTop: 7,
+    borderRadius: 10,
+    fontFamily: Gilmer.SemiBold,
+    alignItems: 'flex-start',
+    backgroundColor: '#EAEAEF50',
+  },
+  input: {
+    margin: 5,
+    minHeight: 100,
+    maxHeight: 200,
+  },
 });
 
-//make this component available to the app
 export default ApplyJob;

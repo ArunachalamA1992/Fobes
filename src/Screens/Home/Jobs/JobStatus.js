@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Image, ScrollView, Text, View} from 'react-native';
 import Color from '../../../Global/Color';
-import {Poppins} from '../../../Global/FontFamily';
+import {Gilmer} from '../../../Global/FontFamily';
 import {Iconviewcomponent} from '../../../Components/Icontag';
 import {Button} from 'react-native-paper';
 import StepIndicator from 'react-native-step-indicator';
@@ -124,7 +124,7 @@ const JobStatus = ({navigation, route}) => {
               style={{
                 fontSize: 18,
                 color: Color.black,
-                fontFamily: Poppins.Bold,
+                fontFamily: Gilmer.Bold,
                 textAlign: 'center',
               }}
               numberOfLines={2}>
@@ -134,7 +134,7 @@ const JobStatus = ({navigation, route}) => {
               style={{
                 fontSize: 14,
                 color: Color.darkGrey,
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 textAlign: 'center',
               }}
               numberOfLines={1}>
@@ -158,7 +158,7 @@ const JobStatus = ({navigation, route}) => {
               style={{
                 fontSize: 14,
                 color: Color.Venus,
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 paddingHorizontal: 5,
               }}>
               {itemData.apply_job_comp_loc}
@@ -186,7 +186,7 @@ const JobStatus = ({navigation, route}) => {
             />
             <Text
               style={{
-                fontFamily: Poppins.Medium,
+                fontFamily: Gilmer.Medium,
                 fontSize: 14,
                 color: Color.black,
                 textTransform: 'capitalize',
@@ -199,7 +199,7 @@ const JobStatus = ({navigation, route}) => {
         </View>
         <Text
           style={{
-            fontFamily: Poppins.Bold,
+            fontFamily: Gilmer.Bold,
             fontSize: 18,
             color: Color.black,
             textTransform: 'capitalize',
@@ -233,7 +233,7 @@ const JobStatus = ({navigation, route}) => {
         </View>
         <Text
           style={{
-            fontFamily: Poppins.Bold,
+            fontFamily: Gilmer.Bold,
             fontSize: 18,
             color: Color.black,
             textTransform: 'capitalize',
@@ -265,7 +265,7 @@ const JobStatus = ({navigation, route}) => {
                 <View style={{flex: 1}}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 18,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -276,7 +276,7 @@ const JobStatus = ({navigation, route}) => {
                   </Text>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.cloudyGrey,
                       textTransform: 'capitalize',
@@ -315,7 +315,7 @@ const JobStatus = ({navigation, route}) => {
                     style={{
                       fontSize: 14,
                       color: Color.black,
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                       paddingHorizontal: 5,
                     }}>
                     {itemData.apply_job_comp_loc}
@@ -325,7 +325,7 @@ const JobStatus = ({navigation, route}) => {
                   style={{
                     fontSize: 14,
                     color: Color.black,
-                    fontFamily: Poppins.Medium,
+                    fontFamily: Gilmer.Medium,
                     paddingHorizontal: 5,
                   }}>
                   {itemData.apply_job_exp}
@@ -341,7 +341,7 @@ const JobStatus = ({navigation, route}) => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 12,
                       color: Color.green,
                     }}>
@@ -358,7 +358,7 @@ const JobStatus = ({navigation, route}) => {
                 <View style={{flex: 1}}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -369,7 +369,7 @@ const JobStatus = ({navigation, route}) => {
                   </Text>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 18,
                       color: Color.primary,
                       textTransform: 'capitalize',
@@ -381,7 +381,7 @@ const JobStatus = ({navigation, route}) => {
                 <View style={{alignItems: 'center'}}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -399,7 +399,7 @@ const JobStatus = ({navigation, route}) => {
                     />
                     <Text
                       style={{
-                        fontFamily: Poppins.Bold,
+                        fontFamily: Gilmer.Bold,
                         fontSize: 18,
                         color: Color.primary,
                         textTransform: 'capitalize',

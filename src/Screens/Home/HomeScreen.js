@@ -1,930 +1,801 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
-    StyleSheet,
-    Text,
-    Animated,
-    View,
-    FlatList,
-    TextInput,
-    Keyboard,
-    SafeAreaView,
-    ScrollView,
-    Image,
-    Linking,
-    StatusBar,
-    TouchableOpacity,
-    SectionList,
-    Alert,
-    Platform,
-    UIManager,
-    LayoutAnimation,
-    LogBox,
-    Modal,
-    Button,
-    Dimensions,
+  StyleSheet,
+  Text,
+  Animated,
+  View,
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Platform,
+  UIManager,
+  LogBox,
+  SectionList,
 } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
-import NetInfo from '@react-native-community/netinfo';
-import { scr_width } from '../../Utils/Dimensions';
-import { Iconviewcomponent } from '../../Components/Icontag';
-import { Media } from '../../Global/Media';
+import {useNavigation} from '@react-navigation/native';
+import {scr_width} from '../../Utils/Dimensions';
+import {Iconviewcomponent} from '../../Components/Icontag';
+import {Media} from '../../Global/Media';
 import Color from '../../Global/Color';
-import { Poppins } from '../../Global/FontFamily';
+import {Gilmer} from '../../Global/FontFamily';
 
-
-import FIcon from 'react-native-vector-icons/FontAwesome';
-import F6Icon from 'react-native-vector-icons/FontAwesome6';
-import Icon from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
-
+import {Button} from 'react-native-paper';
+import {setAsync, setCompleteProfile, setUserData} from '../../Redux';
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import common_fn from '../../Config/common_fn';
+import {ApplyJobData} from '../../Global/Content';
+import {JobCardHorizontal} from '../../Components/JobItemCard';
 
 LogBox.ignoreAllLogs();
+const HomeScreen = ({navigation}) => {
+  const [selectTab, setSelectTab] = useState('FullTime');
+  const dispatch = useDispatch();
+  const [profileStatus, setProfileStatus] = useState(0);
+  const [height, setHeight] = useState(undefined);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {name, email, role} = userData;
+  const profile_complete = useSelector(
+    state => state.UserReducer.profile_complete,
+  );
+  var {resume, details, skills} = profile_complete;
 
-// const TabBarHeight = 50;
-const HeaderHeight = 150;
-const windowHeight = Dimensions.get('window').height;
+  useEffect(() => {
+    const profiledata = common_fn.calculateProfileCompletion(
+      resume,
+      skills,
+      details,
+    );
+    setProfileStatus(profiledata);
+  }, [profileStatus, resume, skills, details]);
 
-// create a component
-const HomeScreen = () => {
+  const [topCompany, setTopCompany] = useState([
+    {
+      id: 1,
+      comp_logo: Media.propertyMain,
+      comp_name: 'Calibre Infotech',
+      comp_address: 'Coimbatore',
+      comp_offer_count: '10',
+      image: Media.propertyMain,
+    },
+    {
+      id: 2,
+      comp_logo: Media.propertyMain,
+      comp_name: 'Calibre Infotech',
+      comp_address: 'Coimbatore',
+      comp_offer_count: '10',
+      image: Media.propertyMain,
+    },
+    {
+      id: 3,
+      comp_logo: Media.propertyMain,
+      comp_name: 'Calibre Infotech',
+      comp_address: 'Coimbatore',
+      comp_offer_count: '10',
+      image: Media.propertyMain,
+    },
+    {
+      id: 4,
+      comp_logo: Media.propertyMain,
+      comp_name: 'Calibre Infotech',
+      comp_address: 'Coimbatore',
+      comp_offer_count: '10',
+      image: Media.propertyMain,
+    },
+    {
+      id: 5,
+      comp_logo: Media.propertyMain,
+      comp_name: 'Calibre Infotech',
+      comp_address: 'Coimbatore',
+      comp_offer_count: '10',
+      image: Media.propertyMain,
+    },
+  ]);
 
-    const dispatch = useDispatch();
-    const navigation = useNavigation()
-    const [netInfo_State, setNetinfo] = useState(true);
-    const [selectTab, setSelectTab] = useState('FullTime');
+  const [BuySection] = useState([
+    {
+      id: 1,
+      title: 'Apply Albion Home Online',
+      data: ['Apply Albion Home Online'],
+    },
+    {id: 2, title: 'Check your Eligibility', data: ['Check your Eligibility']},
+    {id: 3, title: 'Top Company', data: ['Top Company']},
+    {id: 3, title: 'Banner', data: ['Banner']},
+    {id: 3, title: 'RecommendedJobs', data: ['RecommendedJobs']},
+  ]);
 
-    const [tabIndex, setIndex] = useState(0);
-    const [height, setHeight] = useState(undefined);
-    let listRefArr = useRef([]);
-    let isListGliding = useRef(false);
-    let listOffset = useRef({});
+  const [profileCompletion] = useState([
+    {
+      id: 1,
+      name: 'Add resume',
+      subname: 'Boost profile for your dream job with a standout resume',
+      btname: 'Upload Resume',
+      icon: 'card-account-details-outline',
+    },
+    {
+      id: 2,
+      name: 'Add Your Skills',
+      subname: 'Highlight your best Skills to strengthen your profile',
+      btname: 'Add Skills',
+      icon: 'folder-open',
+    },
+    {
+      id: 3,
+      name: 'Personal Details',
+      subname: 'Add personal details to enrich your profile',
+      btname: 'Add Details',
+      icon: 'card-account-details-outline',
+    },
+  ]);
 
-    const [ActionSelect, setActionSelect] = useState([
-        {
-            id: 0,
-            job_name: 'Business Development Executive',
-            image: Media.propertyMain,
-            subImage: Media.propertysub,
-            job_type: 'Full Time',
-            job_post_date: '1 day ago',
-            job_comp_logo: '',
-            job_comp_name: 'Wipro Technologies ',
-            job_comp_book_status: true,
-            job_comp_salary: '₹10k -  ₹20 k',
-            job_comp_applicant: '500',
-
-        },
-        {
-            id: 1,
-            job_name: 'Mobile App Development',
-            image: Media.AuctionMain,
-            subImage: Media.AuctionSub,
-            job_type: 'Full Time',
-            job_post_date: '3 days ago',
-            job_comp_logo: '',
-            job_comp_name: 'TCS',
-            job_comp_book_status: false,
-            job_comp_salary: '₹40k -  ₹70 k',
-            job_comp_applicant: '250',
-        },
-        {
-            id: 2,
-            job_name: 'Graphics Designer',
-            image: Media.propertyMain,
-            subImage: Media.propertysub,
-            job_type: 'Freelance',
-            job_post_date: '1 day ago',
-            job_comp_logo: '',
-            job_comp_name: 'KGISL Group',
-            job_comp_book_status: false,
-            job_comp_salary: '₹30k -  ₹50 k',
-            job_comp_applicant: '50',
-        },
-        {
-            id: 3,
-            job_name: 'Website designer',
-            image: Media.AuctionMain,
-            subImage: Media.AuctionSub,
-            job_type: 'Full Time',
-            job_post_date: '4 days ago',
-            job_comp_logo: '',
-            job_comp_name: 'Brightway Group Tech',
-            job_comp_book_status: false,
-            job_comp_salary: '₹25k -  ₹60 k',
-            job_comp_applicant: '7',
-        },
-        {
-            id: 4,
-            job_name: 'SEO Analyst',
-            image: Media.AuctionMain,
-            subImage: Media.AuctionSub,
-            job_type: 'Part Time',
-            job_post_date: '2 days ago',
-            job_comp_logo: '',
-            job_comp_name: 'Avanexa Technologies',
-            job_comp_book_status: false,
-            job_comp_salary: '₹15k -  ₹30 k',
-            job_comp_applicant: '15',
-        },
-    ]);
-
-    const [topCompany, setTopCompany] = useState([
-        {
-            id: 0,
-            comp_logo: Media.propertyMain,
-            comp_name: 'Calibre Infotech',
-            comp_address: 'Coimbatore',
-            comp_offer_count: '10',
-            image: Media.propertyMain,
-
-        },
-        {
-            id: 1,
-            comp_logo: Media.propertyMain,
-            comp_name: 'Calibre Infotech',
-            comp_address: 'Coimbatore',
-            comp_offer_count: '10',
-            image: Media.propertyMain,
-        },
-        {
-            id: 2,
-            comp_logo: Media.propertyMain,
-            comp_name: 'Calibre Infotech',
-            comp_address: 'Coimbatore',
-            comp_offer_count: '10',
-            image: Media.propertyMain,
-        },
-        {
-            id: 3,
-            comp_logo: Media.propertyMain,
-            comp_name: 'Calibre Infotech',
-            comp_address: 'Coimbatore',
-            comp_offer_count: '10',
-            image: Media.propertyMain,
-        },
-        {
-            id: 4,
-            comp_logo: Media.propertyMain,
-            comp_name: 'Calibre Infotech',
-            comp_address: 'Coimbatore',
-            comp_offer_count: '10',
-            image: Media.propertyMain,
-        },
-    ]);
-
-    const [routes] = useState([
-        { id: 1, title: 'Buy' },
-        { id: 2, title: 'Rent' },
-        { id: 3, title: 'Rent' },
-        { id: 4, title: 'Rent' },
-        { id: 5, title: 'Rent' },
-    ]);
-    const scrollY = useRef(new Animated.Value(0)).current;
-
-    const [BuySection] = useState([
-        {
-            id: 1,
-            title: 'Apply Albion Home Online',
-            data: ['Apply Albion Home Online'],
-        },
-        { id: 2, title: 'Check your Eligibility', data: ['Check your Eligibility'] },
-        { id: 3, title: 'How it works', data: ['How it works'] },
-        { id: 3, title: 'Banner', data: ['Banner'] },
-        { id: 3, title: 'RecommendedJobs', data: ['RecommendedJobs'] },
-    ]);
-
-    const [profileCompletion] = useState([
-        {
-            id: 1,
-            name: 'Add resume',
-            subname: 'Boost profile for your dream job with a standout resume',
-            btname: 'Upload Resume',
-            icon: 'card-account-details-outline',
-        },
-        {
-            id: 2,
-            name: 'Add Your Best Works',
-            subname: 'Highlight your best works to strengthen your profile',
-            btname: 'Add Projects',
-            icon: 'folder-open',
-        },
-        {
-            id: 1,
-            name: 'Personal Details',
-            subname: 'Add personal details to enrich your profile',
-            btname: 'Add Details',
-            icon: 'card-account-details-outline',
-        },
-    ]);
-
-    useEffect(() => {
-        scrollY.addListener(({ value }) => {
-            const curRoute = routes[tabIndex].key;
-            listOffset.current[curRoute] = value;
-        });
-        return () => {
-            scrollY.removeAllListeners();
-        };
-    }, []);
-
-    // useEffect(() => {
-    //     try {
-    //         const unsubscribe = NetInfo.addEventListener(state => {
-    //             setNetinfo(state.isConnected);
-    //         });
-    //         return () => unsubscribe;
-    //     } catch (error) {
-    //         console.log("catch in use_effect's Home_Screen : ", error);
-    //     }
-    // }, []);
-
-    const onMomentumScrollBegin = () => {
-        isListGliding.current = true;
-    };
-
-    const onMomentumScrollEnd = () => {
-        isListGliding.current = false;
-        syncScrollOffset();
-    };
-
-    const onScrollEndDrag = () => {
-        syncScrollOffset();
-    };
-
-    const syncScrollOffset = () => {
-        // const curRouteKey = routes[tabIndex].key;
-        listRefArr.current.forEach(item => {
-            if (item.key !== curRouteKey) {
-                if (scrollY._value < HeaderHeight && scrollY._value >= 0) {
-                    if (item.value) {
-                        item.value.scrollToOffset({
-                            offset: scrollY._value,
-                            animated: false,
-                        });
-                        listOffset.current[item.key] = scrollY._value;
-                    }
-                } else if (scrollY._value >= HeaderHeight) {
-                    if (
-                        listOffset.current[item.key] < HeaderHeight ||
-                        listOffset.current[item.key] == null
-                    ) {
-                        if (item.value) {
-                            item.value.scrollToOffset({
-                                offset: HeaderHeight,
-                                animated: false,
-                            });
-                            listOffset.current[item.key] = HeaderHeight;
-                        }
-                    }
-                }
-            }
-        });
-    };
-
-    if (Platform.OS === 'android') {
-        UIManager.setLayoutAnimationEnabledExperimental(true);
+  const filteredProfileCompletion = profileCompletion.filter(item => {
+    if (resume != null && resume.name?.length > 0 && item.id === 1) {
+      return false;
     }
+    if (skills?.length > 0 && item.id === 2) {
+      return false;
+    }
+    return true;
+  });
 
-    return (
-        <SafeAreaView style={styles.container}>
+  if (Platform.OS === 'android') {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
 
-            <View style={{ width: '95%', flexDirection: 'row', width: scr_width, backgroundColor: Color.primary, justifyContent: 'center', alignItems: 'center' }}>
-                <TouchableOpacity activeOpacity={0.5}
+  useEffect(() => {
+    getUserData();
+  }, [name, email, role]);
+
+  const getUserData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user_data');
+      if (value !== null) {
+        dispatch(setUserData(JSON.parse(value)));
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View
+        style={{
+          marginVertical: 10,
+          marginHorizontal: 20,
+        }}>
+        <Text
+          style={{
+            fontSize: 16,
+            color: Color.cloudyGrey,
+            fontFamily: Gilmer.Regular,
+          }}>
+          Welcome Back !
+        </Text>
+        <Text
+          style={{
+            fontSize: 20,
+            color: Color.black,
+            fontFamily: Gilmer.Bold,
+          }}
+          numberOfLines={1}>
+          {name}
+        </Text>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          backgroundColor: Color.white,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={{
+            marginRight: 5,
+            // borderColor: Color.lightgrey,
+            // borderWidth: 1,
+            marginVertical: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderRadius: 5,
+            flex: 1,
+            height: 50,
+            backgroundColor: '#EAEAEF50',
+            paddingHorizontal: 10,
+            marginVertical: 10,
+          }}>
+          <View style={{}}>
+            <Iconviewcomponent
+              Icontag={'Feather'}
+              iconname={'search'}
+              icon_size={25}
+              icon_color={Color.lightgrey}
+            />
+          </View>
+          <Text
+            style={{
+              fontSize: 16,
+              paddingTop: 2,
+              paddingHorizontal: 10,
+              color: Color.lightgrey,
+              fontFamily: Gilmer.Medium,
+            }}
+            numberOfLines={1}>
+            {`Search Jobs`}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Filter')}
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: Color.primary,
+            padding: 10,
+            margin: 5,
+            borderRadius: 5,
+          }}>
+          <Iconviewcomponent
+            Icontag={'MaterialCommunityIcons'}
+            iconname={'filter-menu-outline'}
+            icon_size={28}
+            icon_color={Color.white}
+          />
+        </TouchableOpacity>
+      </View>
+      <SectionList
+        sections={BuySection}
+        scrollEnabled={true}
+        keyExtractor={(item, index) => item + index}
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={1}
+        nestedScrollEnabled
+        initialNumToRender={5}
+        renderItem={({item}) => {
+          switch (item) {
+            case 'Apply Albion Home Online':
+              return (
+                <View style={{flex: 1, marginVertical: 10}}>
+                  <View
                     style={{
-                        marginHorizontal: 5,
-                        borderColor: Color.lightgrey,
-                        marginVertical: 10,
-                        borderWidth: 1,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <CircularProgress
+                      value={profileStatus}
+                      radius={30}
+                      progressValueColor={'#000'}
+                      valueSuffix="%"
+                      titleColor={Color.black}
+                      activeStrokeColor={
+                        profileStatus < 40
+                          ? Color.sunShade
+                          : profileStatus < 80
+                          ? Color.green
+                          : '#0BA02C'
+                      }
+                      activeStrokeWidth={10}
+                      inActiveStrokeWidth={10}
+                    />
+                    <View
+                      style={{
+                        flex: 1,
+                        padding: 10,
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: Gilmer.Bold,
+                          fontSize: 18,
+                          color: Color.black,
+                        }}>
+                        Complete Your Profile
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: Gilmer.Regular,
+                          fontSize: 14,
+                          color: Color.black,
+                        }}>
+                        Complete Pending Actions for Job Suggestions
+                      </Text>
+                    </View>
+                  </View>
+                  <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                    <View
+                      style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        borderRadius: 5,
-                        width: '80%',
-                        height: 50, backgroundColor: Color.white,
-                        paddingHorizontal: 10, marginVertical: 20
-                    }}>
-                    <View style={[styles.numberCountryCode, { textAlign: 'center', alignSelf: 'center', alignContent: 'center', alignItems: 'center', top: 10 }]}>
-                        <Iconviewcomponent
-                            Icontag={'Feather'}
-                            iconname={'search'}
-                            icon_size={28}
-                            icon_color={Color.Venus}
-                        />
+                        justifyContent: 'center',
+                        marginTop: 10,
+                      }}>
+                      {filteredProfileCompletion?.map((item, index) => {
+                        return (
+                          <View
+                            key={index}
+                            style={{
+                              flex: 1,
+                              backgroundColor: '#DBF3FF',
+                              marginHorizontal: 10,
+                              padding: 10,
+                              borderRadius: 10,
+                              width: 280,
+                              alignItems: 'flex-end',
+                            }}>
+                            <View
+                              style={{
+                                justifyContent: 'center',
+                                alignItems: 'flex-end',
+                                backgroundColor: '#DEFCE4',
+                                paddingHorizontal: 10,
+                                padding: 5,
+                                borderRadius: 10,
+                              }}>
+                              <Text
+                                style={{
+                                  fontFamily: Gilmer.Medium,
+                                  fontSize: 12,
+                                  color: Color.green,
+                                }}>
+                                Boost 10%
+                              </Text>
+                            </View>
+                            <View
+                              key={index}
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'flex-start',
+                              }}>
+                              <View
+                                style={{
+                                  backgroundColor: Color.white,
+                                  padding: 10,
+                                  borderRadius: 100,
+                                }}>
+                                <MCIcon
+                                  name={item.icon}
+                                  size={30}
+                                  color={Color.blue}
+                                />
+                              </View>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  marginHorizontal: 20,
+                                }}>
+                                <Text
+                                  style={{
+                                    fontFamily: Gilmer.Bold,
+                                    fontSize: 16,
+                                    color: Color.black,
+                                  }}>
+                                  {item?.name}
+                                </Text>
+                                <Text
+                                  style={{
+                                    flex: 1,
+                                    fontFamily: Gilmer.Regular,
+                                    fontSize: 14,
+                                    color: Color.black,
+                                    marginVertical: 5,
+                                  }}>
+                                  {item?.subname}
+                                </Text>
+                                <Button
+                                  mode="contained"
+                                  onPress={async () => {
+                                    try {
+                                      const data =
+                                        await common_fn.profileupdate(
+                                          item?.id,
+                                          navigation,
+                                        );
+                                      if (data) {
+                                        dispatch(
+                                          setCompleteProfile({
+                                            resume: data,
+                                            details: details,
+                                            skills: skills,
+                                          }),
+                                        );
+                                      }
+                                    } catch (err) {
+                                      console.error('Error occurred:', err);
+                                    }
+                                  }}
+                                  style={{
+                                    marginVertical: 10,
+                                    backgroundColor: Color.primary,
+                                    borderRadius: 10,
+                                  }}>
+                                  {item.btname}
+                                </Button>
+                              </View>
+                            </View>
+                          </View>
+                        );
+                      })}
                     </View>
-                    <Text
+                  </ScrollView>
+                </View>
+              );
+            case 'Check your Eligibility':
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    marginVertical: 10,
+                  }}>
+                  <Text
+                    style={{
+                      flex: 1,
+                      fontSize: 16,
+                      color: Color.black,
+                      fontFamily: Gilmer.Bold,
+                    }}>
+                    Explore by Categories
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-around',
+                      alignItems: 'center',
+                      marginVertical: 10,
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectTab('FullTime');
+                      }}
+                      style={{
+                        padding: 10,
+                        borderRadius: 50,
+                        paddingHorizontal: 20,
+                        backgroundColor:
+                          selectTab === 'FullTime'
+                            ? Color.primary
+                            : Color.lightgrey,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
                         style={{
-                            flex: 1,
+                          color:
+                            selectTab === 'FullTime'
+                              ? Color.white
+                              : Color.black,
+                          textAlign: 'center',
+                          fontSize: 14,
+                          paddingTop: 2,
+                          fontFamily: Gilmer.Medium,
+                        }}>
+                        Full Time
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectTab('PartTime');
+                      }}
+                      style={{
+                        padding: 10,
+                        paddingHorizontal: 20,
+                        borderRadius: 50,
+                        marginTop: 2,
+                        backgroundColor:
+                          selectTab === 'PartTime'
+                            ? Color.primary
+                            : Color.lightgrey,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          color:
+                            selectTab === 'PartTime'
+                              ? Color.white
+                              : Color.black,
+                          textAlign: 'center',
+                          fontSize: 14,
+                          paddingTop: 2,
+                          fontFamily: Gilmer.Medium,
+                        }}>
+                        Part Time
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelectTab('Freelance');
+                      }}
+                      style={{
+                        padding: 10,
+                        paddingHorizontal: 20,
+                        borderRadius: 50,
+                        marginTop: 2,
+                        backgroundColor:
+                          selectTab === 'Freelance'
+                            ? Color.primary
+                            : Color.lightgrey,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          color:
+                            selectTab === 'Freelance'
+                              ? Color.white
+                              : Color.black,
+                          textAlign: 'center',
+                          fontSize: 14,
+                          paddingTop: 2,
+                          fontFamily: Gilmer.Medium,
+                        }}>
+                        Freelance
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      marginVertical: 10,
+                      alignItems: 'center',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          flex: 1,
+                          fontSize: 16,
+                          color: Color.black,
+                          fontFamily: Gilmer.Bold,
+                        }}>
+                        You Might Like
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('JobListScreen')}>
+                        <Text
+                          style={{
                             fontSize: 16,
-                            paddingTop: 2, paddingHorizontal: 10,
-                            color: Color.Venus,
-                            fontFamily: Poppins.Medium,
-                        }}
-                        numberOfLines={1}>
-                        {`Search Jobs`}
-                    </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => navigation.navigate("Filter")}
-                    style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: Color.white, padding: 10, margin: 5, borderRadius: 5 }}>
-                    <Iconviewcomponent
-                        Icontag={'MaterialCommunityIcons'}
-                        iconname={'filter-menu-outline'}
-                        icon_size={28}
-                        icon_color={Color.primary}
+                            color: '#0033A0',
+                            fontFamily: Gilmer.Bold,
+                            paddingHorizontal: 10,
+                          }}>
+                          See All
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                    <FlatList
+                      data={ApplyJobData}
+                      keyExtractor={(item, index) => item + index}
+                      renderItem={({item, index}) => {
+                        return (
+                          <JobCardHorizontal
+                            item={item}
+                            navigation={navigation}
+                          />
+                        );
+                      }}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
                     />
-                </TouchableOpacity>
-            </View>
-
-            <Animated.SectionList
-                sections={BuySection}
-                scrollEnabled={true}
-                keyExtractor={(item, index) => item + index}
-                showsVerticalScrollIndicator={false}
-                scrollEventThrottle={1}
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-                    {
-                        useNativeDriver: true,
-                    },
-                )}
-                // contentContainerStyle={{
-                //     paddingTop: HeaderHeight,
-                //     paddingHorizontal: 5,
-                //     minHeight: windowHeight - TabBarHeight,
-                //     // flexGrow: 1,
-                // }}
-                onMomentumScrollBegin={onMomentumScrollBegin}
-                onScrollEndDrag={onScrollEndDrag}
-                onMomentumScrollEnd={onMomentumScrollEnd}
-                nestedScrollEnabled
-                initialNumToRender={5}
-                renderItem={({ item }) => {
-                    switch (item) {
-                        case 'Apply Albion Home Online':
-                            return (
-                                <View style={{ width: scr_width, backgroundColor: 'white' }}>
-
-                                    {/* <View
-                                        style={{
-                                            width: '100%',
-                                            alignItems: 'center',
-                                        }}>
-                                        <View style={{ width: '95%', }}>
-                                            <Image
-                                                source={require('../../assets/images/banner.png')}
-                                                style={{
-                                                    width: '100%',
-                                                    height: 180,
-                                                    resizeMode: 'contain',
-                                                }}
-                                            />
-                                        </View>
-                                    </View> */}
-
-                                    <View
-                                        style={{
-                                            marginVertical: 20,
-                                            padding: 10,
-                                            backgroundColor: '#D9F2FE',
-                                        }}>
-                                        <View
-                                            style={{
-                                                marginVertical: 10,
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                            }}>
-                                            <CircularProgress
-                                                value={77}
-                                                radius={40}
-                                                progressValueColor={'#000'}
-                                                valueSuffix="%"
-                                                titleColor={Color.black}
-                                                activeStrokeColor="#0BA02C"
-                                                activeStrokeWidth={15}
-                                                inActiveStrokeWidth={15}
-                                                activeStrokeSecondaryColor={'#0BA02C'}
-                                            />
-                                            <View
-                                                style={{
-                                                    flex: 1,
-                                                    padding: 10,
-                                                }}>
-                                                <Text
-                                                    style={{
-                                                        fontFamily: Poppins.Medium,
-                                                        fontSize: 18,
-                                                        color: Color.black,
-                                                    }}>
-                                                    Profile Score
-                                                </Text>
-                                                <Text
-                                                    style={{
-                                                        fontFamily: Poppins.Medium,
-                                                        fontSize: 14,
-                                                        color: Color.cloudyGrey,
-                                                    }}>
-                                                    Boost your profile for your dream job
-                                                </Text>
-                                            </View>
-                                        </View>
-                                        <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-                                            <View
-                                                style={{
-                                                    flexDirection: 'row',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                }}>
-                                                {profileCompletion?.map((item, index) => {
-                                                    return (
-                                                        <View
-                                                            key={index}
-                                                            style={{
-                                                                flex: 1,
-                                                                backgroundColor: Color.white,
-                                                                marginHorizontal: 10,
-                                                                padding: 10,
-                                                                borderRadius: 10,
-                                                                width: 280,
-                                                                alignItems: 'flex-end',
-                                                            }}>
-                                                            <View
-                                                                style={{
-                                                                    justifyContent: 'center',
-                                                                    alignItems: 'flex-end',
-                                                                    backgroundColor: '#DEFCE4',
-                                                                    paddingHorizontal: 10,
-                                                                    padding: 5,
-                                                                    borderRadius: 10,
-                                                                }}>
-                                                                <Text
-                                                                    style={{
-                                                                        fontFamily: Poppins.Bold,
-                                                                        fontSize: 12,
-                                                                        color: Color.green,
-                                                                    }}>
-                                                                    Boost 10%
-                                                                </Text>
-                                                            </View>
-                                                            <View
-                                                                key={index}
-                                                                style={{
-                                                                    flexDirection: 'row',
-                                                                    alignItems: 'flex-start',
-                                                                }}>
-                                                                <MCIcon name={item.icon} size={40} color={Color.blue} />
-                                                                <View
-                                                                    style={{
-                                                                        flex: 1,
-                                                                        marginHorizontal: 10,
-                                                                    }}>
-                                                                    <Text
-                                                                        style={{
-                                                                            fontFamily: Poppins.Medium,
-                                                                            fontSize: 16,
-                                                                            color: Color.black,
-                                                                        }}>
-                                                                        {item?.name}
-                                                                    </Text>
-                                                                    <Text
-                                                                        style={{
-                                                                            flex: 1,
-                                                                            fontFamily: Poppins.Medium,
-                                                                            fontSize: 14,
-                                                                            color: Color.black,
-                                                                            marginVertical: 5,
-                                                                        }}>
-                                                                        {item?.subname}
-                                                                    </Text>
-                                                                    <Button
-                                                                        title={item.btname}
-                                                                        mode="contained"
-                                                                        onPress={() => console.log('Pressed')}
-                                                                        style={{
-                                                                            marginVertical: 10,
-                                                                        }}>
-                                                                        {/* {item.btname} */}
-                                                                    </Button>
-                                                                </View>
-                                                            </View>
-                                                        </View>
-                                                    );
-                                                })}
-                                            </View>
-                                        </ScrollView>
-                                    </View>
-                                </View>
-                            );
-                        case 'Check your Eligibility':
-                            return (
-                                <View style={{ width: '100%', alignItems: 'center' }}>
-                                    <View
-                                        style={{
-                                            width: '100%',
-                                            marginVertical: 10,
-                                            alignItems: 'center',
-                                        }}>
-                                        <Text
-                                            style={{
-                                                width: '95%',
-                                                fontSize: 16,
-                                                color: 'black',
-                                                fontFamily: 'Poppins-SemiBold',
-                                                paddingHorizontal: 10,
-                                            }}>
-                                            Explore by Categories
-                                        </Text>
-
-                                        <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10 }}>
-                                            <TouchableOpacity onPress={() => { setSelectTab("FullTime") }} style={{ padding: 8, paddingHorizontal: 20, borderRadius: 30, marginTop: 2, backgroundColor: selectTab === "FullTime" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Text style={{ color: selectTab === "FullTime" ? Color.white : Color.black, textAlign: 'center', fontSize: 12, fontFamily: Poppins.SemiBold }}>Full Time</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { setSelectTab("PartTime") }} style={{ padding: 8, paddingHorizontal: 20, borderRadius: 30, marginTop: 2, backgroundColor: selectTab === "PartTime" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Text style={{ color: selectTab === "PartTime" ? Color.white : Color.black, textAlign: 'center', fontSize: 12, fontFamily: Poppins.SemiBold }}>Part Time</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { setSelectTab("Freelance") }} style={{ padding: 8, paddingHorizontal: 20, borderRadius: 30, marginTop: 2, backgroundColor: selectTab === "Freelance" ? Color.primary : Color.lightgrey, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Text style={{ color: selectTab === "Freelance" ? Color.white : Color.black, textAlign: 'center', fontSize: 12, fontFamily: Poppins.SemiBold }}>Freelance</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-
-                                    <View
-                                        style={{
-                                            width: '95%',
-                                            marginVertical: 10,
-                                            alignItems: 'center'
-                                        }}>
-                                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Text
-                                                style={{
-
-                                                    fontSize: 14,
-                                                    color: 'black',
-                                                    fontFamily: Poppins.Regular,
-                                                    paddingHorizontal: 10,
-                                                }}>
-                                                You Might Like
-                                            </Text>
-                                            <TouchableOpacity onPress={() => navigation.navigate("JobListScreen")}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 16,
-                                                        color: '#0033A0',
-                                                        fontFamily: Poppins.SemiBold,
-                                                        paddingHorizontal: 10,
-                                                    }}>
-                                                    See All
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{ width: '97%', alignItems: 'center', paddingVertical: 10 }}>
-                                            <FlatList
-                                                data={ActionSelect}
-                                                keyExtractor={(item, index) => item + index}
-                                                renderItem={({ item, index }) => {
-                                                    return (
-                                                        <TouchableOpacity onPress={() => navigation.navigate("DetailedScreen")}
-                                                            key={index}
-                                                            style={{
-                                                                width: 300,
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center',
-                                                                borderColor: Color.lightgrey,
-                                                                borderWidth: 1,
-                                                                padding: 10, margin: 5,
-                                                                borderRadius: 5,
-                                                            }}>
-
-                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
-
-                                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                                    <Iconviewcomponent
-                                                                        Icontag={'Ionicons'}
-                                                                        iconname={'time-outline'}
-                                                                        icon_size={20}
-                                                                        icon_color={Color.Venus}
-                                                                    />
-                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
-                                                                </View>
-                                                            </View>
-                                                            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
-                                                                <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
-                                                                    <Image
-                                                                        // source={{ uri: item.image }}
-                                                                        source={require('../../assets/logos/user.png')}
-                                                                        style={{
-                                                                            width: 35,
-                                                                            height: 35,
-                                                                            resizeMode: 'contain',
-                                                                        }}
-                                                                    />
-                                                                </View>
-                                                                <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
-                                                                    <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
-                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify' }} numberOfLines={1}>{item.job_comp_name}</Text>
-                                                                </View>
-                                                                <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
-                                                                    <Iconviewcomponent
-                                                                        Icontag={'FontAwesome'}
-                                                                        iconname={'bookmark-o'}
-                                                                        icon_size={22}
-                                                                        icon_color={Color.Venus}
-                                                                    />
-                                                                </View>
-                                                            </View>
-                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Salary/Month</Text>
-                                                                    <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
-                                                                </View>
-                                                                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} >Applicant</Text>
-                                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                                        <Image
-                                                                            source={require('../../assets/images/vector.png')}
-                                                                            style={{
-                                                                                width: 20,
-                                                                                height: 20,
-                                                                                resizeMode: 'contain',
-                                                                            }}
-                                                                        />
-                                                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_applicant}</Text>
-                                                                    </View>
-                                                                </View>
-                                                            </View>
-                                                        </TouchableOpacity>
-                                                    );
-                                                }}
-                                                horizontal={true}
-                                                showsHorizontalScrollIndicator={false}
-                                            />
-                                        </View>
-
-
-                                    </View>
-                                </View >
-                            );
-                        case 'How it works':
-                            return (
-                                <View style={{ width: scr_width, height: height, alignSelf: 'center', alignItems: 'center', backgroundColor: 'white', }}>
-                                    <View style={{ width: '100%', marginVertical: 10, alignItems: 'center', }}>
-                                        <View style={{ width: '95%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 16,
-                                                    color: 'black',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    paddingHorizontal: 10,
-                                                }}>
-                                                Top Companies
-                                            </Text>
-                                            <TouchableOpacity onPress={() => navigation.navigate("CompanyList")}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 16,
-                                                        color: '#0033A0',
-                                                        fontFamily: Poppins.SemiBold,
-                                                        paddingHorizontal: 10,
-                                                    }}>
-                                                    See All
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-
-                                        <View style={{ width: '95%', alignItems: 'center', paddingVertical: 10 }}>
-                                            <FlatList
-                                                data={topCompany}
-                                                keyExtractor={(item, index) => item + index}
-                                                renderItem={({ item, index }) => {
-                                                    return (
-                                                        <TouchableOpacity
-                                                            key={index}
-                                                            style={{
-                                                                width: 180,
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center',
-                                                                borderColor: Color.white,
-                                                                borderWidth: 0.5,
-                                                                padding: 5, margin: 5,
-                                                                borderRadius: 10, elevation: 1,
-                                                                backgroundColor: '#EFFAFF'
-                                                            }}>
-                                                            <Image
-                                                                // source={{ uri: item.comp_logo }}
-                                                                source={require('../../assets/logos/user.png')}
-                                                                style={{
-                                                                    width: 80,
-                                                                    height: 80,
-                                                                    resizeMode: 'contain',
-                                                                }}
-                                                            />
-                                                            <Text style={{ fontSize: 16, color: Color.black, fontFamily: Poppins.SemiBold, paddingVertical: 5 }}>{item.comp_name}</Text>
-                                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                                <Iconviewcomponent
-                                                                    Icontag={'Fontisto'}
-                                                                    iconname={'map-marker-alt'}
-                                                                    icon_size={20}
-                                                                    icon_color={Color.Venus}
-                                                                />
-                                                                <Text style={{ fontSize: 13, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.comp_address}</Text>
-                                                            </View>
-                                                            <Text style={{ fontSize: 15, color: Color.primary, fontFamily: Poppins.Medium, textDecorationLine: 'underline', paddingVertical: 5 }}>{item.comp_offer_count} Jobs Open</Text>
-                                                        </TouchableOpacity>
-                                                    );
-                                                }}
-                                                horizontal={true}
-                                                showsHorizontalScrollIndicator={false}
-                                            />
-                                        </View>
-
-
-                                    </View>
-
-                                </View>
-                            );
-                        case 'Banner':
-                            return (
-                                <View
-                                    style={{
-                                        width: scr_width,
-                                        height: height,
-                                        alignSelf: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: 'white',
-                                    }}>
-                                    <View
-                                        style={{
-                                            width: '100%',
-                                            alignItems: 'center',
-                                        }}>
-                                        <View style={{ width: '95%', }}>
-                                            <Image
-                                                source={require('../../assets/images/banner.png')}
-                                                style={{
-                                                    width: '100%',
-                                                    height: 180,
-                                                    resizeMode: 'contain',
-                                                }}
-                                            />
-                                        </View>
-                                    </View>
-
-                                </View>
-                            );
-                        case 'RecommendedJobs':
-                            return (
-                                <View
-                                    style={{
-                                        width: scr_width,
-                                        height: height,
-                                        alignSelf: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: 'white',
-                                    }}>
-                                    <View
-                                        style={{
-                                            width: '95%',
-                                            marginVertical: 10,
-                                            alignItems: 'center'
-                                        }}>
-                                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Text
-                                                style={{
-                                                    // width: '90%',
-                                                    fontSize: 16,
-                                                    color: 'black',
-                                                    fontFamily: 'Poppins-SemiBold',
-                                                    paddingHorizontal: 10,
-                                                }}>
-                                                Recommended Jobs
-                                            </Text>
-                                            <TouchableOpacity onPress={() => navigation.navigate("JobListScreen")}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 16,
-                                                        color: '#0033A0',
-                                                        fontFamily: Poppins.SemiBold,
-                                                        paddingHorizontal: 10,
-                                                    }}>
-                                                    See All
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{ width: '97%', alignItems: 'center', paddingVertical: 10 }}>
-                                            <FlatList
-                                                data={ActionSelect}
-                                                keyExtractor={(item, index) => item + index}
-                                                renderItem={({ item, index }) => {
-                                                    return (
-                                                        <TouchableOpacity onPress={() => navigation.navigate("JobListScreen")}
-                                                            key={index}
-                                                            style={{
-                                                                width: 300,
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center',
-                                                                borderColor: Color.lightgrey,
-                                                                borderWidth: 1,
-                                                                padding: 10, margin: 5,
-                                                                borderRadius: 5,
-                                                            }}>
-
-                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                <Text style={{ padding: 7, paddingHorizontal: 20, backgroundColor: '#DEFCE4', fontSize: 12, color: '#0BA02C', borderRadius: 5, fontFamily: Poppins.Medium }}>{item.job_type}</Text>
-
-                                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                                    <Iconviewcomponent
-                                                                        Icontag={'Ionicons'}
-                                                                        iconname={'time-outline'}
-                                                                        icon_size={20}
-                                                                        icon_color={Color.Venus}
-                                                                    />
-                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>{item.job_post_date}</Text>
-                                                                </View>
-                                                            </View>
-                                                            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
-                                                                <View style={{ padding: 10, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EFFAFF', borderRadius: 50 }}>
-                                                                    <Image
-                                                                        // source={{ uri: item.image }}
-                                                                        source={require('../../assets/logos/user.png')}
-                                                                        style={{
-                                                                            width: 35,
-                                                                            height: 35,
-                                                                            resizeMode: 'contain',
-                                                                        }}
-                                                                    />
-                                                                </View>
-                                                                <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'flex-start', paddingHorizontal: 10 }}>
-                                                                    <Text style={{ width: '100%', fontSize: 14, color: Color.lightBlack, fontFamily: Poppins.Medium, textAlign: 'justify' }} numberOfLines={2}>{item.job_name}</Text>
-                                                                    <Text style={{ fontSize: 12, color: Color.Venus, fontFamily: Poppins.Light, textAlign: 'justify' }} numberOfLines={1}>{item.job_comp_name}</Text>
-                                                                </View>
-                                                                <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
-                                                                    <Iconviewcomponent
-                                                                        Icontag={'FontAwesome'}
-                                                                        iconname={'bookmark-o'}
-                                                                        icon_size={22}
-                                                                        icon_color={Color.Venus}
-                                                                    />
-                                                                </View>
-                                                            </View>
-                                                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }}>Salary/Month</Text>
-                                                                    <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_salary}</Text>
-                                                                </View>
-                                                                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                                                                    <Text style={{ fontSize: 12, color: Color.lightBlack, fontFamily: Poppins.Medium, paddingHorizontal: 5 }} >Applicant</Text>
-                                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                                        <Image
-                                                                            source={require('../../assets/images/vector.png')}
-                                                                            style={{
-                                                                                width: 20,
-                                                                                height: 20,
-                                                                                resizeMode: 'contain',
-                                                                            }}
-                                                                        />
-                                                                        <Text style={{ fontSize: 16, color: Color.primary, fontFamily: Poppins.SemiBold, paddingHorizontal: 5 }}>{item.job_comp_applicant}</Text>
-                                                                    </View>
-                                                                </View>
-                                                            </View>
-                                                        </TouchableOpacity>
-                                                    );
-                                                }}
-                                                horizontal={true}
-                                                showsHorizontalScrollIndicator={false}
-                                            />
-                                        </View>
-
-
-                                    </View>
-
-                                </View>
-                            );
-                    }
-                }}
-            />
-
-        </SafeAreaView >
-    );
+                  </View>
+                </View>
+              );
+            case 'Top Company':
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    marginVertical: 10,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        flex: 1,
+                        fontSize: 16,
+                        color: 'black',
+                        fontFamily: Gilmer.Bold,
+                        paddingHorizontal: 10,
+                      }}>
+                      Top Companies
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('CompanyList')}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: '#0033A0',
+                          fontFamily: Gilmer.Bold,
+                          paddingHorizontal: 10,
+                        }}>
+                        See All
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <FlatList
+                    data={topCompany}
+                    keyExtractor={(item, index) => item + index}
+                    renderItem={({item, index}) => {
+                      return (
+                        <TouchableOpacity
+                          key={index}
+                          style={{
+                            width: 180,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderColor: Color.white,
+                            borderWidth: 0.5,
+                            padding: 5,
+                            margin: 5,
+                            borderRadius: 10,
+                            elevation: 1,
+                            backgroundColor: '#EFFAFF',
+                          }}>
+                          <Image
+                            source={require('../../assets/logos/user.png')}
+                            style={{
+                              width: 80,
+                              height: 80,
+                              resizeMode: 'contain',
+                            }}
+                          />
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              color: Color.black,
+                              fontFamily: Gilmer.Bold,
+                              paddingVertical: 5,
+                            }}>
+                            {item.comp_name}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            <Iconviewcomponent
+                              Icontag={'Fontisto'}
+                              iconname={'map-marker-alt'}
+                              icon_size={20}
+                              icon_color={Color.Venus}
+                            />
+                            <Text
+                              style={{
+                                fontSize: 12,
+                                color: Color.Venus,
+                                fontFamily: Gilmer.Medium,
+                                paddingHorizontal: 5,
+                              }}>
+                              {item.comp_address}
+                            </Text>
+                          </View>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              color: Color.primary,
+                              fontFamily: Gilmer.Medium,
+                              textDecorationLine: 'underline',
+                              paddingVertical: 5,
+                            }}>
+                            {item.comp_offer_count} Jobs Open
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    }}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                </View>
+              );
+            case 'Banner':
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    marginVertical: 10,
+                  }}>
+                  <Image
+                    source={require('../../assets/images/banner.png')}
+                    style={{
+                      width: '100%',
+                      height: 180,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </View>
+              );
+            case 'RecommendedJobs':
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    marginVertical: 10,
+                  }}>
+                  <View
+                    style={{
+                      marginVertical: 10,
+                      alignItems: 'center',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          flex: 1,
+                          fontSize: 16,
+                          color: Color.black,
+                          fontFamily: Gilmer.Bold,
+                          paddingHorizontal: 10,
+                        }}>
+                        Recommended Jobs
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('JobListScreen')}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: '#0033A0',
+                            fontFamily: Gilmer.Bold,
+                            paddingHorizontal: 10,
+                          }}>
+                          See All
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                    <FlatList
+                      data={ApplyJobData}
+                      keyExtractor={(item, index) => item + index}
+                      renderItem={({item, index}) => {
+                        return (
+                          <JobCardHorizontal
+                            item={item}
+                            navigation={navigation}
+                          />
+                        );
+                      }}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  </View>
+                </View>
+              );
+          }
+        }}
+      />
+    </SafeAreaView>
+  );
 };
 
 // define your styles
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white'
-    },
-    numberCountryCode: {
-        height: 48,
-        color: Color.black,
-        fontSize: 16,
-        fontFamily: Poppins.SemiBold,
-        textAlign: "center",
-        alignItems: "center",
-        paddingTop: 0
-    },
+  container: {
+    flex: 1,
+    backgroundColor: Color.white,
+    padding: 10,
+  },
+  numberCountryCode: {
+    height: 48,
+    color: Color.black,
+    fontSize: 16,
+    fontFamily: Gilmer.Bold,
+    textAlign: 'center',
+    alignItems: 'center',
+    paddingTop: 0,
+  },
 });
 
 //make this component available to the app

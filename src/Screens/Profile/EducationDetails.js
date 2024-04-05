@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -8,8 +9,11 @@ import {
 } from 'react-native';
 import Color from '../../Global/Color';
 import StepIndicator from 'react-native-step-indicator';
-import {Poppins} from '../../Global/FontFamily';
+import {Gilmer} from '../../Global/FontFamily';
 import {Button} from 'react-native-paper';
+import {Dropdown} from 'react-native-element-dropdown';
+import fetchData from '../../Config/fetchData';
+import common_fn from '../../Config/common_fn';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -35,7 +39,7 @@ const customStyles = {
   stepIndicatorLabelUnFinishedColor: 'white',
 };
 
-const labels = ['Education', 'Employment', 'Key Skills'];
+const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
 const EducationDetails = ({navigation}) => {
   const [HigherQualification] = useState([
@@ -69,83 +73,117 @@ const EducationDetails = ({navigation}) => {
       from: '',
       end: '',
     },
+    year_completion: {},
   });
+  const [yearcompletiondata] = useState([
+    {
+      id: 1,
+      name: '2010',
+    },
+    {
+      id: 2,
+      name: '2011',
+    },
+    {
+      id: 3,
+      name: '2022',
+    },
+    {
+      id: 4,
+      name: '2024',
+    },
+  ]);
+  const getAPI = async () => {
+    try {
+      var data = {};
+      const basic_data = await fetchData.candidates_profile(data);
+      if (basic_data) {
+        navigation.navigate('Experiance');
+      } else {
+        common_fn.showToast(basic_data?.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <View style={{flex: 1, padding: 10, backgroundColor: Color.white}}>
       <StepIndicator
         customStyles={customStyles}
-        currentPosition={0}
-        stepCount={3}
+        currentPosition={1}
+        stepCount={4}
         labels={labels}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text
-          style={{
-            fontFamily: Poppins.Bold,
-            fontSize: 18,
-            color: Color.black,
-            textTransform: 'capitalize',
-            marginHorizontal: 5,
-            marginVertical: 10,
-          }}>
-          Higher Qualification
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-          }}>
-          {HigherQualification.map((item, index) => {
-            return (
-              <TouchableOpacity
-                key={index}
-                style={{
-                  backgroundColor:
-                    selectEducation?.qualify?.id == item?.id
-                      ? '#9DCBE2'
-                      : Color.white,
-                  // width: 150,
-                  paddingHorizontal: 5,
-                  alignItems: 'center',
-                  marginVertical: 10,
-                  justifyContent: 'center',
-                  borderRadius: 50,
-                  marginHorizontal: 5,
-                  borderWidth: 1,
-                  borderColor:
-                    selectEducation?.qualify?.id == item?.id
-                      ? '#9DCBE2'
-                      : Color.cloudyGrey,
-                  flexDirection: 'row',
-                }}
-                onPress={() => {
-                  setSelectEducation({
-                    qualify: item,
-                    degree: selectEducation?.degree,
-                    institute: selectEducation?.institute,
-                    specification: selectEducation?.specification,
-                    duration: {
-                      from: selectEducation?.duration?.from,
-                      end: selectEducation?.duration?.end,
-                    },
-                  });
-                }}>
-                <Text
+        {/* <View style={{marginVertical: 10}}>
+          <Text
+            style={{
+              fontFamily: Gilmer.Bold,
+              fontSize: 18,
+              color: Color.black,
+              textTransform: 'capitalize',
+              marginHorizontal: 5,
+              marginVertical: 10,
+            }}>
+            Higher Qualification
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+            }}>
+            {HigherQualification.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
                   style={{
-                    fontFamily: Poppins.Bold,
-                    fontSize: 14,
-                    color: Color.black,
-                    textTransform: 'capitalize',
-                    marginHorizontal: 5,
+                    backgroundColor:
+                      selectEducation?.qualify?.id == item?.id
+                        ? '#9DCBE2'
+                        : Color.white,
+                    // width: 150,
+                    paddingHorizontal: 5,
+                    alignItems: 'center',
                     marginVertical: 10,
+                    justifyContent: 'center',
+                    borderRadius: 50,
+                    marginHorizontal: 5,
+                    borderWidth: 1,
+                    borderColor:
+                      selectEducation?.qualify?.id == item?.id
+                        ? '#9DCBE2'
+                        : Color.cloudyGrey,
+                    flexDirection: 'row',
+                  }}
+                  onPress={() => {
+                    setSelectEducation({
+                      qualify: item,
+                      degree: selectEducation?.degree,
+                      institute: selectEducation?.institute,
+                      specification: selectEducation?.specification,
+                      duration: {
+                        from: selectEducation?.duration?.from,
+                        end: selectEducation?.duration?.end,
+                      },
+                    });
                   }}>
-                  {item?.name}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Bold,
+                      fontSize: 14,
+                      color: Color.black,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 5,
+                      marginVertical: 10,
+                    }}>
+                    {item?.name}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View> */}
         <View style={{marginVertical: 10}}>
           <Text
             style={{
@@ -169,6 +207,7 @@ const EducationDetails = ({navigation}) => {
                   from: selectEducation?.duration?.from,
                   end: selectEducation?.duration?.end,
                 },
+                year_completion: selectEducation?.year_completion,
               });
             }}
             style={{
@@ -206,6 +245,7 @@ const EducationDetails = ({navigation}) => {
                   from: selectEducation?.duration?.from,
                   end: selectEducation?.duration?.end,
                 },
+                year_completion: selectEducation?.year_completion,
               });
             }}
             style={{
@@ -220,7 +260,7 @@ const EducationDetails = ({navigation}) => {
             }}
           />
         </View>
-        <View style={{marginVertical: 10}}>
+        {/* <View style={{marginVertical: 10}}>
           <Text
             style={{
               fontSize: 16,
@@ -256,101 +296,141 @@ const EducationDetails = ({navigation}) => {
               fontWeight: 'bold',
             }}
           />
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            color: Color.black,
-            fontWeight: 'bold',
-          }}>
-          Course Duration
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <View style={{marginVertical: 10, flex: 1}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontFamily: Poppins.SemiBold,
-              }}>
-              From
-            </Text>
-            <TextInput
-              placeholder="Starting Year"
-              placeholderTextColor={Color.cloudyGrey}
-              value={selectEducation?.duration?.from}
-              onChangeText={text => {
-                setSelectEducation({
-                  qualify: selectEducation?.qualify,
-                  degree: selectEducation?.degree,
-                  institute: selectEducation?.institute,
-                  specification: selectEducation?.specification,
-                  duration: {
-                    from: text,
-                    end: selectEducation?.duration?.end,
-                  },
-                });
-              }}
-              style={{
-                borderColor: Color.cloudyGrey,
-                borderWidth: 1,
-                borderRadius: 5,
-                marginVertical: 10,
-                marginHorizontal: 10,
-                paddingHorizontal: 10,
-                fontSize: 14,
-                color: Color.cloudyGrey,
-                fontWeight: 'bold',
-              }}
-            />
+        </View> */}
+        {/* <View style={{marginVertical: 10}}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: Color.black,
+              fontWeight: 'bold',
+            }}>
+            Course Duration
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <View style={{marginVertical: 10, flex: 1}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: Color.black,
+                  fontFamily: Gilmer.SemiBold,
+                }}>
+                From
+              </Text>
+              <TextInput
+                placeholder="Starting Year"
+                placeholderTextColor={Color.cloudyGrey}
+                value={selectEducation?.duration?.from}
+                onChangeText={text => {
+                  setSelectEducation({
+                    qualify: selectEducation?.qualify,
+                    degree: selectEducation?.degree,
+                    institute: selectEducation?.institute,
+                    specification: selectEducation?.specification,
+                    duration: {
+                      from: text,
+                      end: selectEducation?.duration?.end,
+                    },
+                  });
+                }}
+                style={{
+                  borderColor: Color.cloudyGrey,
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  marginVertical: 10,
+                  marginHorizontal: 10,
+                  paddingHorizontal: 10,
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  fontWeight: 'bold',
+                }}
+              />
+            </View>
+            <View style={{marginVertical: 10, flex: 1}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: Color.black,
+                  fontFamily: Gilmer.SemiBold,
+                }}>
+                End
+              </Text>
+              <TextInput
+                placeholder="End Year"
+                placeholderTextColor={Color.cloudyGrey}
+                value={selectEducation?.duration?.end}
+                onChangeText={text => {
+                  setSelectEducation({
+                    qualify: selectEducation?.qualify,
+                    degree: selectEducation?.degree,
+                    institute: selectEducation?.institute,
+                    specification: selectEducation?.specification,
+                    duration: {
+                      from: selectEducation?.duration?.from,
+                      end: text,
+                    },
+                  });
+                }}
+                style={{
+                  borderColor: Color.cloudyGrey,
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  marginVertical: 10,
+                  marginHorizontal: 10,
+                  paddingHorizontal: 10,
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  fontWeight: 'bold',
+                }}
+              />
+            </View>
           </View>
-          <View style={{marginVertical: 10, flex: 1}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontFamily: Poppins.SemiBold,
-              }}>
-              End
-            </Text>
-            <TextInput
-              placeholder="End Year"
-              placeholderTextColor={Color.cloudyGrey}
-              value={selectEducation?.duration?.end}
-              onChangeText={text => {
-                setSelectEducation({
-                  qualify: selectEducation?.qualify,
-                  degree: selectEducation?.degree,
-                  institute: selectEducation?.institute,
-                  specification: selectEducation?.specification,
-                  duration: {
-                    from: selectEducation?.duration?.from,
-                    end: text,
-                  },
-                });
-              }}
-              style={{
-                borderColor: Color.cloudyGrey,
-                borderWidth: 1,
-                borderRadius: 5,
-                marginVertical: 10,
-                marginHorizontal: 10,
-                paddingHorizontal: 10,
-                fontSize: 14,
-                color: Color.cloudyGrey,
-                fontWeight: 'bold',
-              }}
-            />
-          </View>
+        </View> */}
+        <View style={{marginVertical: 10}}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: Color.black,
+              fontWeight: 'bold',
+              marginVertical: 10,
+            }}>
+            Year of Course Completion
+          </Text>
+          <Dropdown
+            style={[styles.dropdown, {borderColor: 'blue'}]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={yearcompletiondata}
+            value={selectEducation?.year_completion}
+            maxHeight={300}
+            labelField="name"
+            valueField="name"
+            placeholder={'Year of Course Completion'}
+            searchPlaceholder="Search..."
+            onChange={item => {
+              setSelectEducation({
+                qualify: selectEducation?.qualify,
+                degree: selectEducation?.degree,
+                institute: selectEducation?.institute,
+                specification: selectEducation?.specification,
+                duration: {
+                  from: selectEducation?.duration?.from,
+                  end: selectEducation?.duration?.end,
+                },
+                year_completion: item,
+              });
+            }}
+          />
         </View>
         <Button
           mode="contained"
           onPress={() => {
-            navigation.navigate('Experiance');
+            getAPI();
           }}
           style={{
             backgroundColor: Color.primary,
@@ -367,3 +447,43 @@ const EducationDetails = ({navigation}) => {
 };
 
 export default EducationDetails;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 16,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});

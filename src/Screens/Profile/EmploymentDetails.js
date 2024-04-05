@@ -8,9 +8,11 @@ import {
 } from 'react-native';
 import Color from '../../Global/Color';
 import StepIndicator from 'react-native-step-indicator';
-import {Poppins} from '../../Global/FontFamily';
+import {Gilmer} from '../../Global/FontFamily';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Button} from 'react-native-paper';
+import fetchData from '../../Config/fetchData';
+import common_fn from '../../Config/common_fn';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -36,7 +38,7 @@ const customStyles = {
   stepIndicatorLabelUnFinishedColor: 'white',
 };
 
-const labels = ['Education', 'Employment', 'Key Skills'];
+const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
 const EmploymentDetails = ({navigation}) => {
   const [periorExperience] = useState([
@@ -107,19 +109,33 @@ const EmploymentDetails = ({navigation}) => {
     current_ctc: '',
     notice_period: {},
   });
+
+  const getAPI = async () => {
+    try {
+      var data = {};
+      const basic_data = await fetchData.candidates_profile(data);
+      if (basic_data) {
+        navigation.navigate('Skill');
+      } else {
+        common_fn.showToast(basic_data?.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <View style={{flex: 1, padding: 10, backgroundColor: Color.white}}>
       <StepIndicator
         customStyles={customStyles}
-        currentPosition={1}
-        stepCount={3}
+        currentPosition={2}
+        stepCount={4}
         labels={labels}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{marginVertical: 10}}>
+        {/* <View style={{marginVertical: 10}}>
           <Text
             style={{
-              fontFamily: Poppins.Bold,
+              fontFamily: Gilmer.Bold,
               fontSize: 18,
               color: Color.black,
               textTransform: 'capitalize',
@@ -174,7 +190,7 @@ const EmploymentDetails = ({navigation}) => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -187,7 +203,7 @@ const EmploymentDetails = ({navigation}) => {
               );
             })}
           </View>
-        </View>
+        </View> */}
         <View style={{marginVertical: 10}}>
           <Text
             style={{
@@ -201,7 +217,7 @@ const EmploymentDetails = ({navigation}) => {
             style={{
               fontSize: 14,
               color: Color.cloudyGrey,
-              fontFamily: Poppins.SemiBold,
+              fontFamily: Gilmer.SemiBold,
               marginVertical: 10,
             }}>
             Are You Currently Working?
@@ -248,7 +264,7 @@ const EmploymentDetails = ({navigation}) => {
                     style={{
                       fontSize: 16,
                       color: Color.black,
-                      fontFamily: Poppins.SemiBold,
+                      fontFamily: Gilmer.SemiBold,
                       marginHorizontal: 5,
                     }}>
                     {item.title}
@@ -261,7 +277,7 @@ const EmploymentDetails = ({navigation}) => {
         <View style={{marginVertical: 10}}>
           <Text
             style={{
-              fontFamily: Poppins.Bold,
+              fontFamily: Gilmer.Bold,
               fontSize: 18,
               color: Color.black,
               textTransform: 'capitalize',
@@ -316,7 +332,7 @@ const EmploymentDetails = ({navigation}) => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -429,7 +445,7 @@ const EmploymentDetails = ({navigation}) => {
                 style={{
                   fontSize: 16,
                   color: Color.black,
-                  fontFamily: Poppins.SemiBold,
+                  fontFamily: Gilmer.SemiBold,
                 }}>
                 From
               </Text>
@@ -470,7 +486,7 @@ const EmploymentDetails = ({navigation}) => {
                 style={{
                   fontSize: 16,
                   color: Color.black,
-                  fontFamily: Poppins.SemiBold,
+                  fontFamily: Gilmer.SemiBold,
                 }}>
                 To
               </Text>
@@ -508,7 +524,7 @@ const EmploymentDetails = ({navigation}) => {
             </View>
           </View>
         </View>
-        <View style={{marginVertical: 10}}>
+        {/* <View style={{marginVertical: 10}}>
           <Text
             style={{
               fontSize: 16,
@@ -551,7 +567,7 @@ const EmploymentDetails = ({navigation}) => {
         <View style={{marginVertical: 10}}>
           <Text
             style={{
-              fontFamily: Poppins.Bold,
+              fontFamily: Gilmer.Bold,
               fontSize: 18,
               color: Color.black,
               textTransform: 'capitalize',
@@ -606,7 +622,7 @@ const EmploymentDetails = ({navigation}) => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -619,11 +635,11 @@ const EmploymentDetails = ({navigation}) => {
               );
             })}
           </View>
-        </View>
+        </View> */}
         <Button
           mode="contained"
           onPress={() => {
-            navigation.navigate('Skill');
+            getAPI();
           }}
           style={{
             backgroundColor: Color.primary,
