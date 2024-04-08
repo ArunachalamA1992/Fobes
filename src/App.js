@@ -23,6 +23,7 @@ import SkillScreen from './Screens/Profile/Skills';
 import Applycompletion from './Screens/SubPages/Applycompletion';
 import BasicDetails from './Screens/Profile/BasicDetails';
 import SearchScreen from './Screens/Home/SearchScreen';
+import DetailedScreen from './Screens/Home/DetailedScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
