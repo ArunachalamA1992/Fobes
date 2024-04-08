@@ -3,16 +3,19 @@ import axios from 'axios';
 import {baseUrl, base_auctionUrl, base_geolocation_Url} from './base_url';
 
 export const api = {
-  header: () => {
+  header: token => {
     let header = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     };
+    if (token) {
+      header.Authorization = 'Bearer ' + token;
+    }
     return header;
   },
 
-  getMethod: (url, data) => {
-    var headers = api.header();
+  getMethod: (url, data, token) => {
+    var headers = api.header(token);
     return new Promise((resolve, reject) => {
       axios
         .get(baseUrl + url, {
@@ -27,9 +30,8 @@ export const api = {
     });
   },
 
-  postMethod: (url, data) => {
-    console.log('baseUrl + url', baseUrl + url);
-    var headers = api.header();
+  postMethod: (url, data, token) => {
+    var headers = api.header(token);
     const formData = new FormData();
     Object.keys(data).map(obj => {
       formData.append(obj, data[obj]);
@@ -38,6 +40,7 @@ export const api = {
       axios
         .post(baseUrl + url, data, {headers: headers})
         .then(res => {
+          console.log('res', res);
           if (res.status == 200) {
             resolve(res.data);
           }
@@ -46,8 +49,8 @@ export const api = {
     });
   },
 
-  putMethod: (url, data) => {
-    var headers = api.header();
+  putMethod: (url, data, token) => {
+    var headers = api.header(token);
     return new Promise((resolve, reject) => {
       axios
         .put(baseUrl + url, data, {
@@ -62,8 +65,8 @@ export const api = {
     });
   },
 
-  patchMethod: (url, data) => {
-    var headers = api.header();
+  patchMethod: (url, data, token) => {
+    var headers = api.header(token);
     return new Promise((resolve, reject) => {
       axios
         .patch(baseUrl + url, data, {
@@ -78,8 +81,8 @@ export const api = {
     });
   },
 
-  deleteMethod: (url, data) => {
-    var headers = api.header();
+  deleteMethod: (url, data, token) => {
+    var headers = api.header(token);
     return new Promise((resolve, reject) => {
       axios
         .delete(baseUrl + url, data, {

@@ -43,7 +43,7 @@ const Login = () => {
           email: email,
           password: password,
         };
-        const login = await fetchData.login_with_pass(data);
+        const login = await fetchData.login_with_pass(data, null);
         if (login?.message == 'Login Successful') {
           const combinedData = {
             ...login?.data,
@@ -78,7 +78,6 @@ const Login = () => {
     <View style={styles.container}>
       <View
         style={{
-          flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: Color.white,
@@ -116,7 +115,7 @@ const Login = () => {
           </Text>
         </View>
       </View>
-      <View style={{flex: 1, backgroundColor: Color.white}}>
+      <View style={{}}>
         <View style={styles.NumberBoxConatiner}>
           <Iconviewcomponent
             Icontag={'Feather'}

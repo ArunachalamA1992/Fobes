@@ -26,7 +26,58 @@ const ProfileScreen = ({navigation}) => {
   const [resumeVisible, setResumeVisible] = useState(false);
   const dispatch = useDispatch();
   const userData = useSelector(state => state.UserReducer.userData);
-  var {name, email, role} = userData;
+  var {
+    title,
+    firstName,
+    lastName,
+    gender,
+    website,
+    photo,
+    cv,
+    bio,
+    maritalStatus,
+    birthDate,
+    visibility,
+    cvVisibility,
+    receivedJobAlert,
+    profileComplete,
+    candidateUpdatedAt,
+    address,
+    exactLocation,
+    neighborhood,
+    locality,
+    place,
+    district,
+    postcode,
+    region,
+    country,
+    long,
+    lat,
+    status,
+    availableIn,
+    whatsappNumber,
+    name,
+    username,
+    email,
+    image,
+    role,
+    recentActivitiesAlert,
+    jobExpiredAlert,
+    newJobAlert,
+    shortlistedAlert,
+    isDemoField,
+    createdAt,
+    updatedAt,
+    authType,
+    googleId,
+    facebookId,
+    provider,
+    providerId,
+    candidateEducations,
+    candidateExperiences,
+    candidateSkills,
+    socialLinks,
+  } = userData;
   const profile_complete = useSelector(
     state => state.UserReducer.profile_complete,
   );
@@ -157,7 +208,8 @@ const ProfileScreen = ({navigation}) => {
                   fontSize: 16,
                   color: Color.cloudyGrey,
                 }}>
-                Dream big, work hard, stay focused
+                {bio}
+                {/* Dream big, work hard, stay focused */}
               </Text>
             </View>
             <TouchableOpacity
@@ -208,18 +260,20 @@ const ProfileScreen = ({navigation}) => {
                   color: Color.lightBlack,
                   marginHorizontal: 10,
                 }}>
-                Coimbatore, Tamilnadu
+                {district}, {country}
+                {/* Coimbatore, Tamilnadu */}
               </Text>
             </View>
           </View>
         </View>
         <View
           style={{
-            marginVertical: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 10,
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: 20,
             justifyContent: 'center',
+            backgroundColor: Color.white,
           }}>
           <View
             style={{
@@ -295,7 +349,7 @@ const ProfileScreen = ({navigation}) => {
         </View>
         <View
           style={{
-            marginVertical: 20,
+            // marginVertical: 20,
             padding: 10,
             backgroundColor: '#D9F2FE',
           }}>
@@ -437,7 +491,8 @@ const ProfileScreen = ({navigation}) => {
                             marginVertical: 10,
                             backgroundColor: Color.primary,
                             borderRadius: 10,
-                          }}>
+                          }}
+                          textColor={Color.white}>
                           {item.btname}
                         </Button>
                       </View>
@@ -780,7 +835,8 @@ const ProfileScreen = ({navigation}) => {
                 marginHorizontal: 10,
                 marginVertical: 10,
               }}>
-              Dream big, work hard, stay focused
+              {bio}
+              {/* Dream big, work hard, stay focused */}
             </Text>
           </View>
         </View>
@@ -836,7 +892,7 @@ const ProfileScreen = ({navigation}) => {
               flexWrap: 'wrap',
               marginVertical: 10,
             }}>
-            {skills?.map((item, index) => {
+            {candidateSkills?.map((item, index) => {
               return (
                 <View
                   key={index}
@@ -855,7 +911,7 @@ const ProfileScreen = ({navigation}) => {
                       textTransform: 'capitalize',
                       paddingHorizontal: 15,
                     }}>
-                    {item?.name}
+                    {item?.url}
                   </Text>
                 </View>
               );
@@ -931,52 +987,59 @@ const ProfileScreen = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              marginVertical: 15,
-            }}>
-            <Image
-              source={Media.user}
-              style={{width: 50, height: 50, resizeMode: 'contain'}}
-            />
-            <View style={{flex: 1}}>
-              <Text
+          {candidateExperiences?.map((item, index) => {
+            return (
+              <View
                 style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 16,
-                  color: Color.black,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
-                  marginTop: 5,
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                  marginVertical: 15,
                 }}>
-                UI designer
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 14,
-                  color: Color.black,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                }}>
-                Avanexa Technologies - Full Time
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Gilmer.Regular,
-                  fontSize: 12,
-                  color: Color.cloudyGrey,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                }}>
-                Jan 2023 - Present
-              </Text>
-            </View>
-          </View>
+                <Image
+                  source={Media.user}
+                  style={{width: 50, height: 50, resizeMode: 'contain'}}
+                />
+                <View style={{flex: 1}}>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 16,
+                      color: Color.black,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                    }}>
+                    {/* UI designer */}
+                    {item?.designation}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 14,
+                      color: Color.black,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                    }}>
+                    {/* Avanexa Technologies - Full Time */}
+                    {item?.company}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Regular,
+                      fontSize: 12,
+                      color: Color.cloudyGrey,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                    }}>
+                    {/* Jan 2023 - Present */}
+                    {item?.start} - {item?.end}
+                  </Text>
+                </View>
+              </View>
+            );
+          })}
         </View>
         <View
           style={{
@@ -1047,52 +1110,59 @@ const ProfileScreen = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              marginVertical: 15,
-            }}>
-            <Image
-              source={Media.user}
-              style={{width: 50, height: 50, resizeMode: 'contain'}}
-            />
-            <View style={{flex: 1}}>
-              <Text
+          {candidateEducations?.map((item, index) => {
+            return (
+              <View
                 style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 16,
-                  color: Color.black,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
-                  marginTop: 5,
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                  marginVertical: 15,
                 }}>
-                B.sc Multimedia and Design
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 14,
-                  color: Color.black,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                }}>
-                PSG College of Arts and Science, Coimbatore
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Gilmer.Regular,
-                  fontSize: 12,
-                  color: Color.cloudyGrey,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                }}>
-                2017-2020
-              </Text>
-            </View>
-          </View>
+                <Image
+                  source={Media.user}
+                  style={{width: 50, height: 50, resizeMode: 'contain'}}
+                />
+                <View style={{flex: 1}}>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 16,
+                      color: Color.black,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                    }}>
+                    {/* B.sc Multimedia and Design */}
+                    {item?.degree}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 14,
+                      color: Color.black,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                    }}>
+                    {/* PSG College of Arts and Science, Coimbatore */}
+                    {item?.institute_name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Regular,
+                      fontSize: 12,
+                      color: Color.cloudyGrey,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                    }}>
+                    {/* 2017-2020 */}
+                    {item?.year}
+                  </Text>
+                </View>
+              </View>
+            );
+          })}
         </View>
         <View
           style={{

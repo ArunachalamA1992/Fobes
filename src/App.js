@@ -22,6 +22,7 @@ import Notification from './Screens/Home/Notification';
 import SkillScreen from './Screens/Profile/Skills';
 import Applycompletion from './Screens/SubPages/Applycompletion';
 import BasicDetails from './Screens/Profile/BasicDetails';
+import SearchScreen from './Screens/Home/SearchScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -87,6 +88,26 @@ const MainApp = () => {
           name="TabNavigator"
           component={TabNavigator}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SearchScreen"
+          component={SearchScreen}
+          options={({navigation, route}) => ({
+            headerTitle: 'Search Jobs',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
         />
         <Stack.Screen
           name="AppliedJobs"

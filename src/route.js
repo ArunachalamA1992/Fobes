@@ -572,7 +572,7 @@ const TabNavigator = () => {
                 </Text>
               </View>
             );
-          } else if (route.name === 'ApplyJobs') {
+          } else if (route.name === 'ApplyJobsTab') {
             return focused ? (
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View
@@ -616,7 +616,7 @@ const TabNavigator = () => {
                 </Text>
               </View>
             );
-          } else if (route.name === 'SavedJobs') {
+          } else if (route.name === 'SavedJobsTab') {
             return focused ? (
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View
@@ -711,12 +711,12 @@ const TabNavigator = () => {
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="ApplyJobs"
+        name="ApplyJobsTab"
         component={AppliedStack}
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="SavedJobs"
+        name="SavedJobsTab"
         component={SavedJobStack}
         options={{headerShown: false}}
       />

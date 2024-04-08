@@ -50,8 +50,8 @@ const Register = ({navigation}) => {
           password: password,
           role: 'candidate',
         };
-        const register_data = await fetchData.register(data);
-        if (register_data?.message) {
+        const register_data = await fetchData.register(data, null);
+        if (register_data?.message == 'Data Inserted Successfully') {
           common_fn.showToast(register_data?.message);
           navigation.replace('Auth');
         } else {
@@ -84,7 +84,7 @@ const Register = ({navigation}) => {
             paddingHorizontal: 10,
             color: Color.lightBlack,
             fontFamily: Gilmer.Bold,
-            marginTop: 20,
+            marginTop: 10,
           }}>
           Let's Get Started !
         </Text>
@@ -141,19 +141,19 @@ const Register = ({navigation}) => {
             }}
             keyboardType="email-address"
           />
-          {emailValidError ? (
-            <Text
-              style={{
-                width: '100%',
-                textAlign: 'left',
-                paddingVertical: 5,
-                fontSize: 14,
-                color: 'red',
-              }}>
-              {emailValidError}
-            </Text>
-          ) : null}
         </View>
+        {emailValidError ? (
+          <Text
+            style={{
+              width: '100%',
+              textAlign: 'left',
+              paddingVertical: 5,
+              fontSize: 14,
+              color: 'red',
+            }}>
+            {emailValidError}
+          </Text>
+        ) : null}
         <View style={styles.textContainer}>
           <Iconviewcomponent
             Icontag={'Ionicons'}
@@ -299,62 +299,61 @@ const Register = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}>
-        <Text
+        <View
           style={{
-            fontSize: 14,
-            color: Color.black,
-            textAlign: 'center',
-            fontFamily: Gilmer.Medium,
-          }}>
-          By Signing up, you agree to our{' '}
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('TermsCondition');
-          }}>
-          <Text
-            style={{
-              fontSize: 15,
-              color: Color.primary,
-              fontFamily: Gilmer.Bold,
-              textDecorationLine: 'underline',
-            }}>
-            Terms of Use
-          </Text>
-        </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 14,
-            color: Color.black,
-            fontFamily: Gilmer.Medium,
-          }}>
-          {' '}
-          and{' '}
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('PrivacyPolicy');
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexWrap: 'wrap',
           }}>
           <Text
             style={{
               fontSize: 14,
-              color: Color.primary,
-              fontFamily: Gilmer.Bold,
-              textDecorationLine: 'underline',
-              paddingHorizontal: 5,
+              color: Color.black,
+              textAlign: 'center',
+              fontFamily: Gilmer.Medium,
             }}>
-            Privacy Policy
+            By Signing up, you agree to our{' '}
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('TermsCondition');
+            }}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: Color.primary,
+                fontFamily: Gilmer.Bold,
+                textDecorationLine: 'underline',
+              }}>
+              Terms of Use
+            </Text>
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 14,
+              color: Color.black,
+              fontFamily: Gilmer.Medium,
+            }}>
+            {' '}
+            and{' '}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('PrivacyPolicy');
+            }}>
+            <Text
+              style={{
+                fontSize: 14,
+                color: Color.primary,
+                fontFamily: Gilmer.Bold,
+                textDecorationLine: 'underline',
+                paddingHorizontal: 5,
+              }}>
+              Privacy Policy
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -367,7 +366,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white,
   },
   textContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
     borderColor: Color.cloudyGrey,
     backgroundColor: '#EAEAEF50',
     borderWidth: 1,
@@ -396,7 +395,6 @@ const styles = StyleSheet.create({
     color: Color.black,
     fontSize: 14,
     padding: 5,
-    paddingTop: 7,
     fontFamily: Gilmer.SemiBold,
     alignItems: 'flex-start',
   },

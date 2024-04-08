@@ -27,22 +27,25 @@ const SplashScreen = ({navigation}) => {
     try {
       const value = await AsyncStorage.getItem('UserState');
       if (value !== null) {
-        dispatch(setAsync(JSON.parse(value)));
-      }
-      var {onboardVisible} = JSON.parse(value);
-      const user_data = await AsyncStorage.getItem('user_data');
-      if (onboardVisible == true && user_data == null) {
-        replace('Auth');
-      } else if (onboardVisible == false && user_data == null) {
-        replace('OnboardOne');
-      } else {
-        var {token} = JSON.parse(user_data);
-        if (token == '' || token == null) {
-          replace('OnboardOne');
-        } else {
-          dispatch(setUserData(user_data));
-          replace('TabNavigator');
+        const {onboardVisible} = JSON.parse(value);
+        if (onboardVisible) {
+          navigation.replace('OnboardOne');
+          return;
         }
+      }
+
+      const user_data = await AsyncStorage.getItem('user_data');
+      if (!user_data) {
+        navigation.replace('Auth');
+        return;
+      }
+
+      const {token} = JSON.parse(user_data);
+      if (!token) {
+        navigation.replace('OnboardOne');
+      } else {
+        dispatch(setUserData(user_data));
+        navigation.replace('TabNavigator');
       }
     } catch (e) {
       console.log(e);

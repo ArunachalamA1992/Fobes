@@ -1,20 +1,244 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-  SafeAreaView,
-} from 'react-native';
-import {RadioButton} from 'react-native-paper';
-import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import CheckBox from '@react-native-community/checkbox';
-import CheckboxData, {RadioData} from '../../Components/Checkbox';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {Gilmer} from '../Global/FontFamily';
+import Color from '../Global/Color';
+import CheckboxData, {RadioData} from './Checkbox';
+import {Button, Divider} from 'react-native-paper';
 
-const FilterScreen = ({navigation}) => {
+const TabContent = ({
+  item,
+  dateSelectedItem,
+  handleDatePress,
+  experienceSelectedItem,
+  handleExperiencePress,
+  distanceSelectedItem,
+  handleDistancePress,
+  jobtypeSelectedItem,
+  handleJobtypePress,
+  industrySelectedItem,
+  handleIndustryPress,
+  worktypeSelectedItem,
+  handleWorkTypePress,
+}) => {
+  if (item?.date_posted) {
+    return (
+      <>
+        {item?.date_posted?.map((option, index) => {
+          return (
+            <RadioData
+              key={index}
+              label={option.title}
+              checked={dateSelectedItem.includes(option.id)}
+              onPress={() => handleDatePress(option.id)}
+            />
+          );
+        })}
+      </>
+    );
+  } else if (item?.experience) {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          flex: 1,
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          marginVertical: 10,
+        }}>
+        {item?.experience?.map((item, index) => {
+          return (
+            <RadioData
+              key={index}
+              label={item.title}
+              checked={experienceSelectedItem.includes(item.id)}
+              onPress={() => handleExperiencePress(item.id)}
+            />
+          );
+        })}
+      </View>
+    );
+  } else if (item?.distance) {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          flex: 1,
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          marginVertical: 10,
+        }}>
+        {item?.distance?.map((item, index) => {
+          return (
+            <RadioData
+              key={index}
+              label={item.title}
+              checked={distanceSelectedItem.includes(item.id)}
+              onPress={() => handleDistancePress(item.id)}
+            />
+          );
+        })}
+      </View>
+    );
+  } else if (item?.job_type) {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          flex: 1,
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          marginVertical: 10,
+        }}>
+        {item?.job_type?.map((item, index) => {
+          return (
+            <RadioData
+              key={index}
+              label={item.title}
+              checked={jobtypeSelectedItem.includes(item.id)}
+              onPress={() => handleJobtypePress(item.id)}
+            />
+          );
+        })}
+      </View>
+    );
+  } else if (item?.location) {
+    return (
+      <TouchableOpacity
+        style={{
+          height: 50,
+          backgroundColor: Color.white,
+          borderColor: Color.Venus,
+          borderWidth: 1,
+          borderRadius: 10,
+          marginVertical: 10,
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={{
+            fontSize: 14,
+            color: Color.lightBlack,
+            fontFamily: Gilmer.Bold,
+            paddingHorizontal: 10,
+          }}>
+          Select Location
+        </Text>
+      </TouchableOpacity>
+    );
+  } else if (item?.industry) {
+    return (
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        {item?.industry?.map((item, index) => {
+          return (
+            <CheckboxData
+              key={index}
+              label={item.title}
+              checked={industrySelectedItem.includes(item.id)}
+              onPress={() => handleIndustryPress(item.id)}
+            />
+          );
+        })}
+      </View>
+    );
+  } else if (item?.work_type) {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          flex: 1,
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          marginVertical: 10,
+        }}>
+        {item?.work_type?.map((item, index) => {
+          return (
+            <RadioData
+              key={index}
+              label={item.title}
+              checked={worktypeSelectedItem?.includes(item.id)}
+              onPress={() => handleWorkTypePress(item.id)}
+            />
+          );
+        })}
+      </View>
+    );
+  }
+};
+
+const VerticalTabView = () => {
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const filterOptions = [
+    {
+      date_posted: [
+        {id: 1, title: 'All'},
+        {id: 2, title: 'Past Week'},
+        {id: 3, title: 'Past Month'},
+        {id: 4, title: 'Past 24 Hours'},
+      ],
+    },
+    {
+      experience: [
+        {id: 1, title: 'Fresher'},
+        {id: 2, title: 'Experienced'},
+      ],
+    },
+    {
+      distance: [
+        {id: 1, title: 'All'},
+        {id: 2, title: 'Within 5 Km'},
+        {id: 3, title: 'Within 10 Km'},
+        {id: 4, title: 'Within 50 Km'},
+      ],
+    },
+    {
+      job_type: [
+        {id: 1, title: 'Full-time'},
+        {id: 2, title: 'Part-time'},
+        {id: 3, title: 'Contract'},
+        {id: 4, title: 'Internship'},
+      ],
+    },
+    {
+      location: '',
+    },
+    {
+      industry: [
+        {id: 1, title: 'Custom software development', checked: true},
+        {id: 2, title: 'Software Prototyping', checked: false},
+        {id: 3, title: 'DevOps Automation', checked: false},
+        {id: 4, title: 'Web Application Development', checked: false},
+        {id: 5, title: 'Mobile Application Development', checked: false},
+        {id: 6, title: 'Cloud Computing', checked: false},
+      ],
+    },
+    {
+      work_type: [
+        {
+          id: 1,
+          title: 'on-site',
+          value: 'on_site',
+        },
+        {
+          id: 2,
+          title: 'Hybrid',
+          value: 'hybrid',
+        },
+        {
+          id: 3,
+          title: 'Remote',
+          value: 'remote',
+        },
+        {
+          id: 4,
+          title: 'Internship',
+          value: 'internship',
+        },
+      ],
+    },
+  ];
   const [datePostedData] = useState([
     {
       id: 1,
@@ -137,13 +361,6 @@ const FilterScreen = ({navigation}) => {
     {id: 5, title: 'Mobile Application Development', checked: false},
     {id: 6, title: 'Cloud Computing', checked: false},
   ]);
-
-  function applyFilterClick() {
-    try {
-    } catch (error) {
-      console.log('catch in applyFilter_Click : ', error);
-    }
-  }
 
   const [dateSelectedItem, setDateSelectedItem] = useState([]);
   const handleDatePress = itemId => {
@@ -336,255 +553,130 @@ const FilterScreen = ({navigation}) => {
       });
     }
   };
+  const tabs = [
+    'Date Posted',
+    'Experience',
+    'Distance',
+    'Job Type',
+    'Location',
+    'Industry',
+    'Work Type',
+  ];
+
   return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{marginTop: 10}}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.lightBlack,
-              fontFamily: Gilmer.Bold,
-            }}>
-            Date Posted
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              flex: 1,
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              marginVertical: 10,
-            }}>
-            {datePostedData?.map((item, index) => {
-              return (
-                <RadioData
-                  key={index}
-                  label={item.title}
-                  checked={dateSelectedItem.includes(item.id)}
-                  onPress={() => handleDatePress(item.id)}
-                />
-              );
-            })}
-          </View>
+    <View style={{flex: 1}}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          marginTop: 10,
+        }}>
+        <ScrollView
+          style={{flex: 2, backgroundColor: '#EAEAEF'}}
+          showsVerticalScrollIndicator={false}>
+          {tabs.map((tab, index) => (
+            <>
+              <TouchableOpacity
+                key={index}
+                style={{
+                  padding: 10,
+                  backgroundColor:
+                    selectedTab === index ? Color.primary : '#EAEAEF',
+                  marginTop: 2,
+                }}
+                onPress={() => setSelectedTab(index)}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: selectedTab === index ? Color.white : Color.black,
+                    fontFamily: Gilmer.SemiBold,
+                  }}>
+                  {tab}
+                </Text>
+              </TouchableOpacity>
+              {index < tabs.length - 1 && (
+                <Divider style={{height: 2, backgroundColor: Color.white}} />
+              )}
+            </>
+          ))}
+        </ScrollView>
+        <View style={{flex: 2, backgroundColor: Color.white, padding: 10}}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <TabContent
+              item={filterOptions?.[selectedTab]}
+              dateSelectedItem={dateSelectedItem}
+              handleDatePress={handleDatePress}
+              experienceSelectedItem={experienceSelectedItem}
+              handleExperiencePress={handleExperiencePress}
+              distanceSelectedItem={distanceSelectedItem}
+              handleDistancePress={handleDistancePress}
+              jobtypeSelectedItem={jobtypeSelectedItem}
+              handleJobtypePress={handleJobtypePress}
+              industrySelectedItem={industrySelectedItem}
+              handleIndustryPress={handleIndustryPress}
+              worktypeSelectedIte={worktypeSelectedItem}
+              handleWorkTypePress={handleWorkTypePress}
+            />
+          </ScrollView>
         </View>
-        <View style={{marginTop: 10}}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.lightBlack,
-              fontFamily: Gilmer.Bold,
-            }}>
-            Experience
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              flex: 1,
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              marginVertical: 10,
-            }}>
-            {ExperienceData?.map((item, index) => {
-              return (
-                <RadioData
-                  key={index}
-                  label={item.title}
-                  checked={experienceSelectedItem.includes(item.id)}
-                  onPress={() => handleExperiencePress(item.id)}
-                />
-              );
-            })}
-          </View>
-        </View>
-        <View style={{marginTop: 10}}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.lightBlack,
-              fontFamily: Gilmer.Bold,
-            }}>
-            Distance
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              flex: 1,
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              marginVertical: 10,
-            }}>
-            {distanceData?.map((item, index) => {
-              return (
-                <RadioData
-                  key={index}
-                  label={item.title}
-                  checked={distanceSelectedItem.includes(item.id)}
-                  onPress={() => handleDistancePress(item.id)}
-                />
-              );
-            })}
-          </View>
-        </View>
-        <View style={{marginTop: 10}}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.lightBlack,
-              fontFamily: Gilmer.Bold,
-            }}>
-            Job Type
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              flex: 1,
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              marginVertical: 10,
-            }}>
-            {jobtypeData?.map((item, index) => {
-              return (
-                <RadioData
-                  key={index}
-                  label={item.title}
-                  checked={jobtypeSelectedItem.includes(item.id)}
-                  onPress={() => handleJobtypePress(item.id)}
-                />
-              );
-            })}
-          </View>
-        </View>
-        <View style={{marginTop: 10}}>
-          <Text
-            style={{
-              textAlign: 'left',
-              fontSize: 16,
-              color: Color.lightBlack,
-              fontFamily: Gilmer.Bold,
-            }}>
-            Location
-          </Text>
-          <TouchableOpacity
-            style={{
-              height: 50,
-              backgroundColor: Color.white,
-              borderColor: Color.Venus,
-              borderWidth: 1,
-              borderRadius: 10,
-              marginVertical: 10,
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                fontSize: 14,
-                color: Color.lightBlack,
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 10,
-              }}>
-              Select Location
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{marginTop: 10}}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.lightBlack,
-              fontFamily: Gilmer.Bold,
-            }}>
-            Industry
-          </Text>
-          <View
-            style={{
-              marginVertical: 10,
-            }}>
-            {industryData?.map((item, index) => {
-              return (
-                <CheckboxData
-                  key={index}
-                  label={item.title}
-                  checked={industrySelectedItem.includes(item.id)}
-                  onPress={() => handleIndustryPress(item.id)}
-                />
-              );
-            })}
-          </View>
-        </View>
-        <View style={{marginTop: 10}}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.lightBlack,
-              fontFamily: Gilmer.Bold,
-            }}>
-            Work Type
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              flex: 1,
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              marginVertical: 10,
-            }}>
-            {worktypeData?.map((item, index) => {
-              return (
-                <RadioData
-                  key={index}
-                  label={item.title}
-                  checked={worktypeSelectedItem.includes(item.id)}
-                  onPress={() => handleWorkTypePress(item.id)}
-                />
-              );
-            })}
-          </View>
-        </View>
-        <TouchableOpacity
-          onPress={() => applyFilterClick()}
-          activeOpacity={0.5}
+      </View>
+      <View
+        style={{
+          backgroundColor: Color.white,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 2},
+          shadowOpacity: 0.5,
+          shadowRadius: 2,
+          elevation: 2,
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
+        }}>
+        <Button
+          mode="contained"
+          onPress={() => {
+            setFilterSelectedItem({
+              date_posted: [],
+              experience: [],
+              distance: [],
+              job_type: [],
+              location: {},
+              industry: [],
+              work_type: [],
+            });
+            setDateSelectedItem([]);
+            setExperienceSelectedItem([]);
+            setDistanceSelectedItem([]);
+            setjobtypeSelectedItem([]);
+            setIndustrySelectedItem([]);
+            setWorktypeSelectedItem([]);
+          }}
           style={{
-            height: 50,
+            marginVertical: 10,
+            backgroundColor: Color.white,
+            borderRadius: 10,
+          }}
+          textColor="#000"
+          labelStyle={{fontFamily: Gilmer.Bold, fontSize: 16}}>
+          Clear Filters
+        </Button>
+        <Button
+          mode="contained"
+          onPress={() => {}}
+          style={{
+            marginVertical: 10,
             backgroundColor: Color.primary,
-            borderColor: Color.Venus,
-            borderWidth: 1,
-            borderRadius: 5,
-            marginVertical: 5,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.white,
-              fontFamily: Gilmer.Bold,
-              paddingHorizontal: 10,
-            }}>
-            Apply{' '}
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
+            borderRadius: 50,
+            width: '50%',
+          }}
+          labelStyle={{fontFamily: Gilmer.Bold, fontSize: 16}}>
+          Apply
+        </Button>
+      </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Color.white,
-    padding: 10,
-  },
-  textStyle: {
-    marginHorizontal: 20,
-    marginTop: 10,
-    color: 'black',
-    fontWeight: '600',
-  },
-  singleRadioButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-});
-
-export default FilterScreen;
+export default VerticalTabView;

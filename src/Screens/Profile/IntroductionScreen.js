@@ -3,12 +3,25 @@ import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
 import FIcon from 'react-native-vector-icons/FontAwesome';
+import fetchData from '../../Config/fetchData';
 
 const IntroductionScreen = ({navigation}) => {
   const [intro, setIntro] = useState({
     name: '',
     headline: '',
   });
+
+  const getAPiData = async () => {
+    try {
+      var data = {
+        first_name: intro?.name,
+      };
+      const intro_data = await fetchData.candidates_profile(data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: Color.white, padding: 10}}>
       <Text

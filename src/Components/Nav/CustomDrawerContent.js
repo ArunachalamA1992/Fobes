@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  FlatList,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Color from '../../Global/Color';
@@ -14,12 +15,66 @@ import {Gilmer} from '../../Global/FontFamily';
 import {Iconviewcomponent} from '../Icontag';
 import {Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {setCompleteProfile, setOnBoardVisible, setUserData} from '../../Redux';
 
 const CustomDrawerContent = props => {
   const [itemSelected, setItemSelected] = useState('');
   const userData = useSelector(state => state.UserReducer.userData);
   var {name, email, role} = userData;
+  const dispatch = useDispatch();
+  const [customDrawer] = useState([
+    {
+      id: 1,
+      name: 'Applied Jobs',
+      navigate: 'AppliedJobs',
+      icon: 'location-arrow',
+      icontag: 'FontAwesome5',
+    },
+    {
+      id: 2,
+      name: 'Favorite Jobs',
+      navigate: 'SavedJobsTab',
+      icon: 'bookmark',
+      icontag: 'FontAwesome',
+    },
+    {
+      id: 3,
+      name: 'Helps and Support',
+      navigate: '',
+      icon: 'information-circle',
+      icontag: 'Ionicons',
+    },
+    {
+      id: 4,
+      name: 'Privacy Policy',
+      navigate: 'PrivacyPolicy',
+      icon: 'shield-lock',
+      icontag: 'MaterialCommunityIcons',
+    },
+    {
+      id: 5,
+      name: 'Terms & Conditions',
+      navigate: 'TermsCondition',
+      icon: 'legal',
+      icontag: 'FontAwesome',
+    },
+    {
+      id: 6,
+      name: 'Settings',
+      navigate: '',
+      icon: 'settings',
+      icontag: 'Ionicons',
+    },
+    {
+      id: 7,
+      name: 'Share the app',
+      navigate: '',
+      icon: 'share-social',
+      icontag: 'Ionicons',
+    },
+  ]);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Color.white}}>
       <TouchableOpacity
@@ -71,6 +126,91 @@ const CustomDrawerContent = props => {
           style={{marginRight: 10}}
         />
       </TouchableOpacity>
+      {/* <FlatList
+        data={customDrawer}
+        showsVerticalScrollIndicator={false}
+        renderItem={({item, index}) => {
+          return (
+            <View
+              style={{
+                backgroundColor:
+                  itemSelected === item?.name ? Color.primary : Color.white,
+                marginVertical: 5,
+              }}>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginHorizontal: 5,
+                  paddingVertical: 15,
+                  padding: 10,
+                }}
+                onPress={() => {
+                  setItemSelected(item?.name);
+                }}>
+                <Iconviewcomponent
+                  Icontag={item?.icontag}
+                  iconname={item?.icon}
+                  icon_size={22}
+                  icon_color={
+                    itemSelected === item?.name ? Color.white : Color.primary
+                  }
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    marginLeft: 10,
+                    color:
+                      itemSelected === item?.name ? Color.white : Color.black,
+                    fontFamily:
+                      itemSelected === item?.name ? Gilmer.Bold : Gilmer.Medium,
+                  }}>
+                  {item?.name}
+                </Text>
+              </TouchableOpacity>
+              {item?.id > 1 && item.id == 2 && (
+                <Divider style={{height: 1, marginVertical: 10}} />
+              )}
+            </View>
+          );
+        }}
+      />
+      <View
+        style={{
+          backgroundColor:
+            itemSelected === 'Logout' ? Color.primary : Color.white,
+          marginVertical: 5,
+        }}>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginHorizontal: 5,
+            paddingVertical: 15,
+            padding: 10,
+          }}
+          onPress={() => {
+            setItemSelected('Logout');
+            props.navigation.navigate('Auth');
+          }}>
+          <Iconviewcomponent
+            Icontag={'MaterialCommunityIcons'}
+            iconname={'logout'}
+            icon_size={22}
+            icon_color={itemSelected === 'Logout' ? Color.white : Color.primary}
+          />
+          <Text
+            style={{
+              fontSize: 18,
+              marginLeft: 10,
+              color: itemSelected === 'Logout' ? Color.white : Color.black,
+              fontFamily:
+                itemSelected === 'Settings' ? Gilmer.Bold : Gilmer.Medium,
+            }}>
+            Log Out
+          </Text>
+        </TouchableOpacity>
+      </View> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{marginVertical: 10, marginBottom: 50}}>
           <View
@@ -89,6 +229,7 @@ const CustomDrawerContent = props => {
               }}
               onPress={() => {
                 setItemSelected('jobs');
+                props.navigation.navigate('AppliedJobs');
               }}>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
@@ -100,7 +241,7 @@ const CustomDrawerContent = props => {
               />
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   marginLeft: 10,
                   color: itemSelected === 'jobs' ? Color.white : Color.black,
                   fontFamily:
@@ -127,7 +268,7 @@ const CustomDrawerContent = props => {
               }}
               onPress={() => {
                 setItemSelected('favorite');
-                props.navigation.navigate('SavedJobs');
+                props.navigation.navigate('SavedJobsTab');
               }}>
               <Iconviewcomponent
                 Icontag={'FontAwesome'}
@@ -139,7 +280,7 @@ const CustomDrawerContent = props => {
               />
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   marginLeft: 10,
                   color:
                     itemSelected === 'favorite' ? Color.white : Color.black,
@@ -178,7 +319,7 @@ const CustomDrawerContent = props => {
               />
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   marginLeft: 10,
                   color: itemSelected === 'helps' ? Color.white : Color.black,
                   fontFamily:
@@ -216,7 +357,7 @@ const CustomDrawerContent = props => {
               />
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   marginLeft: 10,
                   color:
                     itemSelected === 'PrivacyPolicy'
@@ -261,7 +402,7 @@ const CustomDrawerContent = props => {
               />
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   marginLeft: 10,
                   color:
                     itemSelected === 'termscondition'
@@ -303,7 +444,7 @@ const CustomDrawerContent = props => {
               />
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   marginLeft: 10,
                   color:
                     itemSelected === 'settings' ? Color.white : Color.black,
@@ -346,7 +487,7 @@ const CustomDrawerContent = props => {
               />
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   marginLeft: 10,
                   color: itemSelected === 'share' ? Color.white : Color.black,
                   fontFamily:
@@ -373,6 +514,9 @@ const CustomDrawerContent = props => {
               onPress={() => {
                 setItemSelected('Logout');
                 props.navigation.navigate('Auth');
+                AsyncStorage.clear();
+                dispatch(setUserData({}));
+                dispatch(setOnBoardVisible(false));
               }}>
               <Iconviewcomponent
                 Icontag={'MaterialCommunityIcons'}
@@ -384,7 +528,7 @@ const CustomDrawerContent = props => {
               />
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   marginLeft: 10,
                   color: itemSelected === 'Logout' ? Color.white : Color.black,
                   fontFamily:

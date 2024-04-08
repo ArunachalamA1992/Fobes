@@ -1,8 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
-  Animated,
   View,
   FlatList,
   SafeAreaView,
@@ -14,28 +13,26 @@ import {
   LogBox,
   SectionList,
 } from 'react-native';
-
-import {useNavigation} from '@react-navigation/native';
-import {scr_width} from '../../Utils/Dimensions';
 import {Iconviewcomponent} from '../../Components/Icontag';
 import {Media} from '../../Global/Media';
 import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
-
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import {Button} from 'react-native-paper';
-import {setAsync, setCompleteProfile, setUserData} from '../../Redux';
+import {setCompleteProfile, setUserData} from '../../Redux';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import common_fn from '../../Config/common_fn';
 import {ApplyJobData} from '../../Global/Content';
 import {JobCardHorizontal} from '../../Components/JobItemCard';
+import FilterModal from './FilterModal';
 
 LogBox.ignoreAllLogs();
 const HomeScreen = ({navigation}) => {
   const [selectTab, setSelectTab] = useState('FullTime');
   const dispatch = useDispatch();
+  const [filterVisible, setFilterVisible] = useState(false);
   const [profileStatus, setProfileStatus] = useState(0);
   const [height, setHeight] = useState(undefined);
   const userData = useSelector(state => state.UserReducer.userData);
@@ -195,6 +192,9 @@ const HomeScreen = ({navigation}) => {
           alignItems: 'center',
         }}>
         <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('SearchScreen');
+          }}
           activeOpacity={0.5}
           style={{
             marginRight: 5,
@@ -232,7 +232,10 @@ const HomeScreen = ({navigation}) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('Filter')}
+          onPress={() => {
+            // navigation.navigate('Filter');
+            setFilterVisible(true);
+          }}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -383,7 +386,8 @@ const HomeScreen = ({navigation}) => {
                                     fontSize: 14,
                                     color: Color.black,
                                     marginVertical: 5,
-                                  }}>
+                                  }}
+                                  numberOfLines={2}>
                                   {item?.subname}
                                 </Text>
                                 <Button
@@ -412,7 +416,8 @@ const HomeScreen = ({navigation}) => {
                                     marginVertical: 10,
                                     backgroundColor: Color.primary,
                                     borderRadius: 10,
-                                  }}>
+                                  }}
+                                  textColor={Color.white}>
                                   {item.btname}
                                 </Button>
                               </View>
@@ -776,11 +781,14 @@ const HomeScreen = ({navigation}) => {
           }
         }}
       />
+      <FilterModal
+        setFilterVisible={setFilterVisible}
+        filterVisible={filterVisible}
+      />
     </SafeAreaView>
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -798,5 +806,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//make this component available to the app
 export default HomeScreen;

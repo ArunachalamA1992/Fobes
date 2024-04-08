@@ -11,20 +11,20 @@ const CheckboxData = ({label, checked, onPress}) => {
       <MCIcon
         name={!checked ? 'checkbox-blank-outline' : 'checkbox-marked'}
         size={25}
-        color={!checked ? Color.cloudyGrey : Color.primary}
+        color={!checked ? Color.cloudyGrey : '#309CD2'}
       />
       <Text style={styles.TextData}>{label}</Text>
     </TouchableOpacity>
   );
 };
 
-export const RedioData = ({label, checked, onPress}) => {
+export const RadioData = ({label, checked, onPress}) => {
   return (
     <TouchableOpacity style={styles.checkboxContainer} onPress={onPress}>
       <Icon
         name={!checked ? 'radio-button-off' : 'radio-button-on'}
         size={25}
-        color={!checked ? Color.cloudyGrey : Color.primary}
+        color={!checked ? Color.cloudyGrey : '#309CD2'}
       />
       <Text style={styles.TextData}>{label}</Text>
     </TouchableOpacity>
