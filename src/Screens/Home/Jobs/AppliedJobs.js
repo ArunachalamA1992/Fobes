@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Color from '../../../Global/Color';
-import {Poppins} from '../../../Global/FontFamily';
+import {Gilmer} from '../../../Global/FontFamily';
 import {Iconviewcomponent} from '../../../Components/Icontag';
 import {Media} from '../../../Global/Media';
 
@@ -171,14 +171,13 @@ const AppliedJobs = ({navigation}) => {
                   <View
                     style={{
                       flex: 1,
-                      paddingHorizontal: 10,
                       marginVertical: 5,
                     }}>
                     <Text
                       style={{
                         fontSize: 16,
                         color: Color.lightBlack,
-                        fontFamily: Poppins.Bold,
+                        fontFamily: Gilmer.Bold,
                         textAlign: 'justify',
                       }}
                       numberOfLines={2}>
@@ -188,7 +187,7 @@ const AppliedJobs = ({navigation}) => {
                       style={{
                         fontSize: 14,
                         color: Color.darkGrey,
-                        fontFamily: Poppins.Medium,
+                        fontFamily: Gilmer.Medium,
                         textAlign: 'justify',
                       }}
                       numberOfLines={1}>
@@ -211,7 +210,6 @@ const AppliedJobs = ({navigation}) => {
               </View>
               <View
                 style={{
-                  paddingHorizontal: 10,
                   flexDirection: 'row',
                   alignItems: 'center',
                   marginVertical: 5,
@@ -226,15 +224,15 @@ const AppliedJobs = ({navigation}) => {
                   style={{
                     fontSize: 14,
                     color: Color.Venus,
-                    fontFamily: Poppins.Medium,
+                    fontFamily: Gilmer.Medium,
                     paddingHorizontal: 5,
                   }}>
                   {item.apply_job_comp_loc}
                 </Text>
               </View>
-
               <View
                 style={{
+                  flex: 1,
                   flexDirection: 'row',
                   paddingVertical: 5,
                   justifyContent: 'space-between',
@@ -242,17 +240,18 @@ const AppliedJobs = ({navigation}) => {
                 }}>
                 <View
                   style={{
+                    // flex: 1,
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    padding: 7,
-                    paddingHorizontal: 10,
+                    borderRadius: 5,
+                    padding: 5,
                     backgroundColor: '#DEFCE4',
                   }}>
                   <Iconviewcomponent
                     Icontag={'FontAwesome'}
                     iconname={'check-square'}
-                    icon_size={20}
+                    icon_size={16}
                     icon_color={'#0BA02C'}
                   />
                   <Text
@@ -260,7 +259,7 @@ const AppliedJobs = ({navigation}) => {
                       fontSize: 12,
                       color: Color.black,
                       borderRadius: 5,
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                       paddingHorizontal: 5,
                     }}>
                     Applied 2 days ago
@@ -268,36 +267,38 @@ const AppliedJobs = ({navigation}) => {
                 </View>
                 <View
                   style={{
+                    // flex: 1,
                     justifyContent: 'flex-start',
                     alignItems: 'flex-start',
                   }}>
                   <Text
                     style={{
-                      padding: 7,
-                      paddingHorizontal: 10,
+                      padding: 5,
+                      marginHorizontal: 5,
                       backgroundColor: '#E9F9F6',
                       fontSize: 12,
                       color: Color.lightBlack,
                       borderRadius: 5,
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                     }}>
                     {item.apply_job_type}
                   </Text>
                 </View>
                 <View
                   style={{
+                    // flex: 1,
                     justifyContent: 'flex-start',
                     alignItems: 'flex-start',
                   }}>
                   <Text
                     style={{
-                      padding: 7,
-                      paddingHorizontal: 10,
+                      padding: 5,
+                      marginHorizontal: 5,
                       backgroundColor: '#E9F9F6',
                       fontSize: 12,
                       color: Color.lightBlack,
                       borderRadius: 5,
-                      fontFamily: Poppins.Medium,
+                      fontFamily: Gilmer.Medium,
                     }}>
                     {item.apply_job_comp_salary}
                   </Text>

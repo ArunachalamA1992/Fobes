@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Poppins} from '../../Global/FontFamily';
+import {Gilmer} from '../../Global/FontFamily';
 import {Button} from 'react-native-paper';
 
 const ProjectScreen = ({navigation}) => {
@@ -101,7 +101,7 @@ const ProjectScreen = ({navigation}) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text
           style={{
-            fontFamily: Poppins.Medium,
+            fontFamily: Gilmer.Medium,
             fontSize: 16,
             color: Color.black,
             fontWeight: '500',
@@ -114,7 +114,7 @@ const ProjectScreen = ({navigation}) => {
         <View style={{marginVertical: 10}}>
           <Text
             style={{
-              fontFamily: Poppins.Medium,
+              fontFamily: Gilmer.Medium,
               fontSize: 14,
               color: Color.black,
               marginHorizontal: 5,
@@ -160,7 +160,7 @@ const ProjectScreen = ({navigation}) => {
         <View style={{marginVertical: 10}}>
           <Text
             style={{
-              fontFamily: Poppins.Bold,
+              fontFamily: Gilmer.Bold,
               fontSize: 14,
               color: Color.black,
               textTransform: 'capitalize',
@@ -218,7 +218,7 @@ const ProjectScreen = ({navigation}) => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -235,7 +235,7 @@ const ProjectScreen = ({navigation}) => {
         <View style={{marginVertical: 10}}>
           <Text
             style={{
-              fontFamily: Poppins.Bold,
+              fontFamily: Gilmer.Bold,
               fontSize: 18,
               color: Color.black,
               textTransform: 'capitalize',
@@ -295,7 +295,7 @@ const ProjectScreen = ({navigation}) => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -319,7 +319,7 @@ const ProjectScreen = ({navigation}) => {
               style={{
                 fontSize: 16,
                 color: Color.black,
-                fontFamily: Poppins.SemiBold,
+                fontFamily: Gilmer.SemiBold,
               }}>
               Worked From
             </Text>
@@ -364,7 +364,7 @@ const ProjectScreen = ({navigation}) => {
               style={{
                 fontSize: 16,
                 color: Color.black,
-                fontFamily: Poppins.SemiBold,
+                fontFamily: Gilmer.SemiBold,
               }}>
               Worked Till
             </Text>
@@ -410,7 +410,7 @@ const ProjectScreen = ({navigation}) => {
             style={{
               fontSize: 16,
               color: Color.black,
-              fontFamily: Poppins.SemiBold,
+              fontFamily: Gilmer.SemiBold,
             }}>
             Details of the projects
           </Text>
@@ -455,7 +455,7 @@ const ProjectScreen = ({navigation}) => {
             style={{
               fontSize: 16,
               color: Color.black,
-              fontFamily: Poppins.SemiBold,
+              fontFamily: Gilmer.SemiBold,
             }}>
             Project Location
           </Text>
@@ -498,7 +498,7 @@ const ProjectScreen = ({navigation}) => {
         <View style={{marginVertical: 10}}>
           <Text
             style={{
-              fontFamily: Poppins.Bold,
+              fontFamily: Gilmer.Bold,
               fontSize: 18,
               color: Color.black,
               textTransform: 'capitalize',
@@ -558,7 +558,7 @@ const ProjectScreen = ({navigation}) => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -575,7 +575,7 @@ const ProjectScreen = ({navigation}) => {
         <View style={{marginVertical: 10}}>
           <Text
             style={{
-              fontFamily: Poppins.Bold,
+              fontFamily: Gilmer.Bold,
               fontSize: 18,
               color: Color.black,
               textTransform: 'capitalize',
@@ -635,7 +635,7 @@ const ProjectScreen = ({navigation}) => {
                   }}>
                   <Text
                     style={{
-                      fontFamily: Poppins.Bold,
+                      fontFamily: Gilmer.Bold,
                       fontSize: 14,
                       color: Color.black,
                       textTransform: 'capitalize',
@@ -654,7 +654,7 @@ const ProjectScreen = ({navigation}) => {
             style={{
               fontSize: 16,
               color: Color.black,
-              fontFamily: Poppins.SemiBold,
+              fontFamily: Gilmer.SemiBold,
             }}>
             Size of team
           </Text>
@@ -699,7 +699,7 @@ const ProjectScreen = ({navigation}) => {
             style={{
               fontSize: 16,
               color: Color.black,
-              fontFamily: Poppins.SemiBold,
+              fontFamily: Gilmer.SemiBold,
             }}>
             Role of Project
           </Text>
@@ -744,7 +744,7 @@ const ProjectScreen = ({navigation}) => {
             style={{
               fontSize: 16,
               color: Color.black,
-              fontFamily: Poppins.SemiBold,
+              fontFamily: Gilmer.SemiBold,
             }}>
             Role Description
           </Text>
@@ -789,7 +789,7 @@ const ProjectScreen = ({navigation}) => {
             style={{
               fontSize: 16,
               color: Color.black,
-              fontFamily: Poppins.SemiBold,
+              fontFamily: Gilmer.SemiBold,
             }}>
             Skills Used
           </Text>

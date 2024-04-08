@@ -1,20 +1,16 @@
+import {combineReducers} from 'redux';
+import {configureStore} from '@reduxjs/toolkit';
+import UserReducer from './user/UserReducer';
 
-import { createStore, applyMiddleware } from 'redux'; 
+const rootReducer = combineReducers({
+  UserReducer: UserReducer,
+});
 
-export default Store = createStore(() => [], {}, applyMiddleware());
-
-// const rootReducer = combineReducers({
-//   UserReducer: UserReducer,
-//   PropertyReducer: PropertyReducer,
-//   PayReducer: PayReducer,
-// });
-
-// export default configureStore({
-//   reducer: rootReducer,
-//   // middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
-//   middleware: getDefaultMiddleware =>
-//     getDefaultMiddleware({
-//       serializableCheck: false,
-//       immutableCheck: false,
-//     }),
-// });
+export default configureStore({
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+      immutableCheck: false,
+    }),
+});

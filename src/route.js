@@ -9,7 +9,6 @@ import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from './Screens/Home/HomeScreen';
 import AboutUs from './Screens/SideMenu/AboutUs';
 import ContactUs from './Screens/SideMenu/ContactUs';
-import NotificationList from './Screens/SideMenu/NotificationList';
 import TermsCondition from './Screens/SideMenu/TermsCondition';
 import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
 import Color from './Global/Color';
@@ -19,7 +18,7 @@ import {NavigationDrawerStructure} from './Components/Nav/NavDrawer';
 import Login from './Screens/Auth/Login';
 import Register from './Screens/Auth/Register';
 import {Media} from './Global/Media';
-import {Poppins} from './Global/FontFamily';
+import {Gilmer} from './Global/FontFamily';
 import FAQs from './Screens/SideMenu/FAQs';
 import AppliedJobs from './Screens/Home/Jobs/AppliedJobs';
 import {Iconviewcomponent} from './Components/Icontag';
@@ -35,6 +34,9 @@ import EmploymentDetails from './Screens/Profile/EmploymentDetails';
 import SkillScreen from './Screens/Profile/Skills';
 import ProjectScreen from './Screens/Profile/ProjectScreen';
 import FilterScreen from './Screens/Home/FilterScreen';
+import IntroductionScreen from './Screens/Profile/IntroductionScreen';
+import BasicDetails from './Screens/Profile/BasicDetails';
+import Applycompletion from './Screens/SubPages/Applycompletion';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,29 +49,31 @@ export const HomeStack = () => {
         component={HomeScreen}
         options={({navigation}) => ({
           headerTitle: '',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary, elevation: 0},
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white, elevation: 0},
           headerLeft: () => (
             <NavigationDrawerStructure navigation={navigation} home={true} />
           ),
           headerRight: () => (
-            <TouchableOpacity style={{ right: 10 }} onPress={() => navigation.navigate("Notification")}>
+            <TouchableOpacity
+              style={{right: 10}}
+              onPress={() => {
+                navigation.navigate('Notification');
+              }}>
               <Badge
-                size={20}
-                style={{
+                badgeStyle={{
+                  backgroundColor: Color.primary,
                   position: 'absolute',
-                  top: -10,
-                  right: -5,
-                  zIndex: 1000,
-                  fontSize: 13
+                  right: 0,
+                  zIndex: 1,
                 }}>
-                06
+                {0}
               </Badge>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
-                iconname={'notifications-sharp'}
-                icon_size={28}
-                icon_color={Color.white}
+                iconname={'notifications-outline'}
+                icon_size={26}
+                icon_color={Color.black}
               />
             </TouchableOpacity>
           ),
@@ -133,25 +137,6 @@ export const HomeStack = () => {
         })}
       />
       <Stack.Screen
-        name="Notification"
-        component={NotificationList}
-        options={({navigation, route}) => ({
-          headerTitle: 'Notifications List',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary},
-          headerLeft: () => (
-            <View style={{marginHorizontal: 10}}>
-              <Icon
-                name="arrow-back"
-                size={30}
-                color={Color.white}
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
-        })}
-      />
-      <Stack.Screen
         name="TermsCondition"
         component={TermsCondition}
         options={({navigation, route}) => ({
@@ -194,14 +179,15 @@ export const HomeStack = () => {
         component={JobListScreen}
         options={({navigation, route}) => ({
           headerTitle: 'Job List',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary},
+          headerTitleAlign: 'center',
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white},
           headerLeft: () => (
             <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
-                color={Color.white}
+                color={Color.black}
                 onPress={() => navigation.goBack()}
               />
             </View>
@@ -213,15 +199,15 @@ export const HomeStack = () => {
         name="DetailedScreen"
         component={DetailedScreen}
         options={({navigation, route}) => ({
-          headerTitle: 'Detailed Screen',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary},
+          headerTitle: '',
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white},
           headerLeft: () => (
             <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
-                color={Color.white}
+                color={Color.black}
                 onPress={() => navigation.goBack()}
               />
             </View>
@@ -229,10 +215,10 @@ export const HomeStack = () => {
           headerRight: () => (
             <TouchableOpacity style={{right: 10}}>
               <Iconviewcomponent
-                Icontag={'AntDesign'}
-                iconname={'sharealt'}
+                Icontag={'FontAwesome'}
+                iconname={'share-alt'}
                 icon_size={26}
-                icon_color={Color.white}
+                icon_color={Color.black}
               />
             </TouchableOpacity>
           ),
@@ -282,14 +268,15 @@ export const HomeStack = () => {
         component={CompanyDetails}
         options={({navigation, route}) => ({
           headerTitle: 'Company Details',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary},
+          headerTitleAlign: 'center',
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white},
           headerLeft: () => (
             <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
-                color={Color.white}
+                color={Color.black}
                 onPress={() => navigation.goBack()}
               />
             </View>
@@ -301,15 +288,15 @@ export const HomeStack = () => {
         name="Filter"
         component={FilterScreen}
         options={({navigation, route}) => ({
-          headerTitle: 'Filter',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary},
+          headerTitle: '',
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white},
           headerLeft: () => (
             <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
-                color={Color.white}
+                color={Color.black}
                 onPress={() => navigation.goBack()}
               />
             </View>
@@ -326,32 +313,36 @@ export const AppliedStack = () => {
       <Stack.Screen
         name="AppliedJobs"
         component={AppliedJobs}
-        options={({navigation, route}) => ({
+        options={({navigation}) => ({
           headerTitle: 'Applied Jobs',
           headerTitleAlign: 'center',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary},
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white, elevation: 0},
           headerLeft: () => (
-            <View style={{marginHorizontal: 10}}>
-              <Icon
-                name="arrow-back"
-                size={30}
-                color={Color.white}
-                onPress={() => navigation.goBack()}
-              />
-            </View>
+            <NavigationDrawerStructure navigation={navigation} home={true} />
           ),
           headerRight: () => (
-            <View style={{marginHorizontal: 10}}>
-              <Image
-                source={{uri: Media.fobes_white}}
-                style={{
-                  width: 100,
-                  height: 40,
-                  resizeMode: 'contain',
-                }}
+            <TouchableOpacity
+              style={{right: 10}}
+              onPress={() => {
+                navigation.navigate('Notification');
+              }}>
+              <Badge
+                badgeStyle={{
+                  backgroundColor: Color.primary,
+                  position: 'absolute',
+                  right: 0,
+                  zIndex: 1,
+                }}>
+                {0}
+              </Badge>
+              <Iconviewcomponent
+                Icontag={'Ionicons'}
+                iconname={'notifications-outline'}
+                icon_size={26}
+                icon_color={Color.black}
               />
-            </View>
+            </TouchableOpacity>
           ),
         })}
       />
@@ -365,32 +356,36 @@ export const SavedJobStack = () => {
       <Stack.Screen
         name="Saved"
         component={SavedJobScreen}
-        options={({navigation, route}) => ({
+        options={({navigation}) => ({
           headerTitle: 'Saved Jobs',
           headerTitleAlign: 'center',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary},
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white, elevation: 0},
           headerLeft: () => (
-            <View style={{marginHorizontal: 10}}>
-              <Icon
-                name="arrow-back"
-                size={30}
-                color={Color.white}
-                onPress={() => navigation.goBack()}
-              />
-            </View>
+            <NavigationDrawerStructure navigation={navigation} home={true} />
           ),
           headerRight: () => (
-            <View style={{marginHorizontal: 10}}>
-              <Image
-                source={{uri: Media.fobes_white}}
-                style={{
-                  width: 100,
-                  height: 40,
-                  resizeMode: 'contain',
-                }}
+            <TouchableOpacity
+              style={{right: 10}}
+              onPress={() => {
+                navigation.navigate('Notification');
+              }}>
+              <Badge
+                badgeStyle={{
+                  backgroundColor: Color.primary,
+                  position: 'absolute',
+                  right: 0,
+                  zIndex: 1,
+                }}>
+                {0}
+              </Badge>
+              <Iconviewcomponent
+                Icontag={'Ionicons'}
+                iconname={'notifications-outline'}
+                icon_size={26}
+                icon_color={Color.black}
               />
-            </View>
+            </TouchableOpacity>
           ),
         })}
       />
@@ -404,54 +399,57 @@ export const ProfileStack = () => {
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
+        options={({navigation}) => ({
+          headerTitle: 'Profile',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white, elevation: 0},
+          headerLeft: () => (
+            <NavigationDrawerStructure navigation={navigation} home={true} />
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              style={{right: 10}}
+              onPress={() => {
+                navigation.navigate('Notification');
+              }}>
+              <Badge
+                badgeStyle={{
+                  backgroundColor: Color.primary,
+                  position: 'absolute',
+                  right: 0,
+                  zIndex: 1,
+                }}>
+                {0}
+              </Badge>
+              <Iconviewcomponent
+                Icontag={'Ionicons'}
+                iconname={'notifications-outline'}
+                icon_size={26}
+                icon_color={Color.black}
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="profileIntro"
+        component={IntroductionScreen}
         options={({navigation, route}) => ({
           headerTitle: 'Profile',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary},
-          // headerTitle: '',
-          // headerTitleStyle: { color: Color.white },
-          // headerStyle: { backgroundColor: Color.white },
-          // headerTitleStyle: { color: Color.black, fontFamily: Poppins.SemiBold },
-          // headerTitleAlign: 'center',
-          // headerStyle: { backgroundColor: Color.white },
-          // headerLeft: () => (
-          //   <NavigationDrawerStructure navigation={navigation} home={false} />
-          // ),
-          // headerRight: () => (
-          //   <TouchableOpacity style={{ marginHorizontal: 10 }}>
-          //     <Text
-          //       style={{
-          //         fontFamily: Poppins.SemiBold,
-          //         fontSize: 18,
-          //         color: Color.white,
-          //       }}>
-          //       Edit
-          //     </Text>
-          //   </TouchableOpacity>
-          // ),
+          headerTitleStyle: {color: Color.black},
+          headerTitleAlign: 'center',
+          headerStyle: {backgroundColor: Color.white},
           headerLeft: () => (
             <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
-                color={Color.white}
+                color={Color.black}
                 onPress={() => navigation.goBack()}
               />
             </View>
           ),
-          headerRight: () => (
-            <View style={{marginHorizontal: 10}}>
-              <Image
-                source={{uri: Media.fobes_white}}
-                style={{
-                  width: 100,
-                  height: 40,
-                  resizeMode: 'contain',
-                }}
-              />
-            </View>
-          ),
-          // headerRightContainerStyle: { marginRight: 10 },
         })}
       />
       <Stack.Screen
@@ -479,26 +477,6 @@ export const ProfileStack = () => {
         component={EmploymentDetails}
         options={({navigation, route}) => ({
           headerTitle: 'Employement Details',
-          headerTitleStyle: {color: Color.black},
-          headerTitleAlign: 'center',
-          headerStyle: {backgroundColor: Color.white},
-          headerLeft: () => (
-            <View style={{marginHorizontal: 10}}>
-              <Icon
-                name="arrow-back"
-                size={30}
-                color={Color.black}
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-          ),
-        })}
-      />
-      <Stack.Screen
-        name="Skill"
-        component={SkillScreen}
-        options={({navigation, route}) => ({
-          headerTitle: 'Key Skills',
           headerTitleStyle: {color: Color.black},
           headerTitleAlign: 'center',
           headerStyle: {backgroundColor: Color.white},
@@ -567,23 +545,15 @@ const TabNavigator = () => {
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View
                   style={{
-                    // backgroundColor: Color.white,
-                    // width: 50,
-                    // height: 50,
-                    // borderRadius: 50,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    // position: 'absolute',
-                    // bottom: 5,
                   }}>
                   <Icon name={'home'} size={25} color={Color.primary} />
                 </View>
                 <Text
                   style={{
                     fontSize: 12,
-                    // marginBottom: -15,
                     color: focused ? Color.primary : Color.black,
-                    // backgroundColor: Color.lightYellow,
                     paddingHorizontal: 10,
                     paddingVertical: 2,
                     borderRadius: 50,
@@ -604,19 +574,13 @@ const TabNavigator = () => {
                 </Text>
               </View>
             );
-          } else if (route.name === 'ApplyJobs') {
+          } else if (route.name === 'ApplyJobsTab') {
             return focused ? (
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View
                   style={{
-                    // backgroundColor: Color.white,
-                    // width: 50,
-                    // height: 50,
-                    // borderRadius: 50,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    // position: 'absolute',
-                    // bottom: 5,
                   }}>
                   <Iconviewcomponent
                     Icontag={'FontAwesome5'}
@@ -628,9 +592,7 @@ const TabNavigator = () => {
                 <Text
                   style={{
                     fontSize: 12,
-                    // marginBottom: -15,
                     color: focused ? Color.primary : Color.black,
-                    // backgroundColor: Color.lightYellow,
                     paddingHorizontal: 10,
                     paddingVertical: 2,
                     borderRadius: 50,
@@ -656,19 +618,13 @@ const TabNavigator = () => {
                 </Text>
               </View>
             );
-          } else if (route.name === 'SavedJobs') {
+          } else if (route.name === 'SavedJobsTab') {
             return focused ? (
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View
                   style={{
-                    // backgroundColor: Color.white,
-                    // width: 50,
-                    // height: 50,
-                    // borderRadius: 50,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    // position: 'absolute',
-                    // bottom: 5,
                   }}>
                   <Iconviewcomponent
                     Icontag={'Ionicons'}
@@ -680,9 +636,7 @@ const TabNavigator = () => {
                 <Text
                   style={{
                     fontSize: 12,
-                    // marginBottom: -15,
                     color: focused ? Color.primary : Color.black,
-                    // backgroundColor: Color.lightYellow,
                     paddingHorizontal: 10,
                     paddingVertical: 2,
                     borderRadius: 50,
@@ -694,7 +648,7 @@ const TabNavigator = () => {
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <Iconviewcomponent
                   Icontag={'Ionicons'}
-                  iconname={'bookmark-outline'}
+                  iconname={'bookmark'}
                   icon_size={25}
                   icon_color={color}
                 />
@@ -713,17 +667,11 @@ const TabNavigator = () => {
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View
                   style={{
-                    // backgroundColor: Color.white,
-                    // width: 50,
-                    // height: 50,
-                    // borderRadius: 50,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    // position: 'absolute',
-                    // bottom: 5,
                   }}>
                   <Icon
-                    name={'person-circle-outline'}
+                    name={'person-circle'}
                     size={25}
                     color={Color.primary}
                   />
@@ -731,9 +679,7 @@ const TabNavigator = () => {
                 <Text
                   style={{
                     fontSize: 12,
-                    // marginBottom: -15,
                     color: focused ? Color.primary : Color.black,
-                    // backgroundColor: Color.lightYellow,
                     paddingHorizontal: 10,
                     paddingVertical: 2,
                     borderRadius: 50,
@@ -743,7 +689,7 @@ const TabNavigator = () => {
               </View>
             ) : (
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
-                <Icon name={'person-circle-outline'} size={25} color={color} />
+                <Icon name={'person-circle'} size={25} color={color} />
                 <Text
                   style={{
                     fontSize: 12,
@@ -767,12 +713,12 @@ const TabNavigator = () => {
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="ApplyJobs"
+        name="ApplyJobsTab"
         component={AppliedStack}
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="SavedJobs"
+        name="SavedJobsTab"
         component={SavedJobStack}
         options={{headerShown: false}}
       />

@@ -2,23 +2,23 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import F5Icon from 'react-native-vector-icons/FontAwesome5';
 import Color from '../../Global/Color';
-import {Poppins} from '../../Global/FontFamily';
+import {Gilmer} from '../../Global/FontFamily';
 
 export const NavigationDrawerStructure = ({navigation, home}) => {
   var {toggleDrawer} = navigation;
   return (
-    <View style={{width: '75%', flexDirection: 'row', alignItems: 'center'}}>
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
       <TouchableOpacity
         onPress={() => toggleDrawer()}
         style={{borderColor: Color.smokeyGrey}}>
         <F5Icon
           name={'align-left'}
-          color={home == true ? Color.white : Color.black}
+          color={home == true ? Color.black : Color.black}
           size={25}
           style={{marginStart: 15}}
         />
       </TouchableOpacity>
-      <View
+      {/* <View
         style={{
           width: '100%',
           alignItems: 'flex-start',
@@ -27,8 +27,8 @@ export const NavigationDrawerStructure = ({navigation, home}) => {
         <Text
           style={{
             fontSize: 11,
-            color: Color.white,
-            fontFamily: Poppins.Medium,
+            color: Color.black,
+            fontFamily: Gilmer.Medium,
           }}>
           Welcome Back!
         </Text>
@@ -37,13 +37,13 @@ export const NavigationDrawerStructure = ({navigation, home}) => {
             width: '100%',
             textAlign: 'justify',
             fontSize: 14,
-            color: Color.white,
-            fontFamily: Poppins.SemiBold,
+            color: Color.black,
+            fontFamily: Gilmer.SemiBold,
           }}
           numberOfLines={1}>
           Aruanchalam Annamalai
         </Text>
-      </View>
+      </View> */}
     </View>
   );
 };
