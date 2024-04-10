@@ -1,5 +1,5 @@
 import React from 'react';
-import {LogBox, StatusBar, View} from 'react-native';
+import {LogBox, StatusBar, TouchableOpacity, View} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -24,6 +24,7 @@ import Applycompletion from './Screens/SubPages/Applycompletion';
 import BasicDetails from './Screens/Profile/BasicDetails';
 import SearchScreen from './Screens/Home/SearchScreen';
 import DetailedScreen from './Screens/Home/DetailedScreen';
+import {Iconviewcomponent} from './Components/Icontag';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -58,7 +59,7 @@ const App = () => {
 const MainApp = () => {
   return (
     <>
-      <StatusBar backgroundColor={Color.primary} />
+      <StatusBar backgroundColor={Color.white} barStyle={'dark-content'} />
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           name="Splash"
@@ -94,24 +95,18 @@ const MainApp = () => {
           name="DetailedScreen"
           component={DetailedScreen}
           options={({navigation, route}) => ({
-            headerTitle: 'Detailed Screen',
-            headerTitleStyle: {color: Color.white},
-            headerStyle: {backgroundColor: Color.primary},
+            headerTitle: '',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
               <TouchableOpacity
                 style={{marginHorizontal: 10}}
                 onPress={() => navigation.goBack()}>
-                {/* <Icon
-                  name="arrow-back"
-                  size={30}
-                  color={Color.white}
-                  onPress={() => navigation.goBack()}
-                /> */}
                 <Iconviewcomponent
                   Icontag={'Ionicons'}
                   iconname={'arrow-back'}
                   icon_size={30}
-                  icon_color={Color.white}
+                  icon_color={Color.black}
                 />
               </TouchableOpacity>
             ),
@@ -121,7 +116,7 @@ const MainApp = () => {
                   Icontag={'AntDesign'}
                   iconname={'sharealt'}
                   icon_size={26}
-                  icon_color={Color.white}
+                  icon_color={Color.black}
                 />
               </TouchableOpacity>
             ),

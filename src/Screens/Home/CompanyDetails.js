@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,15 +9,32 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-
 import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
 import {Media} from '../../Global/Media';
 import {Iconviewcomponent} from '../../Components/Icontag';
 import {ApplyJobData} from '../../Global/Content';
 import {JobCardHorizontal} from '../../Components/JobItemCard';
+import fetchData from '../../Config/fetchData';
+import {useDispatch, useSelector} from 'react-redux';
 
 const CompanyDetails = ({navigation}) => {
+  const [jobData, setJobData] = useState([]);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const job_list = await fetchData.list_jobs(null, token);
+      setJobData(job_list?.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} style={{}}>
@@ -36,12 +53,12 @@ const CompanyDetails = ({navigation}) => {
               top: 90,
               marginHorizontal: 10,
               elevation: 2,
-              padding: 10,
+              padding: 5,
               backgroundColor: Color.white,
               borderRadius: 100,
             }}>
             <Image
-              source={{uri: Media.albionlogo}}
+              source={Media.user}
               style={{
                 width: 80,
                 height: 80,
@@ -405,7 +422,7 @@ const CompanyDetails = ({navigation}) => {
             </Text>
           </View>
           <FlatList
-            data={ApplyJobData}
+            data={jobData}
             keyExtractor={(item, index) => item + index}
             renderItem={({item, index}) => {
               return <JobCardHorizontal item={item} navigation={navigation} />;

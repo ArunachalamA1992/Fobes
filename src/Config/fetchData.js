@@ -19,4 +19,40 @@ export default {
     let url = api_name + 'candidates';
     return api.patchMethod(url, data, token);
   },
+  list_jobs: (data, token) => {
+    let url = api_name + 'jobs';
+    return api.getMethod(url, data, token);
+  },
+  single_candidate: (data, token) => {
+    let url = api_name + 'candidates';
+    return api.getMethod(url, data, token);
+  },
+  get_education: (data, token) => {
+    let url = api_name + 'job/education';
+    return api.getMethod(url, data, token);
+  },
+  get_experience: (data, token) => {
+    let url = api_name + 'job/experience';
+    return api.getMethod(url, data, token);
+  },
+  list_skills: (data, token) => {
+    let url = api_name + 'job/skills';
+    return api.getMethod(url, data, token);
+  },
+  list_language: (data, token) => {
+    let url = api_name + 'job/language';
+    return api.getMethod(url, data, token);
+  },
+  upload_resume: (data, token) => {
+    let url = api_name + 'cv';
+    return api.postMethod(url, data, token);
+  },
+  list_bookmarks: (data, token) => {
+    let url = api_name + 'candidates/bookmarks';
+    return api.getMethod(url, data, token);
+  },
+  toggle_bookmarks: (data, token) => {
+    let url = api_name + 'candidates/bookmarks';
+    return api.postMethod(url, data, token);
+  },
 };

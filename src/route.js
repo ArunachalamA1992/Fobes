@@ -249,14 +249,15 @@ export const HomeStack = () => {
         component={CompanyList}
         options={({navigation, route}) => ({
           headerTitle: 'Company List',
-          headerTitleStyle: {color: Color.white},
-          headerStyle: {backgroundColor: Color.primary},
+          headerTitleAlign: 'center',
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white},
           headerLeft: () => (
             <View style={{marginHorizontal: 10}}>
               <Icon
                 name="arrow-back"
                 size={30}
-                color={Color.white}
+                color={Color.black}
                 onPress={() => navigation.goBack()}
               />
             </View>

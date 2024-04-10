@@ -40,7 +40,6 @@ export const api = {
       axios
         .post(baseUrl + url, data, {headers: headers})
         .then(res => {
-          console.log('res', res);
           if (res.status == 200) {
             resolve(res.data);
           }

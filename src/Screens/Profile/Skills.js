@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -45,36 +45,39 @@ const customStyles = {
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
 const SkillScreen = ({navigation}) => {
-  const [SkillsData] = useState([
-    {
-      id: 1,
-      name: 'React Native',
-    },
-    {
-      id: 2,
-      name: 'Ui/UX designer',
-    },
-    {
-      id: 3,
-      name: 'Figma',
-    },
-    {
-      id: 4,
-      name: 'Node js',
-    },
-    {
-      id: 5,
-      name: 'Java',
-    },
-    {
-      id: 6,
-      name: 'Dart',
-    },
-    {
-      id: 7,
-      name: 'Mobile Application Developer',
-    },
-  ]);
+  const [SkillsData, setSkillsData] = useState([]);
+  // const [SkillsData] = useState([
+  //   {
+  //     id: 1,
+  //     url: 'React Native',
+  //   },
+  //   {
+  //     id: 2,
+  //     url: 'Ui/UX designer',
+  //   },
+  //   {
+  //     id: 3,
+  //     url: 'Figma',
+  //   },
+  //   {
+  //     id: 4,
+  //     url: 'Node js',
+  //   },
+  //   {
+  //     id: 5,
+  //     url: 'Java',
+  //   },
+  //   {
+  //     id: 6,
+  //     url: 'Dart',
+  //   },
+  //   {
+  //     id: 7,
+  //     url: 'Mobile Application Developer',
+  //   },
+  // ]);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
   const dispatch = useDispatch();
   const profile_complete = useSelector(
     state => state.UserReducer.profile_complete,
@@ -97,45 +100,31 @@ const SkillScreen = ({navigation}) => {
   };
   const [languageselect, setLanguageselect] = useState([]);
   const [languageselectItem, setLanguageselectItem] = useState([]);
-  const [languagesData] = useState([
-    {
-      id: 1,
-      name: 'Tamil',
-    },
-    {
-      id: 2,
-      name: 'English',
-    },
-    {
-      id: 3,
-      name: 'Hindi',
-    },
-    {
-      id: 4,
-      name: 'Telugu',
-    },
-  ]);
+  const [languagesData, setLanguagesData] = useState([]);
 
   const handleLanguagePress = itemId => {
+    const selectedItemData = languagesData.find(single => single.id === itemId);
     if (languageselectItem.includes(itemId)) {
       setLanguageselectItem(
-        languageselectItem?.filter(single => single !== itemId),
+        languageselectItem.filter(single => single !== itemId),
       );
-      setLanguageselect(languageselect?.filter(single => single.id !== itemId));
+      setLanguageselect(languageselect.filter(single => single.id !== itemId));
     } else {
       setLanguageselectItem([...languageselectItem, itemId]);
-      const selectedItemData = languagesData.find(
-        single => single.id === itemId,
-      );
       setLanguageselect([...languageselect, selectedItemData]);
     }
   };
 
   const getAPI = async () => {
     try {
-      var data = {};
-      const basic_data = await fetchData.candidates_profile(data);
-      if (basic_data) {
+      var data = {
+        skills: selectedSkill,
+        languages: languageselect,
+      };
+      console.log('data------------', data);
+      const skills_data = await fetchData.candidates_profile(data, token);
+      console.log('basic_data------------', skills_data);
+      if (skills_data) {
         dispatch(
           setCompleteProfile({
             resume: resume,
@@ -143,14 +132,33 @@ const SkillScreen = ({navigation}) => {
             details: details,
           }),
         );
+        common_fn.showToast(skills_data?.message);
         navigation.navigate('TabNavigator');
       } else {
-        common_fn.showToast(basic_data?.message);
+        common_fn.showToast(skills_data?.message);
       }
     } catch (error) {
       console.log('error', error);
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      // Skills
+      const skills_data = await fetchData.list_skills(null, token);
+      setSkillsData(skills_data?.data);
+      // Languages
+      const languages_data = await fetchData.list_language(null, token);
+      setLanguagesData(languages_data?.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <View
       style={{
@@ -263,64 +271,63 @@ const SkillScreen = ({navigation}) => {
             })
           )}
         </View>
-        <View style={{marginVertical: 10}}>
-          <View
+        {/* <View
+          style={{
+            marginVertical: 10,
+            backgroundColor: Color.white,
+            paddingEnd: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-start',
+          }}>
+          <Text
             style={{
-              backgroundColor: Color.white,
-              paddingEnd: 10,
-              flexDirection: 'row',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              justifyContent: 'flex-start',
+              fontSize: 18,
+              color: Color.black,
+              fontWeight: 'bold',
+              marginHorizontal: 5,
             }}>
-            <Text
-              style={{
-                fontSize: 18,
-                color: Color.black,
-                fontWeight: 'bold',
-                marginHorizontal: 5,
-              }}>
-              Select the Suggested skills based on your education
-            </Text>
-            {SkillsData.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  key={index}
+            Select the Suggested skills based on your education
+          </Text>
+          {SkillsData.map((item, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={{
+                  backgroundColor: SkillsSelectedItem.includes(item.id)
+                    ? '#9DCBE2'
+                    : Color.white,
+                  // width: width / 3.5,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 50,
+                  // height: 60,
+                  padding: 10,
+                  marginVertical: 10,
+                  marginHorizontal: 5,
+                  borderColor: SkillsSelectedItem.includes(item.id)
+                    ? Color.primary
+                    : Color.lightgrey,
+                  borderWidth: 1,
+                  flexDirection: 'row',
+                }}
+                onPress={() => {
+                  handleSkillsPress(item?.id);
+                }}>
+                <Text
                   style={{
-                    backgroundColor: SkillsSelectedItem.includes(item.id)
-                      ? '#9DCBE2'
-                      : Color.white,
-                    // width: width / 3.5,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 50,
-                    // height: 60,
-                    padding: 10,
-                    marginVertical: 10,
+                    fontSize: 14,
+                    color: Color.black,
+                    fontWeight: 'bold',
                     marginHorizontal: 5,
-                    borderColor: SkillsSelectedItem.includes(item.id)
-                      ? Color.primary
-                      : Color.lightgrey,
-                    borderWidth: 1,
-                    flexDirection: 'row',
-                  }}
-                  onPress={() => {
-                    handleSkillsPress(item?.id);
                   }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: Color.black,
-                      fontWeight: 'bold',
-                      marginHorizontal: 5,
-                    }}>
-                    {item.name}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </View>
+                  {item.name}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View> */}
         <View style={{marginVertical: 10}}>
           <Text
             style={{
@@ -341,7 +348,7 @@ const SkillScreen = ({navigation}) => {
             search
             maxHeight={300}
             labelField="name"
-            valueField="name"
+            valueField="id"
             placeholder={'Enter Your Language'}
             searchPlaceholder="Search..."
             onChange={item => {

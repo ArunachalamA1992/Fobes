@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,13 +11,15 @@ import {
   ScrollView,
   Animated,
 } from 'react-native';
-
 import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
 import {Media} from '../../Global/Media';
 import {Iconviewcomponent} from '../../Components/Icontag';
-import {ApplyJobData} from '../../Global/Content';
 import JobItemCard from '../../Components/JobItemCard';
+import fetchData from '../../Config/fetchData';
+import {useSelector} from 'react-redux';
+import RenderHtml from 'react-native-render-html';
+import moment from 'moment';
 
 LogBox.ignoreAllLogs();
 
@@ -64,6 +66,22 @@ const IconData = ({item}) => {
   }
 };
 const DetailedScreen = ({navigation, route}) => {
+  const [jobData, setJobData] = useState([]);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const job_list = await fetchData.list_jobs(null, token);
+      setJobData(job_list?.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   const [itemData] = useState(route?.params?.item);
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -72,6 +90,51 @@ const DetailedScreen = ({navigation, route}) => {
     outputRange: [100, 0],
     extrapolateRight: 'clamp',
   });
+  const [resultDate, setResultDate] = useState(null);
+  const currentDate = moment();
+  const yourDate = moment(itemData?.created_at);
+
+  useEffect(() => {
+    const daysAgo = currentDate.diff(yourDate, 'days');
+    const hoursAgo = currentDate.diff(yourDate, 'hours');
+    const minutesAgo = currentDate.diff(yourDate, 'minutes');
+
+    if (daysAgo === 0 && hoursAgo === 0 && minutesAgo === 0) {
+      setResultDate('Just now');
+    } else {
+      let result;
+
+      if (Math.abs(daysAgo) > 0) {
+        result = `${Math.abs(daysAgo)} day${
+          Math.abs(daysAgo) !== 1 ? 's' : ''
+        } ago`;
+      } else if (Math.abs(hoursAgo) > 0) {
+        result = `${Math.abs(hoursAgo)} hour${
+          Math.abs(hoursAgo) !== 1 ? 's' : ''
+        } ago`;
+      } else {
+        result = `${Math.abs(minutesAgo)} minute${
+          Math.abs(minutesAgo) !== 1 ? 's' : ''
+        } ago`;
+      }
+
+      setResultDate(result);
+    }
+  }, [currentDate, yourDate, itemData]);
+
+  const [features] = useState([
+    {id: 1, title: 'Experience', value: itemData?.experience},
+    {
+      id: 2,
+      title: 'Salary',
+      value: `${itemData.min_salary} - ${itemData?.max_salary}`,
+    },
+    {id: 3, title: 'Location', value: itemData?.place},
+    {id: 4, title: 'Vacancies', value: itemData?.vacancies},
+  ]);
+  const source = {
+    html: `${itemData?.description}`,
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -99,7 +162,7 @@ const DetailedScreen = ({navigation, route}) => {
             fontFamily: Gilmer.Bold,
             paddingHorizontal: 10,
           }}>
-          {itemData?.job_name}
+          {itemData?.title} | {itemData?.role}
         </Text>
         <TouchableOpacity
           onPress={() => {
@@ -113,7 +176,7 @@ const DetailedScreen = ({navigation, route}) => {
               paddingHorizontal: 10,
               marginVertical: 5,
             }}>
-            {itemData?.job_comp_name}
+            {itemData?.company_name}
           </Text>
         </TouchableOpacity>
 
@@ -159,7 +222,7 @@ const DetailedScreen = ({navigation, route}) => {
                 paddingHorizontal: 5,
                 fontFamily: Gilmer.Medium,
               }}>
-              {itemData?.job_type}
+              {resultDate}
             </Text>
           </View>
         </View>
@@ -172,7 +235,7 @@ const DetailedScreen = ({navigation, route}) => {
             marginVertical: 10,
             marginHorizontal: 10,
           }}>
-          {itemData?.features?.map((item, index) => {
+          {features?.map((item, index) => {
             return (
               <View
                 key={index}
@@ -219,7 +282,7 @@ const DetailedScreen = ({navigation, route}) => {
             }}>
             Job Description
           </Text>
-          <Text
+          {/* <Text
             style={{
               fontSize: 14,
               color: Color.cloudyGrey,
@@ -230,9 +293,10 @@ const DetailedScreen = ({navigation, route}) => {
               lineHeight: 25,
             }}>
             {itemData?.description}
-          </Text>
+          </Text> */}
+          <RenderHtml source={source} />
         </View>
-        <View
+        {/* <View
           style={{
             marginVertical: 10,
           }}>
@@ -433,7 +497,7 @@ const DetailedScreen = ({navigation, route}) => {
               );
             })}
           </View>
-        </View>
+        </View> */}
         <View style={{}}>
           <Text
             style={{
@@ -590,7 +654,7 @@ const DetailedScreen = ({navigation, route}) => {
           </Text>
 
           <FlatList
-            data={ApplyJobData}
+            data={jobData}
             keyExtractor={(item, index) => item + index}
             renderItem={({item, index}) => {
               return <JobItemCard item={item} navigation={navigation} />;

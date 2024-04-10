@@ -20,7 +20,9 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import {Button, Divider} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import common_fn from '../../Config/common_fn';
-import {setCompleteProfile} from '../../Redux';
+import {setCompleteProfile, setUserData} from '../../Redux';
+import fetchData from '../../Config/fetchData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = ({navigation}) => {
   const [resumeVisible, setResumeVisible] = useState(false);
@@ -77,6 +79,7 @@ const ProfileScreen = ({navigation}) => {
     candidateExperiences,
     candidateSkills,
     socialLinks,
+    token,
   } = userData;
   const profile_complete = useSelector(
     state => state.UserReducer.profile_complete,
@@ -170,6 +173,46 @@ const ProfileScreen = ({navigation}) => {
     );
     setProfileStatus(profiledata);
   }, [profileStatus, resume, skills, details]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getAPiData();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [userData]);
+
+  const getAPiData = async () => {
+    try {
+      const single_data = await fetchData.single_candidate(null, token);
+      if (single_data) {
+        const combinedData = {
+          ...single_data?.data,
+          token: token,
+        };
+        dispatch(setUserData(combinedData));
+        await AsyncStorage.setItem('user_data', JSON.stringify(combinedData));
+      } else {
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const getResumeUpload = async item => {
+    try {
+      var data = {
+        name: item?.name,
+        cv: item?.uri,
+      };
+      const resume_data = await fetchData.upload_resume(data, token);
+      console.log('resume_data', resume_data);
+      if (resume_data) {
+        common_fn.showToast(resume_data?.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -474,6 +517,9 @@ const ProfileScreen = ({navigation}) => {
                                 item?.id,
                                 navigation,
                               );
+                              if (item?.id == 1) {
+                                getResumeUpload(data);
+                              }
                               if (data) {
                                 dispatch(
                                   setCompleteProfile({
@@ -761,6 +807,7 @@ const ProfileScreen = ({navigation}) => {
                   onPress={async () => {
                     try {
                       const data = await common_fn.profileupdate(1, navigation);
+                      getResumeUpload(data);
                       if (data) {
                         dispatch(
                           setCompleteProfile({
@@ -1588,6 +1635,7 @@ const ProfileScreen = ({navigation}) => {
                   onPress={async () => {
                     try {
                       const data = await common_fn.profileupdate(1, navigation);
+                      getResumeUpload(data);
                       if (data) {
                         dispatch(
                           setCompleteProfile({

@@ -1,12 +1,45 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {Gilmer} from '../Global/FontFamily';
 import Color from '../Global/Color';
 import {Iconviewcomponent} from './Icontag';
 import {Media} from '../Global/Media';
+import moment from 'moment';
 
 const JobItemCard = props => {
   var {item, navigation} = props;
+  const [resultDate, setResultDate] = useState(null);
+  const currentDate = moment();
+  const yourDate = moment(item?.created_at);
+
+  useEffect(() => {
+    const daysAgo = currentDate.diff(yourDate, 'days');
+    const hoursAgo = currentDate.diff(yourDate, 'hours');
+    const minutesAgo = currentDate.diff(yourDate, 'minutes');
+
+    if (daysAgo === 0 && hoursAgo === 0 && minutesAgo === 0) {
+      setResultDate('Just now');
+    } else {
+      let result;
+
+      if (Math.abs(daysAgo) > 0) {
+        result = `${Math.abs(daysAgo)} day${
+          Math.abs(daysAgo) !== 1 ? 's' : ''
+        } ago`;
+      } else if (Math.abs(hoursAgo) > 0) {
+        result = `${Math.abs(hoursAgo)} hour${
+          Math.abs(hoursAgo) !== 1 ? 's' : ''
+        } ago`;
+      } else {
+        result = `${Math.abs(minutesAgo)} minute${
+          Math.abs(minutesAgo) !== 1 ? 's' : ''
+        } ago`;
+      }
+
+      setResultDate(result);
+    }
+  }, [currentDate, yourDate, item]);
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('DetailedScreen', {item})}
@@ -59,7 +92,7 @@ const JobItemCard = props => {
               fontFamily: Gilmer.Medium,
               paddingHorizontal: 5,
             }}>
-            {item.job_post_date}
+            {resultDate}
           </Text>
         </View>
       </View>
@@ -92,7 +125,7 @@ const JobItemCard = props => {
               textAlign: 'justify',
             }}
             numberOfLines={2}>
-            {item.job_name}
+            {item.title}
           </Text>
           <Text
             style={{
@@ -102,7 +135,7 @@ const JobItemCard = props => {
               textAlign: 'justify',
             }}
             numberOfLines={1}>
-            {item.job_comp_name}
+            {item.job_category_name}
           </Text>
         </View>
         <Iconviewcomponent
@@ -141,7 +174,7 @@ const JobItemCard = props => {
               paddingHorizontal: 5,
               marginTop: 5,
             }}>
-            {item.job_comp_salary}
+            {item.min_salary} - {item?.max_salary}
           </Text>
         </View>
         <View
@@ -190,6 +223,38 @@ const JobItemCard = props => {
 
 export const JobCardHorizontal = props => {
   var {item, navigation} = props;
+  const [resultDate, setResultDate] = useState(null);
+  const currentDate = moment();
+  const yourDate = moment(item?.created_at);
+
+  useEffect(() => {
+    const daysAgo = currentDate.diff(yourDate, 'days');
+    const hoursAgo = currentDate.diff(yourDate, 'hours');
+    const minutesAgo = currentDate.diff(yourDate, 'minutes');
+
+    if (daysAgo === 0 && hoursAgo === 0 && minutesAgo === 0) {
+      setResultDate('Just now');
+    } else {
+      let result;
+
+      if (Math.abs(daysAgo) > 0) {
+        result = `${Math.abs(daysAgo)} day${
+          Math.abs(daysAgo) !== 1 ? 's' : ''
+        } ago`;
+      } else if (Math.abs(hoursAgo) > 0) {
+        result = `${Math.abs(hoursAgo)} hour${
+          Math.abs(hoursAgo) !== 1 ? 's' : ''
+        } ago`;
+      } else {
+        result = `${Math.abs(minutesAgo)} minute${
+          Math.abs(minutesAgo) !== 1 ? 's' : ''
+        } ago`;
+      }
+
+      setResultDate(result);
+    }
+  }, [currentDate, yourDate, item]);
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('DetailedScreen', {item})}
@@ -243,7 +308,7 @@ export const JobCardHorizontal = props => {
               fontFamily: Gilmer.Medium,
               paddingHorizontal: 5,
             }}>
-            {item.job_post_date}
+            {resultDate}
           </Text>
         </View>
       </View>
@@ -276,7 +341,7 @@ export const JobCardHorizontal = props => {
               textAlign: 'justify',
             }}
             numberOfLines={2}>
-            {item.job_name}
+            {item.title}
           </Text>
           <Text
             style={{
@@ -286,7 +351,7 @@ export const JobCardHorizontal = props => {
               textAlign: 'justify',
             }}
             numberOfLines={1}>
-            {item.job_comp_name}
+            {item.job_category_name}
           </Text>
         </View>
         <Iconviewcomponent
@@ -325,7 +390,7 @@ export const JobCardHorizontal = props => {
               paddingHorizontal: 5,
               marginTop: 5,
             }}>
-            {item.job_comp_salary}
+            {item.min_salary} - {item?.max_salary}
           </Text>
         </View>
         <View

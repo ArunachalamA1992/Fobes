@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Button} from 'react-native-paper';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
+import {useDispatch, useSelector} from 'react-redux';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -41,6 +42,8 @@ const customStyles = {
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
 const EmploymentDetails = ({navigation}) => {
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
   const [periorExperience] = useState([
     {
       id: 1,
@@ -112,12 +115,27 @@ const EmploymentDetails = ({navigation}) => {
 
   const getAPI = async () => {
     try {
-      var data = {};
-      const basic_data = await fetchData.candidates_profile(data);
-      if (basic_data) {
-        navigation.navigate('Skill');
+      var data = {
+        experience: [
+          {
+            company: selectEmployment?.company_name,
+            department: 'Software Development',
+            designation: 'Senior Software Engineer',
+            start: selectEmployment?.duration?.from,
+            end: selectEmployment?.duration?.end,
+            responsibilities: 'Lead a team of developers in project delivery.',
+            currently_working: selectEmployment?.work_experiance?.value,
+          },
+        ],
+      };
+      console.log('data', data);
+      const education_data = await fetchData.candidates_profile(data, token);
+      console.log('education_data', education_data);
+      if (education_data) {
+        common_fn.showToast(education_data?.message);
+        navigation.navigate('Experiance');
       } else {
-        common_fn.showToast(basic_data?.message);
+        common_fn.showToast(education_data?.message);
       }
     } catch (error) {
       console.log('error', error);

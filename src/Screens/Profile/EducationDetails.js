@@ -14,6 +14,7 @@ import {Button} from 'react-native-paper';
 import {Dropdown} from 'react-native-element-dropdown';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
+import {useDispatch, useSelector} from 'react-redux';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -42,6 +43,8 @@ const customStyles = {
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
 const EducationDetails = ({navigation}) => {
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
   const [HigherQualification] = useState([
     {
       id: 1,
@@ -79,28 +82,42 @@ const EducationDetails = ({navigation}) => {
     {
       id: 1,
       name: '2010',
+      value: '2010',
     },
     {
       id: 2,
       name: '2011',
+      value: '2011',
     },
     {
       id: 3,
       name: '2022',
+      value: '2022',
     },
     {
       id: 4,
       name: '2024',
+      value: '2024',
     },
   ]);
   const getAPI = async () => {
     try {
-      var data = {};
-      const basic_data = await fetchData.candidates_profile(data);
-      if (basic_data) {
+      var data = {
+        education: [
+          {
+            institute_name: selectEducation?.institute,
+            degree: selectEducation?.degree,
+            year: selectEducation?.year_completion?.value,
+            // notes: selectEducation?.year_completion,
+          },
+        ],
+      };
+      const education_data = await fetchData.candidates_profile(data, token);
+      if (education_data) {
+        common_fn.showToast(education_data?.message);
         navigation.navigate('Experiance');
       } else {
-        common_fn.showToast(basic_data?.message);
+        common_fn.showToast(education_data?.message);
       }
     } catch (error) {
       console.log('error', error);

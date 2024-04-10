@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,14 +11,62 @@ import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
 import {Iconviewcomponent} from '../../Components/Icontag';
 import {ApplyJobData} from '../../Global/Content';
+import {useSelector} from 'react-redux';
+import moment from 'moment';
+import fetchData from '../../Config/fetchData';
 
 const SavedJobScreen = ({navigation}) => {
+  const [resultDate, setResultDate] = useState(null);
+  const [savedJobs, setSavedJobs] = useState([]);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const Saved_Jobs = await fetchData.list_bookmarks(null, token);
+      setSavedJobs(Saved_Jobs?.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={ApplyJobData}
+        data={savedJobs}
         keyExtractor={(item, index) => item + index}
         renderItem={({item, index}) => {
+          const currentDate = moment();
+          const yourDate = moment(item?.created_at);
+          const daysAgo = currentDate.diff(yourDate, 'days');
+          const hoursAgo = currentDate.diff(yourDate, 'hours');
+          const minutesAgo = currentDate.diff(yourDate, 'minutes');
+
+          if (daysAgo === 0 && hoursAgo === 0 && minutesAgo === 0) {
+            setResultDate('Just now');
+          } else {
+            let result;
+
+            if (Math.abs(daysAgo) > 0) {
+              result = `${Math.abs(daysAgo)} day${
+                Math.abs(daysAgo) !== 1 ? 's' : ''
+              } ago`;
+            } else if (Math.abs(hoursAgo) > 0) {
+              result = `${Math.abs(hoursAgo)} hour${
+                Math.abs(hoursAgo) !== 1 ? 's' : ''
+              } ago`;
+            } else {
+              result = `${Math.abs(minutesAgo)} minute${
+                Math.abs(minutesAgo) !== 1 ? 's' : ''
+              } ago`;
+            }
+
+            setResultDate(result);
+          }
           return (
             <TouchableOpacity
               onPress={() => {
@@ -79,7 +127,7 @@ const SavedJobScreen = ({navigation}) => {
                         textAlign: 'justify',
                       }}
                       numberOfLines={2}>
-                      {item.job_name}
+                      {item.title}
                     </Text>
                     <Text
                       style={{
@@ -89,7 +137,7 @@ const SavedJobScreen = ({navigation}) => {
                         textAlign: 'justify',
                       }}
                       numberOfLines={1}>
-                      {item.job_comp_name}
+                      {item.company_name}
                     </Text>
                   </View>
                 </View>
@@ -135,7 +183,7 @@ const SavedJobScreen = ({navigation}) => {
                       marginHorizontal: 5,
                     }}
                     numberOfLines={2}>
-                    {item.location}
+                    {item.place}
                   </Text>
                   <View
                     style={{
@@ -183,7 +231,7 @@ const SavedJobScreen = ({navigation}) => {
                       paddingHorizontal: 5,
                     }}
                     numberOfLines={2}>
-                    {item.job_post_date}
+                    {resultDate}
                   </Text>
                 </View>
               </View>

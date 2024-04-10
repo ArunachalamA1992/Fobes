@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -17,6 +17,7 @@ import {Button} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
+import {useDispatch, useSelector} from 'react-redux';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -45,41 +46,58 @@ const customStyles = {
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
 const BasicDetails = ({navigation}) => {
-  const [HigherQualification] = useState([
-    {
-      id: 1,
-      name: '10th Or Below',
-    },
-    {
-      id: 2,
-      name: '12th Pass',
-    },
-    {
-      id: 3,
-      name: 'Diploma',
-    },
-    {
-      id: 4,
-      name: 'Graduate',
-    },
-    {
-      id: 5,
-      name: 'Post Graduate',
-    },
-  ]);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
+  const [HigherQualification, setHigherQualification] = useState([]);
+  // const [HigherQualification] = useState([
+  //   {
+  //     id: 1,
+  //     name: '10th Or Below',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: '12th Pass',
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Diploma',
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'Graduate',
+  //   },
+  //   {
+  //     id: 5,
+  //     name: 'Post Graduate',
+  //   },
+  // ]);
   const [selectBasic, setSelectBasic] = useState({
     professional_title: '',
     personal_website: '',
     dob: new Date(),
     qualify: {},
     work_experiance: {},
+    experience: {},
     gender: {},
+    city: {},
     marital_status: {},
     biography: '',
     profession: {},
     availability: {},
-    social_profile: [{id: 1, social_profile: '', selectedIcon: ''}],
+    social_profile: [{id: 1, url: '', social_media: ''}],
   });
+  const [experienceData, setExperienceData] = useState([
+    {
+      id: 1,
+      name: 'Fresher',
+      value: 'fresher',
+    },
+    {
+      id: 2,
+      name: 'Experienced',
+      value: 'experienced',
+    },
+  ]);
   const [periorExperience] = useState([
     {
       id: 1,
@@ -101,34 +119,67 @@ const BasicDetails = ({navigation}) => {
     {id: 1, title: 'Single', value: 'single'},
     {id: 2, title: 'Married', value: 'married'},
   ]);
-  const [SkillsData] = useState([
+  const [ProfessionData] = useState([
+    {
+      name: 'Mobile Developer',
+      profession_id: 1,
+    },
+    {
+      name: 'Web Developer',
+      profession_id: 2,
+    },
+    {
+      name: 'Web Designer',
+      profession_id: 3,
+    },
+    {
+      name: 'Figma Designer',
+      profession_id: 4,
+    },
+    {
+      name: 'Php Developer',
+      profession_id: 5,
+    },
+    {
+      name: 'Team Leader',
+      profession_id: 6,
+    },
+  ]);
+  const [CityData] = useState([
     {
       id: 1,
-      name: 'React Native',
+      city: 'Salem',
+      value: 'Salem',
     },
     {
       id: 2,
-      name: 'Ui/UX designer',
+      city: 'Coimbatore',
+      value: 'Coimbatore',
     },
     {
       id: 3,
-      name: 'Figma',
+      city: 'Trichy',
+      value: 'Trichy',
     },
     {
       id: 4,
-      name: 'Node js',
+      city: 'Bangalore',
+      value: 'Bangalore',
     },
     {
       id: 5,
-      name: 'Java',
+      city: 'Chennai',
+      value: 'Chennai',
     },
     {
       id: 6,
-      name: 'Dart',
+      city: 'Bangalore',
+      value: 'Bangalore',
     },
     {
       id: 7,
-      name: 'Mobile Application Developer',
+      city: 'Hyderabad',
+      value: 'Hyderabad',
     },
   ]);
   const [socialData] = useState([
@@ -148,113 +199,31 @@ const BasicDetails = ({navigation}) => {
   const [AvailableData] = useState([
     {
       id: 1,
-      name: 'React Native',
+      name: '15 Days',
+      value: '15 Days',
     },
     {
       id: 2,
-      name: 'Ui/UX designer',
+      name: '1 Month',
+      value: '1_month',
     },
     {
       id: 3,
-      name: 'Figma',
+      name: '2 Month',
+      value: '2_month',
     },
     {
       id: 4,
-      name: 'Node js',
+      name: '3 Month',
+      value: '3_month',
     },
     {
       id: 5,
-      name: 'Java',
-    },
-    {
-      id: 6,
-      name: 'Dart',
-    },
-    {
-      id: 7,
-      name: 'Mobile Application Developer',
+      name: '4 Month',
+      value: '4_month',
     },
   ]);
-  const [SkillsSelectedItem, setSkillsSelectedItem] = useState([]);
-  const handleSkillsPress = itemId => {
-    if (SkillsSelectedItem.includes(itemId)) {
-      setSkillsSelectedItem(
-        SkillsSelectedItem?.filter(single => single !== itemId),
-      );
-      setSelectBasic({
-        professional_title: selectBasic?.professional_title,
-        personal_website: selectBasic?.personal_website,
-        dob: selectBasic?.dob,
-        qualify: selectBasic?.qualify,
-        work_experiance: selectBasic?.work_experiance,
-        gender: selectBasic?.gender,
-        marital_status: selectBasic?.marital_status,
-        biography: selectBasic?.biography,
-        profession: selectBasic?.profession?.filter(
-          single => single.id !== itemId,
-        ),
-        availability: selectBasic?.availability,
-        social_profile: selectBasic?.social_profile,
-      });
-    } else {
-      setSkillsSelectedItem([...SkillsSelectedItem, itemId]);
-      const selectedItemData = SkillsData.find(single => single.id === itemId);
-      setSelectBasic({
-        professional_title: selectBasic?.professional_title,
-        personal_website: selectBasic?.personal_website,
-        dob: selectBasic?.personal_website,
-        qualify: selectBasic?.personal_website,
-        work_experiance: selectBasic?.personal_website,
-        gender: selectBasic?.personal_website,
-        marital_status: selectBasic?.personal_website,
-        biography: selectBasic?.personal_website,
-        profession: [...selectBasic?.profession, selectedItemData],
-        availability: selectBasic?.personal_website,
-        social_profile: selectBasic?.personal_website,
-      });
-    }
-  };
-  const [availabilitySelectedItem, setAvailabilitySelectedItem] = useState([]);
-  const handleAvailabilityPress = itemId => {
-    if (availabilitySelectedItem.includes(itemId)) {
-      setAvailabilitySelectedItem(
-        availabilitySelectedItem?.filter(single => single !== itemId),
-      );
-      setSelectBasic({
-        professional_title: selectBasic?.professional_title,
-        personal_website: selectBasic?.personal_website,
-        dob: selectBasic?.dob,
-        qualify: selectBasic?.qualify,
-        work_experiance: selectBasic?.work_experiance,
-        gender: selectBasic?.gender,
-        marital_status: selectBasic?.marital_status,
-        biography: selectBasic?.biography,
-        profession: selectBasic?.profession,
-        availability: selectBasic?.availability?.filter(
-          single => single.id !== itemId,
-        ),
-        social_profile: selectBasic?.social_profile,
-      });
-    } else {
-      setAvailabilitySelectedItem([...availabilitySelectedItem, itemId]);
-      const selectedItemData = AvailableData.find(
-        single => single.id === itemId,
-      );
-      setSelectBasic({
-        professional_title: selectBasic?.professional_title,
-        personal_website: selectBasic?.personal_website,
-        dob: selectBasic?.dob,
-        qualify: selectBasic?.qualify,
-        work_experiance: selectBasic?.work_experiance,
-        gender: selectBasic?.gender,
-        marital_status: selectBasic?.marital_status,
-        biography: selectBasic?.biography,
-        profession: selectBasic?.profession,
-        availability: [...selectBasic?.availability, selectedItemData],
-        social_profile: selectBasic?.social_profile,
-      });
-    }
-  };
+
   const renderItem = item => {
     return (
       <View
@@ -285,7 +254,9 @@ const BasicDetails = ({navigation}) => {
       dob: date,
       qualify: selectBasic?.qualify,
       work_experiance: selectBasic?.work_experiance,
+      experience: selectBasic?.experience,
       gender: selectBasic?.gender,
+      city: selectBasic?.city,
       marital_status: selectBasic?.marital_status,
       biography: selectBasic?.biography,
       profession: selectBasic?.profession,
@@ -303,7 +274,9 @@ const BasicDetails = ({navigation}) => {
       dob: selectBasic?.dob,
       qualify: selectBasic?.qualify,
       work_experiance: selectBasic?.work_experiance,
+      experience: selectBasic?.experience,
       gender: selectBasic?.gender,
+      city: selectBasic?.city,
       marital_status: selectBasic?.marital_status,
       biography: selectBasic?.biography,
       profession: selectBasic?.profession,
@@ -315,19 +288,50 @@ const BasicDetails = ({navigation}) => {
     });
   };
 
-  const getAPI = async () => {
+  const getAPiData = async () => {
     try {
-      var data = {};
-      const basic_data = await fetchData.candidates_profile(data);
-      if (basic_data) {
-        navigation.navigate('Education');
+      var data = {
+        title: selectBasic?.professional_title,
+        website: selectBasic?.personal_website,
+        birth_date: selectBasic?.dob,
+        gender: selectBasic?.gender?.value,
+        marital_status: selectBasic?.marital_status?.value,
+        sociallink: selectBasic?.social_profile,
+        bio: selectBasic?.biography,
+        available_in: selectBasic?.availability?.name,
+        education_id: selectBasic?.qualify?.education_id,
+        experience_id: selectBasic?.experience?.experience_id,
+        profession_id: selectBasic?.profession?.profession_id,
+      };
+      const intro_data = await fetchData.candidates_profile(data, token);
+      if (intro_data) {
+        common_fn.showToast(intro_data?.message);
+        navigation.goBack();
       } else {
-        common_fn.showToast(basic_data?.message);
+        common_fn.showToast(intro_data?.message);
       }
     } catch (error) {
       console.log('error', error);
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, [HigherQualification]);
+
+  const getData = async () => {
+    try {
+      //get higher qualification
+      const qualification = await fetchData.get_education(null, token);
+      setHigherQualification(qualification?.data);
+      //Experience
+      const experience_data = await fetchData.get_experience(null, token);
+      setExperienceData(experience_data?.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: Color.white, padding: 10}}>
       <StepIndicator
@@ -358,7 +362,9 @@ const BasicDetails = ({navigation}) => {
                   dob: selectBasic?.dob,
                   qualify: selectBasic?.qualify,
                   work_experiance: selectBasic?.work_experiance,
+                  experience: selectBasic?.experience,
                   gender: selectBasic?.gender,
+                  city: selectBasic?.city,
                   marital_status: selectBasic?.marital_status,
                   biography: selectBasic?.biography,
                   profession: selectBasic?.profession,
@@ -409,7 +415,9 @@ const BasicDetails = ({navigation}) => {
                   dob: selectBasic?.dob,
                   qualify: selectBasic?.qualify,
                   work_experiance: selectBasic?.work_experiance,
+                  experience: selectBasic?.experience,
                   gender: selectBasic?.gender,
+                  city: selectBasic?.city,
                   marital_status: selectBasic?.marital_status,
                   biography: selectBasic?.biography,
                   profession: selectBasic?.profession,
@@ -472,6 +480,49 @@ const BasicDetails = ({navigation}) => {
           <View style={{marginVertical: 10}}>
             <Text
               style={{
+                fontSize: 16,
+                color: Color.black,
+                fontWeight: 'bold',
+                marginVertical: 10,
+              }}>
+              Current City
+            </Text>
+            <Dropdown
+              style={[styles.dropdown, {borderColor: 'blue'}]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={CityData}
+              search
+              maxHeight={300}
+              labelField="city"
+              valueField="city"
+              placeholder={'Select item'}
+              searchPlaceholder="Search..."
+              value={selectBasic?.city?.value}
+              onChange={item => {
+                setSelectBasic({
+                  professional_title: selectBasic?.professional_title,
+                  personal_website: selectBasic?.personal_website,
+                  dob: selectBasic?.dob,
+                  qualify: selectBasic?.qualify,
+                  work_experiance: selectBasic?.work_experiance,
+                  experience: selectBasic?.experience,
+                  gender: selectBasic?.gender,
+                  city: item,
+                  marital_status: selectBasic?.marital_status,
+                  biography: selectBasic?.biography,
+                  profession: selectBasic?.profession,
+                  availability: selectBasic?.availability,
+                  social_profile: selectBasic?.social_profile,
+                });
+              }}
+            />
+          </View>
+          <View style={{marginVertical: 10}}>
+            <Text
+              style={{
                 fontFamily: Gilmer.Bold,
                 fontSize: 18,
                 color: Color.black,
@@ -487,13 +538,13 @@ const BasicDetails = ({navigation}) => {
                 alignItems: 'center',
                 flexWrap: 'wrap',
               }}>
-              {HigherQualification.map((item, index) => {
+              {HigherQualification?.map((item, index) => {
                 return (
                   <TouchableOpacity
                     key={index}
                     style={{
                       backgroundColor:
-                        selectBasic?.qualify?.id == item?.id
+                        selectBasic?.qualify?.education_id == item?.education_id
                           ? '#9DCBE2'
                           : Color.white,
                       // width: 150,
@@ -505,7 +556,7 @@ const BasicDetails = ({navigation}) => {
                       marginHorizontal: 5,
                       borderWidth: 1,
                       borderColor:
-                        selectBasic?.qualify?.id == item?.id
+                        selectBasic?.qualify?.education_id == item?.education_id
                           ? '#9DCBE2'
                           : Color.cloudyGrey,
                       flexDirection: 'row',
@@ -517,7 +568,9 @@ const BasicDetails = ({navigation}) => {
                         dob: selectBasic?.dob,
                         qualify: item,
                         work_experiance: selectBasic?.work_experiance,
+                        experience: selectBasic?.experience,
                         gender: selectBasic?.gender,
+                        city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,
                         biography: selectBasic?.biography,
                         profession: selectBasic?.profession,
@@ -589,7 +642,9 @@ const BasicDetails = ({navigation}) => {
                         dob: selectBasic?.dob,
                         qualify: selectBasic?.qualify,
                         work_experiance: item,
+                        experience: selectBasic?.experience,
                         gender: selectBasic?.gender,
+                        city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,
                         biography: selectBasic?.biography,
                         profession: selectBasic?.profession,
@@ -612,36 +667,57 @@ const BasicDetails = ({navigation}) => {
                 );
               })}
             </View>
-            <TextInput
-              placeholder="Enter Your Experience Level"
-              placeholderTextColor={Color.cloudyGrey}
-              value={selectBasic?.work_experiance}
-              onChangeText={text => {
-                setSelectBasic({
-                  professional_title: selectBasic?.professional_title,
-                  personal_website: selectBasic?.personal_website,
-                  dob: selectBasic?.dob,
-                  qualify: selectBasic?.qualify,
-                  work_experiance: item,
-                  gender: selectBasic?.gender,
-                  marital_status: selectBasic?.marital_status,
-                  biography: selectBasic?.biography,
-                  profession: selectBasic?.profession,
-                  availability: selectBasic?.availability,
-                  social_profile: selectBasic?.social_profile,
-                });
-              }}
-              style={{
-                borderColor: Color.cloudyGrey,
-                borderWidth: 1,
-                borderRadius: 5,
-                marginVertical: 10,
-                paddingHorizontal: 10,
-                fontSize: 14,
-                color: Color.cloudyGrey,
-                fontWeight: 'bold',
-              }}
-            />
+            {selectBasic?.work_experiance?.value == 'experienced' && (
+              // <TextInput
+              //   placeholder="Enter Your Experience Level"
+              //   placeholderTextColor={Color.cloudyGrey}
+              //   value={selectBasic?.work_experiance}
+              //   onChangeText={text => {
+              //   }}
+              //   style={{
+              //     borderColor: Color.cloudyGrey,
+              //     borderWidth: 1,
+              //     borderRadius: 5,
+              //     marginVertical: 10,
+              //     paddingHorizontal: 10,
+              //     fontSize: 14,
+              //     color: Color.cloudyGrey,
+              //     fontWeight: 'bold',
+              //   }}
+              // />
+              <Dropdown
+                style={[styles.dropdown, {borderColor: 'blue'}]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={experienceData}
+                search
+                maxHeight={300}
+                labelField="name"
+                valueField="name"
+                placeholder={'Select item'}
+                searchPlaceholder="Search..."
+                value={selectBasic?.experience}
+                onChange={item => {
+                  setSelectBasic({
+                    professional_title: selectBasic?.professional_title,
+                    personal_website: selectBasic?.personal_website,
+                    dob: selectBasic?.dob,
+                    qualify: selectBasic?.qualify,
+                    work_experiance: selectBasic?.work_experiance,
+                    experience: item,
+                    gender: selectBasic?.gender,
+                    city: selectBasic?.city,
+                    marital_status: selectBasic?.marital_status,
+                    biography: selectBasic?.biography,
+                    profession: selectBasic?.profession,
+                    availability: selectBasic?.availability,
+                    social_profile: selectBasic?.social_profile,
+                  });
+                }}
+              />
+            )}
           </View>
           <View style={{marginVertical: 10}}>
             <Text
@@ -669,7 +745,9 @@ const BasicDetails = ({navigation}) => {
                         dob: selectBasic?.dob,
                         qualify: selectBasic?.qualify,
                         work_experiance: selectBasic?.work_experiance,
+                        experience: selectBasic?.experience,
                         gender: item,
+                        city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,
                         biography: selectBasic?.biography,
                         profession: selectBasic?.profession,
@@ -730,7 +808,9 @@ const BasicDetails = ({navigation}) => {
                         dob: selectBasic?.dob,
                         qualify: selectBasic?.qualify,
                         work_experiance: selectBasic?.work_experiance,
+                        experience: selectBasic?.experience,
                         gender: selectBasic?.gender,
+                        city: selectBasic?.city,
                         marital_status: item,
                         biography: selectBasic?.biography,
                         profession: selectBasic?.profession,
@@ -785,7 +865,9 @@ const BasicDetails = ({navigation}) => {
                   dob: selectBasic?.dob,
                   qualify: selectBasic?.qualify,
                   work_experiance: selectBasic?.work_experiance,
+                  experience: selectBasic?.experience,
                   gender: selectBasic?.gender,
+                  city: selectBasic?.city,
                   marital_status: selectBasic?.marital_status,
                   biography: text,
                   profession: selectBasic?.profession,
@@ -821,16 +903,30 @@ const BasicDetails = ({navigation}) => {
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
               iconStyle={styles.iconStyle}
-              data={SkillsData}
+              data={ProfessionData}
               search
               maxHeight={300}
               labelField="name"
               valueField="name"
               placeholder={'Select item'}
               searchPlaceholder="Search..."
-              //   value={value}
+              value={selectBasic?.profession}
               onChange={item => {
-                handleSkillsPress(item?.id);
+                setSelectBasic({
+                  professional_title: selectBasic?.professional_title,
+                  personal_website: selectBasic?.personal_website,
+                  dob: selectBasic?.dob,
+                  qualify: selectBasic?.qualify,
+                  work_experiance: selectBasic?.work_experiance,
+                  experience: selectBasic?.experience,
+                  gender: selectBasic?.gender,
+                  city: selectBasic?.city,
+                  marital_status: selectBasic?.marital_status,
+                  biography: selectBasic?.biography,
+                  profession: item,
+                  availability: selectBasic?.availability,
+                  social_profile: selectBasic?.social_profile,
+                });
               }}
             />
           </View>
@@ -857,9 +953,23 @@ const BasicDetails = ({navigation}) => {
               valueField="name"
               placeholder={'Available'}
               searchPlaceholder="Search..."
-              //   value={value}
+              value={selectBasic?.availability}
               onChange={item => {
-                handleAvailabilityPress(item?.id);
+                setSelectBasic({
+                  professional_title: selectBasic?.professional_title,
+                  personal_website: selectBasic?.personal_website,
+                  dob: selectBasic?.dob,
+                  qualify: selectBasic?.qualify,
+                  work_experiance: selectBasic?.work_experiance,
+                  experience: selectBasic?.experience,
+                  gender: selectBasic?.gender,
+                  city: selectBasic?.city,
+                  marital_status: selectBasic?.marital_status,
+                  biography: selectBasic?.biography,
+                  profession: selectBasic?.profession,
+                  availability: item,
+                  social_profile: selectBasic?.social_profile,
+                });
               }}
             />
           </View>
@@ -902,18 +1012,20 @@ const BasicDetails = ({navigation}) => {
                     maxHeight={300}
                     placeholder="icon"
                     labelField="icon"
-                    value={profile.selectedIcon}
+                    value={profile.social_media}
                     valueField="icon"
                     onChange={item => {
                       const updatedProfiles = [...selectBasic?.social_profile];
-                      updatedProfiles[index].selectedIcon = item;
+                      updatedProfiles[index].social_media = item;
                       setSelectBasic({
                         professional_title: selectBasic?.professional_title,
                         personal_website: selectBasic?.personal_website,
                         dob: selectBasic?.dob,
                         qualify: selectBasic?.qualify,
                         work_experiance: selectBasic?.work_experiance,
+                        experience: selectBasic?.experience,
                         gender: selectBasic?.gender,
+                        city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,
                         biography: selectBasic?.biography,
                         profession: selectBasic?.profession,
@@ -926,17 +1038,19 @@ const BasicDetails = ({navigation}) => {
                   <TextInput
                     placeholder="Enter Your Social Profile Link"
                     placeholderTextColor={Color.cloudyGrey}
-                    value={profile.social_profile}
+                    value={profile.url}
                     onChangeText={text => {
                       const updatedProfiles = [...selectBasic?.social_profile];
-                      updatedProfiles[index].social_profile = text;
+                      updatedProfiles[index].url = text;
                       setSelectBasic({
                         professional_title: selectBasic?.professional_title,
                         personal_website: selectBasic?.personal_website,
                         dob: selectBasic?.dob,
                         qualify: selectBasic?.qualify,
                         work_experiance: selectBasic?.work_experiance,
+                        experience: selectBasic?.experience,
                         gender: selectBasic?.gender,
+                        city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,
                         biography: selectBasic?.biography,
                         profession: selectBasic?.profession,
@@ -975,7 +1089,7 @@ const BasicDetails = ({navigation}) => {
         <Button
           mode="contained"
           onPress={() => {
-            getAPI();
+            getAPiData();
           }}
           style={{
             backgroundColor: Color.primary,
