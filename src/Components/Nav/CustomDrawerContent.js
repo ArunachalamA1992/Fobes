@@ -22,7 +22,7 @@ import {setCompleteProfile, setOnBoardVisible, setUserData} from '../../Redux';
 const CustomDrawerContent = props => {
   const [itemSelected, setItemSelected] = useState('');
   const userData = useSelector(state => state.UserReducer.userData);
-  var {name, email, role} = userData;
+  var {first_name, last_name, name, email, role} = userData;
   const dispatch = useDispatch();
   const [customDrawer] = useState([
     {

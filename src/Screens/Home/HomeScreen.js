@@ -31,12 +31,14 @@ import {JobCardHorizontal} from '../../Components/JobItemCard';
 import FilterModal from './FilterModal';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import fetchData from '../../Config/fetchData';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 var {width, height} = Dimensions.get('window');
 
 LogBox.ignoreAllLogs();
 
-const FullTime = ({topCompany, navigation, jobData}) => {
+const windowHeight = Dimensions.get('screen').height;
+const FullTime = ({topCompany, navigation, jobData, token}) => {
   return (
     <View style={{flex: 1}}>
       <View
@@ -76,7 +78,13 @@ const FullTime = ({topCompany, navigation, jobData}) => {
           data={jobData}
           keyExtractor={(item, index) => item + index}
           renderItem={({item, index}) => {
-            return <JobCardHorizontal item={item} navigation={navigation} />;
+            return (
+              <JobCardHorizontal
+                item={item}
+                navigation={navigation}
+                token={token}
+              />
+            );
           }}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -84,7 +92,6 @@ const FullTime = ({topCompany, navigation, jobData}) => {
       </View>
       <View
         style={{
-          flex: 1,
           marginVertical: 10,
         }}>
         <View
@@ -128,7 +135,8 @@ const FullTime = ({topCompany, navigation, jobData}) => {
                   justifyContent: 'center',
                   borderColor: Color.white,
                   borderWidth: 0.5,
-                  padding: 5,
+                  marginVertical: 10,
+                  padding: 10,
                   margin: 5,
                   borderRadius: 10,
                   elevation: 1,
@@ -191,7 +199,6 @@ const FullTime = ({topCompany, navigation, jobData}) => {
       </View>
       <View
         style={{
-          flex: 1,
           marginVertical: 10,
         }}>
         <Image
@@ -205,53 +212,52 @@ const FullTime = ({topCompany, navigation, jobData}) => {
       </View>
       <View
         style={{
-          flex: 1,
           marginVertical: 10,
         }}>
         <View
           style={{
-            marginVertical: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <View
+          <Text
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              flex: 1,
+              fontSize: 16,
+              color: Color.black,
+              fontFamily: Gilmer.Bold,
+              paddingHorizontal: 10,
             }}>
+            Recommended Jobs
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('JobListScreen')}>
             <Text
               style={{
-                flex: 1,
                 fontSize: 16,
-                color: Color.black,
+                color: '#0033A0',
                 fontFamily: Gilmer.Bold,
                 paddingHorizontal: 10,
               }}>
-              Recommended Jobs
+              See All
             </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('JobListScreen')}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: '#0033A0',
-                  fontFamily: Gilmer.Bold,
-                  paddingHorizontal: 10,
-                }}>
-                See All
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            data={jobData}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({item, index}) => {
-              return <JobCardHorizontal item={item} navigation={navigation} />;
-            }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
+          </TouchableOpacity>
         </View>
+        <FlatList
+          data={jobData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({item, index}) => {
+            return (
+              <JobCardHorizontal
+                item={item}
+                navigation={navigation}
+                token={token}
+              />
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
     </View>
   );
@@ -264,6 +270,7 @@ const PartTime = ({}) => {
     </View>
   );
 };
+
 const Freelancer = ({}) => {
   return (
     <View style={{flex: 1}}>
@@ -273,27 +280,77 @@ const Freelancer = ({}) => {
 };
 
 const HomeScreen = ({navigation}) => {
-  const [selectTab, setSelectTab] = useState('FullTime');
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [filterVisible, setFilterVisible] = useState(false);
   const [profileStatus, setProfileStatus] = useState(0);
   const [jobData, setJobData] = useState([]);
-  const [height, setHeight] = useState(undefined);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {name, email, role, token} = userData;
-  const profile_complete = useSelector(
+  var {
+    title,
+    first_name,
+    last_name,
+    gender,
+    website,
+    photo,
+    cv,
+    bio,
+    marital_status,
+    birth_date,
+    visibility,
+    cv_visibility,
+    received_job_alert,
+    profile_complete,
+    candidate_updated_at,
+    address,
+    exact_location,
+    neighborhood,
+    locality,
+    place,
+    district,
+    postcode,
+    region,
+    country,
+    long,
+    lat,
+    status,
+    available_in,
+    whatsapp_number,
+    name,
+    username,
+    email,
+    image,
+    role,
+    recent_activities_alert,
+    job_expired_alert,
+    new_job_alert,
+    shortlisted_alert,
+    is_demo_field,
+    created_at,
+    updated_at,
+    auth_type,
+    google_id,
+    facebook_id,
+    provider,
+    provider_id,
+    experience_id,
+    experience_name,
+    education_id,
+    education_name,
+    candidate_educations,
+    candidate_experiences,
+    candidate_skills,
+    social_links,
+    candidate_resume,
+    candidate_language,
+    token,
+  } = userData;
+  const profile_complete_data = useSelector(
     state => state.UserReducer.profile_complete,
   );
-  var {resume, details, skills} = profile_complete;
-
-  useEffect(() => {
-    const profiledata = common_fn.calculateProfileCompletion(
-      resume,
-      skills,
-      details,
-    );
-    setProfileStatus(profiledata);
-  }, [profileStatus, resume, skills, details]);
+  var {resume, details, skills} = profile_complete_data;
+  const layout = useWindowDimensions();
+  const [index, setIndex] = React.useState(0);
 
   const [topCompany, setTopCompany] = useState([
     {
@@ -374,26 +431,33 @@ const HomeScreen = ({navigation}) => {
     },
   ]);
 
-  const filteredProfileCompletion = profileCompletion.filter(item => {
-    if (resume != null && resume.name?.length > 0 && item.id === 1) {
+  const filteredProfileCompletion = profileCompletion?.filter(item => {
+    if (
+      candidate_resume != null &&
+      candidate_resume?.length > 0 &&
+      item?.id === 1
+    ) {
       return false;
     }
-    if (skills?.length > 0 && item.id === 2) {
+    if (candidate_skills?.length > 0 && item?.id === 2) {
+      return false;
+    }
+    if (
+      [candidate_educations, candidate_experiences].flat()?.length > 0 &&
+      item?.id === 3
+    ) {
       return false;
     }
     return true;
   });
 
-  if (Platform.OS === 'android') {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-
   useEffect(() => {
     getUserData();
-  }, [name, email, role]);
+  }, [userData]);
 
   useEffect(() => {
-    getData();
+    setLoading(true);
+    getData().finally(() => setLoading(false));
   }, []);
 
   const getUserData = async () => {
@@ -407,9 +471,6 @@ const HomeScreen = ({navigation}) => {
     }
   };
 
-  const layout = useWindowDimensions();
-
-  const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {key: 'fulltime', title: 'FullTime'},
     {key: 'parttime', title: 'PartTime'},
@@ -422,11 +483,13 @@ const HomeScreen = ({navigation}) => {
         topCompany={topCompany}
         navigation={navigation}
         jobData={jobData}
+        token={token}
       />
     ),
     parttime: () => <PartTime />,
     freelancer: () => <Freelancer />,
   });
+
   const getResumeUpload = async item => {
     try {
       var data = {
@@ -441,433 +504,552 @@ const HomeScreen = ({navigation}) => {
       console.log('error', error);
     }
   };
+
   const getData = async () => {
     try {
       const job_list = await fetchData.list_jobs(null, token);
       setJobData(job_list?.data);
+      setLoading(false);
     } catch (error) {
       console.log('error', error);
     }
   };
+
+  useEffect(() => {
+    const profiledata = common_fn.calculateProfileCompletion(
+      candidate_resume,
+      candidate_skills,
+      [candidate_educations, candidate_experiences].flat(),
+    );
+    setProfileStatus(profiledata);
+  }, [profileStatus, candidate_resume, candidate_skills, candidate_educations]);
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{flexGrow: 1}}>
-        <View
-          style={{
-            marginVertical: 10,
-            marginHorizontal: 20,
-          }}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.cloudyGrey,
-              fontFamily: Gilmer.Regular,
-            }}>
-            Welcome Back !
-          </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              color: Color.black,
-              fontFamily: Gilmer.Bold,
-            }}
-            numberOfLines={1}>
-            {name}
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            backgroundColor: Color.white,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SearchScreen');
-            }}
-            activeOpacity={0.5}
-            style={{
-              marginRight: 5,
-              // borderColor: Color.lightgrey,
-              // borderWidth: 1,
-              marginVertical: 10,
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderRadius: 5,
-              flex: 1,
-              height: 50,
-              backgroundColor: '#EAEAEF50',
-              paddingHorizontal: 10,
-              marginVertical: 10,
-            }}>
-            <View style={{}}>
-              <Iconviewcomponent
-                Icontag={'Feather'}
-                iconname={'search'}
-                icon_size={25}
-                icon_color={Color.lightgrey}
-              />
-            </View>
-            <Text
-              style={{
-                fontSize: 16,
-                paddingTop: 2,
-                paddingHorizontal: 10,
-                color: Color.lightgrey,
-                fontFamily: Gilmer.Medium,
-              }}
-              numberOfLines={1}>
-              {`Search Jobs`}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              // navigation.navigate('Filter');
-              setFilterVisible(true);
-            }}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: Color.primary,
-              padding: 10,
-              margin: 5,
-              borderRadius: 5,
-            }}>
-            <Iconviewcomponent
-              Icontag={'MaterialCommunityIcons'}
-              iconname={'filter-menu-outline'}
-              icon_size={28}
-              icon_color={Color.white}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{flex: 1, marginVertical: 10}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <CircularProgress
-              value={profileStatus}
-              radius={30}
-              progressValueColor={'#000'}
-              valueSuffix="%"
-              titleColor={Color.black}
-              activeStrokeColor={
-                profileStatus < 40
-                  ? Color.sunShade
-                  : profileStatus < 80
-                  ? Color.green
-                  : '#0BA02C'
-              }
-              activeStrokeWidth={10}
-              inActiveStrokeWidth={10}
-            />
-            <View
-              style={{
-                flex: 1,
-                padding: 10,
-              }}>
-              <Text
-                style={{
-                  fontFamily: Gilmer.Bold,
-                  fontSize: 18,
-                  color: Color.black,
-                }}>
-                Complete Your Profile
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Gilmer.Regular,
-                  fontSize: 14,
-                  color: Color.black,
-                }}>
-                Complete Pending Actions for Job Suggestions
-              </Text>
-            </View>
-          </View>
-          <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-            <View
+      {loading ? (
+        <View style={{padding: 10}}>
+          <SkeletonPlaceholder>
+            <SkeletonPlaceholder.Item style={{}}>
+              <SkeletonPlaceholder.Item width="40%" height={10} />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item style={{marginVertical: 10}}>
+              <SkeletonPlaceholder.Item width="50%" height={10} />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 10,
+                justifyContent: 'space-between',
               }}>
-              {filteredProfileCompletion?.map((item, index) => {
-                return (
-                  <View
-                    key={index}
+              <SkeletonPlaceholder.Item
+                width="70%"
+                height={50}
+                borderRadius={10}
+              />
+              <SkeletonPlaceholder.Item
+                width="20%"
+                height={50}
+                borderRadius={10}
+              />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
+              style={{
+                marginVertical: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <SkeletonPlaceholder.Item
+                width={50}
+                height={50}
+                borderRadius={100}
+              />
+              <SkeletonPlaceholder.Item
+                width="40%"
+                height={10}
+                style={{marginHorizontal: 20}}
+              />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
+              style={{
+                marginVertical: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
+              flex={1}
+              style={{flexDirection: 'row', marginTop: 30}}
+              justifyContent={'space-between'}>
+              <SkeletonPlaceholder.Item
+                width="30%"
+                height={30}
+                borderRadius={50}
+              />
+              <SkeletonPlaceholder.Item
+                width="30%"
+                height={30}
+                borderRadius={50}
+              />
+              <SkeletonPlaceholder.Item
+                width="30%"
+                height={30}
+                borderRadius={50}
+              />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item style={{marginTop: 70}}>
+              <SkeletonPlaceholder.Item width="50%" height={10} />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
+              style={{
+                marginVertical: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item style={{marginTop: 10}}>
+              <SkeletonPlaceholder.Item width="50%" height={10} />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
+              style={{
+                marginVertical: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item style={{marginTop: 10}}>
+              <SkeletonPlaceholder.Item width="50%" height={10} />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
+              style={{
+                marginVertical: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width={'50%'}
+                height={100}
+                borderRadius={10}
+                style={{marginHorizontal: 10}}
+              />
+            </SkeletonPlaceholder.Item>
+          </SkeletonPlaceholder>
+        </View>
+      ) : (
+        <View>
+          <View
+            style={{
+              marginVertical: 10,
+              marginHorizontal: 20,
+            }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: Color.cloudyGrey,
+                fontFamily: Gilmer.Regular,
+              }}>
+              Welcome Back !
+            </Text>
+            <Text
+              style={{
+                fontSize: 20,
+                color: Color.black,
+                fontFamily: Gilmer.Bold,
+              }}
+              numberOfLines={1}>
+              {name}
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              backgroundColor: Color.white,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('SearchScreen');
+              }}
+              activeOpacity={0.5}
+              style={{
+                marginRight: 5,
+                // borderColor: Color.lightgrey,
+                // borderWidth: 1,
+                marginVertical: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderRadius: 5,
+                flex: 1,
+                height: 50,
+                backgroundColor: '#EAEAEF50',
+                paddingHorizontal: 10,
+                marginVertical: 10,
+              }}>
+              <View style={{}}>
+                <Iconviewcomponent
+                  Icontag={'Feather'}
+                  iconname={'search'}
+                  icon_size={25}
+                  icon_color={Color.lightgrey}
+                />
+              </View>
+              <Text
+                style={{
+                  fontSize: 16,
+                  paddingTop: 2,
+                  paddingHorizontal: 10,
+                  color: Color.lightgrey,
+                  fontFamily: Gilmer.Medium,
+                }}
+                numberOfLines={1}>
+                {`Search Jobs`}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                // navigation.navigate('Filter');
+                setFilterVisible(true);
+              }}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: Color.primary,
+                padding: 10,
+                margin: 5,
+                borderRadius: 5,
+              }}>
+              <Iconviewcomponent
+                Icontag={'MaterialCommunityIcons'}
+                iconname={'filter-menu-outline'}
+                icon_size={28}
+                icon_color={Color.white}
+              />
+            </TouchableOpacity>
+          </View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{flexGrow: 1}}>
+            <View style={{flex: 1, marginVertical: 10}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <CircularProgress
+                  value={profileStatus}
+                  radius={30}
+                  progressValueColor={'#000'}
+                  valueSuffix="%"
+                  titleColor={Color.black}
+                  activeStrokeColor={
+                    profileStatus < 40
+                      ? Color.sunShade
+                      : profileStatus < 80
+                      ? Color.green
+                      : '#0BA02C'
+                  }
+                  activeStrokeWidth={10}
+                  inActiveStrokeWidth={10}
+                />
+                <View
+                  style={{
+                    flex: 1,
+                    padding: 10,
+                  }}>
+                  <Text
                     style={{
-                      flex: 1,
-                      backgroundColor: '#DBF3FF',
-                      marginHorizontal: 10,
-                      padding: 10,
-                      borderRadius: 10,
-                      width: 280,
-                      alignItems: 'flex-end',
+                      fontFamily: Gilmer.Bold,
+                      fontSize: 18,
+                      color: Color.black,
                     }}>
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'flex-end',
-                        backgroundColor: '#DEFCE4',
-                        paddingHorizontal: 10,
-                        padding: 5,
-                        borderRadius: 10,
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: Gilmer.Medium,
-                          fontSize: 12,
-                          color: Color.green,
-                        }}>
-                        Boost 10%
-                      </Text>
-                    </View>
-                    <View
-                      key={index}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'flex-start',
-                      }}>
+                    Complete Your Profile
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Regular,
+                      fontSize: 14,
+                      color: Color.black,
+                    }}>
+                    Complete Pending Actions for Job Suggestions
+                  </Text>
+                </View>
+              </View>
+              <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 10,
+                  }}>
+                  {filteredProfileCompletion?.map((item, index) => {
+                    return (
                       <View
-                        style={{
-                          backgroundColor: Color.white,
-                          padding: 10,
-                          borderRadius: 100,
-                        }}>
-                        <MCIcon name={item.icon} size={30} color={Color.blue} />
-                      </View>
-                      <View
+                        key={index}
                         style={{
                           flex: 1,
-                          marginHorizontal: 20,
+                          backgroundColor: '#DBF3FF',
+                          marginHorizontal: 10,
+                          padding: 10,
+                          borderRadius: 10,
+                          width: 280,
+                          alignItems: 'flex-end',
                         }}>
-                        <Text
+                        <View
                           style={{
-                            fontFamily: Gilmer.Bold,
-                            fontSize: 16,
-                            color: Color.black,
-                          }}>
-                          {item?.name}
-                        </Text>
-                        <Text
-                          style={{
-                            flex: 1,
-                            fontFamily: Gilmer.Regular,
-                            fontSize: 14,
-                            color: Color.black,
-                            marginVertical: 5,
-                          }}
-                          numberOfLines={2}>
-                          {item?.subname}
-                        </Text>
-                        <Button
-                          mode="contained"
-                          onPress={async () => {
-                            try {
-                              const data = await common_fn.profileupdate(
-                                item?.id,
-                                navigation,
-                              );
-                              if (item?.id == 1) {
-                                getResumeUpload(data);
-                              }
-                              if (data) {
-                                dispatch(
-                                  setCompleteProfile({
-                                    resume: data,
-                                    details: details,
-                                    skills: skills,
-                                  }),
-                                );
-                              }
-                            } catch (err) {
-                              console.error('Error occurred:', err);
-                            }
-                          }}
-                          style={{
-                            marginVertical: 10,
-                            backgroundColor: Color.primary,
+                            justifyContent: 'center',
+                            alignItems: 'flex-end',
+                            backgroundColor: '#DEFCE4',
+                            paddingHorizontal: 10,
+                            padding: 5,
                             borderRadius: 10,
-                          }}
-                          textColor={Color.white}>
-                          {item.btname}
-                        </Button>
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: Gilmer.Medium,
+                              fontSize: 12,
+                              color: Color.green,
+                            }}>
+                            Boost 10%
+                          </Text>
+                        </View>
+                        <View
+                          key={index}
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'flex-start',
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: Color.white,
+                              padding: 10,
+                              borderRadius: 100,
+                            }}>
+                            <MCIcon
+                              name={item.icon}
+                              size={30}
+                              color={Color.blue}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              flex: 1,
+                              marginHorizontal: 20,
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: Gilmer.Bold,
+                                fontSize: 16,
+                                color: Color.black,
+                              }}>
+                              {item?.name}
+                            </Text>
+                            <Text
+                              style={{
+                                flex: 1,
+                                fontFamily: Gilmer.Regular,
+                                fontSize: 14,
+                                color: Color.black,
+                                marginVertical: 5,
+                              }}
+                              numberOfLines={2}>
+                              {item?.subname}
+                            </Text>
+                            <Button
+                              mode="contained"
+                              onPress={async () => {
+                                try {
+                                  const data = await common_fn.profileupdate(
+                                    item?.id,
+                                    navigation,
+                                  );
+                                  if (item?.id == 1) {
+                                    getResumeUpload(data);
+                                  }
+                                  if (data) {
+                                    dispatch(
+                                      setCompleteProfile({
+                                        resume: data,
+                                        details: details,
+                                        skills: skills,
+                                      }),
+                                    );
+                                  }
+                                } catch (err) {
+                                  console.error('Error occurred:', err);
+                                }
+                              }}
+                              style={{
+                                marginVertical: 10,
+                                backgroundColor: Color.primary,
+                                borderRadius: 10,
+                              }}
+                              textColor={Color.white}>
+                              {item.btname}
+                            </Button>
+                          </View>
+                        </View>
                       </View>
+                    );
+                  })}
+                </View>
+              </ScrollView>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                marginVertical: 10,
+              }}>
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: 16,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
+                  marginVertical: 10,
+                }}>
+                Explore by Categories
+              </Text>
+              {/* <View style={{flex: 1}}> */}
+              <TabView
+                navigationState={{index, routes}}
+                renderScene={renderScene}
+                swipeEnabled={false}
+                onIndexChange={setIndex}
+                initialLayout={{width: layout.width}}
+                style={{
+                  minHeight: 1100,
+                }}
+                renderTabBar={() => {
+                  return (
+                    <View style={styles.TabviewContainer}>
+                      <TouchableOpacity
+                        style={{
+                          ...styles.TabViewServices,
+                          backgroundColor:
+                            index == 0 ? Color.primary : Color.lightgrey,
+                        }}
+                        onPress={() => setIndex(0)}>
+                        <Text
+                          style={{
+                            ...styles.TabViewName,
+                            color: index == 0 ? Color.white : Color.black,
+                          }}>
+                          Full Time
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          ...styles.TabViewServices,
+                          backgroundColor:
+                            index == 1 ? Color.primary : Color.lightgrey,
+                        }}
+                        onPress={() => setIndex(1)}>
+                        <Text
+                          style={{
+                            ...styles.TabViewName,
+                            color: index == 1 ? Color.white : Color.black,
+                          }}>
+                          Part Time
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          ...styles.TabViewServices,
+                          backgroundColor:
+                            index == 3 ? Color.primary : Color.lightgrey,
+                        }}
+                        onPress={() => setIndex(3)}>
+                        <Text
+                          style={{
+                            ...styles.TabViewName,
+                            color: index == 3 ? Color.white : Color.black,
+                          }}>
+                          Freelancer
+                        </Text>
+                      </TouchableOpacity>
                     </View>
-                  </View>
-                );
-              })}
+                  );
+                }}
+              />
+              {/* </View> */}
             </View>
           </ScrollView>
         </View>
-        <View
-          style={{
-            flex: 1,
-            marginVertical: 10,
-          }}>
-          <Text
-            style={{
-              flex: 1,
-              fontSize: 16,
-              color: Color.black,
-              fontFamily: Gilmer.Bold,
-              marginVertical: 10,
-            }}>
-            Explore by Categories
-          </Text>
-
-          <TabView
-            navigationState={{index, routes}}
-            renderScene={renderScene}
-            swipeEnabled={false}
-            onIndexChange={setIndex}
-            initialLayout={{width: layout.width}}
-            style={{height: 1000}}
-            renderTabBar={() => {
-              return (
-                <View style={styles.TabviewContainer}>
-                  <TouchableOpacity
-                    style={{
-                      ...styles.TabViewServices,
-                      backgroundColor:
-                        index == 0 ? Color.primary : Color.lightgrey,
-                    }}
-                    onPress={() => setIndex(0)}>
-                    <Text
-                      style={{
-                        ...styles.TabViewName,
-                        color: index == 0 ? Color.white : Color.black,
-                      }}>
-                      Full Time
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      ...styles.TabViewServices,
-                      backgroundColor:
-                        index == 1 ? Color.primary : Color.lightgrey,
-                    }}
-                    onPress={() => setIndex(1)}>
-                    <Text
-                      style={{
-                        ...styles.TabViewName,
-                        color: index == 1 ? Color.white : Color.black,
-                      }}>
-                      Part Time
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      ...styles.TabViewServices,
-                      backgroundColor:
-                        index == 3 ? Color.primary : Color.lightgrey,
-                    }}
-                    onPress={() => setIndex(3)}>
-                    <Text
-                      style={{
-                        ...styles.TabViewName,
-                        color: index == 3 ? Color.white : Color.black,
-                      }}>
-                      Freelancer
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          />
-          {/* <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-              marginVertical: 10,
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                setSelectTab('FullTime');
-              }}
-              style={{
-                padding: 10,
-                borderRadius: 50,
-                paddingHorizontal: 20,
-                backgroundColor:
-                  selectTab === 'FullTime' ? Color.primary : Color.lightgrey,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: selectTab === 'FullTime' ? Color.white : Color.black,
-                  textAlign: 'center',
-                  fontSize: 14,
-                  paddingTop: 2,
-                  fontFamily: Gilmer.Medium,
-                }}>
-                Full Time
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setSelectTab('PartTime');
-              }}
-              style={{
-                padding: 10,
-                paddingHorizontal: 20,
-                borderRadius: 50,
-                marginTop: 2,
-                backgroundColor:
-                  selectTab === 'PartTime' ? Color.primary : Color.lightgrey,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: selectTab === 'PartTime' ? Color.white : Color.black,
-                  textAlign: 'center',
-                  fontSize: 14,
-                  paddingTop: 2,
-                  fontFamily: Gilmer.Medium,
-                }}>
-                Part Time
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setSelectTab('Freelance');
-              }}
-              style={{
-                padding: 10,
-                paddingHorizontal: 20,
-                borderRadius: 50,
-                marginTop: 2,
-                backgroundColor:
-                  selectTab === 'Freelance' ? Color.primary : Color.lightgrey,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: selectTab === 'Freelance' ? Color.white : Color.black,
-                  textAlign: 'center',
-                  fontSize: 14,
-                  paddingTop: 2,
-                  fontFamily: Gilmer.Medium,
-                }}>
-                Freelance
-              </Text>
-            </TouchableOpacity>
-          </View> */}
-        </View>
-      </ScrollView>
-      <FilterModal
-        setFilterVisible={setFilterVisible}
-        filterVisible={filterVisible}
-      />
+      )}
+      {filterVisible && (
+        <FilterModal
+          setFilterVisible={setFilterVisible}
+          filterVisible={filterVisible}
+        />
+      )}
     </SafeAreaView>
   );
 };

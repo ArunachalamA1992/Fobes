@@ -18,6 +18,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
 import {useDispatch, useSelector} from 'react-redux';
+import moment from 'moment';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -47,30 +48,60 @@ const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
 const BasicDetails = ({navigation}) => {
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var {
+    title,
+    firstName,
+    lastName,
+    gender,
+    website,
+    photo,
+    cv,
+    bio,
+    maritalStatus,
+    birthDate,
+    visibility,
+    cvVisibility,
+    receivedJobAlert,
+    profileComplete,
+    candidateUpdatedAt,
+    address,
+    exactLocation,
+    neighborhood,
+    locality,
+    place,
+    district,
+    postcode,
+    region,
+    country,
+    long,
+    lat,
+    status,
+    availableIn,
+    whatsappNumber,
+    name,
+    username,
+    email,
+    image,
+    role,
+    recentActivitiesAlert,
+    jobExpiredAlert,
+    newJobAlert,
+    shortlistedAlert,
+    isDemoField,
+    createdAt,
+    updatedAt,
+    authType,
+    googleId,
+    facebookId,
+    provider,
+    providerId,
+    candidateEducations,
+    candidateExperiences,
+    candidateSkills,
+    socialLinks,
+    token,
+  } = userData;
   const [HigherQualification, setHigherQualification] = useState([]);
-  // const [HigherQualification] = useState([
-  //   {
-  //     id: 1,
-  //     name: '10th Or Below',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: '12th Pass',
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'Diploma',
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'Graduate',
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'Post Graduate',
-  //   },
-  // ]);
   const [selectBasic, setSelectBasic] = useState({
     professional_title: '',
     personal_website: '',
@@ -84,7 +115,7 @@ const BasicDetails = ({navigation}) => {
     biography: '',
     profession: {},
     availability: {},
-    social_profile: [{id: 1, url: '', social_media: ''}],
+    social_profile: [{url: '', social_media: ''}],
   });
   const [experienceData, setExperienceData] = useState([
     {
@@ -115,7 +146,7 @@ const BasicDetails = ({navigation}) => {
     {id: 2, title: 'Female', value: 'female'},
     {id: 3, title: 'Other', value: 'other'},
   ]);
-  const [maritalStatus] = useState([
+  const [maritalStatusData] = useState([
     {id: 1, title: 'Single', value: 'single'},
     {id: 2, title: 'Married', value: 'married'},
   ]);
@@ -287,21 +318,47 @@ const BasicDetails = ({navigation}) => {
       ],
     });
   };
+  const dataPayload = () => {
+    let params = '';
+    let customIDCounter = {counter: 0};
+    let dataArray = [];
+    const buyPayload = {
+      title: selectBasic?.professional_title,
+      website: selectBasic?.personal_website,
+      birth_date: moment(selectBasic?.dob).format('YYYY-MM-DD'),
+      gender: selectBasic?.gender?.value,
+      marital_status: selectBasic?.marital_status?.value,
+      sociallink: selectBasic?.social_profile,
+      bio: selectBasic?.biography,
+      education_id: selectBasic?.qualify?.education_id,
+      experience_id: selectBasic?.experience?.experience_id,
+    };
+
+    for (const key in buyPayload) {
+      const value = buyPayload[key];
+
+      if (value !== undefined && value !== null && value !== '') {
+        params += `${key}=${decodeURIComponent(value)}&`;
+      }
+    }
+    console.log('params', params);
+    return params.slice(0, -1);
+  };
 
   const getAPiData = async () => {
     try {
       var data = {
         title: selectBasic?.professional_title,
         website: selectBasic?.personal_website,
-        birth_date: selectBasic?.dob,
+        birth_date: moment(selectBasic?.dob).format('YYYY-MM-DD'),
         gender: selectBasic?.gender?.value,
         marital_status: selectBasic?.marital_status?.value,
         sociallink: selectBasic?.social_profile,
         bio: selectBasic?.biography,
-        available_in: selectBasic?.availability?.name,
+        // available_in: selectBasic?.availability?.name,
         education_id: selectBasic?.qualify?.education_id,
         experience_id: selectBasic?.experience?.experience_id,
-        profession_id: selectBasic?.profession?.profession_id,
+        // profession_id: selectBasic?.profession?.profession_id,
       };
       const intro_data = await fetchData.candidates_profile(data, token);
       if (intro_data) {
@@ -331,7 +388,7 @@ const BasicDetails = ({navigation}) => {
       console.log('error', error);
     }
   };
-
+  console.log('selectBasic?.dob', selectBasic?.dob);
   return (
     <View style={{flex: 1, backgroundColor: Color.white, padding: 10}}>
       <StepIndicator
@@ -465,7 +522,7 @@ const BasicDetails = ({navigation}) => {
                   color: Color.cloudyGrey,
                   fontFamily: Gilmer.Medium,
                 }}>
-                {selectBasic?.dob?.toLocaleDateString()}
+                {moment(selectBasic?.dob).format('YYYY-MM-DD')}
               </Text>
               <FIcon name="calendar" size={20} color={Color.black} />
             </TouchableOpacity>
@@ -792,7 +849,7 @@ const BasicDetails = ({navigation}) => {
               Marital Status
             </Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              {maritalStatus.map((item, index) => {
+              {maritalStatusData.map((item, index) => {
                 return (
                   <TouchableOpacity
                     key={index}
@@ -930,7 +987,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          {/* <View style={{marginVertical: 10}}>
             <Text
               style={{
                 fontSize: 16,
@@ -972,7 +1029,7 @@ const BasicDetails = ({navigation}) => {
                 });
               }}
             />
-          </View>
+          </View> */}
           <View style={{marginVertical: 10}}>
             <Text
               style={{
@@ -1016,7 +1073,7 @@ const BasicDetails = ({navigation}) => {
                     valueField="icon"
                     onChange={item => {
                       const updatedProfiles = [...selectBasic?.social_profile];
-                      updatedProfiles[index].social_media = item;
+                      updatedProfiles[index].social_media = item?.icon;
                       setSelectBasic({
                         professional_title: selectBasic?.professional_title,
                         personal_website: selectBasic?.personal_website,

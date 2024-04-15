@@ -14,6 +14,10 @@ import {Button} from 'react-native-paper';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
 import {useDispatch, useSelector} from 'react-redux';
+import FIcon from 'react-native-vector-icons/FontAwesome';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -41,7 +45,8 @@ const customStyles = {
 
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
-const EmploymentDetails = ({navigation}) => {
+const EmploymentDetails = ({navigation, route}) => {
+  const [itemData] = useState(route.params.item);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
   const [periorExperience] = useState([
@@ -95,22 +100,28 @@ const EmploymentDetails = ({navigation}) => {
       value: 'part_time',
     },
   ]);
-  const [radioData] = useState([
-    {id: 1, title: 'Yes', value: 'Yes'},
-    {id: 2, title: 'No', value: 'No'},
+  const [Current_work_RadioData] = useState([
+    {id: 1, title: 'Yes', value: 1},
+    {id: 2, title: 'No', value: 0},
   ]);
+  const [checked, setChecked] = useState(
+    itemData && itemData.id !== '' && itemData?.end == null ? true : false,
+  );
+
   const [selectEmployment, setSelectEmployment] = useState({
     work_experiance: {},
-    current_work: {},
+    current_work: itemData?.currently_working || 0,
     emp_type: {},
-    job_title: '',
-    company_name: '',
+    job_title: itemData?.designation || '',
+    company_name: itemData?.company || '',
     duration: {
-      from: '',
-      end: '',
+      from: new Date(itemData.start) || new Date(),
+      end: new Date(itemData.end) || new Date(),
     },
     current_ctc: '',
     notice_period: {},
+    department: itemData?.department || '',
+    responsibilities: itemData?.responsibilities || '',
   });
 
   const getAPI = async () => {
@@ -119,27 +130,91 @@ const EmploymentDetails = ({navigation}) => {
         experience: [
           {
             company: selectEmployment?.company_name,
-            department: 'Software Development',
-            designation: 'Senior Software Engineer',
-            start: selectEmployment?.duration?.from,
-            end: selectEmployment?.duration?.end,
-            responsibilities: 'Lead a team of developers in project delivery.',
-            currently_working: selectEmployment?.work_experiance?.value,
+            department: selectEmployment?.department,
+            designation: selectEmployment?.job_title,
+            start: moment(selectEmployment?.duration?.from).format(
+              'YYYY-MM-DD',
+            ),
+            end: checked
+              ? null
+              : moment(selectEmployment?.duration?.end).format('YYYY-MM-DD'),
+            responsibilities: selectEmployment?.responsibilities,
+            currently_working: selectEmployment?.current_work?.value,
           },
         ],
       };
-      console.log('data', data);
-      const education_data = await fetchData.candidates_profile(data, token);
-      console.log('education_data', education_data);
-      if (education_data) {
-        common_fn.showToast(education_data?.message);
-        navigation.navigate('Experiance');
+      if (itemData && itemData.id !== '' && itemData.id > 0) {
+        if (!data.experience[0]) {
+          data.experience[0] = {};
+        }
+        data.experience[0].id = itemData.id;
+      }
+      const experience_data = await fetchData.candidates_profile(data, token);
+      if (experience_data) {
+        common_fn.showToast(experience_data?.message);
       } else {
-        common_fn.showToast(education_data?.message);
+        common_fn.showToast(experience_data?.message);
       }
     } catch (error) {
       console.log('error', error);
     }
+  };
+
+  const [FromdatePickerVisible, setFromDatePickerVisible] = useState(false);
+
+  const showFromDatePicker = () => {
+    setFromDatePickerVisible(true);
+  };
+
+  const hideFromDatePicker = () => {
+    setFromDatePickerVisible(false);
+  };
+
+  const handleFromConfirm = date => {
+    setSelectEmployment({
+      work_experiance: selectEmployment?.work_experiance,
+      current_work: selectEmployment?.current_work,
+      emp_type: selectEmployment?.emp_type,
+      job_title: selectEmployment?.job_title,
+      company_name: selectEmployment?.company_name,
+      duration: {
+        from: date,
+        end: selectEmployment?.duration?.end,
+      },
+      current_ctc: selectEmployment?.current_ctc,
+      notice_period: selectEmployment?.notice_period,
+      department: selectEmployment?.department,
+      responsibilities: selectEmployment?.responsibilities,
+    });
+    hideFromDatePicker();
+  };
+  const [endDatePickerVisible, setEndDatePickerVisible] = useState(false);
+
+  const showEndDatePicker = () => {
+    setEndDatePickerVisible(true);
+  };
+
+  const hideEndDatePicker = () => {
+    setEndDatePickerVisible(false);
+  };
+
+  const handleEndConfirm = date => {
+    setSelectEmployment({
+      work_experiance: selectEmployment?.work_experiance,
+      current_work: selectEmployment?.current_work,
+      emp_type: selectEmployment?.emp_type,
+      job_title: selectEmployment?.job_title,
+      company_name: selectEmployment?.company_name,
+      duration: {
+        from: selectEmployment?.duration?.from,
+        end: date,
+      },
+      current_ctc: selectEmployment?.current_ctc,
+      notice_period: selectEmployment?.notice_period,
+      department: selectEmployment?.department,
+      responsibilities: selectEmployment?.responsibilities,
+    });
+    hideEndDatePicker();
   };
   return (
     <View style={{flex: 1, padding: 10, backgroundColor: Color.white}}>
@@ -241,7 +316,7 @@ const EmploymentDetails = ({navigation}) => {
             Are You Currently Working?
           </Text>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {radioData.map((item, index) => {
+            {Current_work_RadioData.map((item, index) => {
               return (
                 <TouchableOpacity
                   key={index}
@@ -253,7 +328,7 @@ const EmploymentDetails = ({navigation}) => {
                   onPress={() => {
                     setSelectEmployment({
                       work_experiance: selectEmployment?.work_experiance,
-                      current_work: item,
+                      current_work: item?.value,
                       emp_type: selectEmployment?.emp_type,
                       job_title: selectEmployment?.job_title,
                       company_name: selectEmployment?.company_name,
@@ -263,17 +338,19 @@ const EmploymentDetails = ({navigation}) => {
                       },
                       current_ctc: selectEmployment?.current_ctc,
                       notice_period: selectEmployment?.notice_period,
+                      department: selectEmployment?.department,
+                      responsibilities: selectEmployment?.responsibilities,
                     });
                   }}>
                   <Icon
                     name={
-                      selectEmployment?.current_work?.id === item.id
+                      selectEmployment?.current_work === item?.value
                         ? 'radio-button-on'
                         : 'radio-button-off'
                     }
                     size={20}
                     color={
-                      selectEmployment?.current_work?.id === item.id
+                      selectEmployment?.current_work === item?.value
                         ? Color.primary
                         : Color.black
                     }
@@ -346,6 +423,8 @@ const EmploymentDetails = ({navigation}) => {
                       },
                       current_ctc: selectEmployment?.current_ctc,
                       notice_period: selectEmployment?.notice_period,
+                      department: selectEmployment?.department,
+                      responsibilities: selectEmployment?.responsibilities,
                     });
                   }}>
                   <Text
@@ -363,6 +442,48 @@ const EmploymentDetails = ({navigation}) => {
               );
             })}
           </View>
+        </View>
+        <View style={{marginVertical: 10}}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: Color.black,
+              fontWeight: 'bold',
+            }}>
+            Your Department
+          </Text>
+          <TextInput
+            placeholder="Enter Your Department"
+            placeholderTextColor={Color.cloudyGrey}
+            value={selectEmployment?.department}
+            onChangeText={text => {
+              setSelectEmployment({
+                work_experiance: selectEmployment?.work_experiance,
+                current_work: selectEmployment?.current_work,
+                emp_type: selectEmployment?.emp_type,
+                job_title: selectEmployment?.job_title,
+                company_name: selectEmployment?.company_name,
+                duration: {
+                  from: selectEmployment?.duration?.from,
+                  end: selectEmployment?.duration?.end,
+                },
+                current_ctc: selectEmployment?.current_ctc,
+                notice_period: selectEmployment?.notice_period,
+                department: text,
+                responsibilities: selectEmployment?.responsibilities,
+              });
+            }}
+            style={{
+              borderColor: Color.cloudyGrey,
+              borderWidth: 1,
+              borderRadius: 5,
+              marginVertical: 10,
+              paddingHorizontal: 10,
+              fontSize: 14,
+              color: Color.cloudyGrey,
+              fontWeight: 'bold',
+            }}
+          />
         </View>
         <View style={{marginVertical: 10}}>
           <Text
@@ -390,6 +511,8 @@ const EmploymentDetails = ({navigation}) => {
                 },
                 current_ctc: selectEmployment?.current_ctc,
                 notice_period: selectEmployment?.notice_period,
+                department: selectEmployment?.department,
+                responsibilities: selectEmployment?.responsibilities,
               });
             }}
             style={{
@@ -430,6 +553,8 @@ const EmploymentDetails = ({navigation}) => {
                 },
                 current_ctc: selectEmployment?.current_ctc,
                 notice_period: selectEmployment?.notice_period,
+                department: selectEmployment?.department,
+                responsibilities: selectEmployment?.responsibilities,
               });
             }}
             style={{
@@ -467,25 +592,8 @@ const EmploymentDetails = ({navigation}) => {
                 }}>
                 From
               </Text>
-              <TextInput
-                placeholder="Starting Year"
-                placeholderTextColor={Color.cloudyGrey}
-                value={selectEmployment?.duration?.from}
-                onChangeText={text => {
-                  setSelectEmployment({
-                    work_experiance: selectEmployment?.work_experiance,
-                    current_work: selectEmployment?.current_work,
-                    emp_type: selectEmployment?.emp_type,
-                    job_title: selectEmployment?.job_title,
-                    company_name: selectEmployment?.company_name,
-                    duration: {
-                      from: text,
-                      end: selectEmployment?.duration?.end,
-                    },
-                    current_ctc: selectEmployment?.current_ctc,
-                    notice_period: selectEmployment?.notice_period,
-                  });
-                }}
+              <TouchableOpacity
+                onPress={() => showFromDatePicker()}
                 style={{
                   borderColor: Color.cloudyGrey,
                   borderWidth: 1,
@@ -496,7 +604,29 @@ const EmploymentDetails = ({navigation}) => {
                   fontSize: 14,
                   color: Color.cloudyGrey,
                   fontWeight: 'bold',
-                }}
+                  padding: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 14,
+                    color: Color.cloudyGrey,
+                    fontFamily: Gilmer.Medium,
+                  }}>
+                  {moment(selectEmployment?.duration?.from).format(
+                    'YYYY-MM-DD',
+                  )}
+                </Text>
+                <FIcon name="calendar" size={20} color={Color.black} />
+              </TouchableOpacity>
+              <DateTimePickerModal
+                date={selectEmployment?.duration?.from || new Date()}
+                isVisible={FromdatePickerVisible}
+                mode="date"
+                onConfirm={handleFromConfirm}
+                onCancel={hideFromDatePicker}
               />
             </View>
             <View style={{marginVertical: 10, flex: 1}}>
@@ -508,25 +638,9 @@ const EmploymentDetails = ({navigation}) => {
                 }}>
                 To
               </Text>
-              <TextInput
-                placeholder="End Year"
-                placeholderTextColor={Color.cloudyGrey}
-                value={selectEmployment?.duration?.end}
-                onChangeText={text => {
-                  setSelectEmployment({
-                    work_experiance: selectEmployment?.work_experiance,
-                    current_work: selectEmployment?.current_work,
-                    emp_type: selectEmployment?.emp_type,
-                    job_title: selectEmployment?.job_title,
-                    company_name: selectEmployment?.company_name,
-                    duration: {
-                      from: selectEmployment?.duration?.from,
-                      end: text,
-                    },
-                    current_ctc: selectEmployment?.current_ctc,
-                    notice_period: selectEmployment?.notice_period,
-                  });
-                }}
+              <TouchableOpacity
+                onPress={() => showEndDatePicker()}
+                disabled={checked}
                 style={{
                   borderColor: Color.cloudyGrey,
                   borderWidth: 1,
@@ -537,9 +651,115 @@ const EmploymentDetails = ({navigation}) => {
                   fontSize: 14,
                   color: Color.cloudyGrey,
                   fontWeight: 'bold',
-                }}
+                  padding: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  opacity: checked ? 0.5 : 1,
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 14,
+                    color: Color.cloudyGrey,
+                    fontFamily: Gilmer.Medium,
+                  }}>
+                  {checked
+                    ? 'Present'
+                    : moment(selectEmployment?.duration?.end).format(
+                        'YYYY-MM-DD',
+                      )}
+                </Text>
+                <FIcon name="calendar" size={20} color={Color.black} />
+              </TouchableOpacity>
+              <DateTimePickerModal
+                date={selectEmployment?.duration?.end || new Date()}
+                isVisible={endDatePickerVisible}
+                mode="date"
+                onConfirm={handleEndConfirm}
+                onCancel={hideEndDatePicker}
               />
             </View>
+          </View>
+          <TouchableOpacity
+            style={{flexDirection: 'row', alignItems: 'center'}}
+            onPress={() => {
+              setChecked(!checked);
+            }}>
+            <MCIcon
+              name={!checked ? 'checkbox-blank-outline' : 'checkbox-marked'}
+              size={25}
+              color={!checked ? Color.cloudyGrey : '#309CD2'}
+            />
+            <Text
+              style={{
+                fontSize: 14,
+                color: Color.black,
+                marginHorizontal: 10,
+                fontFamily: Gilmer.Medium,
+              }}>
+              I'm currently working here
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{marginVertical: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={{
+                paddingVertical: 5,
+                fontFamily: Gilmer.Bold,
+                fontSize: 16,
+                color: Color.black,
+              }}>
+              Responsibilities
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 5,
+              backgroundColor: '#EAEAEF50',
+              borderRadius: 5,
+            }}>
+            <TextInput
+              placeholder="Enter your Responsibilities"
+              placeholderTextColor={Color.cloudyGrey}
+              multiline={true}
+              value={selectEmployment?.responsibilities}
+              onChangeText={text => {
+                setSelectEmployment({
+                  work_experiance: selectEmployment?.work_experiance,
+                  current_work: selectEmployment?.current_work,
+                  emp_type: selectEmployment?.emp_type,
+                  job_title: selectEmployment?.job_title,
+                  company_name: selectEmployment?.company_name,
+                  duration: {
+                    from: selectEmployment?.duration?.from,
+                    end: selectEmployment?.duration?.end,
+                  },
+                  current_ctc: selectEmployment?.current_ctc,
+                  notice_period: selectEmployment?.notice_period,
+                  department: selectEmployment?.department,
+                  responsibilities: text,
+                });
+              }}
+              returnKeyType={'done'}
+              style={{
+                color: 'black',
+                minHeight: 150,
+                borderRadius: 10,
+                padding: 10,
+                width: '100%',
+                borderColor: Color.cloudyGrey,
+                borderWidth: 1,
+                fontSize: 16,
+                textAlign: 'justify',
+                fontFamily: Gilmer.Medium,
+                paddingHorizontal: 10,
+              }}
+              textAlignVertical="top"
+              showSoftInputOnFocus={true}
+            />
           </View>
         </View>
         {/* <View style={{marginVertical: 10}}>

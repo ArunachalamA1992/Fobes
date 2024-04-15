@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,304 +10,319 @@ import {
 import Color from '../../../Global/Color';
 import {Gilmer} from '../../../Global/FontFamily';
 import {Iconviewcomponent} from '../../../Components/Icontag';
-import {Media} from '../../../Global/Media';
+import fetchData from '../../../Config/fetchData';
+import {useSelector} from 'react-redux';
+import moment from 'moment';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import common_fn from '../../../Config/common_fn';
 
 const AppliedJobs = ({navigation}) => {
-  const [ApplyJobData, setApplyJobData] = useState([
-    {
-      id: 1,
-      apply_job_name: 'Business Development Executive',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.propertysub,
-      apply_job_type: 'Full Time',
-      apply_job_post_date: '1 day ago',
-      apply_apply_job_comp_logo: '',
-      apply_job_comp_name: 'Wipro Technologies ',
-      apply_job_comp_book_status: true,
-      apply_job_comp_salary: '₹10k -  ₹20 k',
-      apply_job_comp_applicant: '500',
-      apply_job_comp_loc: 'Coimbatore, Tamilnadu',
-      apply_job_exp: '0-3 years',
-      applu_job_applicant: '20',
-    },
-    {
-      id: 2,
-      apply_job_name: 'Mobile App Development',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Full Time',
-      apply_job_post_date: '3 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'TCS',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹40k -  ₹70 k',
-      apply_job_comp_applicant: '250',
-      apply_job_comp_loc: 'Chennai, Tamilnadu',
-      apply_job_exp: '0-3 years',
-      applu_job_applicant: '20',
-    },
-    {
-      id: 3,
-      apply_job_name: 'Graphics Designer',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.propertysub,
-      apply_job_type: 'Freelance',
-      apply_job_post_date: '1 day ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'KGISL Group',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹30k -  ₹50 k',
-      apply_job_comp_applicant: '50',
-      apply_job_comp_loc: 'Coimbatore, Tamilnadu',
-      apply_job_exp: '0-3 years',
-      applu_job_applicant: '20',
-    },
-    {
-      id: 4,
-      apply_job_name: 'Website designer',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Full Time',
-      apply_job_post_date: '4 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'Brightway Group Tech',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹25k -  ₹60 k',
-      apply_job_comp_applicant: '7',
-      apply_job_comp_loc: 'Madurai, Tamilnadu',
-      apply_job_exp: '0-3 years',
-      applu_job_applicant: '20',
-    },
-    {
-      id: 5,
-      apply_job_name: 'SEO Analyst',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Part Time',
-      apply_job_post_date: '2 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'Avanexa Technologies',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹15k -  ₹30 k',
-      apply_job_comp_applicant: '15',
-      apply_job_comp_loc: 'Chennai, Tamilnadu',
-      apply_job_exp: '0-3 years',
-      applu_job_applicant: '20',
-    },
-    {
-      id: 6,
-      apply_job_name: 'Website designer',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Full Time',
-      apply_job_post_date: '4 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'Brightway Group Tech',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹25k -  ₹60 k',
-      apply_job_comp_applicant: '7',
-      apply_job_comp_loc: 'Coimbatore, Tamilnadu',
-      apply_job_exp: '0-3 years',
-      applu_job_applicant: '20',
-    },
-    {
-      id: 7,
-      apply_job_name: 'SEO Analyst',
-      apply_job_image: Media.status,
-      apply_job_subImage: Media.AuctionSub,
-      apply_job_type: 'Part Time',
-      apply_job_post_date: '2 days ago',
-      apply_job_comp_logo: '',
-      apply_job_comp_name: 'Avanexa Technologies',
-      apply_job_comp_book_status: false,
-      apply_job_comp_salary: '₹15k -  ₹30 k',
-      apply_job_comp_applicant: '15',
-      apply_job_comp_loc: 'Madurai, Tamilnadu',
-      apply_job_exp: '0-3 years',
-      applu_job_applicant: '20',
-    },
-  ]);
+  const [loading, setLoading] = useState(false);
+  const [resultDate, setResultDate] = useState(null);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
+  const [ApplyJobData, setApplyJobData] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    getData().finally(() => setLoading(false));
+  }, []);
+
+  const getData = async () => {
+    try {
+      const apply_job = await fetchData.list_job_Applied(null, token);
+      setApplyJobData(apply_job?.data);
+      setLoading(false);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={ApplyJobData}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({item, index}) => {
-          return (
-            <TouchableOpacity
-              key={index}
-              style={{
-                flex: 1,
-                borderColor: Color.lightgrey,
-                borderWidth: 1,
-                padding: 10,
-                margin: 5,
-                borderRadius: 5,
-              }}
-              onPress={() => {
-                navigation.navigate('JobStatus', {item});
-              }}>
-              <View style={{paddingVertical: 10}}>
-                <View
-                  style={{
-                    width: 70,
-                    height: 70,
-                    backgroundColor: '#EFFAFF',
-                    padding: 5,
-                    borderRadius: 50,
-                  }}>
-                  <Image
-                    source={require('../../../assets/images/app_status.png')}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      resizeMode: 'contain',
-                    }}
-                  />
-                </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <View
-                    style={{
-                      flex: 1,
-                      marginVertical: 5,
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: Color.lightBlack,
-                        fontFamily: Gilmer.Bold,
-                        textAlign: 'justify',
-                      }}
-                      numberOfLines={2}>
-                      {item.apply_job_name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        color: Color.darkGrey,
-                        fontFamily: Gilmer.Medium,
-                        textAlign: 'justify',
-                      }}
-                      numberOfLines={1}>
-                      {item.apply_job_comp_name}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Iconviewcomponent
-                      Icontag={'Ionicons'}
-                      iconname={'chevron-forward-outline'}
-                      icon_size={22}
-                      icon_color={Color.lightBlack}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginVertical: 5,
-                }}>
-                <Iconviewcomponent
-                  Icontag={'Fontisto'}
-                  iconname={'map-marker-alt'}
-                  icon_size={20}
-                  icon_color={Color.Venus}
-                />
-                <Text
-                  style={{
-                    fontSize: 14,
-                    color: Color.Venus,
-                    fontFamily: Gilmer.Medium,
-                    paddingHorizontal: 5,
-                  }}>
-                  {item.apply_job_comp_loc}
-                </Text>
-              </View>
-              <View
+      {loading ? (
+        <View style={{padding: 10}}>
+          <SkeletonPlaceholder>
+            <SkeletonPlaceholder.Item style={{}}>
+              <SkeletonPlaceholder.Item width="100%" height={150} />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{marginTop: 10}}
+              />
+            </SkeletonPlaceholder.Item>
+          </SkeletonPlaceholder>
+        </View>
+      ) : (
+        <FlatList
+          data={ApplyJobData}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({item, index}) => {
+            const currentDate = moment();
+            const yourDate = moment(item?.created_at);
+
+            const daysAgo = currentDate.diff(yourDate, 'days');
+            const hoursAgo = currentDate.diff(yourDate, 'hours');
+            const minutesAgo = currentDate.diff(yourDate, 'minutes');
+
+            if (daysAgo === 0 && hoursAgo === 0 && minutesAgo === 0) {
+              setResultDate('Just now');
+            } else {
+              let result;
+
+              if (Math.abs(daysAgo) > 0) {
+                result = `${Math.abs(daysAgo)} day${
+                  Math.abs(daysAgo) !== 1 ? 's' : ''
+                } ago`;
+              } else if (Math.abs(hoursAgo) > 0) {
+                result = `${Math.abs(hoursAgo)} hour${
+                  Math.abs(hoursAgo) !== 1 ? 's' : ''
+                } ago`;
+              } else {
+                result = `${Math.abs(minutesAgo)} minute${
+                  Math.abs(minutesAgo) !== 1 ? 's' : ''
+                } ago`;
+              }
+
+              setResultDate(result);
+            }
+            return (
+              <TouchableOpacity
+                key={index}
                 style={{
                   flex: 1,
-                  flexDirection: 'row',
-                  paddingVertical: 5,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
+                  borderColor: Color.lightgrey,
+                  borderWidth: 1,
+                  padding: 10,
+                  margin: 5,
+                  borderRadius: 5,
+                }}
+                onPress={() => {
+                  navigation.navigate('JobStatus', {item});
                 }}>
+                <View style={{paddingVertical: 10}}>
+                  <View
+                    style={{
+                      width: 70,
+                      height: 70,
+                      backgroundColor: '#EFFAFF',
+                      padding: 5,
+                      borderRadius: 50,
+                    }}>
+                    <Image
+                      source={require('../../../assets/images/app_status.png')}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </View>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View
+                      style={{
+                        flex: 1,
+                        marginVertical: 5,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: Color.lightBlack,
+                          fontFamily: Gilmer.Bold,
+                          textAlign: 'justify',
+                        }}
+                        numberOfLines={2}>
+                        {item.title}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          color: Color.darkGrey,
+                          fontFamily: Gilmer.Medium,
+                          textAlign: 'justify',
+                        }}
+                        numberOfLines={1}>
+                        {item.company_name}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Iconviewcomponent
+                        Icontag={'Ionicons'}
+                        iconname={'chevron-forward-outline'}
+                        icon_size={22}
+                        icon_color={Color.lightBlack}
+                      />
+                    </View>
+                  </View>
+                </View>
                 <View
                   style={{
-                    // flex: 1,
                     flexDirection: 'row',
-                    justifyContent: 'center',
                     alignItems: 'center',
-                    borderRadius: 5,
-                    padding: 5,
-                    backgroundColor: '#DEFCE4',
+                    marginVertical: 5,
                   }}>
                   <Iconviewcomponent
-                    Icontag={'FontAwesome'}
-                    iconname={'check-square'}
-                    icon_size={16}
-                    icon_color={'#0BA02C'}
+                    Icontag={'Fontisto'}
+                    iconname={'map-marker-alt'}
+                    icon_size={20}
+                    icon_color={Color.Venus}
                   />
                   <Text
                     style={{
-                      fontSize: 12,
-                      color: Color.black,
-                      borderRadius: 5,
+                      fontSize: 14,
+                      color: Color.Venus,
                       fontFamily: Gilmer.Medium,
                       paddingHorizontal: 5,
                     }}>
-                    Applied 2 days ago
+                    {item.apply_job_comp_loc}
                   </Text>
                 </View>
                 <View
                   style={{
-                    // flex: 1,
-                    justifyContent: 'flex-start',
-                    alignItems: 'flex-start',
+                    flex: 1,
+                    flexDirection: 'row',
+                    paddingVertical: 5,
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                   }}>
-                  <Text
+                  <View
                     style={{
-                      padding: 5,
-                      marginHorizontal: 5,
-                      backgroundColor: '#E9F9F6',
-                      fontSize: 12,
-                      color: Color.lightBlack,
+                      // flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                       borderRadius: 5,
-                      fontFamily: Gilmer.Medium,
+                      padding: 5,
+                      backgroundColor: '#DEFCE4',
                     }}>
-                    {item.apply_job_type}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    // flex: 1,
-                    justifyContent: 'flex-start',
-                    alignItems: 'flex-start',
-                  }}>
-                  <Text
+                    <Iconviewcomponent
+                      Icontag={'FontAwesome'}
+                      iconname={'check-square'}
+                      icon_size={16}
+                      icon_color={'#0BA02C'}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: Color.black,
+                        borderRadius: 5,
+                        fontFamily: Gilmer.Medium,
+                        paddingHorizontal: 5,
+                      }}>
+                      Applied {resultDate}
+                    </Text>
+                  </View>
+                  <View
                     style={{
-                      padding: 5,
-                      marginHorizontal: 5,
-                      backgroundColor: '#E9F9F6',
-                      fontSize: 12,
-                      color: Color.lightBlack,
-                      borderRadius: 5,
-                      fontFamily: Gilmer.Medium,
+                      // flex: 1,
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
                     }}>
-                    {item.apply_job_comp_salary}
-                  </Text>
+                    <Text
+                      style={{
+                        padding: 5,
+                        marginHorizontal: 5,
+                        backgroundColor: '#E9F9F6',
+                        fontSize: 12,
+                        color: Color.lightBlack,
+                        borderRadius: 5,
+                        fontFamily: Gilmer.Medium,
+                      }}>
+                      {item.apply_job_type}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      // flex: 1,
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                    }}>
+                    <Text
+                      style={{
+                        padding: 5,
+                        marginHorizontal: 5,
+                        backgroundColor: '#E9F9F6',
+                        fontSize: 12,
+                        color: Color.lightBlack,
+                        borderRadius: 5,
+                        fontFamily: Gilmer.Medium,
+                      }}>
+                      ₹ {common_fn.formatNumberWithSuffix(item.min_salary)} -{' '}
+                      {common_fn.formatNumberWithSuffix(item.max_salary)}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
+              </TouchableOpacity>
+            );
+          }}
+        />
+      )}
     </View>
   );
 };

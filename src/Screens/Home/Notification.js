@@ -136,7 +136,7 @@ const Notification = ({navigation}) => {
                         fontFamily: Gilmer.Bold,
                         marginVertical: 5,
                       }}>
-                      {notification.name}
+                      {notification?.name}
                     </Text>
                     <Text
                       style={{

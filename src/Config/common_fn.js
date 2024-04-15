@@ -20,7 +20,7 @@ const common_fn = {
     const totalFields = 3;
     let completedFields = 0;
 
-    if (resume != null && resume?.name?.length > 0) {
+    if (resume != null && resume?.length > 0) {
       completedFields++;
     }
     if (skills?.length > 0) {
@@ -43,6 +43,23 @@ const common_fn = {
         return navigation.navigate('basicdetails');
       }
     } catch (err) {}
+  },
+  formatNumberWithSuffix: amount => {
+    if (amount >= 10000000) {
+      return (amount / 10000000).toFixed(2) + ' Cr';
+    } else if (amount >= 100000) {
+      return (amount / 100000).toFixed(2) + ' Lac';
+    } else if (amount >= 1000) {
+      return (amount / 1000).toFixed(2) + ' K';
+    } else {
+      return parseInt(amount).toFixed(2);
+    }
+  },
+  generateCustomID: customIDCounter => {
+    customIDCounter.counter = (customIDCounter.counter || 1) % 10;
+    const uniqueID = customIDCounter.counter;
+    customIDCounter.counter++;
+    return uniqueID;
   },
 };
 export default common_fn;

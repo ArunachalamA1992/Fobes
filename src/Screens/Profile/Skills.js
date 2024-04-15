@@ -46,84 +46,87 @@ const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
 const SkillScreen = ({navigation}) => {
   const [SkillsData, setSkillsData] = useState([]);
-  // const [SkillsData] = useState([
-  //   {
-  //     id: 1,
-  //     url: 'React Native',
-  //   },
-  //   {
-  //     id: 2,
-  //     url: 'Ui/UX designer',
-  //   },
-  //   {
-  //     id: 3,
-  //     url: 'Figma',
-  //   },
-  //   {
-  //     id: 4,
-  //     url: 'Node js',
-  //   },
-  //   {
-  //     id: 5,
-  //     url: 'Java',
-  //   },
-  //   {
-  //     id: 6,
-  //     url: 'Dart',
-  //   },
-  //   {
-  //     id: 7,
-  //     url: 'Mobile Application Developer',
-  //   },
-  // ]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var {token, candidate_skills, candidate_language} = userData;
   const dispatch = useDispatch();
   const profile_complete = useSelector(
     state => state.UserReducer.profile_complete,
   );
   var {resume, details, skills} = profile_complete;
-  const [selectedSkill, setSelectedSkill] = useState([]);
-  const [SkillsSelectedItem, setSkillsSelectedItem] = useState([]);
+  const [selectedSkill, setSelectedSkill] = useState(
+    candidate_skills?.length > 0 ? candidate_skills : [],
+  );
 
   const handleSkillsPress = itemId => {
-    if (SkillsSelectedItem.includes(itemId)) {
-      setSkillsSelectedItem(
-        SkillsSelectedItem?.filter(single => single !== itemId),
-      );
-      setSelectedSkill(selectedSkill?.filter(single => single.id !== itemId));
+    const existingSkillIndex = selectedSkill.findIndex(
+      single => single.skill_id === itemId,
+    );
+    if (existingSkillIndex !== -1) {
+      const updatedSelectedSkill = [...selectedSkill];
+      updatedSelectedSkill.splice(existingSkillIndex, 1);
+      setSelectedSkill(updatedSelectedSkill);
     } else {
-      setSkillsSelectedItem([...SkillsSelectedItem, itemId]);
-      const selectedItemData = SkillsData.find(single => single.id === itemId);
+      const selectedItemData = SkillsData.find(
+        single => single.skill_id === itemId,
+      );
       setSelectedSkill([...selectedSkill, selectedItemData]);
     }
   };
-  const [languageselect, setLanguageselect] = useState([]);
-  const [languageselectItem, setLanguageselectItem] = useState([]);
+
+  const [languageselect, setLanguageselect] = useState(
+    candidate_language?.length > 0 ? candidate_language : [],
+  );
   const [languagesData, setLanguagesData] = useState([]);
 
-  const handleLanguagePress = itemId => {
-    const selectedItemData = languagesData.find(single => single.id === itemId);
-    if (languageselectItem.includes(itemId)) {
-      setLanguageselectItem(
-        languageselectItem.filter(single => single !== itemId),
+  const handleLanguagePress = name => {
+    const existingLanguage = languageselect.find(
+      language => language.name === name,
+    );
+
+    if (existingLanguage) {
+      const updatedLanguages = languageselect.filter(
+        language => language.name !== name,
       );
-      setLanguageselect(languageselect.filter(single => single.id !== itemId));
+      setLanguageselect(updatedLanguages);
     } else {
-      setLanguageselectItem([...languageselectItem, itemId]);
+      const selectedItemData = languagesData.find(
+        language => language.name === name,
+      );
       setLanguageselect([...languageselect, selectedItemData]);
+    }
+  };
+
+  const dataPayload = () => {
+    try {
+      const skillsPayload = selectedSkill.map(item => {
+        const existingSkill = candidate_skills.find(
+          skillItem => item?.name === skillItem?.name,
+        );
+        return existingSkill
+          ? existingSkill
+          : item?.skill_id
+          ? {name: item?.name || item?.name, skill_id: item?.skill_id}
+          : {name: item?.name || item?.name};
+      });
+      const languagePayload = languageselect.map(item => {
+        const existinglanguage = candidate_language.find(
+          languageItem => item?.name === languageItem?.name,
+        );
+        return existinglanguage
+          ? existinglanguage
+          : {candidate_language_id: item?.id || item?.id};
+      });
+      return {skills: skillsPayload, languages: languagePayload};
+    } catch (error) {
+      console.log('error', error);
+      return {skills: []};
     }
   };
 
   const getAPI = async () => {
     try {
-      var data = {
-        skills: selectedSkill,
-        languages: languageselect,
-      };
-      console.log('data------------', data);
+      var data = dataPayload();
       const skills_data = await fetchData.candidates_profile(data, token);
-      console.log('basic_data------------', skills_data);
       if (skills_data) {
         dispatch(
           setCompleteProfile({
@@ -197,7 +200,7 @@ const SkillScreen = ({navigation}) => {
             placeholder={'Enter Your Job Title'}
             searchPlaceholder="Search..."
             onChange={item => {
-              handleSkillsPress(item?.id);
+              handleSkillsPress(item?.skill_id);
             }}
           />
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -262,7 +265,7 @@ const SkillScreen = ({navigation}) => {
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      handleSkillsPress(item?.id);
+                      handleSkillsPress(item?.skill_id);
                     }}>
                     <FIcon name={'close'} size={16} color={Color.primary} />
                   </TouchableOpacity>
@@ -352,7 +355,7 @@ const SkillScreen = ({navigation}) => {
             placeholder={'Enter Your Language'}
             searchPlaceholder="Search..."
             onChange={item => {
-              handleLanguagePress(item?.id);
+              handleLanguagePress(item?.name);
             }}
           />
         </View>
@@ -381,6 +384,7 @@ const SkillScreen = ({navigation}) => {
             </Text>
           ) : (
             languageselect?.map((item, index) => {
+              console.log('item?.name', item?.name);
               return (
                 <View
                   key={index}
@@ -405,7 +409,7 @@ const SkillScreen = ({navigation}) => {
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      handleSkillsPress(item?.id);
+                      handleLanguagePress(item?.name);
                     }}>
                     <FIcon name={'close'} size={16} color={Color.primary} />
                   </TouchableOpacity>

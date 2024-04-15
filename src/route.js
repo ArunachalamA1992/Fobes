@@ -474,7 +474,7 @@ export const ProfileStack = () => {
         })}
       />
       <Stack.Screen
-        name="Experiance"
+        name="Experience"
         component={EmploymentDetails}
         options={({navigation, route}) => ({
           headerTitle: 'Employement Details',
@@ -541,7 +541,7 @@ const TabNavigator = () => {
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
-          if (route.name === 'HomeTab') {
+          if (route?.name === 'HomeTab') {
             return focused ? (
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View
@@ -575,7 +575,7 @@ const TabNavigator = () => {
                 </Text>
               </View>
             );
-          } else if (route.name === 'ApplyJobsTab') {
+          } else if (route?.name === 'ApplyJobsTab') {
             return focused ? (
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View
@@ -619,7 +619,7 @@ const TabNavigator = () => {
                 </Text>
               </View>
             );
-          } else if (route.name === 'SavedJobsTab') {
+          } else if (route?.name === 'SavedJobsTab') {
             return focused ? (
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View
@@ -663,7 +663,7 @@ const TabNavigator = () => {
                 </Text>
               </View>
             );
-          } else if (route.name === 'ProfileTab') {
+          } else if (route?.name === 'ProfileTab') {
             return focused ? (
               <View style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View

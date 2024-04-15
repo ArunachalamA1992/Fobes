@@ -42,7 +42,8 @@ const customStyles = {
 
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
-const EducationDetails = ({navigation}) => {
+const EducationDetails = ({navigation, route}) => {
+  const [itemData] = useState(route.params.item);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
   const [HigherQualification] = useState([
@@ -69,14 +70,14 @@ const EducationDetails = ({navigation}) => {
   ]);
   const [selectEducation, setSelectEducation] = useState({
     qualify: {},
-    degree: '',
-    institute: '',
+    degree: itemData?.degree || '',
+    institute: itemData?.institute_name || '',
     specification: '',
     duration: {
       from: '',
       end: '',
     },
-    year_completion: {},
+    year_completion: itemData?.year || '',
   });
   const [yearcompletiondata] = useState([
     {
@@ -100,29 +101,38 @@ const EducationDetails = ({navigation}) => {
       value: '2024',
     },
   ]);
+
   const getAPI = async () => {
     try {
       var data = {
         education: [
           {
-            institute_name: selectEducation?.institute,
-            degree: selectEducation?.degree,
-            year: selectEducation?.year_completion?.value,
-            // notes: selectEducation?.year_completion,
+            institute_name: selectEducation.institute,
+            degree: selectEducation.degree,
+            year: selectEducation.year_completion,
           },
         ],
       };
+
+      if (itemData && itemData.id !== '' && itemData.id > 0) {
+        if (!data.education[0]) {
+          data.education[0] = {};
+        }
+        data.education[0].id = itemData.id;
+      }
+      console.log('data---------------------', data);
       const education_data = await fetchData.candidates_profile(data, token);
       if (education_data) {
-        common_fn.showToast(education_data?.message);
-        navigation.navigate('Experiance');
+        common_fn.showToast(education_data.message);
+        navigation.navigate('Experience');
       } else {
-        common_fn.showToast(education_data?.message);
+        common_fn.showToast(education_data.message);
       }
     } catch (error) {
       console.log('error', error);
     }
   };
+
   return (
     <View style={{flex: 1, padding: 10, backgroundColor: Color.white}}>
       <StepIndicator
@@ -427,7 +437,11 @@ const EducationDetails = ({navigation}) => {
             maxHeight={300}
             labelField="name"
             valueField="name"
-            placeholder={'Year of Course Completion'}
+            placeholder={
+              itemData?.year != ''
+                ? itemData?.year
+                : "'Year of Course Completion'"
+            }
             searchPlaceholder="Search..."
             onChange={item => {
               setSelectEducation({
@@ -439,7 +453,7 @@ const EducationDetails = ({navigation}) => {
                   from: selectEducation?.duration?.from,
                   end: selectEducation?.duration?.end,
                 },
-                year_completion: item,
+                year_completion: item?.value,
               });
             }}
           />

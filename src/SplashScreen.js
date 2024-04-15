@@ -16,12 +16,24 @@ const SplashScreen = ({navigation}) => {
     try {
       const SplashLoad = setTimeout(() => {
         getloginData();
+        getUserData();
       }, 3000);
       return () => clearInterval(SplashLoad);
     } catch (error) {
       console.log('catch in splash_Screen ', error);
     }
   }, []);
+
+  const getUserData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user_data');
+      if (value !== null) {
+        dispatch(setUserData(JSON.parse(value)));
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   const getloginData = async () => {
     try {

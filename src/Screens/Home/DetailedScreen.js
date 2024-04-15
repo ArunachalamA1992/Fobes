@@ -20,6 +20,8 @@ import fetchData from '../../Config/fetchData';
 import {useSelector} from 'react-redux';
 import RenderHtml from 'react-native-render-html';
 import moment from 'moment';
+import common_fn from '../../Config/common_fn';
+import {base_image_url} from '../../Config/base_url';
 
 LogBox.ignoreAllLogs();
 
@@ -66,6 +68,7 @@ const IconData = ({item}) => {
   }
 };
 const DetailedScreen = ({navigation, route}) => {
+  const [itemData] = useState(route?.params?.item);
   const [jobData, setJobData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
@@ -82,7 +85,6 @@ const DetailedScreen = ({navigation, route}) => {
       console.log('error', error);
     }
   };
-  const [itemData] = useState(route?.params?.item);
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const taby = scrollY.interpolate({
@@ -123,11 +125,13 @@ const DetailedScreen = ({navigation, route}) => {
   }, [currentDate, yourDate, itemData]);
 
   const [features] = useState([
-    {id: 1, title: 'Experience', value: itemData?.experience},
+    {id: 1, title: 'Experience', value: itemData?.experience_translation?.name},
     {
       id: 2,
       title: 'Salary',
-      value: `${itemData.min_salary} - ${itemData?.max_salary}`,
+      value: `₹ ${common_fn.formatNumberWithSuffix(
+        itemData.min_salary,
+      )} - ${common_fn.formatNumberWithSuffix(itemData?.max_salary)}`,
     },
     {id: 3, title: 'Location', value: itemData?.place},
     {id: 4, title: 'Vacancies', value: itemData?.vacancies},
@@ -135,6 +139,23 @@ const DetailedScreen = ({navigation, route}) => {
   const source = {
     html: `${itemData?.description}`,
   };
+
+  const company_source = {
+    html: `${itemData?.company?.bio}`,
+  };
+
+  const getToggleJobs = async id => {
+    try {
+      var data = {job_id: id};
+      const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
+      if (Saved_Jobs) {
+        common_fn.showToast(Saved_Jobs?.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -200,7 +221,7 @@ const DetailedScreen = ({navigation, route}) => {
                 color: Color.green,
                 fontFamily: Gilmer.Medium,
               }}>
-              {itemData?.job_type}
+              {itemData?.job_type?.name}
             </Text>
           </View>
           <View
@@ -230,7 +251,7 @@ const DetailedScreen = ({navigation, route}) => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'space-around',
+            justifyContent: 'space-between',
             flexWrap: 'wrap',
             marginVertical: 10,
             marginHorizontal: 10,
@@ -241,7 +262,7 @@ const DetailedScreen = ({navigation, route}) => {
                 key={index}
                 style={{
                   backgroundColor: '#EFFAFF',
-                  padding: 15,
+                  padding: 10,
                   flexDirection: 'row',
                   alignItems: 'center',
                   marginVertical: 10,
@@ -395,58 +416,60 @@ const DetailedScreen = ({navigation, route}) => {
               );
             })}
           </View>
-        </View>
-        <View
-          style={{
-            marginVertical: 10,
-          }}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.black,
-              fontFamily: Gilmer.Bold,
-              paddingHorizontal: 5,
-            }}>
-            Key Benifits
-          </Text>
+        </View> */}
+        {itemData?.benefits?.length > 0 && (
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              flexWrap: 'wrap',
               marginVertical: 10,
-              marginHorizontal: 10,
             }}>
-            {itemData?.key_benifits?.map((item, index) => {
-              return (
-                <View
-                  key={index}
-                  style={{
-                    backgroundColor: '#DEFCE4',
-                    paddingHorizontal: 10,
-                    padding: 10,
-                    borderRadius: 10,
-                    marginRight: 10,
-                    marginTop: 10,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <Text
+            <Text
+              style={{
+                fontSize: 16,
+                color: Color.black,
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 5,
+              }}>
+              Key Benifits
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                flexWrap: 'wrap',
+                marginVertical: 10,
+                marginHorizontal: 10,
+              }}>
+              {itemData?.benefits?.map((item, index) => {
+                return (
+                  <View
+                    key={index}
                     style={{
-                      fontSize: 14,
-                      color: Color.black,
-                      marginHorizontal: 5,
-                      fontFamily: Gilmer.SemiBold,
+                      backgroundColor: '#DEFCE4',
+                      paddingHorizontal: 10,
+                      padding: 10,
+                      borderRadius: 10,
+                      marginRight: 10,
+                      marginTop: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
                     }}>
-                    {item?.benefit_data}
-                  </Text>
-                </View>
-              );
-            })}
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: Color.black,
+                        marginHorizontal: 5,
+                        fontFamily: Gilmer.SemiBold,
+                      }}>
+                      {item?.benefit_name}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
           </View>
-        </View>
-        <View
+        )}
+        {/* <View
           style={{
             marginVertical: 10,
           }}>
@@ -508,7 +531,7 @@ const DetailedScreen = ({navigation, route}) => {
             }}>
             About Company
           </Text>
-          <Text
+          {/* <Text
             style={{
               fontSize: 14,
               color: Color.cloudyGrey,
@@ -518,8 +541,9 @@ const DetailedScreen = ({navigation, route}) => {
               fontFamily: Gilmer.Medium,
               lineHeight: 25,
             }}>
-            {itemData?.about_company}
-          </Text>
+            {itemData?.company?.bio}
+          </Text> */}
+          <RenderHtml source={company_source} />
         </View>
         <View style={{}}>
           <Text
@@ -541,7 +565,7 @@ const DetailedScreen = ({navigation, route}) => {
               fontFamily: Gilmer.Medium,
               lineHeight: 25,
             }}>
-            {itemData?.number}
+            {itemData?.company?.phone}
           </Text>
         </View>
         <View style={{}}>
@@ -564,7 +588,7 @@ const DetailedScreen = ({navigation, route}) => {
               fontFamily: Gilmer.Medium,
               lineHeight: 25,
             }}>
-            {itemData?.email}
+            {itemData?.company?.email}
           </Text>
         </View>
         <View style={{}}>
@@ -587,7 +611,7 @@ const DetailedScreen = ({navigation, route}) => {
               fontFamily: Gilmer.Medium,
               lineHeight: 25,
             }}>
-            {itemData?.address}
+            {itemData?.company?.address}
           </Text>
         </View>
         <View style={{}}>
@@ -609,7 +633,7 @@ const DetailedScreen = ({navigation, route}) => {
             }}>
             <Image
               source={{
-                uri: 'https://play-lh.googleusercontent.com/Jplgjxv_1k2B1iHy41wIMWfbBwpsjqlt2gvCwxhwQ-ujokUFtDCCYXrPaiiWn2pIwwY',
+                uri: base_image_url + itemData?.company?.logo,
               }}
               style={{
                 width: 60,
@@ -628,7 +652,7 @@ const DetailedScreen = ({navigation, route}) => {
                   color: Color.black,
                   fontFamily: Gilmer.Medium,
                 }}>
-                {itemData?.recruiter_deatils?.name}
+                {itemData?.company?.name}
               </Text>
               <Text
                 style={{
@@ -637,7 +661,7 @@ const DetailedScreen = ({navigation, route}) => {
                   fontFamily: Gilmer.Medium,
                   marginVertical: 10,
                 }}>
-                {itemData?.recruiter_deatils?.position}
+                {itemData?.company?.industry_type?.name}
               </Text>
             </View>
           </View>
@@ -657,7 +681,13 @@ const DetailedScreen = ({navigation, route}) => {
             data={jobData}
             keyExtractor={(item, index) => item + index}
             renderItem={({item, index}) => {
-              return <JobItemCard item={item} navigation={navigation} />;
+              return (
+                <JobItemCard
+                  item={item}
+                  navigation={navigation}
+                  token={token}
+                />
+              );
             }}
             showsVerticalScrollIndicator={false}
           />
@@ -693,6 +723,9 @@ const DetailedScreen = ({navigation, route}) => {
               justifyContent: 'center',
               alignItems: 'center',
               marginHorizontal: 10,
+            }}
+            onPress={() => {
+              getToggleJobs(item?.id);
             }}>
             <Iconviewcomponent
               Icontag={'FontAwesome'}
@@ -703,7 +736,9 @@ const DetailedScreen = ({navigation, route}) => {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => navigation.navigate('ApplyJob')}
+            onPress={() =>
+              navigation.navigate('ApplyJob', {job_id: itemData?.id})
+            }
             style={{
               flex: 1,
               height: 50,

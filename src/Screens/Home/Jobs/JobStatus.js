@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
-import {Image, ScrollView, Text, View} from 'react-native';
+import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Color from '../../../Global/Color';
 import {Gilmer} from '../../../Global/FontFamily';
 import {Iconviewcomponent} from '../../../Components/Icontag';
 import {Button} from 'react-native-paper';
 import StepIndicator from 'react-native-step-indicator';
 import {Media} from '../../../Global/Media';
+import fetchData from '../../../Config/fetchData';
+import common_fn from '../../../Config/common_fn';
+import {useSelector} from 'react-redux';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -39,6 +42,8 @@ const labels = [
 
 const JobStatus = ({navigation, route}) => {
   const [itemData] = useState(route.params.item);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
   const [similarJobs, setSimilarJobs] = useState([
     {
       id: 1,
@@ -84,6 +89,17 @@ const JobStatus = ({navigation, route}) => {
     },
   ]);
 
+  const getToggleJobs = async id => {
+    try {
+      var data = {job_id: id};
+      const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
+      if (Saved_Jobs) {
+        common_fn.showToast(Saved_Jobs?.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <View
       style={{
@@ -285,12 +301,17 @@ const JobStatus = ({navigation, route}) => {
                     {item?.name}
                   </Text>
                 </View>
-                <Iconviewcomponent
-                  Icontag={'FontAwesome'}
-                  iconname={'bookmark-o'}
-                  icon_size={25}
-                  icon_color={Color.Venus}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    getToggleJobs(item?.id);
+                  }}>
+                  <Iconviewcomponent
+                    Icontag={'FontAwesome'}
+                    iconname={'bookmark-o'}
+                    icon_size={25}
+                    icon_color={Color.Venus}
+                  />
+                </TouchableOpacity>
               </View>
               <View
                 style={{

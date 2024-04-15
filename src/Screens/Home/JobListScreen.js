@@ -3,6 +3,7 @@ import {StyleSheet, View, FlatList} from 'react-native';
 import Color from '../../Global/Color';
 import JobItemCard from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
+import {useSelector} from 'react-redux';
 
 const JobListScreen = ({navigation}) => {
   const [jobData, setJobData] = useState([]);
@@ -28,7 +29,9 @@ const JobListScreen = ({navigation}) => {
         keyExtractor={(item, index) => item + index}
         showsVerticalScrollIndicator={false}
         renderItem={({item, index}) => {
-          return <JobItemCard item={item} navigation={navigation} />;
+          return (
+            <JobItemCard item={item} navigation={navigation} token={token} />
+          );
         }}
       />
     </View>

@@ -4,51 +4,45 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Animated,
   TouchableOpacity,
-  ToastAndroid,
-  TouchableWithoutFeedback,
-  Keyboard,
 } from 'react-native';
-
-import {scr_height, scr_width} from '../../Utils/Dimensions';
 import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
-import {useNavigation, useTheme} from '@react-navigation/native';
 import {Iconviewcomponent} from '../../Components/Icontag';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import DocumentPicker, {pick} from 'react-native-document-picker';
+import {pick} from 'react-native-document-picker';
+import common_fn from '../../Config/common_fn';
+import fetchData from '../../Config/fetchData';
+import {useSelector} from 'react-redux';
 
-const DismissKeyboard = ({children}) => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    {children}
-  </TouchableWithoutFeedback>
-);
+const ApplyJob = ({navigation, route}) => {
+  const [job_id] = useState(route?.params?.job_id);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
 
-const ApplyJob = ({navigation}) => {
-  const [username, setUsername] = useState('');
-  const [emailValidError, setEmailValidError] = useState('');
-  const [cover, setcover] = useState('');
-
-  const applyJob = () => {
-    try {
-      // if (username != '' && email != '' && phone != '') {
-      navigation.navigate('Applycompletion');
-      // ToastAndroid.show('Applied Successfully', ToastAndroid.SHORT);
-      // } else {
-      //   ToastAndroid.show('Please Fill Mandatory Fields', ToastAndroid.SHORT);
-      // }
-    } catch (error) {
-      console.log('catch in applyJob_Click : ', error);
-    }
-  };
-
-  const [applyJobData, setApllyJobData] = useState({
+  const [apply_job, setApply_job] = useState({
     name: '',
     portfolio: '',
     resume: {},
     cover_letter: '',
   });
+
+  const getToggleJobs = async () => {
+    try {
+      var data = {
+        job_id: job_id,
+        candidate_resume_id: 2362,
+        cover_letter: apply_job?.cover_letter,
+        application_group_id: 1,
+      };
+      const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
+      if (Saved_Jobs) {
+        common_fn.showToast(Saved_Jobs?.message);
+        navigation.navigate('Applycompletion');
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -81,13 +75,13 @@ const ApplyJob = ({navigation}) => {
             style={[styles.numberTextBox, {paddingHorizontal: 10}]}
             placeholder="Enter your Full Name"
             placeholderTextColor={Color.transparantBlack}
-            value={applyJobData?.name}
+            value={apply_job?.name}
             onChangeText={text => {
-              setApllyJobData({
+              setApply_job({
                 name: text,
-                portfolio: applyJobData?.portfolio,
-                resume: applyJobData?.resume,
-                cover_letter: applyJobData?.cover_letter,
+                portfolio: apply_job?.portfolio,
+                resume: apply_job?.resume,
+                cover_letter: apply_job?.cover_letter,
               });
             }}
             keyboardType="name-phone-pad"
@@ -120,13 +114,13 @@ const ApplyJob = ({navigation}) => {
             style={[styles.numberTextBox, {paddingHorizontal: 10}]}
             placeholder="Provide Portfolio link"
             placeholderTextColor={Color.transparantBlack}
-            value={applyJobData?.portfolio}
+            value={apply_job?.portfolio}
             onChangeText={text => {
-              setApllyJobData({
-                name: applyJobData?.name,
+              setApply_job({
+                name: apply_job?.name,
                 portfolio: text,
-                resume: applyJobData?.resume,
-                cover_letter: applyJobData?.cover_letter,
+                resume: apply_job?.resume,
+                cover_letter: apply_job?.cover_letter,
               });
             }}
             keyboardType="name-phone-pad"
@@ -157,13 +151,12 @@ const ApplyJob = ({navigation}) => {
             onPress={async () => {
               try {
                 const [{name, uri}] = await pick();
-                setApllyJobData({
-                  name: applyJobData?.name,
-                  portfolio: applyJobData?.portfolio,
+                setApply_job({
+                  name: apply_job?.name,
+                  portfolio: apply_job?.portfolio,
                   resume: {name, uri},
-                  cover_letter: applyJobData?.cover_letter,
+                  cover_letter: apply_job?.cover_letter,
                 });
-                console.log('{name, uri}', {name, uri}, applyJobData?.resume);
               } catch (error) {
                 console.log('error', error);
               }
@@ -179,8 +172,8 @@ const ApplyJob = ({navigation}) => {
               marginVertical: 10,
               padding: 10,
             }}>
-            {applyJobData?.resume != null &&
-            applyJobData?.resume?.name?.length > 0 ? (
+            {apply_job?.resume != null &&
+            apply_job?.resume?.name?.length > 0 ? (
               <Text
                 style={{
                   fontFamily: Gilmer.SemiBold,
@@ -189,7 +182,7 @@ const ApplyJob = ({navigation}) => {
                   textTransform: 'capitalize',
                   marginHorizontal: 10,
                 }}>
-                {applyJobData?.resume?.name}
+                {apply_job?.resume?.name}
               </Text>
             ) : (
               <View
@@ -264,19 +257,24 @@ const ApplyJob = ({navigation}) => {
               placeholder="Enter your Cover Letter"
               placeholderTextColor={Color.cloudyGrey}
               multiline={true}
-              value={cover}
+              value={apply_job?.cover_letter}
               onChangeText={text => {
-                setApllyJobData({
-                  name: applyJobData?.name,
-                  portfolio: applyJobData?.portfolio,
-                  resume: applyJobData?.resume,
+                setApply_job({
+                  name: apply_job?.name,
+                  portfolio: apply_job?.portfolio,
+                  resume: apply_job?.resume,
                   cover_letter: text,
                 });
               }}
               returnKeyType={'done'}
               style={{
                 color: 'black',
-                minHeight: 100,
+                minHeight: 150,
+                borderRadius: 10,
+                padding: 10,
+                width: '100%',
+                borderColor: Color.cloudyGrey,
+                borderWidth: 1,
                 fontSize: 16,
                 textAlign: 'justify',
                 fontFamily: Gilmer.Medium,
@@ -290,7 +288,7 @@ const ApplyJob = ({navigation}) => {
 
         <TouchableOpacity
           onPress={() => {
-            applyJob();
+            getToggleJobs();
           }}
           style={{
             height: 50,

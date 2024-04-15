@@ -425,7 +425,13 @@ const CompanyDetails = ({navigation}) => {
             data={jobData}
             keyExtractor={(item, index) => item + index}
             renderItem={({item, index}) => {
-              return <JobCardHorizontal item={item} navigation={navigation} />;
+              return (
+                <JobCardHorizontal
+                  item={item}
+                  navigation={navigation}
+                  token={token}
+                />
+              );
             }}
             horizontal={true}
             showsHorizontalScrollIndicator={false}

@@ -55,4 +55,12 @@ export default {
     let url = api_name + 'candidates/bookmarks';
     return api.postMethod(url, data, token);
   },
+  list_job_Applied: (data, token) => {
+    let url = api_name + 'applied_job';
+    return api.getMethod(url, data, token);
+  },
+  create_applied_job: (data, token) => {
+    let url = api_name + 'applied_job/create';
+    return api.postMethod(url, data, token);
+  },
 };

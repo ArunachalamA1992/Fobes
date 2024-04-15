@@ -5,9 +5,11 @@ import Color from '../Global/Color';
 import {Iconviewcomponent} from './Icontag';
 import {Media} from '../Global/Media';
 import moment from 'moment';
+import fetchData from '../Config/fetchData';
+import common_fn from '../Config/common_fn';
 
 const JobItemCard = props => {
-  var {item, navigation} = props;
+  var {item, navigation, token} = props;
   const [resultDate, setResultDate] = useState(null);
   const currentDate = moment();
   const yourDate = moment(item?.created_at);
@@ -39,7 +41,17 @@ const JobItemCard = props => {
       setResultDate(result);
     }
   }, [currentDate, yourDate, item]);
-
+  const getToggleJobs = async id => {
+    try {
+      var data = {job_id: id};
+      const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
+      if (Saved_Jobs) {
+        common_fn.showToast(Saved_Jobs?.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('DetailedScreen', {item})}
@@ -70,7 +82,7 @@ const JobItemCard = props => {
             fontFamily: Gilmer.Bold,
             paddingVertical: 10,
           }}>
-          {item.job_type}
+          {item.job_type?.name}
         </Text>
         <View
           style={{
@@ -138,12 +150,17 @@ const JobItemCard = props => {
             {item.job_category_name}
           </Text>
         </View>
-        <Iconviewcomponent
-          Icontag={'FontAwesome'}
-          iconname={'bookmark-o'}
-          icon_size={22}
-          icon_color={Color.Venus}
-        />
+        <TouchableOpacity
+          onPress={() => {
+            getToggleJobs(item?.id);
+          }}>
+          <Iconviewcomponent
+            Icontag={'FontAwesome'}
+            iconname={'bookmark-o'}
+            icon_size={22}
+            icon_color={Color.Venus}
+          />
+        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -174,7 +191,8 @@ const JobItemCard = props => {
               paddingHorizontal: 5,
               marginTop: 5,
             }}>
-            {item.min_salary} - {item?.max_salary}
+            ₹ {common_fn.formatNumberWithSuffix(item.min_salary)} -{' '}
+            {common_fn.formatNumberWithSuffix(item?.max_salary)}
           </Text>
         </View>
         <View
@@ -222,7 +240,7 @@ const JobItemCard = props => {
 };
 
 export const JobCardHorizontal = props => {
-  var {item, navigation} = props;
+  var {item, navigation, token} = props;
   const [resultDate, setResultDate] = useState(null);
   const currentDate = moment();
   const yourDate = moment(item?.created_at);
@@ -255,6 +273,17 @@ export const JobCardHorizontal = props => {
     }
   }, [currentDate, yourDate, item]);
 
+  const getToggleJobs = async id => {
+    try {
+      var data = {job_id: id};
+      const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
+      if (Saved_Jobs) {
+        common_fn.showToast(Saved_Jobs?.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('DetailedScreen', {item})}
@@ -286,7 +315,7 @@ export const JobCardHorizontal = props => {
             fontFamily: Gilmer.Bold,
             paddingVertical: 10,
           }}>
-          {item.job_type}
+          {item.job_type?.name}
         </Text>
         <View
           style={{
@@ -354,12 +383,17 @@ export const JobCardHorizontal = props => {
             {item.job_category_name}
           </Text>
         </View>
-        <Iconviewcomponent
-          Icontag={'FontAwesome'}
-          iconname={'bookmark-o'}
-          icon_size={22}
-          icon_color={Color.Venus}
-        />
+        <TouchableOpacity
+          onPress={() => {
+            getToggleJobs(item?.id);
+          }}>
+          <Iconviewcomponent
+            Icontag={'FontAwesome'}
+            iconname={'bookmark-o'}
+            icon_size={22}
+            icon_color={Color.Venus}
+          />
+        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -390,7 +424,8 @@ export const JobCardHorizontal = props => {
               paddingHorizontal: 5,
               marginTop: 5,
             }}>
-            {item.min_salary} - {item?.max_salary}
+            ₹ {common_fn.formatNumberWithSuffix(item.min_salary)} -{' '}
+            {common_fn.formatNumberWithSuffix(item?.max_salary)}
           </Text>
         </View>
         <View

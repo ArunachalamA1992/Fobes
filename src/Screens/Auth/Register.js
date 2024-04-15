@@ -52,7 +52,7 @@ const Register = ({navigation}) => {
         };
         const register_data = await fetchData.register(data, null);
         if (register_data?.message == 'Data Inserted Successfully') {
-          navigation.replace('Auth');
+          navigation.replace('Login');
           common_fn.showToast(register_data?.message);
         } else {
           common_fn.showToast(register_data?.message);
