@@ -88,6 +88,7 @@ const ProfileScreen = ({navigation}) => {
     social_links,
     candidate_resume,
     candidate_language,
+    phone,
     token,
   } = userData;
   const profile_complete_data = useSelector(
@@ -714,7 +715,7 @@ const ProfileScreen = ({navigation}) => {
                     color: Color.lightBlack,
                     marginHorizontal: 10,
                   }}>
-                  {/* {item?.phone} */}
+                  {phone}
                 </Text>
               </View>
             </View>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,21 +8,22 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Color from '../../Global/Color';
-import { Gilmer } from '../../Global/FontFamily';
-import { Iconviewcomponent } from '../../Components/Icontag';
-import { useSelector } from 'react-redux';
+import {Gilmer} from '../../Global/FontFamily';
+import {Iconviewcomponent} from '../../Components/Icontag';
+import {useSelector} from 'react-redux';
 import moment from 'moment';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { scr_height, scr_width } from '../../Utils/Dimensions';
+import {scr_height, scr_width} from '../../Utils/Dimensions';
+import {base_image_url} from '../../Config/base_url';
 
-const SavedJobScreen = ({ navigation }) => {
+const SavedJobScreen = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [resultDate, setResultDate] = useState(null);
   const [savedJobs, setSavedJobs] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
+  var {token} = userData;
 
   useEffect(() => {
     setLoading(true);
@@ -32,16 +33,19 @@ const SavedJobScreen = ({ navigation }) => {
   const getData = async () => {
     try {
       const Saved_Jobs = await fetchData.list_bookmarks(null, token);
-      setSavedJobs(Saved_Jobs?.data);
-      setLoading(false);
+      if (Saved_Jobs) {
+        setSavedJobs(Saved_Jobs?.data);
+        setLoading(false);
+      }
     } catch (error) {
       console.log('error', error);
     }
   };
 
   const getToggleJobs = async id => {
+    console.log('id', id);
     try {
-      var data = { job_id: id };
+      var data = {job_id: id};
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
@@ -53,7 +57,7 @@ const SavedJobScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={{ padding: 10 }}>
+        <View style={{padding: 10}}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
               <SkeletonPlaceholder.Item width="100%" height={150} />
@@ -61,67 +65,67 @@ const SavedJobScreen = ({ navigation }) => {
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
             </SkeletonPlaceholder.Item>
           </SkeletonPlaceholder>
@@ -130,7 +134,7 @@ const SavedJobScreen = ({ navigation }) => {
         <FlatList
           data={savedJobs}
           keyExtractor={(item, index) => item + index}
-          renderItem={({ item, index }) => {
+          renderItem={({item, index}) => {
             const currentDate = moment();
             const yourDate = moment(item?.created_at);
             const daysAgo = currentDate.diff(yourDate, 'days');
@@ -143,14 +147,17 @@ const SavedJobScreen = ({ navigation }) => {
               let result;
 
               if (Math.abs(daysAgo) > 0) {
-                result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
-                  } ago`;
+                result = `${Math.abs(daysAgo)} day${
+                  Math.abs(daysAgo) !== 1 ? 's' : ''
+                } ago`;
               } else if (Math.abs(hoursAgo) > 0) {
-                result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
-                  } ago`;
+                result = `${Math.abs(hoursAgo)} hour${
+                  Math.abs(hoursAgo) !== 1 ? 's' : ''
+                } ago`;
               } else {
-                result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
-                  } ago`;
+                result = `${Math.abs(minutesAgo)} minute${
+                  Math.abs(minutesAgo) !== 1 ? 's' : ''
+                } ago`;
               }
 
               setResultDate(result);
@@ -158,7 +165,7 @@ const SavedJobScreen = ({ navigation }) => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('DetailedScreen', { item });
+                  navigation.navigate('DetailedScreen', {item});
                 }}
                 key={index}
                 style={{
@@ -184,23 +191,15 @@ const SavedJobScreen = ({ navigation }) => {
                       justifyContent: 'flex-start',
                       alignItems: 'flex-start',
                     }}>
-                    <View
+                    <Image
+                      source={{uri: base_image_url + item?.company?.logo}}
                       style={{
                         width: 70,
                         height: 70,
-                        backgroundColor: '#EFFAFF',
-                        padding: 5,
-                        borderRadius: 50,
-                      }}>
-                      <Image
-                        source={require('../../assets/images/app_status.png')}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          resizeMode: 'contain',
-                        }}
-                      />
-                    </View>
+                        resizeMode: 'contain',
+                        borderRadius: 100,
+                      }}
+                    />
                     <View
                       style={{
                         justifyContent: 'flex-start',
@@ -225,13 +224,13 @@ const SavedJobScreen = ({ navigation }) => {
                           textAlign: 'justify',
                         }}
                         numberOfLines={1}>
-                        {item.company_name}
+                        {item?.company?.name}
                       </Text>
                     </View>
                   </View>
                   <TouchableOpacity
                     style={{
-                      flex: 1,
+                      // flex: 1,
                       justifyContent: 'center',
                       alignItems: 'flex-end',
                       paddingHorizontal: 10,
@@ -297,7 +296,7 @@ const SavedJobScreen = ({ navigation }) => {
                           paddingHorizontal: 5,
                         }}
                         numberOfLines={2}>
-                        {item.job_type}
+                        {item?.job_type?.name}
                       </Text>
                     </View>
                   </View>
@@ -332,10 +331,16 @@ const SavedJobScreen = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={() => {
             return (
-              <View style={{ width: scr_width, height: scr_height, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, color: Color.black }}>No Data</Text>
+              <View
+                style={{
+                  width: scr_width,
+                  height: scr_height,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{fontSize: 16, color: Color.black}}>No Data</Text>
               </View>
-            )
+            );
           }}
         />
       )}

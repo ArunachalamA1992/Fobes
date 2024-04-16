@@ -120,11 +120,10 @@ const EducationDetails = ({navigation, route}) => {
         }
         data.education[0].id = itemData.id;
       }
-      console.log('data---------------------', data);
       const education_data = await fetchData.candidates_profile(data, token);
       if (education_data) {
         common_fn.showToast(education_data.message);
-        navigation.navigate('Experience');
+        navigation.navigate('Experience', {item: {}});
       } else {
         common_fn.showToast(education_data.message);
       }

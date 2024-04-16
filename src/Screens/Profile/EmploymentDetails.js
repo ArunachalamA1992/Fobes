@@ -115,8 +115,8 @@ const EmploymentDetails = ({navigation, route}) => {
     job_title: itemData?.designation || '',
     company_name: itemData?.company || '',
     duration: {
-      from: new Date(itemData.start) || new Date(),
-      end: new Date(itemData.end) || new Date(),
+      from: itemData.start != undefined ? new Date(itemData.start) : new Date(),
+      end: itemData.end != undefined ? new Date(itemData.end) : new Date(),
     },
     current_ctc: '',
     notice_period: {},
@@ -152,6 +152,7 @@ const EmploymentDetails = ({navigation, route}) => {
       const experience_data = await fetchData.candidates_profile(data, token);
       if (experience_data) {
         common_fn.showToast(experience_data?.message);
+        navigation.navigate('Skill');
       } else {
         common_fn.showToast(experience_data?.message);
       }
@@ -622,7 +623,7 @@ const EmploymentDetails = ({navigation, route}) => {
                 <FIcon name="calendar" size={20} color={Color.black} />
               </TouchableOpacity>
               <DateTimePickerModal
-                date={selectEmployment?.duration?.from || new Date()}
+                date={selectEmployment?.duration?.from}
                 isVisible={FromdatePickerVisible}
                 mode="date"
                 onConfirm={handleFromConfirm}
@@ -672,7 +673,7 @@ const EmploymentDetails = ({navigation, route}) => {
                 <FIcon name="calendar" size={20} color={Color.black} />
               </TouchableOpacity>
               <DateTimePickerModal
-                date={selectEmployment?.duration?.end || new Date()}
+                date={selectEmployment?.duration?.end}
                 isVisible={endDatePickerVisible}
                 mode="date"
                 onConfirm={handleEndConfirm}

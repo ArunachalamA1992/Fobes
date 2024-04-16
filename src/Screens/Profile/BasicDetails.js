@@ -318,32 +318,6 @@ const BasicDetails = ({navigation}) => {
       ],
     });
   };
-  const dataPayload = () => {
-    let params = '';
-    let customIDCounter = {counter: 0};
-    let dataArray = [];
-    const buyPayload = {
-      title: selectBasic?.professional_title,
-      website: selectBasic?.personal_website,
-      birth_date: moment(selectBasic?.dob).format('YYYY-MM-DD'),
-      gender: selectBasic?.gender?.value,
-      marital_status: selectBasic?.marital_status?.value,
-      sociallink: selectBasic?.social_profile,
-      bio: selectBasic?.biography,
-      education_id: selectBasic?.qualify?.education_id,
-      experience_id: selectBasic?.experience?.experience_id,
-    };
-
-    for (const key in buyPayload) {
-      const value = buyPayload[key];
-
-      if (value !== undefined && value !== null && value !== '') {
-        params += `${key}=${decodeURIComponent(value)}&`;
-      }
-    }
-    console.log('params', params);
-    return params.slice(0, -1);
-  };
 
   const getAPiData = async () => {
     try {
@@ -363,7 +337,7 @@ const BasicDetails = ({navigation}) => {
       const intro_data = await fetchData.candidates_profile(data, token);
       if (intro_data) {
         common_fn.showToast(intro_data?.message);
-        navigation.goBack();
+        navigation.navigate('Education', {item: {}});
       } else {
         common_fn.showToast(intro_data?.message);
       }
@@ -388,7 +362,7 @@ const BasicDetails = ({navigation}) => {
       console.log('error', error);
     }
   };
-  console.log('selectBasic?.dob', selectBasic?.dob);
+
   return (
     <View style={{flex: 1, backgroundColor: Color.white, padding: 10}}>
       <StepIndicator

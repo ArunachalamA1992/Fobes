@@ -63,10 +63,6 @@ export default {
     let url = api_name + 'applied_job/create';
     return api.postMethod(url, data, token);
   },
-  company_jobs: (data, token) => {
-    let url = api_name + 'company';
-    return api.getMethod(url, data, token);
-  },
   list_company: (data, token) => {
     let url = api_name + 'company?' + data;
     return api.getMethod(url, token);
