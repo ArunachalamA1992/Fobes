@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,19 +8,20 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Color from '../../../Global/Color';
-import {Gilmer} from '../../../Global/FontFamily';
-import {Iconviewcomponent} from '../../../Components/Icontag';
+import { Gilmer } from '../../../Global/FontFamily';
+import { Iconviewcomponent } from '../../../Components/Icontag';
 import fetchData from '../../../Config/fetchData';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import common_fn from '../../../Config/common_fn';
+import { scr_height, scr_width } from '../../../Utils/Dimensions';
 
-const AppliedJobs = ({navigation}) => {
+const AppliedJobs = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [resultDate, setResultDate] = useState(null);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
   const [ApplyJobData, setApplyJobData] = useState([]);
 
   useEffect(() => {
@@ -30,8 +31,9 @@ const AppliedJobs = ({navigation}) => {
 
   const getData = async () => {
     try {
+      setLoading(true);
       const apply_job = await fetchData.list_job_Applied(null, token);
-      setApplyJobData(apply_job?.data);
+      setApplyJobData(apply_job.data);
       setLoading(false);
     } catch (error) {
       console.log('error', error);
@@ -41,7 +43,7 @@ const AppliedJobs = ({navigation}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
               <SkeletonPlaceholder.Item width="100%" height={150} />
@@ -49,67 +51,67 @@ const AppliedJobs = ({navigation}) => {
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
             </SkeletonPlaceholder.Item>
           </SkeletonPlaceholder>
@@ -119,7 +121,7 @@ const AppliedJobs = ({navigation}) => {
           data={ApplyJobData}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             const currentDate = moment();
             const yourDate = moment(item?.created_at);
 
@@ -133,17 +135,14 @@ const AppliedJobs = ({navigation}) => {
               let result;
 
               if (Math.abs(daysAgo) > 0) {
-                result = `${Math.abs(daysAgo)} day${
-                  Math.abs(daysAgo) !== 1 ? 's' : ''
-                } ago`;
+                result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
+                  } ago`;
               } else if (Math.abs(hoursAgo) > 0) {
-                result = `${Math.abs(hoursAgo)} hour${
-                  Math.abs(hoursAgo) !== 1 ? 's' : ''
-                } ago`;
+                result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
+                  } ago`;
               } else {
-                result = `${Math.abs(minutesAgo)} minute${
-                  Math.abs(minutesAgo) !== 1 ? 's' : ''
-                } ago`;
+                result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
+                  } ago`;
               }
 
               setResultDate(result);
@@ -160,9 +159,9 @@ const AppliedJobs = ({navigation}) => {
                   borderRadius: 5,
                 }}
                 onPress={() => {
-                  navigation.navigate('JobStatus', {item});
+                  navigation.navigate('JobStatus', { item });
                 }}>
-                <View style={{paddingVertical: 10}}>
+                <View style={{ paddingVertical: 10 }}>
                   <View
                     style={{
                       width: 70,
@@ -180,7 +179,7 @@ const AppliedJobs = ({navigation}) => {
                       }}
                     />
                   </View>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View
                       style={{
                         flex: 1,
@@ -320,6 +319,13 @@ const AppliedJobs = ({navigation}) => {
                 </View>
               </TouchableOpacity>
             );
+          }}
+          ListEmptyComponent={() => {
+            return (
+              <View style={{ width: scr_width, height: scr_height, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 16, color: Color.black }}>No Data</Text>
+              </View>
+            )
           }}
         />
       )}

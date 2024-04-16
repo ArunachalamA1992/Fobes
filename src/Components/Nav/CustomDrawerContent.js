@@ -455,6 +455,7 @@ const CustomDrawerContent = props => {
               </Text>
             </TouchableOpacity>
           </View>
+          
           <View
             style={{
               backgroundColor:
@@ -471,7 +472,7 @@ const CustomDrawerContent = props => {
               }}
               onPress={() => {
                 setItemSelected('share');
-                onShare();
+                // onShare();
               }}>
               <Iconviewcomponent
                 Icontag={'Ionicons'}

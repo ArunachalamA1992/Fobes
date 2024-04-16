@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,18 +10,23 @@ import {
   ScrollView,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {Media} from '../../Global/Media';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {ApplyJobData} from '../../Global/Content';
-import {JobCardHorizontal} from '../../Components/JobItemCard';
+import { Gilmer } from '../../Global/FontFamily';
+import { Media } from '../../Global/Media';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { ApplyJobData } from '../../Global/Content';
+import { JobCardHorizontal } from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { base_image_url } from '../../Config/base_url';
+import { Linking } from 'react-native';
 
-const CompanyDetails = ({navigation}) => {
+const CompanyDetails = ({ navigation, route }) => {
+
+  const [itemData] = useState(route?.params?.item);
+  // console.log("data =========== : ", itemData);
   const [jobData, setJobData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
 
   useEffect(() => {
     getData();
@@ -41,14 +46,20 @@ const CompanyDetails = ({navigation}) => {
         <View style={{}}>
           <Image
             source={require('../../assets/images/sub_banner.png')}
+            // source={{
+            //   uri: base_image_url + itemData?.banner,
+            // }}
             style={{
               width: '100%',
               height: 150,
               resizeMode: 'cover',
             }}
           />
+
           <View
             style={{
+              width: 80,
+              height: 80,
               position: 'absolute',
               top: 90,
               marginHorizontal: 10,
@@ -58,35 +69,39 @@ const CompanyDetails = ({navigation}) => {
               borderRadius: 100,
             }}>
             <Image
-              source={Media.user}
+              // source={Media.user}
+              source={{
+                uri: base_image_url + itemData?.logo,
+              }}
               style={{
-                width: 80,
-                height: 80,
-                resizeMode: 'contain',
+                width: '100%',
+                height: '100%',
+                resizeMode: 'contain', borderRadius: 100,
               }}
             />
           </View>
         </View>
-        <View style={{marginTop: 50, padding: 10}}>
+        <View style={{ marginTop: 30, padding: 10 }}>
           <Text
             style={{
               fontSize: 16,
               color: Color.black,
               fontFamily: Gilmer.Bold,
-            }}>
-            Business Development Executive
+            }}>{itemData?.vision.replace(/<[^>]+>/g, "")}
+            {/* Business Development Executive */}
           </Text>
           <Text
             style={{
               fontSize: 14,
               color: Color.cloudyGrey,
               fontFamily: Gilmer.Medium,
-              marginVertical: 5,
+              marginVertical: 5, paddingVertical: 10
             }}>
-            Avanexa Technologies
+            {itemData?.name}
+            {/* Avanexa Technologies */}
           </Text>
 
-          <View
+          {/* <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -107,13 +122,13 @@ const CompanyDetails = ({navigation}) => {
               }}>
               4.5 (500+ reviews)
             </Text>
-          </View>
+          </View> */}
 
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              alignItems: 'center',
+              alignItems: 'center', marginVertical: 5
             }}>
             <View
               style={{
@@ -152,7 +167,8 @@ const CompanyDetails = ({navigation}) => {
                     fontFamily: Gilmer.Medium,
                   }}
                   numberOfLines={2}>
-                  Organization Type
+                  {itemData?.origanization_type?.name}
+                  {/* Organization Type */}
                 </Text>
               </View>
             </View>
@@ -184,7 +200,7 @@ const CompanyDetails = ({navigation}) => {
                     color: Color.primary,
                     fontFamily: Gilmer.Bold,
                   }}>
-                  20-50
+                  {itemData?.team_size?.name}
                 </Text>
                 <Text
                   style={{
@@ -199,7 +215,8 @@ const CompanyDetails = ({navigation}) => {
             </View>
           </View>
         </View>
-        <View style={{padding: 10}}>
+
+        <View style={{ padding: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -219,13 +236,14 @@ const CompanyDetails = ({navigation}) => {
               fontFamily: Gilmer.Medium,
               lineHeight: 25,
             }}>
-            ODD Infotech is a leading IT solutions provider known for its
+            {itemData?.bio.replace(/<[^>]+>/g, "")}
+            {/* ODD Infotech is a leading IT solutions provider known for its
             innovation and commitment to delivering top-notch services to
             clients. We are seeking a skilled Business Development Executive
             with proven experience in the IT Service industry to drive revenue
-            generation and client acquisition.,
+            generation and client acquisition., */}
           </Text>
-          <View style={{padding: 10}}>
+          <View style={{ padding: 5 }}>
             <View style={{}}>
               <Text
                 style={{
@@ -246,10 +264,11 @@ const CompanyDetails = ({navigation}) => {
                   fontFamily: Gilmer.Medium,
                   lineHeight: 25,
                 }}>
-                +91 9123894675
+                {itemData?.phone}
+                {/* +91 9123894675 */}
               </Text>
             </View>
-            <View style={{}}>
+            <View style={{ marginVertical: 5 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -269,33 +288,37 @@ const CompanyDetails = ({navigation}) => {
                   fontFamily: Gilmer.Medium,
                   lineHeight: 25,
                 }}>
-                info@fobes.in
+                {itemData?.email}
+                {/* info@fobes.in */}
               </Text>
             </View>
-            <View style={{}}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: Color.cloudyGrey,
-                  fontFamily: Gilmer.Medium,
-                  paddingHorizontal: 5,
-                }}>
-                website
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: Color.black,
-                  textAlign: 'justify',
-                  marginHorizontal: 10,
-                  marginVertical: 10,
-                  fontFamily: Gilmer.Medium,
-                  lineHeight: 25,
-                }}>
-                https://fobes.in
-              </Text>
-            </View>
-            <View style={{}}>
+            {itemData?.website === null && itemData?.website === 'null' && itemData?.website === "" ?
+              <View>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.cloudyGrey,
+                    fontFamily: Gilmer.Medium,
+                    paddingHorizontal: 5,
+                  }}>
+                  Website
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: Color.black,
+                    textAlign: 'justify',
+                    marginHorizontal: 10,
+                    marginVertical: 10,
+                    fontFamily: Gilmer.Medium,
+                    lineHeight: 25,
+                  }}>
+                  {itemData?.website}
+                </Text>
+              </View> : null}
+
+
+            <View style={{ marginVertical: 5 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -315,27 +338,55 @@ const CompanyDetails = ({navigation}) => {
                   fontFamily: Gilmer.Medium,
                   lineHeight: 25,
                 }}>
-                'addres'
+                {itemData?.exact_location}
               </Text>
             </View>
-            <View style={{}}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: Color.cloudyGrey,
-                  fontFamily: Gilmer.Medium,
-                  paddingHorizontal: 5,
-                }}>
-                Follow Us
-              </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  paddingVertical: 10,
-                }}>
-                <TouchableOpacity
+
+            {itemData?.social_links === null ?
+              <View>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.cloudyGrey,
+                    fontFamily: Gilmer.Medium,
+                    paddingHorizontal: 5,
+                  }}>
+                  Follow Us
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                    paddingVertical: 10,
+                  }}>
+
+                  {itemData?.social_links.map((item, index) => {
+                    return (
+                      <View>
+                        {item?.social_media === "instagram" ?
+                          <TouchableOpacity onPress={() => Linking.openURL('https://www.linkedin.com/company/btod')}
+                            style={{
+                              width: 30,
+                              height: 30,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              marginHorizontal: 5,
+                            }}>
+                            <Iconviewcomponent
+                              Icontag={'Fontisto'}
+                              iconname={'instagram'}
+                              icon_size={22}
+                              icon_color={'#ee2a7b'}
+                            />
+                          </TouchableOpacity> : null
+                        }
+                      </View>)
+                  })}
+
+
+
+                  {/* <TouchableOpacity
                   style={{
                     width: 30,
                     height: 30,
@@ -394,9 +445,12 @@ const CompanyDetails = ({navigation}) => {
                     icon_size={22}
                     icon_color={Color.blue}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                </View>
               </View>
-            </View>
+              : null}
+
+
           </View>
         </View>
         <View
@@ -424,7 +478,7 @@ const CompanyDetails = ({navigation}) => {
           <FlatList
             data={jobData}
             keyExtractor={(item, index) => item + index}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               return (
                 <JobCardHorizontal
                   item={item}

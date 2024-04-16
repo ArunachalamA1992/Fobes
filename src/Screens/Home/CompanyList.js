@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,14 +7,36 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {Media} from '../../Global/Media';
+import { Media } from '../../Global/Media';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {useNavigation} from '@react-navigation/native';
+import { Gilmer } from '../../Global/FontFamily';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { useNavigation } from '@react-navigation/native';
+import fetchData from '../../Config/fetchData';
+import { useSelector } from 'react-redux';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const CompanyList = () => {
   const navigation = useNavigation();
+  const [compData, setCompData] = useState([]);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var { token } = userData;
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getData().finally(() => setLoading(false));
+  }, []);
+
+  const getData = async () => {
+    try {
+      const comp_list = await fetchData.company_jobs(null, token);
+      setCompData(comp_list?.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
 
   const [topCompany, setTopCompany] = useState([
     {
@@ -61,121 +83,169 @@ const CompanyList = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={topCompany}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({item, index}) => {
-          return (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('CompanyDetails')}
-              key={index}
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderColor: Color.cloudyGrey,
-                borderWidth: 1,
-                padding: 5,
-                margin: 5,
-                borderRadius: 5,
-                paddingHorizontal: 10,
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image
-                  source={Media.user}
-                  style={{
-                    width: 70,
-                    height: 70,
-                    resizeMode: 'contain',
-                  }}
-                />
+
+      {loading ? (
+        <View style={{ padding: 10 }}>
+          <SkeletonPlaceholder>
+            <SkeletonPlaceholder.Item style={{}}>
+              <SkeletonPlaceholder.Item width="100%" height={150} />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{ marginTop: 10 }}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{ marginTop: 10 }}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{ marginTop: 10 }}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{ marginTop: 10 }}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{ marginTop: 10 }}
+              />
+              <SkeletonPlaceholder.Item
+                width="100%"
+                height={150}
+                borderRadius={10}
+                style={{ marginTop: 10 }}
+              />
+            </SkeletonPlaceholder.Item>
+          </SkeletonPlaceholder>
+        </View>
+      ) : (
+        <FlatList
+          data={compData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('CompanyDetails', { item })}
+                key={index}
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderColor: Color.cloudyGrey,
+                  borderWidth: 0.5,
+                  padding: 5,
+                  margin: 5,
+                  borderRadius: 5,
+                  paddingHorizontal: 10,
+                }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image
+                    source={Media.user}
+                    style={{
+                      width: 70,
+                      height: 70,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                      paddingHorizontal: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: Color.black,
+                        fontFamily: Gilmer.Bold,
+                        textTransform: 'capitalize'
+                      }}
+                      numberOfLines={2}>
+                      {item.name}
+                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Iconviewcomponent
+                        Icontag={'FontAwesome'}
+                        iconname={'star'}
+                        icon_size={20}
+                        icon_color={Color.sunShade}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: Color.Venus,
+                          fontFamily: Gilmer.Medium,
+                          paddingHorizontal: 5,
+                        }}>
+                        4.5 (500 reviews)
+                      </Text>
+                    </View>
+                  </View>
+                  <Iconviewcomponent
+                    Icontag={'Ionicons'}
+                    iconname={'chevron-forward-outline'}
+                    icon_size={24}
+                    icon_color={Color.Venus}
+                  />
+                </View>
                 <View
                   style={{
-                    flex: 1,
-                    justifyContent: 'flex-start',
-                    alignItems: 'flex-start',
-                    paddingHorizontal: 10,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingVertical: 10,
                   }}>
-                  <Text
+                  <View
                     style={{
-                      fontSize: 16,
-                      color: Color.black,
-                      fontFamily: Gilmer.Bold,
-                    }}
-                    numberOfLines={2}>
-                    {item.comp_name}
-                  </Text>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      flex: 1,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
                     <Iconviewcomponent
-                      Icontag={'FontAwesome'}
-                      iconname={'star'}
+                      Icontag={'Fontisto'}
+                      iconname={'map-marker-alt'}
                       icon_size={20}
-                      icon_color={Color.sunShade}
+                      icon_color={Color.Venus}
                     />
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 14,
                         color: Color.Venus,
                         fontFamily: Gilmer.Medium,
                         paddingHorizontal: 5,
-                      }}>
-                      4.5 (500 reviews)
+                      }}
+                      numberOfLines={1}>
+                      {item.exact_location}
                     </Text>
                   </View>
-                </View>
-                <Iconviewcomponent
-                  Icontag={'Ionicons'}
-                  iconname={'chevron-forward-outline'}
-                  icon_size={24}
-                  icon_color={Color.Venus}
-                />
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  paddingVertical: 10,
-                }}>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <Iconviewcomponent
-                    Icontag={'Fontisto'}
-                    iconname={'map-marker-alt'}
-                    icon_size={20}
-                    icon_color={Color.Venus}
-                  />
                   <Text
                     style={{
                       fontSize: 14,
-                      color: Color.Venus,
-                      fontFamily: Gilmer.Medium,
-                      paddingHorizontal: 5,
+                      color: Color.primary,
+                      fontFamily: Gilmer.Bold,
+                      textDecorationLine: 'underline',
+                      paddingVertical: 5,
                     }}
                     numberOfLines={1}>
-                    {item.comp_address}
+                    {item.comp_offer_count} Jobs Open
                   </Text>
                 </View>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    color: Color.primary,
-                    fontFamily: Gilmer.Bold,
-                    textDecorationLine: 'underline',
-                    paddingVertical: 5,
-                  }}
-                  numberOfLines={1}>
-                  {item.comp_offer_count} Jobs Open
-                </Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-        showsVerticalScrollIndicator={false}
-      />
+              </TouchableOpacity>
+            );
+          }}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 };
