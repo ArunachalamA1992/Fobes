@@ -14,7 +14,7 @@ export const api = {
     return header;
   },
 
-  getMethod: (url, data, token) => {
+  getMethod: (url, token) => {
     var headers = api.header(token);
     return new Promise((resolve, reject) => {
       axios
