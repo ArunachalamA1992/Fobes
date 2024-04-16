@@ -811,8 +811,7 @@ const HomeScreen = ({navigation}) => {
 
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('CompanyList');
-                // setFilterVisible(true);
+                setFilterVisible(true);
               }}
               style={{
                 justifyContent: 'center',

@@ -307,9 +307,9 @@ const JobStatus = ({navigation, route}) => {
                   }}>
                   <Iconviewcomponent
                     Icontag={'FontAwesome'}
-                    iconname={'bookmark-o'}
-                    icon_size={25}
-                    icon_color={Color.Venus}
+                    iconname={item?.is_saved ? 'bookmark' : 'bookmark-o'}
+                    icon_size={22}
+                    icon_color={item?.is_saved ? Color.primary : Color.Venus}
                   />
                 </TouchableOpacity>
               </View>
