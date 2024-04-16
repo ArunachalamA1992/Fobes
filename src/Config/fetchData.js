@@ -21,27 +21,27 @@ export default {
   },
   list_jobs: (data, token) => {
     let url = api_name + 'jobs';
-    return api.getMethod(url, data, token);
+    return api.getMethod(url, token);
   },
   single_candidate: (data, token) => {
     let url = api_name + 'candidates';
-    return api.getMethod(url, data, token);
+    return api.getMethod(url, token);
   },
   get_education: (data, token) => {
     let url = api_name + 'job/education';
-    return api.getMethod(url, data, token);
+    return api.getMethod(url, token);
   },
   get_experience: (data, token) => {
     let url = api_name + 'job/experience';
-    return api.getMethod(url, data, token);
+    return api.getMethod(url, token);
   },
   list_skills: (data, token) => {
     let url = api_name + 'job/skills';
-    return api.getMethod(url, data, token);
+    return api.getMethod(url, token);
   },
   list_language: (data, token) => {
     let url = api_name + 'job/language';
-    return api.getMethod(url, data, token);
+    return api.getMethod(url, token);
   },
   upload_resume: (data, token) => {
     let url = api_name + 'cv';
@@ -49,7 +49,7 @@ export default {
   },
   list_bookmarks: (data, token) => {
     let url = api_name + 'candidates/bookmarks';
-    return api.getMethod(url, data, token);
+    return api.getMethod(url, token);
   },
   toggle_bookmarks: (data, token) => {
     let url = api_name + 'candidates/bookmarks';
@@ -57,10 +57,14 @@ export default {
   },
   list_job_Applied: (data, token) => {
     let url = api_name + 'applied_job';
-    return api.getMethod(url, data, token);
+    return api.getMethod(url, token);
   },
   create_applied_job: (data, token) => {
     let url = api_name + 'applied_job/create';
     return api.postMethod(url, data, token);
+  },
+  list_company: (data, token) => {
+    let url = api_name + 'company?' + data;
+    return api.getMethod(url, token);
   },
 };

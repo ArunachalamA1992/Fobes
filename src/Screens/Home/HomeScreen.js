@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -32,6 +32,7 @@ import FilterModal from './FilterModal';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import fetchData from '../../Config/fetchData';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {base_image_url} from '../../Config/base_url';
 
 var {width, height} = Dimensions.get('window');
 
@@ -128,6 +129,11 @@ const FullTime = ({topCompany, navigation, jobData, token}) => {
           renderItem={({item, index}) => {
             return (
               <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('CompanyDetails', {
+                    item: item,
+                  });
+                }}
                 key={index}
                 style={{
                   width: 180,
@@ -143,11 +149,12 @@ const FullTime = ({topCompany, navigation, jobData, token}) => {
                   backgroundColor: '#EFFAFF',
                 }}>
                 <Image
-                  source={require('../../assets/logos/user.png')}
+                  source={{uri: base_image_url + item?.logo}}
                   style={{
                     width: 80,
                     height: 80,
                     resizeMode: 'contain',
+                    borderRadius: 100,
                   }}
                 />
                 <Text
@@ -157,7 +164,7 @@ const FullTime = ({topCompany, navigation, jobData, token}) => {
                     fontFamily: Gilmer.Bold,
                     paddingVertical: 5,
                   }}>
-                  {item.comp_name}
+                  {item?.name}
                 </Text>
                 <View
                   style={{
@@ -177,10 +184,10 @@ const FullTime = ({topCompany, navigation, jobData, token}) => {
                       fontFamily: Gilmer.Medium,
                       paddingHorizontal: 5,
                     }}>
-                    {item.comp_address}
+                    {item?.district}
                   </Text>
                 </View>
-                <Text
+                {/* <Text
                   style={{
                     fontSize: 16,
                     color: Color.primary,
@@ -189,7 +196,7 @@ const FullTime = ({topCompany, navigation, jobData, token}) => {
                     paddingVertical: 5,
                   }}>
                   {item.comp_offer_count} Jobs Open
-                </Text>
+                </Text> */}
               </TouchableOpacity>
             );
           }}
@@ -265,16 +272,34 @@ const FullTime = ({topCompany, navigation, jobData, token}) => {
 
 const PartTime = ({}) => {
   return (
-    <View style={{flex: 1}}>
-      <Text>Still progress</Text>
+    <View style={{flex: 1, marginVertical: 20}}>
+      <Text
+        style={{
+          fontSize: 16,
+          color: '#0033A0',
+          fontFamily: Gilmer.Bold,
+          textAlign: 'center',
+          paddingHorizontal: 10,
+        }}>
+        Still progress
+      </Text>
     </View>
   );
 };
 
 const Freelancer = ({}) => {
   return (
-    <View style={{flex: 1}}>
-      <Text>Still progress</Text>
+    <View style={{flex: 1, marginVertical: 20}}>
+      <Text
+        style={{
+          fontSize: 16,
+          color: '#0033A0',
+          fontFamily: Gilmer.Bold,
+          textAlign: 'center',
+          paddingHorizontal: 10,
+        }}>
+        Still progress
+      </Text>
     </View>
   );
 };
@@ -352,48 +377,49 @@ const HomeScreen = ({navigation}) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
 
-  const [topCompany, setTopCompany] = useState([
-    {
-      id: 1,
-      comp_logo: Media.propertyMain,
-      comp_name: 'Calibre Infotech',
-      comp_address: 'Coimbatore',
-      comp_offer_count: '10',
-      image: Media.propertyMain,
-    },
-    {
-      id: 2,
-      comp_logo: Media.propertyMain,
-      comp_name: 'Calibre Infotech',
-      comp_address: 'Coimbatore',
-      comp_offer_count: '10',
-      image: Media.propertyMain,
-    },
-    {
-      id: 3,
-      comp_logo: Media.propertyMain,
-      comp_name: 'Calibre Infotech',
-      comp_address: 'Coimbatore',
-      comp_offer_count: '10',
-      image: Media.propertyMain,
-    },
-    {
-      id: 4,
-      comp_logo: Media.propertyMain,
-      comp_name: 'Calibre Infotech',
-      comp_address: 'Coimbatore',
-      comp_offer_count: '10',
-      image: Media.propertyMain,
-    },
-    {
-      id: 5,
-      comp_logo: Media.propertyMain,
-      comp_name: 'Calibre Infotech',
-      comp_address: 'Coimbatore',
-      comp_offer_count: '10',
-      image: Media.propertyMain,
-    },
-  ]);
+  // const [topCompany, setTopCompany] = useState([
+  //   {
+  //     id: 1,
+  //     comp_logo: Media.propertyMain,
+  //     comp_name: 'Calibre Infotech',
+  //     comp_address: 'Coimbatore',
+  //     comp_offer_count: '10',
+  //     image: Media.propertyMain,
+  //   },
+  //   {
+  //     id: 2,
+  //     comp_logo: Media.propertyMain,
+  //     comp_name: 'Calibre Infotech',
+  //     comp_address: 'Coimbatore',
+  //     comp_offer_count: '10',
+  //     image: Media.propertyMain,
+  //   },
+  //   {
+  //     id: 3,
+  //     comp_logo: Media.propertyMain,
+  //     comp_name: 'Calibre Infotech',
+  //     comp_address: 'Coimbatore',
+  //     comp_offer_count: '10',
+  //     image: Media.propertyMain,
+  //   },
+  //   {
+  //     id: 4,
+  //     comp_logo: Media.propertyMain,
+  //     comp_name: 'Calibre Infotech',
+  //     comp_address: 'Coimbatore',
+  //     comp_offer_count: '10',
+  //     image: Media.propertyMain,
+  //   },
+  //   {
+  //     id: 5,
+  //     comp_logo: Media.propertyMain,
+  //     comp_name: 'Calibre Infotech',
+  //     comp_address: 'Coimbatore',
+  //     comp_offer_count: '10',
+  //     image: Media.propertyMain,
+  //   },
+  // ]);
+  const [topCompany, setTopCompany] = useState([]);
 
   const [BuySection] = useState([
     {
@@ -453,12 +479,30 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     getUserData();
-  }, [userData]);
+  }, [name]);
+
+  const getData = useCallback(async () => {
+    try {
+      const job_list = await fetchData.list_jobs(null, token);
+      if (job_list) {
+        setJobData(job_list?.data);
+        setLoading(false);
+      }
+      var data = `page_number=1`;
+      const top_company_list = await fetchData.list_company(data, token);
+      if (top_company_list) {
+        setTopCompany(top_company_list?.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  }, [token]);
 
   useEffect(() => {
     setLoading(true);
     getData().finally(() => setLoading(false));
-  }, []);
+  }, [name, token]);
 
   const getUserData = async () => {
     try {
@@ -500,16 +544,6 @@ const HomeScreen = ({navigation}) => {
       if (resume_data) {
         common_fn.showToast(resume_data?.message);
       }
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
-  const getData = async () => {
-    try {
-      const job_list = await fetchData.list_jobs(null, token);
-      setJobData(job_list?.data);
-      setLoading(false);
     } catch (error) {
       console.log('error', error);
     }

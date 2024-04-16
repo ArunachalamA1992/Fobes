@@ -187,7 +187,7 @@ const DetailedScreen = ({navigation, route}) => {
         </Text>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('CompanyDetails');
+            navigation.navigate('CompanyDetails', {item: itemData?.company});
           }}>
           <Text
             style={{
@@ -197,7 +197,7 @@ const DetailedScreen = ({navigation, route}) => {
               paddingHorizontal: 10,
               marginVertical: 5,
             }}>
-            {itemData?.company_name}
+            {itemData?.company?.name}
           </Text>
         </TouchableOpacity>
 

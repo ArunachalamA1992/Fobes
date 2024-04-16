@@ -1,13 +1,24 @@
-import React, {useState} from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Color from '../../Global/Color';
 import {Searchbar} from 'react-native-paper';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import {Gilmer} from '../../Global/FontFamily';
-import {Media} from '../../Global/Media';
+import fetchData from '../../Config/fetchData';
+import {useSelector} from 'react-redux';
+import {base_image_url} from '../../Config/base_url';
+import {Iconviewcomponent} from '../../Components/Icontag';
 
 const SearchScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
+  const [TopCompany, setTopCompany] = useState([]);
   const [recentSearch] = useState([
     {
       id: 1,
@@ -20,6 +31,8 @@ const SearchScreen = ({navigation}) => {
       value: 'experienced',
     },
   ]);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
   const [MostSearch] = useState([
     {
       id: 1,
@@ -32,43 +45,23 @@ const SearchScreen = ({navigation}) => {
       value: 'experienced',
     },
   ]);
-  const [TopCompany] = useState([
-    {
-      id: 1,
-      name: 'Indigoindia',
-      value: 'Indigoindia',
-    },
-    {
-      id: 2,
-      name: 'ODD Infotech',
-      value: 'ODD Infotech',
-    },
-    {
-      id: 3,
-      name: 'ODD Infotech',
-      value: 'ODD Infotech',
-    },
-    {
-      id: 4,
-      name: 'ODD Infotech',
-      value: 'ODD Infotech',
-    },
-    {
-      id: 5,
-      name: 'ODD Infotech',
-      value: 'ODD Infotech',
-    },
-    {
-      id: 6,
-      name: 'ODD Infotech',
-      value: 'ODD Infotech',
-    },
-    {
-      id: 7,
-      name: 'ODD Infotech',
-      value: 'ODD Infotech',
-    },
-  ]);
+
+  const getData = useCallback(async () => {
+    try {
+      var data = `page_number=1`;
+      const top_company_list = await fetchData.list_company(data, token);
+      if (top_company_list) {
+        setTopCompany(top_company_list?.data);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, [token]);
+
   return (
     <View
       style={{
@@ -237,35 +230,71 @@ const SearchScreen = ({navigation}) => {
               }}>
               {TopCompany.map((item, index) => {
                 return (
-                  <View
+                  <TouchableOpacity
                     key={index}
                     style={{
-                      // paddingHorizontal: 10,
-                      marginVertical: 10,
-                      marginHorizontal: 5,
-                      padding: 10,
-                      borderRadius: 10,
-                      borderWidth: 1,
-                      borderColor: Color.cloudyGrey,
+                      width: 180,
                       alignItems: 'center',
                       justifyContent: 'center',
+                      borderColor: Color.white,
+                      borderWidth: 0.5,
+                      marginVertical: 10,
+                      padding: 10,
+                      margin: 5,
+                      borderRadius: 10,
+                      elevation: 1,
+                      backgroundColor: '#EFFAFF',
                     }}>
                     <Image
-                      source={Media.user}
-                      style={{width: 100, height: 100, resizeMode: 'contain'}}
+                      source={{uri: base_image_url + item?.logo}}
+                      style={{
+                        width: 80,
+                        height: 80,
+                        resizeMode: 'contain',
+                        borderRadius: 100,
+                      }}
                     />
                     <Text
                       style={{
-                        fontFamily: Gilmer.Bold,
-                        fontSize: 14,
+                        fontSize: 16,
                         color: Color.black,
-                        textTransform: 'capitalize',
-                        marginHorizontal: 5,
-                        marginVertical: 10,
+                        fontFamily: Gilmer.Bold,
+                        paddingVertical: 5,
                       }}>
                       {item?.name}
                     </Text>
-                  </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <Iconviewcomponent
+                        Icontag={'Fontisto'}
+                        iconname={'map-marker-alt'}
+                        icon_size={20}
+                        icon_color={Color.Venus}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: Color.Venus,
+                          fontFamily: Gilmer.Medium,
+                          paddingHorizontal: 5,
+                        }}>
+                        {item?.district}
+                      </Text>
+                    </View>
+                    {/* <Text
+                      style={{
+                        fontSize: 16,
+                        color: Color.primary,
+                        fontFamily: Gilmer.Medium,
+                        textDecorationLine: 'underline',
+                        paddingVertical: 5,
+                      }}>
+                      {item.comp_offer_count} Jobs Open
+                    </Text> */}
+                  </TouchableOpacity>
                 );
               })}
             </View>
