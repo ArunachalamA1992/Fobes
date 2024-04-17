@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -9,15 +9,15 @@ import {
 } from 'react-native';
 import Color from '../../Global/Color';
 import StepIndicator from 'react-native-step-indicator';
-import {Gilmer} from '../../Global/FontFamily';
+import { Gilmer } from '../../Global/FontFamily';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FIcon from 'react-native-vector-icons/FontAwesome';
-import {Dropdown} from 'react-native-element-dropdown';
-import {Button} from 'react-native-paper';
+import { Dropdown } from 'react-native-element-dropdown';
+import { Button } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 
 const customStyles = {
@@ -46,7 +46,7 @@ const customStyles = {
 
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
-const BasicDetails = ({navigation}) => {
+const BasicDetails = ({ navigation }) => {
   const userData = useSelector(state => state.UserReducer.userData);
   var {
     title,
@@ -115,7 +115,7 @@ const BasicDetails = ({navigation}) => {
     biography: '',
     profession: {},
     availability: {},
-    social_profile: [{url: '', social_media: ''}],
+    social_profile: [{ url: '', social_media: '' }],
   });
   const [experienceData, setExperienceData] = useState([
     {
@@ -142,13 +142,13 @@ const BasicDetails = ({navigation}) => {
     },
   ]);
   const [genderData] = useState([
-    {id: 1, title: 'Male', value: 'male'},
-    {id: 2, title: 'Female', value: 'female'},
-    {id: 3, title: 'Other', value: 'other'},
+    { id: 1, title: 'Male', value: 'male' },
+    { id: 2, title: 'Female', value: 'female' },
+    { id: 3, title: 'Other', value: 'other' },
   ]);
   const [maritalStatusData] = useState([
-    {id: 1, title: 'Single', value: 'single'},
-    {id: 2, title: 'Married', value: 'married'},
+    { id: 1, title: 'Single', value: 'single' },
+    { id: 2, title: 'Married', value: 'married' },
   ]);
   const [ProfessionData] = useState([
     {
@@ -314,13 +314,14 @@ const BasicDetails = ({navigation}) => {
       availability: selectBasic?.availability,
       social_profile: [
         ...selectBasic?.social_profile,
-        {id: newId, social_profile: '', selectedIcon: ''},
+        { id: newId, social_profile: '', selectedIcon: '' },
       ],
     });
   };
 
   const getAPiData = async () => {
     try {
+      console.log("clicked  ");
       var data = {
         title: selectBasic?.professional_title,
         website: selectBasic?.personal_website,
@@ -335,9 +336,10 @@ const BasicDetails = ({navigation}) => {
         // profession_id: selectBasic?.profession?.profession_id,
       };
       const intro_data = await fetchData.candidates_profile(data, token);
+      console.log("kdgfnklsdkgfkdll  ", JSON.stringify(intro_data));
       if (intro_data) {
         common_fn.showToast(intro_data?.message);
-        navigation.navigate('Education', {item: {}});
+        navigation.navigate('Education', { item: {} });
       } else {
         common_fn.showToast(intro_data?.message);
       }
@@ -364,7 +366,7 @@ const BasicDetails = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: Color.white, padding: 10}}>
+    <View style={{ flex: 1, backgroundColor: Color.white, padding: 10 }}>
       <StepIndicator
         customStyles={customStyles}
         currentPosition={0}
@@ -373,7 +375,7 @@ const BasicDetails = ({navigation}) => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -415,8 +417,8 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ marginVertical: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -468,7 +470,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -508,7 +510,7 @@ const BasicDetails = ({navigation}) => {
               onCancel={hideDatePicker}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -519,7 +521,7 @@ const BasicDetails = ({navigation}) => {
               Current City
             </Text>
             <Dropdown
-              style={[styles.dropdown, {borderColor: 'blue'}]}
+              style={[styles.dropdown, { borderColor: 'blue' }]}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
@@ -551,7 +553,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontFamily: Gilmer.Bold,
@@ -625,7 +627,7 @@ const BasicDetails = ({navigation}) => {
               })}
             </View>
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontFamily: Gilmer.Bold,
@@ -717,7 +719,7 @@ const BasicDetails = ({navigation}) => {
               //   }}
               // />
               <Dropdown
-                style={[styles.dropdown, {borderColor: 'blue'}]}
+                style={[styles.dropdown, { borderColor: 'blue' }]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
@@ -750,7 +752,7 @@ const BasicDetails = ({navigation}) => {
               />
             )}
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -759,7 +761,7 @@ const BasicDetails = ({navigation}) => {
               }}>
               Gender
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {genderData.map((item, index) => {
                 return (
                   <TouchableOpacity
@@ -813,7 +815,7 @@ const BasicDetails = ({navigation}) => {
               })}
             </View>
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -822,7 +824,7 @@ const BasicDetails = ({navigation}) => {
               }}>
               Marital Status
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {maritalStatusData.map((item, index) => {
                 return (
                   <TouchableOpacity
@@ -876,7 +878,7 @@ const BasicDetails = ({navigation}) => {
               })}
             </View>
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -918,7 +920,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -929,7 +931,7 @@ const BasicDetails = ({navigation}) => {
               Profession
             </Text>
             <Dropdown
-              style={[styles.dropdown, {borderColor: 'blue'}]}
+              style={[styles.dropdown, { borderColor: 'blue' }]}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
@@ -1004,7 +1006,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View> */}
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -1015,7 +1017,7 @@ const BasicDetails = ({navigation}) => {
               Social Profile
             </Text>
             {selectBasic?.social_profile?.map((profile, index) => (
-              <View key={profile.id} style={{marginVertical: 10}}>
+              <View key={profile.id} style={{ marginVertical: 10 }}>
                 <Text
                   style={{
                     fontSize: 16,
@@ -1025,7 +1027,7 @@ const BasicDetails = ({navigation}) => {
                   }}>
                   Social Profile {index + 1}
                 </Text>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Dropdown
                     style={{
                       height: 50,
@@ -1123,7 +1125,7 @@ const BasicDetails = ({navigation}) => {
             getAPiData();
           }}
           style={{
-            backgroundColor: Color.primary,
+            backgroundColor: Color.primary, height: 45, marginBottom: 10
           }}
           labelStyle={{
             fontSize: 18,

@@ -33,6 +33,8 @@ const AppliedJobs = ({ navigation }) => {
     try {
       setLoading(true);
       const apply_job = await fetchData.list_job_Applied(null, token);
+
+      // console.log("Applied JOBS ------------- : ", JSON.stringify(apply_job));
       setApplyJobData(apply_job.data);
       setLoading(false);
     } catch (error) {

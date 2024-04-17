@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component, useEffect, useRef, useState} from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -13,10 +13,11 @@ import {
   ScrollView,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Media} from '../../Global/Media';
-import {scr_width} from '../../Utils/Dimensions';
-import {useDispatch} from 'react-redux';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { Media } from '../../Global/Media';
+import { scr_width } from '../../Utils/Dimensions';
+import { useDispatch } from 'react-redux';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
 
 // create a component
 
@@ -31,11 +32,11 @@ const ContactUs = () => {
   const [tabIndex, setIndex] = useState(0);
 
   const [routes] = useState([
-    {id: 1, title: 'Buy'},
-    {id: 2, title: 'Rent'},
-    {id: 3, title: 'Rent'},
-    {id: 4, title: 'Rent'},
-    {id: 5, title: 'Rent'},
+    { id: 1, title: 'Buy' },
+    { id: 2, title: 'Rent' },
+    { id: 3, title: 'Rent' },
+    { id: 4, title: 'Rent' },
+    { id: 5, title: 'Rent' },
   ]);
   const [BuySection] = useState([
     {
@@ -43,13 +44,13 @@ const ContactUs = () => {
       title: 'Apply Albion Home Online',
       data: ['Apply Albion Home Online'],
     },
-    {id: 3, title: 'How it works', data: ['How it works']},
+    { id: 3, title: 'How it works', data: ['How it works'] },
   ]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    scrollY.addListener(({value}) => {
+    scrollY.addListener(({ value }) => {
       const curRoute = routes[tabIndex].key;
       listOffset.current[curRoute] = value;
     });
@@ -114,7 +115,7 @@ const ContactUs = () => {
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={1}
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           {
             useNativeDriver: true,
           },
@@ -124,18 +125,18 @@ const ContactUs = () => {
         onMomentumScrollEnd={onMomentumScrollEnd}
         nestedScrollEnabled
         initialNumToRender={5}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           switch (item) {
             case 'Apply Albion Home Online':
               return (
-                <View style={{width: scr_width, backgroundColor: 'white'}}>
-                  <View style={{width: scr_width}}>
+                <View style={{ width: scr_width, backgroundColor: 'white' }}>
+                  <View style={{ width: scr_width }}>
                     <Image
-                      source={{uri: Media.home_loan_bann}}
+                      source={{ uri: Media.contactUs }}
                       style={{
                         width: scr_width,
                         height: 220,
-                        resizeMode: 'cover',
+                        resizeMode: 'contain',
                       }}
                     />
                   </View>
@@ -144,32 +145,17 @@ const ContactUs = () => {
                       width: '100',
                       alignItems: 'center',
                     }}>
-                    {/* <View style={{ width: '100%', alignItems: 'center', paddingVertical: 10 }}>
-                                            <Text
-                                                style={{
-                                                    width: '95%',
-                                                    fontSize: 16,
-                                                    color: Color.cloudyGrey,
-                                                    fontFamily: 'Gilmer-SemiBold',
-                                                    lineHeight: 25,
-                                                    textAlign: 'justify'
-                                                }}>
-                                                For further queries, comments, or requests, please feel free to
-                                            </Text>
-                                        </View> */}
                     <View
                       style={{
                         width: '100%',
                         marginVertical: 10,
                         alignItems: 'center',
                       }}>
-                      {/* <Text style={{ width: '95%', fontSize: 18, color: 'black', fontFamily: 'Gilmer-SemiBold' }}>Contact Us</Text> */}
                       <Text
                         style={{
                           width: '95%',
                           fontSize: 16,
-                          color: '#666',
-                          fontFamily: 'Gilmer-Regular',
+                          color: '#666', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           paddingTop: 10,
                         }}>
                         For any other queries and feedback can reach us with
@@ -197,7 +183,7 @@ const ContactUs = () => {
                             Icontag={'Feather'}
                             iconname={'phone-call'}
                             icon_size={20}
-                            iconstyle={{color: Color.primary}}
+                            iconstyle={{ color: Color.primary }}
                           />
                         </View>
                         <Text
@@ -205,7 +191,7 @@ const ContactUs = () => {
                             fontSize: 18,
                             color: 'black',
                             fontFamily: 'Gilmer-SemiBold',
-                            paddingHorizontal: 10,
+                            paddingHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           +91 9943300100
                         </Text>
@@ -231,7 +217,7 @@ const ContactUs = () => {
                             Icontag={'Ionicons'}
                             iconname={'mail'}
                             icon_size={20}
-                            iconstyle={{color: Color.primary}}
+                            iconstyle={{ color: Color.primary }}
                           />
                         </View>
                         <Text
@@ -239,8 +225,7 @@ const ContactUs = () => {
                             width: '95%',
                             fontSize: 18,
                             color: 'black',
-                            fontFamily: 'Gilmer-SemiBold',
-                            paddingHorizontal: 10,
+                            paddingHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           admin@fobes.in
                         </Text>
@@ -257,8 +242,7 @@ const ContactUs = () => {
                       <Text
                         style={{
                           fontSize: 18,
-                          color: 'black',
-                          fontFamily: 'Gilmer-SemiBold',
+                          color: 'black', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         Registered Address:
                       </Text>
@@ -267,10 +251,9 @@ const ContactUs = () => {
                           fontSize: 15,
                           color: '#666',
                           textAlign: 'justify',
-                          fontFamily: 'Gilmer-SemiBold',
                           lineHeight: 25,
-                          paddingHorizontal: 10,
-                          paddingVertical: 5,
+                          paddingHorizontal: 10, paddingTop: 10,
+                          paddingVertical: 5, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         Level 5, Tamarai Tech Park,
                       </Text>
@@ -279,10 +262,9 @@ const ContactUs = () => {
                           fontSize: 15,
                           color: '#666',
                           textAlign: 'justify',
-                          fontFamily: 'Gilmer-SemiBold',
                           lineHeight: 25,
                           paddingHorizontal: 10,
-                          paddingVertical: 5,
+                          paddingVertical: 5, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         S.P. Plot No. 16-19 & 20 A,{' '}
                       </Text>
@@ -291,10 +273,9 @@ const ContactUs = () => {
                           fontSize: 15,
                           color: '#666',
                           textAlign: 'justify',
-                          fontFamily: 'Gilmer-SemiBold',
                           lineHeight: 25,
                           paddingHorizontal: 10,
-                          paddingVertical: 5,
+                          paddingVertical: 5, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         Thiru Vi Ka Industrial Estate, Inner Ring Road,{' '}
                       </Text>
@@ -304,10 +285,9 @@ const ContactUs = () => {
                           fontSize: 15,
                           color: '#666',
                           textAlign: 'justify',
-                          fontFamily: 'Gilmer-SemiBold',
                           lineHeight: 25,
                           paddingHorizontal: 10,
-                          paddingVertical: 5,
+                          paddingVertical: 5, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         Guindy, Chennai,
                       </Text>
@@ -316,10 +296,9 @@ const ContactUs = () => {
                           fontSize: 15,
                           color: '#666',
                           textAlign: 'justify',
-                          fontFamily: 'Gilmer-SemiBold',
                           lineHeight: 25,
                           paddingHorizontal: 10,
-                          paddingVertical: 5,
+                          paddingVertical: 5, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         Tamil Nadu, 600 032, India.
                       </Text>
@@ -348,8 +327,7 @@ const ContactUs = () => {
                         width: '95%',
                         fontSize: 18,
                         color: 'black',
-                        fontFamily: 'Gilmer-SemiBold',
-                        paddingHorizontal: 10,
+                        paddingHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                       }}>
                       Get In Touch
                     </Text>
@@ -359,8 +337,7 @@ const ContactUs = () => {
                         width: '90%',
                         fontSize: 14,
                         color: '#666',
-                        fontFamily: 'Gilmer-Regular',
-                        padding: 5,
+                        padding: 5, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                       }}>
                       Enter Your Name
                     </Text>
@@ -384,9 +361,8 @@ const ContactUs = () => {
                         width: '90%',
                         fontSize: 14,
                         color: '#666',
-                        fontFamily: 'Gilmer-Regular',
                         padding: 5,
-                        marginTop: 10,
+                        marginTop: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                       }}>
                       Enter Your E-mail
                     </Text>
@@ -410,12 +386,11 @@ const ContactUs = () => {
                         fontSize: 14,
                         color: '#666',
                         marginTop: 20,
-                        fontFamily: 'Gilmer-Regular',
-                        padding: 5,
+                        padding: 5, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                       }}>
                       Enter your Subjects
                     </Text>
-                    <View style={[styles.incomeBoxConatiner, {width: '88%'}]}>
+                    <View style={[styles.incomeBoxConatiner, { width: '88%' }]}>
                       <TextInput
                         placeholder="Enter your Subjects"
                         placeholderTextColor={Color.grey}
@@ -436,12 +411,11 @@ const ContactUs = () => {
                         fontSize: 14,
                         color: '#666',
                         marginTop: 20,
-                        fontFamily: 'Gilmer-Regular',
-                        padding: 5,
+                        padding: 5, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                       }}>
                       Enter your Message
                     </Text>
-                    <View style={{width: '88%'}}>
+                    <View style={{ width: '88%' }}>
                       <TextInput
                         placeholder="Enter your Message ..."
                         placeholderTextColor={Color.cloudyGrey}
@@ -481,7 +455,7 @@ const ContactUs = () => {
                         alignItems: 'center',
                         borderRadius: 5,
                       }}>
-                      <Text style={{fontSize: 16, color: 'white'}}>
+                      <Text style={{ fontSize: 16, color: 'white' }}>
                         Send Message
                       </Text>
                     </TouchableOpacity>
@@ -502,12 +476,8 @@ const ContactUs = () => {
                         alignItems: 'center',
                       }}>
                       <Image
-                        source={{uri: Media.fobes_main}}
-                        style={{
-                          width: '100%',
-                          height: 60,
-                          resizeMode: 'contain',
-                        }}
+                        source={require('../../assets/logos/fobes.png')}
+                        style={{ width: '80%', height: 50, resizeMode: 'contain' }}
                       />
                     </View>
                     <View
@@ -521,17 +491,15 @@ const ContactUs = () => {
                         style={{
                           textAlign: 'justify',
                           fontSize: 18,
-                          color: Color.primary,
-                          fontFamily: 'Gilmer-SemiBold',
+                          color: Color.primary, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         Fobes Skill Itech Private Limited
                       </Text>
                       <Text
                         style={{
                           textAlign: 'justify',
-                          fontSize: 14,
-                          color: '#666',
-                          fontFamily: 'Gilmer-Regular',
+                          fontSize: 14, paddingVertical: 5,
+                          color: '#666', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         You are hired! Get yourself registered. The top
                         companies in the league are hiring now.

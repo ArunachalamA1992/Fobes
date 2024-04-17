@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -7,23 +7,28 @@ import {
   ScrollView,
   StyleSheet,
   FlatList,
+  LayoutAnimation,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Color from '../../Global/Color';
-import {Media} from '../../Global/Media';
-import {Gilmer} from '../../Global/FontFamily';
-import {Iconviewcomponent} from '../Icontag';
-import {Divider} from 'react-native-paper';
+import { Media } from '../../Global/Media';
+import { Gilmer } from '../../Global/FontFamily';
+import { Iconviewcomponent } from '../Icontag';
+import { Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setCompleteProfile, setOnBoardVisible, setUserData} from '../../Redux';
+import { setCompleteProfile, setOnBoardVisible, setUserData } from '../../Redux';
+import common_fn from '../../Config/common_fn';
 
 const CustomDrawerContent = props => {
   const [itemSelected, setItemSelected] = useState('');
   const userData = useSelector(state => state.UserReducer.userData);
-  var {first_name, last_name, name, email, role} = userData;
+  var { first_name, last_name, name, email, role } = userData;
   const dispatch = useDispatch();
+
+  const [visible, setVisible] = useState(false);
+
   const [customDrawer] = useState([
     {
       id: 1,
@@ -75,19 +80,26 @@ const CustomDrawerContent = props => {
       icontag: 'Ionicons',
     },
   ]);
+
+  const clickHistory = () => {
+    setVisible(!visible);
+    common_fn.Accordion;
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  };
+
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: Color.white}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
       <TouchableOpacity
         onPress={() => {
           props.navigation.navigate('ProfileTab');
         }}
         style={{
           backgroundColor: Color.primary,
-          height: 120,
-          alignItems: 'center',
+          height: 200,
+          alignItems: 'flex-start',
           justifyContent: 'flex-start',
-          flexDirection: 'row',
-          paddingHorizontal: 5,
+          // flexDirection: 'row',
+          padding: 10,
         }}>
         <Image
           source={Media.user}
@@ -98,7 +110,7 @@ const CustomDrawerContent = props => {
             borderRadius: 100,
           }}
         />
-        <View style={{flex: 1, marginHorizontal: 5}}>
+        <View style={{ flex: 1, marginHorizontal: 5 }}>
           <Text
             style={{
               fontSize: 20,
@@ -119,12 +131,12 @@ const CustomDrawerContent = props => {
             update profile
           </Text>
         </View>
-        <Icon
+        {/* <Icon
           name="chevron-forward"
           size={18}
           color={Color.white}
-          style={{marginRight: 10}}
-        />
+          style={{ marginRight: 10 }}
+        /> */}
       </TouchableOpacity>
       {/* <FlatList
         data={customDrawer}
@@ -212,7 +224,7 @@ const CustomDrawerContent = props => {
         </TouchableOpacity>
       </View> */}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{marginVertical: 10, marginBottom: 50}}>
+        <View style={{ marginVertical: 10, marginBottom: 50 }}>
           <View
             style={{
               backgroundColor:
@@ -291,7 +303,7 @@ const CustomDrawerContent = props => {
               </Text>
             </TouchableOpacity>
           </View>
-          <Divider style={{height: 1, marginVertical: 10}} />
+          <Divider style={{ height: 1, marginVertical: 10 }} />
           <View
             style={{
               backgroundColor:
@@ -301,34 +313,165 @@ const CustomDrawerContent = props => {
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 marginHorizontal: 5,
-                paddingVertical: 15,
+                paddingVertical: 10,
                 padding: 10,
               }}
               onPress={() => {
                 setItemSelected('helps');
+                clickHistory();
               }}>
-              <Iconviewcomponent
-                Icontag={'Ionicons'}
-                iconname={'information-circle'}
-                icon_size={24}
-                icon_color={
-                  itemSelected === 'helps' ? Color.white : Color.primary
-                }
-              />
-              <Text
-                style={{
-                  fontSize: 16,
-                  marginLeft: 10,
-                  color: itemSelected === 'helps' ? Color.white : Color.black,
-                  fontFamily:
-                    itemSelected === 'helps' ? Gilmer.Bold : Gilmer.Medium,
-                }}>
-                Help and Support
-              </Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                <Iconviewcomponent
+                  Icontag={'Ionicons'}
+                  iconname={'information-circle'}
+                  icon_size={24}
+                  icon_color={
+                    itemSelected === 'helps' ? Color.white : Color.primary
+                  }
+                />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginLeft: 10,
+                    color: itemSelected === 'helps' ? Color.white : Color.black,
+                    fontFamily:
+                      itemSelected === 'helps' ? Gilmer.Bold : Gilmer.Medium,
+                  }}>
+                  Help and Support
+                </Text>
+              </View>
+              <Icon name={visible ? 'chevron-up' : 'chevron-down'} size={20} color={itemSelected === 'helps' ? Color.white : Color.black} />
             </TouchableOpacity>
           </View>
+
+          <View
+            style={{
+              backgroundColor: Color.white,
+              marginVertical: 5,
+            }}>
+
+            {visible && (
+              <View style={{ paddingHorizontal: 10 }}>
+                <View
+                  style={{
+                    backgroundColor:
+                      itemSelected === 'About' ? Color.primary : Color.white,
+                    // marginVertical: 5,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginHorizontal: 5,
+                      paddingVertical: 10,
+                      padding: 5,
+                    }}
+                    onPress={() => {
+                      setItemSelected('About');
+                      props.navigation.navigate('AboutUs');
+                    }}>
+                    <Iconviewcomponent
+                      Icontag={'Ionicons'}
+                      iconname={'information-circle'}
+                      icon_size={24}
+                      icon_color={
+                        itemSelected === 'About' ? Color.white : Color.primary
+                      }
+                    />
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        width: 150,
+                        marginLeft: 15,
+                        color: itemSelected === 'About' ? Color.white : Color.lightBlack,
+                        fontFamily: Gilmer.Bold,
+                      }}>
+                      About Us
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    backgroundColor:
+                      itemSelected === 'contact' ? Color.primary : Color.white,
+                    // marginVertical: 5,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginHorizontal: 5,
+                      paddingVertical: 10,
+                      padding: 5,
+                    }}
+                    onPress={() => {
+                      setItemSelected('contact');
+                      props.navigation.navigate('ContactUs');
+                    }}>
+                    <Iconviewcomponent
+                      Icontag={'AntDesign'}
+                      iconname={'contacts'}
+                      icon_size={24}
+                      icon_color={
+                        itemSelected === 'contact' ? Color.white : Color.primary
+                      }
+                    />
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        width: 150,
+                        marginLeft: 15,
+                        color: itemSelected === 'contact' ? Color.white : Color.lightBlack,
+                        fontFamily: Gilmer.Bold,
+                      }}>
+                      Contact Us
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    backgroundColor:
+                      itemSelected === 'faq' ? Color.primary : Color.white,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginHorizontal: 5,
+                      paddingVertical: 10,
+                      padding: 5,
+                    }}
+                    onPress={() => {
+                      setItemSelected('faq');
+                      props.navigation.navigate('FAQs');
+                    }}>
+                    <Iconviewcomponent
+                      Icontag={'MaterialCommunityIcons'}
+                      iconname={'frequently-asked-questions'}
+                      icon_size={24}
+                      icon_color={
+                        itemSelected === 'faq' ? Color.white : Color.primary
+                      }
+                    />
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        width: 150,
+                        marginLeft: 15,
+                        color: itemSelected === 'faq' ? Color.white : Color.lightBlack,
+                        fontFamily: Gilmer.Bold,
+                      }}>
+                      FAQs
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </View>
+
           <View
             style={{
               backgroundColor:
@@ -340,7 +483,7 @@ const CustomDrawerContent = props => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 marginHorizontal: 5,
-                paddingVertical: 15,
+                paddingVertical: 10,
                 padding: 10,
               }}
               onPress={() => {
@@ -372,6 +515,7 @@ const CustomDrawerContent = props => {
               </Text>
             </TouchableOpacity>
           </View>
+
           <View
             style={{
               backgroundColor:
@@ -455,7 +599,7 @@ const CustomDrawerContent = props => {
               </Text>
             </TouchableOpacity>
           </View>
-          
+
           <View
             style={{
               backgroundColor:

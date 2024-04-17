@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component, useEffect, useRef, useState} from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -13,10 +13,11 @@ import {
   ScrollView,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Media} from '../../Global/Media';
-import {scr_width} from '../../Utils/Dimensions';
-import {useDispatch} from 'react-redux';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { Media } from '../../Global/Media';
+import { scr_width } from '../../Utils/Dimensions';
+import { useDispatch } from 'react-redux';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
 
 // create a component
 
@@ -31,11 +32,11 @@ const TermsCondition = () => {
   const [tabIndex, setIndex] = useState(0);
 
   const [routes] = useState([
-    {id: 1, title: 'Buy'},
-    {id: 2, title: 'Rent'},
-    {id: 3, title: 'Rent'},
-    {id: 4, title: 'Rent'},
-    {id: 5, title: 'Rent'},
+    { id: 1, title: 'Buy' },
+    { id: 2, title: 'Rent' },
+    { id: 3, title: 'Rent' },
+    { id: 4, title: 'Rent' },
+    { id: 5, title: 'Rent' },
   ]);
   const [BuySection] = useState([
     {
@@ -43,13 +44,13 @@ const TermsCondition = () => {
       title: 'Apply Albion Home Online',
       data: ['Apply Albion Home Online'],
     },
-    {id: 3, title: 'How it works', data: ['How it works']},
+    { id: 3, title: 'How it works', data: ['How it works'] },
   ]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    scrollY.addListener(({value}) => {
+    scrollY.addListener(({ value }) => {
       const curRoute = routes[tabIndex].key;
       listOffset.current[curRoute] = value;
     });
@@ -114,7 +115,7 @@ const TermsCondition = () => {
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={1}
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           {
             useNativeDriver: true,
           },
@@ -124,22 +125,22 @@ const TermsCondition = () => {
         onMomentumScrollEnd={onMomentumScrollEnd}
         nestedScrollEnabled
         initialNumToRender={5}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           switch (item) {
             case 'Apply Albion Home Online':
               return (
-                <View style={{width: scr_width, backgroundColor: 'white'}}>
-                  <View style={{width: scr_width}}>
+                <View style={{ width: scr_width, backgroundColor: 'white' }}>
+                  <View style={{ width: scr_width }}>
                     <Image
-                      source={{uri: Media.home_loan_bann}}
+                      source={{ uri: Media.terms }}
                       style={{
                         width: scr_width,
                         height: 220,
-                        resizeMode: 'cover',
+                        resizeMode: 'contain',
                       }}
                     />
                   </View>
-                  <View style={{width: '100%'}}>
+                  <View style={{ width: '100%', paddingHorizontal: 10 }}>
                     <View
                       style={{
                         width: '100%',
@@ -152,9 +153,8 @@ const TermsCondition = () => {
                           width: '100%',
                           textAlign: 'justify',
                           fontSize: 17,
-                          color: '#333',
-                          lineHeight: 25,
-                          fontFamily: 'Gilmer-SemiBold',
+                          color: Color.black,
+                          lineHeight: 25, fontFamily: Gilmer.Bold, letterSpacing: 0.5,
                         }}>
                         Welcome to our Job Portal website! Before using our
                         services, please read these Terms and Conditions
@@ -163,7 +163,7 @@ const TermsCondition = () => {
                       </Text>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -182,8 +182,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Bold, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Use of Our Services
                         </Text>
@@ -199,8 +198,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           Our Job Portal website provides a platform for job
                           seekers and employers to connect. We do not guarantee
@@ -211,7 +209,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -230,8 +228,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           User Accounts
                         </Text>
@@ -247,8 +244,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           To access certain features of our website, you must
                           create an account. You are responsible for maintaining
@@ -260,7 +256,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -279,8 +275,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Job Listings
                         </Text>
@@ -296,8 +291,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           Employers are solely responsible for the accuracy and
                           content of their job listings. We do not endorse or
@@ -308,7 +302,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -327,8 +321,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           User Content
                         </Text>
@@ -344,8 +337,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           By submitting any content to our website, you grant us
                           a non-exclusive, worldwide, royalty-free, transferable
@@ -357,7 +349,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -376,8 +368,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Intellectual Property
                         </Text>
@@ -393,8 +384,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           All content on our website, including but not limited
                           to text, graphics, logos, and images, is the property
@@ -405,7 +395,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -424,8 +414,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Disclaimer of Warranties
                         </Text>
@@ -441,8 +430,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           We do not warrant that our services will be
                           uninterrupted or error-free. We make no
@@ -454,7 +442,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -473,8 +461,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Limitation of Liability
                         </Text>
@@ -490,8 +477,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           We will not be liable for any damages of any kind
                           arising from the use of our website, including but not
@@ -501,7 +487,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -520,8 +506,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Indemnification
                         </Text>
@@ -537,8 +522,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           You agree to indemnify, defend, and hold harmless our
                           company, its affiliates, officers, directors,
@@ -550,7 +534,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -569,8 +553,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Governing Law
                         </Text>
@@ -586,8 +569,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           These Terms and Conditions shall be governed by and
                           construed in accordance with the laws of the
@@ -597,7 +579,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -616,8 +598,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Modifications to Terms and Conditions
                         </Text>
@@ -633,8 +614,7 @@ const TermsCondition = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Medium, letterSpacing: 0.5,
                           }}>
                           We reserve the right to modify these Terms and
                           Conditions at any time without notice. Your continued
@@ -654,8 +634,7 @@ const TermsCondition = () => {
                         style={{
                           width: '95%',
                           fontSize: 18,
-                          color: 'black',
-                          fontFamily: 'Gilmer-SemiBold',
+                          color: 'black', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         Contact Us
                       </Text>
@@ -663,8 +642,7 @@ const TermsCondition = () => {
                         style={{
                           width: '95%',
                           fontSize: 16,
-                          color: '#666',
-                          fontFamily: 'Gilmer-Regular',
+                          color: '#666', fontFamily: Gilmer.Light, lineHeight: 20, letterSpacing: 0.5,
                           paddingTop: 10,
                         }}>
                         For any other queries and feedback can reach us with
@@ -692,14 +670,13 @@ const TermsCondition = () => {
                             Icontag={'Feather'}
                             iconname={'phone-call'}
                             icon_size={22}
-                            iconstyle={{color: Color.primary}}
+                            iconstyle={{ color: Color.primary }}
                           />
                         </View>
                         <Text
                           style={{
                             fontSize: 18,
-                            color: 'black',
-                            fontFamily: 'Gilmer-SemiBold',
+                            color: 'black', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                             paddingHorizontal: 10,
                           }}>
                           +91 994-330-0100
@@ -726,15 +703,14 @@ const TermsCondition = () => {
                             Icontag={'Ionicons'}
                             iconname={'mail'}
                             icon_size={22}
-                            iconstyle={{color: Color.primary}}
+                            iconstyle={{ color: Color.primary }}
                           />
                         </View>
                         <Text
                           style={{
                             width: '95%',
                             fontSize: 18,
-                            color: 'black',
-                            fontFamily: 'Gilmer-SemiBold',
+                            color: 'black', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                             paddingHorizontal: 10,
                           }}>
                           admin@fobes.in
@@ -758,12 +734,8 @@ const TermsCondition = () => {
                           alignItems: 'center',
                         }}>
                         <Image
-                          source={{uri: Media.fobes_main}}
-                          style={{
-                            width: '100%',
-                            height: 60,
-                            resizeMode: 'contain',
-                          }}
+                          source={require('../../assets/logos/fobes.png')}
+                          style={{ width: '80%', height: 50, resizeMode: 'contain' }}
                         />
                       </View>
                       <View
@@ -777,8 +749,7 @@ const TermsCondition = () => {
                           style={{
                             textAlign: 'justify',
                             fontSize: 18,
-                            color: Color.primary,
-                            fontFamily: 'Gilmer-SemiBold',
+                            color: Color.primary, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Fobes Skill Itech Private Limited
                         </Text>
@@ -786,8 +757,7 @@ const TermsCondition = () => {
                           style={{
                             textAlign: 'justify',
                             fontSize: 14,
-                            color: '#666',
-                            fontFamily: 'Gilmer-Regular',
+                            color: '#666', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           You are hired! Get yourself registered. The top
                           companies in the league are hiring now.
@@ -813,8 +783,7 @@ const TermsCondition = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Thank you for using www.fobes.in. If you have any
                           questions or concerns about these Terms and
@@ -852,7 +821,7 @@ const TermsCondition = () => {
                       Recruiters FAQs
                     </Text>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -910,7 +879,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -970,7 +939,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1292,7 +1261,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1354,7 +1323,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1419,7 +1388,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1477,7 +1446,7 @@ const TermsCondition = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1580,7 +1549,7 @@ const TermsCondition = () => {
                           Icontag={'Feather'}
                           iconname={'phone-call'}
                           icon_size={22}
-                          iconstyle={{color: Color.primary}}
+                          iconstyle={{ color: Color.primary }}
                         />
                       </View>
                       <Text
@@ -1614,7 +1583,7 @@ const TermsCondition = () => {
                           Icontag={'Ionicons'}
                           iconname={'mail'}
                           icon_size={22}
-                          iconstyle={{color: Color.primary}}
+                          iconstyle={{ color: Color.primary }}
                         />
                       </View>
                       <Text
@@ -1645,8 +1614,8 @@ const TermsCondition = () => {
                         alignItems: 'center',
                       }}>
                       <Image
-                        source={{uri: Media.albionlogo}}
-                        style={{width: 60, height: 60, resizeMode: 'contain'}}
+                        source={{ uri: Media.albionlogo }}
+                        style={{ width: 60, height: 60, resizeMode: 'contain' }}
                       />
                     </View>
                     <View

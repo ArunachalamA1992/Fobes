@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,20 +12,20 @@ import {
   Animated,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {Media} from '../../Global/Media';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
+import { Media } from '../../Global/Media';
+import { Iconviewcomponent } from '../../Components/Icontag';
 import JobItemCard from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import RenderHtml from 'react-native-render-html';
 import moment from 'moment';
 import common_fn from '../../Config/common_fn';
-import {base_image_url} from '../../Config/base_url';
+import { base_image_url } from '../../Config/base_url';
 
 LogBox.ignoreAllLogs();
 
-const IconData = ({item}) => {
+const IconData = ({ item }) => {
   const formattedItem = item.replace(/_/g, '').toLowerCase();
   console.log('formattedItem', formattedItem);
   switch (formattedItem) {
@@ -67,11 +67,11 @@ const IconData = ({item}) => {
       );
   }
 };
-const DetailedScreen = ({navigation, route}) => {
+const DetailedScreen = ({ navigation, route }) => {
   const [itemData] = useState(route?.params?.item);
   const [jobData, setJobData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
 
   useEffect(() => {
     getData();
@@ -107,17 +107,14 @@ const DetailedScreen = ({navigation, route}) => {
       let result;
 
       if (Math.abs(daysAgo) > 0) {
-        result = `${Math.abs(daysAgo)} day${
-          Math.abs(daysAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
+          } ago`;
       } else if (Math.abs(hoursAgo) > 0) {
-        result = `${Math.abs(hoursAgo)} hour${
-          Math.abs(hoursAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
+          } ago`;
       } else {
-        result = `${Math.abs(minutesAgo)} minute${
-          Math.abs(minutesAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
+          } ago`;
       }
 
       setResultDate(result);
@@ -125,7 +122,7 @@ const DetailedScreen = ({navigation, route}) => {
   }, [currentDate, yourDate, itemData]);
 
   const [features] = useState([
-    {id: 1, title: 'Experience', value: itemData?.experience_translation?.name},
+    { id: 1, title: 'Experience', value: itemData?.experience_translation?.name },
     {
       id: 2,
       title: 'Salary',
@@ -133,8 +130,8 @@ const DetailedScreen = ({navigation, route}) => {
         itemData.min_salary,
       )} - ${common_fn.formatNumberWithSuffix(itemData?.max_salary)}`,
     },
-    {id: 3, title: 'Location', value: itemData?.place},
-    {id: 4, title: 'Vacancies', value: itemData?.vacancies},
+    { id: 3, title: 'Location', value: itemData?.place },
+    { id: 4, title: 'Vacancies', value: itemData?.vacancies },
   ]);
   const source = {
     html: `${itemData?.description}`,
@@ -146,7 +143,7 @@ const DetailedScreen = ({navigation, route}) => {
 
   const getToggleJobs = async id => {
     try {
-      var data = {job_id: id};
+      var data = { job_id: id };
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
@@ -159,10 +156,10 @@ const DetailedScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
-        style={{flex: 1, padding: 10}}
+        style={{ flex: 1, padding: 10 }}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           {
             useNativeDriver: false,
           },
@@ -187,7 +184,7 @@ const DetailedScreen = ({navigation, route}) => {
         </Text>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('CompanyDetails', {item: itemData?.company});
+            navigation.navigate('CompanyDetails', { item: itemData?.company });
           }}>
           <Text
             style={{
@@ -269,7 +266,7 @@ const DetailedScreen = ({navigation, route}) => {
                   borderRadius: 10,
                 }}>
                 <IconData item={item?.title} />
-                <View style={{marginHorizontal: 5}}>
+                <View style={{ marginHorizontal: 5 }}>
                   <Text
                     style={{
                       fontSize: 14,
@@ -666,7 +663,7 @@ const DetailedScreen = ({navigation, route}) => {
             </View>
           </View>
         </View>
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontSize: 20,
@@ -680,7 +677,7 @@ const DetailedScreen = ({navigation, route}) => {
           <FlatList
             data={jobData}
             keyExtractor={(item, index) => item + index}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               return (
                 <JobItemCard
                   item={item}
@@ -705,7 +702,7 @@ const DetailedScreen = ({navigation, route}) => {
           // opacity: headerOpacity,
           padding: 10,
           backgroundColor: Color.softGrey,
-          transform: [{translateY: taby}],
+          transform: [{ translateY: taby }],
         }}>
         <View
           style={{
@@ -725,7 +722,7 @@ const DetailedScreen = ({navigation, route}) => {
               marginHorizontal: 10,
             }}
             onPress={() => {
-              getToggleJobs(item?.id);
+              getToggleJobs(itemData?.id);
             }}>
             <Iconviewcomponent
               Icontag={'FontAwesome'}
@@ -737,7 +734,7 @@ const DetailedScreen = ({navigation, route}) => {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() =>
-              navigation.navigate('ApplyJob', {job_id: itemData?.id})
+              navigation.navigate('ApplyJob', { job_id: itemData?.id })
             }
             style={{
               flex: 1,

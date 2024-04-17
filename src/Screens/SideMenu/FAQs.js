@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component, useEffect, useRef, useState} from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -13,10 +13,11 @@ import {
   ScrollView,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Media} from '../../Global/Media';
-import {scr_width} from '../../Utils/Dimensions';
-import {useDispatch} from 'react-redux';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { Media } from '../../Global/Media';
+import { scr_width } from '../../Utils/Dimensions';
+import { useDispatch } from 'react-redux';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
 
 // create a component
 
@@ -31,11 +32,11 @@ const FAQs = () => {
   const [tabIndex, setIndex] = useState(0);
 
   const [routes] = useState([
-    {id: 1, title: 'Buy'},
-    {id: 2, title: 'Rent'},
-    {id: 3, title: 'Rent'},
-    {id: 4, title: 'Rent'},
-    {id: 5, title: 'Rent'},
+    { id: 1, title: 'Buy' },
+    { id: 2, title: 'Rent' },
+    { id: 3, title: 'Rent' },
+    { id: 4, title: 'Rent' },
+    { id: 5, title: 'Rent' },
   ]);
   const [BuySection] = useState([
     {
@@ -43,13 +44,13 @@ const FAQs = () => {
       title: 'Apply Albion Home Online',
       data: ['Apply Albion Home Online'],
     },
-    {id: 3, title: 'How it works', data: ['How it works']},
+    { id: 3, title: 'How it works', data: ['How it works'] },
   ]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    scrollY.addListener(({value}) => {
+    scrollY.addListener(({ value }) => {
       const curRoute = routes[tabIndex].key;
       listOffset.current[curRoute] = value;
     });
@@ -114,7 +115,7 @@ const FAQs = () => {
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={1}
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           {
             useNativeDriver: true,
           },
@@ -124,22 +125,22 @@ const FAQs = () => {
         onMomentumScrollEnd={onMomentumScrollEnd}
         nestedScrollEnabled
         initialNumToRender={5}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           switch (item) {
             case 'Apply Albion Home Online':
               return (
-                <View style={{width: scr_width, backgroundColor: 'white'}}>
-                  <View style={{width: scr_width}}>
+                <View style={{ width: scr_width, backgroundColor: 'white' }}>
+                  <View style={{ width: scr_width }}>
                     <Image
-                      source={{uri: Media.home_loan_bann}}
+                      source={{ uri: Media.faq }}
                       style={{
                         width: scr_width,
                         height: 220,
-                        resizeMode: 'cover',
+                        resizeMode: 'contain',
                       }}
                     />
                   </View>
-                  <View style={{width: '97%'}}>
+                  <View style={{ width: '100%', paddingHorizontal: 10 }}>
                     <View
                       style={{
                         width: '100%',
@@ -151,14 +152,13 @@ const FAQs = () => {
                           width: '95%',
                           fontSize: 18,
                           color: Color.black,
-                          fontFamily: 'Gilmer-SemiBold',
-                          textAlign: 'justify',
+                          textAlign: 'justify', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         Candidates FAQs
                       </Text>
                     </View>
 
-                    <View style={{width: '95%', marginVertical: 10}}>
+                    <View style={{ width: '95%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -170,8 +170,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           1
                         </Text>
@@ -187,8 +186,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           How is Fobes different from other traditional portals?
                         </Text>
@@ -204,8 +202,7 @@ const FAQs = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Traditional hiring is long, expensive, and
                           inefficient. Fobes simplifies the process by
@@ -215,7 +212,7 @@ const FAQs = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '95%', marginVertical: 10}}>
+                    <View style={{ width: '95%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -227,8 +224,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           2
                         </Text>
@@ -244,8 +240,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           How can I get the best company from your portal?
                         </Text>
@@ -261,8 +256,7 @@ const FAQs = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Fobes has over 5000 active companies across 70+ job
                           categories. Our AI algorithm selects the best-fit
@@ -271,7 +265,7 @@ const FAQs = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '95%', marginVertical: 10}}>
+                    <View style={{ width: '95%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -283,8 +277,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           3
                         </Text>
@@ -300,8 +293,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Do I need to pay to apply to a job or get an Interview
                           call?
@@ -318,15 +310,14 @@ const FAQs = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           No. You can apply to jobs for FREE on Fobes.
                         </Text>
                       </View>
                     </View>
 
-                    <View style={{width: '95%', marginVertical: 10}}>
+                    <View style={{ width: '95%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -338,8 +329,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           4
                         </Text>
@@ -355,8 +345,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Recruiters are asking me to pay to schedule interview
                           for job?
@@ -373,8 +362,7 @@ const FAQs = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Note that genuine recruiters do not ask for money to
                           schedule interviews or offer a job. If you are
@@ -406,14 +394,13 @@ const FAQs = () => {
                       style={{
                         width: '95%',
                         fontSize: 18,
-                        color: 'black',
-                        fontFamily: 'Gilmer-SemiBold',
+                        color: 'black', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         paddingHorizontal: 10,
                       }}>
                       Recruiters FAQs
                     </Text>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -425,8 +412,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           5
                         </Text>
@@ -442,8 +428,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Why is my job being under a review?
                         </Text>
@@ -458,9 +443,8 @@ const FAQs = () => {
                           style={{
                             textAlign: 'justify',
                             fontSize: 16,
-                            color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           We promise to endeavor that your job is made active at
                           the earliest. Few job approval decisions can take up
@@ -471,7 +455,7 @@ const FAQs = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10, paddingHorizontal: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -483,8 +467,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           6
                         </Text>
@@ -500,8 +483,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           Why the documents are required?
                         </Text>
@@ -517,8 +499,7 @@ const FAQs = () => {
                             textAlign: 'justify',
                             fontSize: 16,
                             color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Most job portals do not verify if someone is using
                           your name or your company’s name to list jobs and
@@ -531,7 +512,7 @@ const FAQs = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10, paddingHorizontal: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -543,8 +524,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           7
                         </Text>
@@ -560,8 +540,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           How do I post a job?
                         </Text>
@@ -583,11 +562,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           To post a job you must be logged in to the employer
                           dashboard with your mobile number.
@@ -611,11 +589,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Under "Jobs" Menu, click on Post a Job and fill in the
                           job criteria.
@@ -639,11 +616,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           On the Job Details page, select your Job role,
                           Department, Category of the job, and type of job.{' '}
@@ -667,11 +643,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           You can also select the job location, compensation and
                           salary range from this page.
@@ -695,11 +670,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           On the Candidate Requirements page, select the minimum
                           education level, total experience, the job titles of
@@ -725,11 +699,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           In Additional Requirements, you can add age, gender,
                           skills, regional language, degree, assets and industry
@@ -755,11 +728,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           On the Interviewer information page, select the
                           interviewer details, interview method, and interview
@@ -785,11 +757,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Preview your job thoroughly as these are the details
                           applicants will see before applying.
@@ -813,11 +784,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Select a plan and Agree to our employer code of
                           conduct and click on Post Job with xxx plans.
@@ -841,11 +811,10 @@ const FAQs = () => {
                           }}></View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            color: '#666',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-Regular',
+                            fontSize: 16,
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           If you do not have sufficient balance in your employer
                           account, you may be prompted get subscription plans.
@@ -853,7 +822,7 @@ const FAQs = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -865,8 +834,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           8
                         </Text>
@@ -882,8 +850,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           How long will it take for my job to go live?
                         </Text>
@@ -898,9 +865,8 @@ const FAQs = () => {
                           style={{
                             textAlign: 'justify',
                             fontSize: 16,
-                            color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           We assure you that we will make every effort to
                           activate your job as soon as possible. Please note
@@ -915,7 +881,7 @@ const FAQs = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -927,8 +893,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           9
                         </Text>
@@ -944,8 +909,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           What is the meaning of unlimited applications?
                         </Text>
@@ -960,9 +924,8 @@ const FAQs = () => {
                           style={{
                             textAlign: 'justify',
                             fontSize: 16,
-                            color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Unlimited job applications refer to a feature that
                           allows you to receive an unrestricted number of
@@ -980,7 +943,7 @@ const FAQs = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -992,8 +955,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           10
                         </Text>
@@ -1009,8 +971,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           What is job branding?
                         </Text>
@@ -1025,9 +986,8 @@ const FAQs = () => {
                           style={{
                             textAlign: 'justify',
                             fontSize: 16,
-                            color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Job branding refers to the process of creating a
                           unique and compelling image for a particular job. It
@@ -1038,7 +998,7 @@ const FAQs = () => {
                       </View>
                     </View>
 
-                    <View style={{width: '100%', marginVertical: 10}}>
+                    <View style={{ width: '100%', marginVertical: 10 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1050,8 +1010,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           11
                         </Text>
@@ -1067,8 +1026,7 @@ const FAQs = () => {
                             fontSize: 16,
                             color: '#000',
                             textAlign: 'justify',
-                            marginHorizontal: 10,
-                            fontFamily: 'Gilmer-SemiBold',
+                            marginHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                           }}>
                           How can I contact Fobes customer care?
                         </Text>
@@ -1083,9 +1041,8 @@ const FAQs = () => {
                           style={{
                             textAlign: 'justify',
                             fontSize: 16,
-                            color: '#666',
-                            lineHeight: 25,
-                            fontFamily: 'Gilmer-Regular',
+                            color: '#666', paddingHorizontal: 10,
+                            lineHeight: 25, fontFamily: Gilmer.Regular, letterSpacing: 0.5,
                           }}>
                           Call or WhatsApp: 9385245210,9385245296.
                         </Text>
@@ -1096,7 +1053,7 @@ const FAQs = () => {
                   <View
                     style={{
                       width: '100%',
-                      marginVertical: 10,
+                      marginVertical: 10, paddingHorizontal: 10,
                       alignItems: 'center',
                     }}>
                     <Text
@@ -1111,10 +1068,9 @@ const FAQs = () => {
                     <Text
                       style={{
                         width: '95%',
+                        textAlign: 'justify',
                         fontSize: 16,
-                        color: '#666',
-                        fontFamily: 'Gilmer-Regular',
-                        paddingTop: 10,
+                        color: '#666', paddingTop: 10, fontFamily: Gilmer.Regular, lineHeight: 20, letterSpacing: 0.5,
                       }}>
                       For any other queries and feedback can reach us with below
                       address{' '}
@@ -1141,15 +1097,14 @@ const FAQs = () => {
                           Icontag={'Feather'}
                           iconname={'phone-call'}
                           icon_size={22}
-                          iconstyle={{color: Color.primary}}
+                          iconstyle={{ color: Color.primary }}
                         />
                       </View>
                       <Text
                         style={{
                           fontSize: 18,
                           color: 'black',
-                          fontFamily: 'Gilmer-SemiBold',
-                          paddingHorizontal: 10,
+                          paddingHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         +91 994-330-0100
                       </Text>
@@ -1175,7 +1130,7 @@ const FAQs = () => {
                           Icontag={'Ionicons'}
                           iconname={'mail'}
                           icon_size={22}
-                          iconstyle={{color: Color.primary}}
+                          iconstyle={{ color: Color.primary }}
                         />
                       </View>
                       <Text
@@ -1183,8 +1138,7 @@ const FAQs = () => {
                           width: '95%',
                           fontSize: 18,
                           color: 'black',
-                          fontFamily: 'Gilmer-SemiBold',
-                          paddingHorizontal: 10,
+                          paddingHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         admin@fobes.in
                       </Text>
@@ -1206,12 +1160,8 @@ const FAQs = () => {
                         alignItems: 'center',
                       }}>
                       <Image
-                        source={{uri: Media.fobes_main}}
-                        style={{
-                          width: '100%',
-                          height: 60,
-                          resizeMode: 'contain',
-                        }}
+                        source={require('../../assets/logos/fobes.png')}
+                        style={{ width: '80%', height: 50, resizeMode: 'contain' }}
                       />
                     </View>
                     <View
@@ -1226,7 +1176,7 @@ const FAQs = () => {
                           textAlign: 'justify',
                           fontSize: 18,
                           color: Color.primary,
-                          fontFamily: 'Gilmer-SemiBold',
+                          fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         Fobes Skill Itech Private Limited
                       </Text>
@@ -1235,7 +1185,7 @@ const FAQs = () => {
                           textAlign: 'justify',
                           fontSize: 14,
                           color: '#666',
-                          fontFamily: 'Gilmer-Regular',
+                          fontFamily: Gilmer.Regular, lineHeight: 20, letterSpacing: 0.5,
                         }}>
                         You are hired! Get yourself registered. The top
                         companies in the league are hiring now.
