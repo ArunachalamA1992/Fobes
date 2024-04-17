@@ -726,9 +726,9 @@ const DetailedScreen = ({ navigation, route }) => {
             }}>
             <Iconviewcomponent
               Icontag={'FontAwesome'}
-              iconname={'bookmark'}
-              icon_size={25}
-              icon_color={Color.cloudyGrey}
+              iconname={itemData?.is_saved ? 'bookmark' : 'bookmark-o'}
+              icon_size={22}
+              icon_color={itemData?.is_saved ? Color.primary : Color.Venus}
             />
           </TouchableOpacity>
           <TouchableOpacity

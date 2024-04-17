@@ -156,9 +156,9 @@ const JobItemCard = props => {
           }}>
           <Iconviewcomponent
             Icontag={'FontAwesome'}
-            iconname={'bookmark-o'}
+            iconname={item?.is_saved ? 'bookmark' : 'bookmark-o'}
             icon_size={22}
-            icon_color={Color.Venus}
+            icon_color={item?.is_saved ? Color.primary : Color.Venus}
           />
         </TouchableOpacity>
       </View>
@@ -389,9 +389,9 @@ export const JobCardHorizontal = props => {
           }}>
           <Iconviewcomponent
             Icontag={'FontAwesome'}
-            iconname={'bookmark-o'}
+            iconname={item?.is_saved ? 'bookmark' : 'bookmark-o'}
             icon_size={22}
-            icon_color={Color.Venus}
+            icon_color={item?.is_saved ? Color.primary : Color.Venus}
           />
         </TouchableOpacity>
       </View>

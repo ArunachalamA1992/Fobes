@@ -117,18 +117,7 @@ const BasicDetails = ({ navigation }) => {
     availability: {},
     social_profile: [{ url: '', social_media: '' }],
   });
-  const [experienceData, setExperienceData] = useState([
-    {
-      id: 1,
-      name: 'Fresher',
-      value: 'fresher',
-    },
-    {
-      id: 2,
-      name: 'Experienced',
-      value: 'experienced',
-    },
-  ]);
+  const [experienceData, setExperienceData] = useState([]);
   const [periorExperience] = useState([
     {
       id: 1,
@@ -350,7 +339,7 @@ const BasicDetails = ({ navigation }) => {
 
   useEffect(() => {
     getData();
-  }, [HigherQualification]);
+  }, [HigherQualification, experienceData]);
 
   const getData = async () => {
     try {

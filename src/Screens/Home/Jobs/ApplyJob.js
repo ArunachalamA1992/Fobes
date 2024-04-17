@@ -5,19 +5,22 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import Color from '../../Global/Color';
-import { Gilmer } from '../../Global/FontFamily';
-import { Iconviewcomponent } from '../../Components/Icontag';
-import { pick } from 'react-native-document-picker';
-import common_fn from '../../Config/common_fn';
-import fetchData from '../../Config/fetchData';
-import { useSelector } from 'react-redux';
+import Color from '../../../Global/Color';
+import {Gilmer} from '../../../Global/FontFamily';
+import {Iconviewcomponent} from '../../../Components/Icontag';
+import {pick} from 'react-native-document-picker';
+import common_fn from '../../../Config/common_fn';
+import fetchData from '../../../Config/fetchData';
+import {useSelector} from 'react-redux';
+import FIcon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const ApplyJob = ({ navigation, route }) => {
   const [job_id] = useState(route?.params?.job_id);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
+  var {token, candidate_resume} = userData;
 
   const [apply_job, setApply_job] = useState({
     name: '',
@@ -26,20 +29,19 @@ const ApplyJob = ({ navigation, route }) => {
     cover_letter: '',
   });
 
-  const getToggleJobs = async () => {
+  const getApplyjob = async () => {
     try {
       console.log("check clicked");
       var data = {
         job_id: job_id,
-        candidate_resume_id: 2362,
+        candidate_resume_id: apply_job?.resume?.id,
         cover_letter: apply_job?.cover_letter,
         application_group_id: 1,
       };
-      const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
-      console.log("Applied =========== :", JSON.stringify(Saved_Jobs));
+      const Saved_Jobs = await fetchData.create_applied_job(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
-        navigation.navigate('Applycompletion');
+        navigation.replace('Applycompletion');
       }
     } catch (error) {
       console.log('error', error);
@@ -48,7 +50,7 @@ const ApplyJob = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <View
+      <ScrollView
         style={{
           backgroundColor: Color.white,
         }}>
@@ -149,6 +151,84 @@ const ApplyJob = ({ navigation, route }) => {
               *
             </Text>
           </View>
+          {candidate_resume != null &&
+            candidate_resume?.length > 0 &&
+            candidate_resume?.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => {
+                    setApply_job({
+                      name: apply_job?.name,
+                      portfolio: apply_job?.portfolio,
+                      resume: item,
+                      cover_letter: apply_job?.cover_letter,
+                    });
+                  }}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginVertical: 10,
+                    borderWidth: 1,
+                    borderColor: Color.cloudyGrey,
+                    padding: 10,
+                    borderRadius: 5,
+                  }}>
+                  <FIcon
+                    name={'folder-open'}
+                    size={30}
+                    color={Color.sunShade}
+                  />
+                  <View style={{marginHorizontal: 5, flex: 1}}>
+                    <Text
+                      style={{
+                        fontFamily: Gilmer.SemiBold,
+                        fontSize: 16,
+                        color: Color.black,
+                        textTransform: 'capitalize',
+                        marginHorizontal: 10,
+                      }}>
+                      {item?.name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: Gilmer.Medium,
+                        fontSize: 12,
+                        color: Color.cloudyGrey,
+                        textTransform: 'capitalize',
+                        marginHorizontal: 10,
+                      }}>
+                      Apr 01
+                    </Text>
+                  </View>
+                  <Icon
+                    name={
+                      apply_job?.resume?.id == item?.id
+                        ? 'radio-button-on'
+                        : 'radio-button-off'
+                    }
+                    size={25}
+                    color={
+                      apply_job?.resume?.id == item?.id
+                        ? '#309CD2'
+                        : Color.cloudyGrey
+                    }
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          {apply_job?.resume != null && apply_job?.resume?.name?.length > 0 && (
+            <Text
+              style={{
+                fontFamily: Gilmer.Bold,
+                fontSize: 14,
+                color: Color.black,
+                textTransform: 'capitalize',
+                marginHorizontal: 10,
+              }}>
+              {apply_job?.resume?.name}
+            </Text>
+          )}
           <TouchableOpacity
             onPress={async () => {
               try {
@@ -174,51 +254,37 @@ const ApplyJob = ({ navigation, route }) => {
               marginVertical: 10,
               padding: 10,
             }}>
-            {apply_job?.resume != null &&
-              apply_job?.resume?.name?.length > 0 ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Iconviewcomponent
+                Icontag={'FontAwesome'}
+                iconname={'folder-open'}
+                icon_size={30}
+                icon_color={'#A0C7EB'}
+              />
               <Text
                 style={{
-                  fontFamily: Gilmer.SemiBold,
-                  fontSize: 18,
-                  color: Color.black,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  textAlign: 'center',
+                  fontFamily: Gilmer.Medium,
+                  marginVertical: 10,
                 }}>
-                {apply_job?.resume?.name}
+                File Should be DOC, PDF, JPG
               </Text>
-            ) : (
-              <View
+              <Text
                 style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  fontSize: 16,
+                  color: Color.primary,
+                  textAlign: 'center',
+                  fontFamily: Gilmer.Bold,
                 }}>
-                <Iconviewcomponent
-                  Icontag={'FontAwesome'}
-                  iconname={'folder-open'}
-                  icon_size={30}
-                  icon_color={'#A0C7EB'}
-                />
-                <Text
-                  style={{
-                    fontSize: 14,
-                    color: Color.cloudyGrey,
-                    textAlign: 'center',
-                    fontFamily: Gilmer.Medium,
-                    marginVertical: 10,
-                  }}>
-                  File Should be DOC, PDF, JPG
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: Color.primary,
-                    textAlign: 'center',
-                    fontFamily: Gilmer.Bold,
-                  }}>
-                  Browse Files
-                </Text>
-              </View>
-            )}
+                Browse Files
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -290,7 +356,7 @@ const ApplyJob = ({ navigation, route }) => {
 
         <TouchableOpacity
           onPress={() => {
-            getToggleJobs();
+            getApplyjob();
           }}
           style={{
             height: 50,
@@ -310,7 +376,7 @@ const ApplyJob = ({ navigation, route }) => {
             Apply Now
           </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 };

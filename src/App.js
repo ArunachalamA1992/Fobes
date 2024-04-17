@@ -20,7 +20,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import JobStatus from './Screens/Home/Jobs/JobStatus';
 import Notification from './Screens/Home/Notification';
 import SkillScreen from './Screens/Profile/Skills';
-import Applycompletion from './Screens/SubPages/Applycompletion';
+import Applycompletion from './Screens/Home/Jobs/Applycompletion';
 import BasicDetails from './Screens/Profile/BasicDetails';
 import SearchScreen from './Screens/Home/SearchScreen';
 import DetailedScreen from './Screens/Home/DetailedScreen';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,28 +6,31 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import Color from '../../../Global/Color';
-import { Gilmer } from '../../../Global/FontFamily';
-import { Iconviewcomponent } from '../../../Components/Icontag';
+import {Gilmer} from '../../../Global/FontFamily';
+import {Iconviewcomponent} from '../../../Components/Icontag';
 import fetchData from '../../../Config/fetchData';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import moment from 'moment';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import common_fn from '../../../Config/common_fn';
-import { scr_height, scr_width } from '../../../Utils/Dimensions';
+import {base_image_url} from '../../../Config/base_url';
 
-const AppliedJobs = ({ navigation }) => {
+const {height} = Dimensions.get('window');
+
+const AppliedJobs = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [resultDate, setResultDate] = useState(null);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
+  var {token} = userData;
   const [ApplyJobData, setApplyJobData] = useState([]);
 
   useEffect(() => {
     setLoading(true);
     getData().finally(() => setLoading(false));
-  }, []);
+  }, [token]);
 
   const getData = async () => {
     try {
@@ -45,7 +48,7 @@ const AppliedJobs = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={{ padding: 10 }}>
+        <View style={{padding: 10}}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
               <SkeletonPlaceholder.Item width="100%" height={150} />
@@ -53,67 +56,67 @@ const AppliedJobs = ({ navigation }) => {
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
             </SkeletonPlaceholder.Item>
           </SkeletonPlaceholder>
@@ -123,7 +126,7 @@ const AppliedJobs = ({ navigation }) => {
           data={ApplyJobData}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => item + index}
-          renderItem={({ item, index }) => {
+          renderItem={({item, index}) => {
             const currentDate = moment();
             const yourDate = moment(item?.created_at);
 
@@ -137,14 +140,17 @@ const AppliedJobs = ({ navigation }) => {
               let result;
 
               if (Math.abs(daysAgo) > 0) {
-                result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
-                  } ago`;
+                result = `${Math.abs(daysAgo)} day${
+                  Math.abs(daysAgo) !== 1 ? 's' : ''
+                } ago`;
               } else if (Math.abs(hoursAgo) > 0) {
-                result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
-                  } ago`;
+                result = `${Math.abs(hoursAgo)} hour${
+                  Math.abs(hoursAgo) !== 1 ? 's' : ''
+                } ago`;
               } else {
-                result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
-                  } ago`;
+                result = `${Math.abs(minutesAgo)} minute${
+                  Math.abs(minutesAgo) !== 1 ? 's' : ''
+                } ago`;
               }
 
               setResultDate(result);
@@ -161,27 +167,19 @@ const AppliedJobs = ({ navigation }) => {
                   borderRadius: 5,
                 }}
                 onPress={() => {
-                  navigation.navigate('JobStatus', { item });
+                  navigation.navigate('JobStatus', {item, resultDate});
                 }}>
-                <View style={{ paddingVertical: 10 }}>
-                  <View
+                <View style={{paddingVertical: 10}}>
+                  <Image
+                    source={{uri: base_image_url + item?.job?.company?.logo}}
                     style={{
                       width: 70,
                       height: 70,
-                      backgroundColor: '#EFFAFF',
-                      padding: 5,
-                      borderRadius: 50,
-                    }}>
-                    <Image
-                      source={require('../../../assets/images/app_status.png')}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        resizeMode: 'contain',
-                      }}
-                    />
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      resizeMode: 'contain',
+                      borderRadius: 100,
+                    }}
+                  />
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <View
                       style={{
                         flex: 1,
@@ -195,7 +193,7 @@ const AppliedJobs = ({ navigation }) => {
                           textAlign: 'justify',
                         }}
                         numberOfLines={2}>
-                        {item.title}
+                        {item?.job?.title}
                       </Text>
                       <Text
                         style={{
@@ -205,7 +203,7 @@ const AppliedJobs = ({ navigation }) => {
                           textAlign: 'justify',
                         }}
                         numberOfLines={1}>
-                        {item.company_name}
+                        {item?.job?.company?.name}
                       </Text>
                     </View>
                     <View
@@ -241,7 +239,7 @@ const AppliedJobs = ({ navigation }) => {
                       fontFamily: Gilmer.Medium,
                       paddingHorizontal: 5,
                     }}>
-                    {item.apply_job_comp_loc}
+                    {item?.job?.district}
                   </Text>
                 </View>
                 <View
@@ -295,7 +293,7 @@ const AppliedJobs = ({ navigation }) => {
                         borderRadius: 5,
                         fontFamily: Gilmer.Medium,
                       }}>
-                      {item.apply_job_type}
+                      {item?.job?.job_type?.name}
                     </Text>
                   </View>
                   <View
@@ -314,8 +312,10 @@ const AppliedJobs = ({ navigation }) => {
                         borderRadius: 5,
                         fontFamily: Gilmer.Medium,
                       }}>
-                      ₹ {common_fn.formatNumberWithSuffix(item.min_salary)} -{' '}
-                      {common_fn.formatNumberWithSuffix(item.max_salary)}
+                      ₹{' '}
+                      {common_fn.formatNumberWithSuffix(item?.job?.min_salary)}{' '}
+                      -{' '}
+                      {common_fn.formatNumberWithSuffix(item?.job?.max_salary)}
                     </Text>
                   </View>
                 </View>
@@ -324,10 +324,23 @@ const AppliedJobs = ({ navigation }) => {
           }}
           ListEmptyComponent={() => {
             return (
-              <View style={{ width: scr_width, height: scr_height, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, color: Color.black }}>No Data</Text>
+              <View
+                style={{
+                  flex: 1,
+                  height: height / 1.5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.black,
+                    fontFamily: Gilmer.Bold,
+                  }}>
+                  No Jobs Applied
+                </Text>
               </View>
-            )
+            );
           }}
         />
       )}
