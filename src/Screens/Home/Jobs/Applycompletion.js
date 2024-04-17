@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
+import Color from '../../../Global/Color';
+import {Gilmer} from '../../../Global/FontFamily';
 import {Button} from 'react-native-paper';
 
 const Applycompletion = ({navigation}) => {

@@ -25,7 +25,7 @@ import {Iconviewcomponent} from './Components/Icontag';
 import {Badge} from 'react-native-paper';
 import JobListScreen from './Screens/Home/JobListScreen';
 import DetailedScreen from './Screens/Home/DetailedScreen';
-import ApplyJob from './Screens/SubPages/ApplyJob';
+import ApplyJob from './Screens/Home/Jobs/ApplyJob';
 import CompanyList from './Screens/Home/CompanyList';
 import CompanyDetails from './Screens/Home/CompanyDetails';
 import SavedJobScreen from './Screens/Home/SavedJobScreen';
@@ -36,7 +36,7 @@ import ProjectScreen from './Screens/Profile/ProjectScreen';
 import FilterScreen from './Screens/Home/FilterScreen';
 import IntroductionScreen from './Screens/Profile/IntroductionScreen';
 import BasicDetails from './Screens/Profile/BasicDetails';
-import Applycompletion from './Screens/SubPages/Applycompletion';
+import Applycompletion from './Screens/Home/Jobs/Applycompletion';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

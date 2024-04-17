@@ -43,7 +43,7 @@ const SavedJobScreen = ({navigation}) => {
   };
 
   const getToggleJobs = async id => {
-    console.log('id', id);
+    console.log('id----------------------------------------------------', id);
     try {
       var data = {job_id: id};
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
@@ -182,60 +182,50 @@ const SavedJobScreen = ({navigation}) => {
                   style={{
                     flexDirection: 'row',
                     alignItems: 'flex-start',
+                    justifyContent: 'center',
                     paddingVertical: 10,
                   }}>
+                  <Image
+                    source={{uri: base_image_url + item?.company?.logo}}
+                    style={{
+                      width: 70,
+                      height: 70,
+                      resizeMode: 'contain',
+                      borderRadius: 100,
+                    }}
+                  />
                   <View
                     style={{
-                      flex: 1,
-                      flexDirection: 'row',
                       justifyContent: 'flex-start',
                       alignItems: 'flex-start',
+                      paddingHorizontal: 10,
                     }}>
-                    <Image
-                      source={{uri: base_image_url + item?.company?.logo}}
+                    <Text
                       style={{
-                        width: 70,
-                        height: 70,
-                        resizeMode: 'contain',
-                        borderRadius: 100,
+                        fontSize: 16,
+                        color: Color.lightBlack,
+                        fontFamily: Gilmer.Medium,
+                        textAlign: 'justify',
                       }}
-                    />
-                    <View
+                      numberOfLines={2}>
+                      {item.title}
+                    </Text>
+                    <Text
                       style={{
-                        justifyContent: 'flex-start',
-                        alignItems: 'flex-start',
-                        paddingHorizontal: 10,
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          color: Color.lightBlack,
-                          fontFamily: Gilmer.Medium,
-                          textAlign: 'justify',
-                        }}
-                        numberOfLines={2}>
-                        {item.title}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: Color.darkGrey,
-                          fontFamily: Gilmer.Regular,
-                          textAlign: 'justify',
-                        }}
-                        numberOfLines={1}>
-                        {item?.company?.name}
-                      </Text>
-                    </View>
+                        fontSize: 14,
+                        color: Color.darkGrey,
+                        fontFamily: Gilmer.Regular,
+                        textAlign: 'justify',
+                        marginTop: 5,
+                      }}
+                      numberOfLines={1}>
+                      {item?.company?.name}
+                    </Text>
                   </View>
                   <TouchableOpacity
-                    style={{
-                      // flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'flex-end',
-                      paddingHorizontal: 10,
-                    }}
+                    style={{}}
                     onPress={() => {
+                      console.log(`call`);
                       getToggleJobs(item?.id);
                     }}>
                     <Iconviewcomponent

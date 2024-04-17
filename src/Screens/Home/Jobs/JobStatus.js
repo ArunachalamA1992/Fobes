@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Color from '../../../Global/Color';
 import {Gilmer} from '../../../Global/FontFamily';
@@ -9,6 +9,8 @@ import {Media} from '../../../Global/Media';
 import fetchData from '../../../Config/fetchData';
 import common_fn from '../../../Config/common_fn';
 import {useSelector} from 'react-redux';
+import {base_image_url} from '../../../Config/base_url';
+import JobItemCard from '../../../Components/JobItemCard';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -42,60 +44,19 @@ const labels = [
 
 const JobStatus = ({navigation, route}) => {
   const [itemData] = useState(route.params.item);
+  const [date] = useState(route.params.resultDate);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
-  const [similarJobs, setSimilarJobs] = useState([
-    {
-      id: 1,
-      name: 'Website designer',
-      image: Media.status,
-      subImage: Media.AuctionSub,
-      type: 'Full Time',
-      post_date: '4 days ago',
-      comp_logo: '',
-      comp_name: 'Brightway Group Tech',
-      comp_book_status: false,
-      comp_salary: '₹25k -  ₹60 k',
-      comp_applicant: '7',
-      comp_loc: 'Coimbatore, Tamilnadu',
-    },
-    {
-      id: 2,
-      name: 'Website designer',
-      image: Media.status,
-      subImage: Media.AuctionSub,
-      type: 'Full Time',
-      post_date: '4 days ago',
-      comp_logo: '',
-      comp_name: 'Brightway Group Tech',
-      comp_book_status: false,
-      comp_salary: '₹25k -  ₹60 k',
-      comp_applicant: '7',
-      comp_loc: 'Coimbatore, Tamilnadu',
-    },
-    {
-      id: 3,
-      name: 'Website designer',
-      image: Media.status,
-      subImage: Media.AuctionSub,
-      type: 'Full Time',
-      post_date: '4 days ago',
-      comp_logo: '',
-      comp_name: 'Brightway Group Tech',
-      comp_book_status: false,
-      comp_salary: '₹25k -  ₹60 k',
-      comp_applicant: '7',
-      comp_loc: 'Coimbatore, Tamilnadu',
-    },
-  ]);
+  const [jobData, setJobData] = useState([]);
 
-  const getToggleJobs = async id => {
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
     try {
-      var data = {job_id: id};
-      const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
-      if (Saved_Jobs) {
-        common_fn.showToast(Saved_Jobs?.message);
-      }
+      const job_list = await fetchData.list_jobs(null, token);
+      setJobData(job_list?.data);
     } catch (error) {
       console.log('error', error);
     }
@@ -114,23 +75,15 @@ const JobStatus = ({navigation, route}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <View
+          <Image
+            source={{uri: base_image_url + itemData?.job?.company?.logo}}
             style={{
               width: 100,
               height: 100,
-              backgroundColor: '#EFFAFF',
-              padding: 5,
-              borderRadius: 50,
-            }}>
-            <Image
-              source={itemData?.apply_job_image}
-              style={{
-                width: '100%',
-                height: '100%',
-                resizeMode: 'contain',
-              }}
-            />
-          </View>
+              resizeMode: 'contain',
+              borderRadius: 100,
+            }}
+          />
           <View
             style={{
               paddingHorizontal: 10,
@@ -144,7 +97,7 @@ const JobStatus = ({navigation, route}) => {
                 textAlign: 'center',
               }}
               numberOfLines={2}>
-              {itemData.apply_job_name}
+              {itemData?.job?.title}
             </Text>
             <Text
               style={{
@@ -154,7 +107,7 @@ const JobStatus = ({navigation, route}) => {
                 textAlign: 'center',
               }}
               numberOfLines={1}>
-              {itemData.apply_job_comp_name}
+              {itemData?.job?.company?.name}
             </Text>
           </View>
           <View
@@ -177,12 +130,14 @@ const JobStatus = ({navigation, route}) => {
                 fontFamily: Gilmer.Medium,
                 paddingHorizontal: 5,
               }}>
-              {itemData.apply_job_comp_loc}
+              {itemData?.job?.district}
             </Text>
           </View>
           <Button
             mode="contained"
-            onPress={async () => {}}
+            onPress={async () => {
+              navigation.navigate('DetailedScreen', {item: itemData?.job});
+            }}
             style={{
               width: '50%',
               backgroundColor: '#DBF3FF',
@@ -209,7 +164,7 @@ const JobStatus = ({navigation, route}) => {
                 marginHorizontal: 5,
                 marginVertical: 10,
               }}>
-              Applied {itemData?.apply_job_post_date}
+              Applied {date}
             </Text>
           </View>
         </View>
@@ -258,180 +213,9 @@ const JobStatus = ({navigation, route}) => {
           }}>
           Similar Jobs
         </Text>
-        {similarJobs.map((item, index) => {
+        {jobData.map((item, index) => {
           return (
-            <View
-              style={{
-                flex: 1,
-                borderColor: Color.lightgrey,
-                borderWidth: 1,
-                padding: 10,
-                margin: 5,
-                borderRadius: 5,
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
-                <Image
-                  source={require('../../../assets/images/app_status.png')}
-                  style={{
-                    width: 80,
-                    height: 80,
-                    resizeMode: 'contain',
-                  }}
-                />
-                <View style={{flex: 1}}>
-                  <Text
-                    style={{
-                      fontFamily: Gilmer.Bold,
-                      fontSize: 18,
-                      color: Color.black,
-                      textTransform: 'capitalize',
-                      marginHorizontal: 10,
-                      marginVertical: 5,
-                    }}>
-                    {item?.name}
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: Gilmer.Bold,
-                      fontSize: 14,
-                      color: Color.cloudyGrey,
-                      textTransform: 'capitalize',
-                      marginHorizontal: 10,
-                    }}>
-                    {item?.name}
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    getToggleJobs(item?.id);
-                  }}>
-                  <Iconviewcomponent
-                    Icontag={'FontAwesome'}
-                    iconname={item?.is_saved ? 'bookmark' : 'bookmark-o'}
-                    icon_size={22}
-                    icon_color={item?.is_saved ? Color.primary : Color.Venus}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <View
-                  style={{
-                    paddingHorizontal: 10,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginVertical: 5,
-                  }}>
-                  <Iconviewcomponent
-                    Icontag={'Fontisto'}
-                    iconname={'map-marker-alt'}
-                    icon_size={20}
-                    icon_color={Color.primary}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: Color.black,
-                      fontFamily: Gilmer.Medium,
-                      paddingHorizontal: 5,
-                    }}>
-                    {itemData.apply_job_comp_loc}
-                  </Text>
-                </View>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    color: Color.black,
-                    fontFamily: Gilmer.Medium,
-                    paddingHorizontal: 5,
-                  }}>
-                  {itemData.apply_job_exp}
-                </Text>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'flex-end',
-                    backgroundColor: '#DEFCE4',
-                    paddingHorizontal: 10,
-                    padding: 5,
-                    borderRadius: 10,
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: Gilmer.Bold,
-                      fontSize: 12,
-                      color: Color.green,
-                    }}>
-                    {itemData?.apply_job_type}
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <View style={{flex: 1}}>
-                  <Text
-                    style={{
-                      fontFamily: Gilmer.Bold,
-                      fontSize: 14,
-                      color: Color.black,
-                      textTransform: 'capitalize',
-                      marginHorizontal: 10,
-                      marginVertical: 5,
-                    }}>
-                    Salary/Month
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: Gilmer.Bold,
-                      fontSize: 18,
-                      color: Color.primary,
-                      textTransform: 'capitalize',
-                      marginHorizontal: 10,
-                    }}>
-                    {itemData?.apply_job_comp_salary}
-                  </Text>
-                </View>
-                <View style={{alignItems: 'center'}}>
-                  <Text
-                    style={{
-                      fontFamily: Gilmer.Bold,
-                      fontSize: 14,
-                      color: Color.black,
-                      textTransform: 'capitalize',
-                      marginHorizontal: 10,
-                      marginVertical: 5,
-                    }}>
-                    Applicant
-                  </Text>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Iconviewcomponent
-                      Icontag={'MaterialCommunityIcons'}
-                      iconname={'shield-account'}
-                      icon_size={20}
-                      icon_color={Color.primary}
-                    />
-                    <Text
-                      style={{
-                        fontFamily: Gilmer.Bold,
-                        fontSize: 18,
-                        color: Color.primary,
-                        textTransform: 'capitalize',
-                        marginHorizontal: 5,
-                      }}>
-                      {itemData?.applu_job_applicant}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
+            <JobItemCard item={item} navigation={navigation} token={token} />
           );
         })}
       </ScrollView>
