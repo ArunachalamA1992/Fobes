@@ -1,12 +1,12 @@
 import React from 'react';
 import {Modal, Pressable, Text, TouchableOpacity, View} from 'react-native';
-import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
+import Color from '../../../Global/Color';
+import {Gilmer} from '../../../Global/FontFamily';
 import Icon from 'react-native-vector-icons/Ionicons';
-import VerticalTabView from '../../Components/VerticalTabView';
+import VerticalTabView from '../../../Components/VerticalTabView';
 
 const FilterModal = props => {
-  var {setFilterVisible, filterVisible} = props;
+  var {setFilterVisible, filterVisible, navigation} = props;
   return (
     <Modal visible={filterVisible} transparent animationType="slide">
       <View style={{flex: 1, backgroundColor: Color.transparantBlack}}>
@@ -57,7 +57,7 @@ const FilterModal = props => {
               <Icon name="close" size={20} color={Color.white} />
             </TouchableOpacity>
           </View>
-          <VerticalTabView />
+          <VerticalTabView navigation={navigation} />
         </View>
       </View>
     </Modal>

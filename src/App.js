@@ -25,6 +25,7 @@ import BasicDetails from './Screens/Profile/BasicDetails';
 import SearchScreen from './Screens/Home/SearchScreen';
 import DetailedScreen from './Screens/Home/DetailedScreen';
 import {Iconviewcomponent} from './Components/Icontag';
+import FilterListScreen from './Screens/Home/Filter/FilterListScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -246,6 +247,25 @@ const MainApp = () => {
           name="Applycompletion"
           component={Applycompletion}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="FilterList"
+          component={FilterListScreen}
+          options={({navigation, route}) => ({
+            headerTitle: '',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
         />
       </Stack.Navigator>
     </>

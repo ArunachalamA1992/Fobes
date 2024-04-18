@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {Gilmer} from '../Global/FontFamily';
 import Color from '../Global/Color';
 import CheckboxData, {RadioData} from './Checkbox';
 import {Button, Divider} from 'react-native-paper';
+import fetchData from '../Config/fetchData';
+import {useSelector} from 'react-redux';
 
 const TabContent = ({
   item,
@@ -143,6 +145,7 @@ const TabContent = ({
       </View>
     );
   } else if (item?.work_type) {
+    console.log('worktypeSelectedItem', worktypeSelectedItem);
     return (
       <View
         style={{
@@ -167,8 +170,11 @@ const TabContent = ({
   }
 };
 
-const VerticalTabView = () => {
+const VerticalTabView = props => {
+  var {navigation} = props;
   const [selectedTab, setSelectedTab] = useState(0);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
 
   const filterOptions = [
     {
@@ -563,6 +569,41 @@ const VerticalTabView = () => {
     'Work Type',
   ];
 
+  const dataPayload = () => {
+    const params = new URLSearchParams();
+    const payload = {
+      page_no: 1,
+      location: filterSelectedItem?.location,
+      experience: filterSelectedItem?.experience.map(item => item.title),
+      jobtype: filterSelectedItem?.job_type.map(item => item.title),
+      industry: filterSelectedItem?.industry.map(item => item.title),
+      date_posted: filterSelectedItem?.date_posted.map(item => item.title),
+    };
+
+    for (const key in payload) {
+      if (payload[key]?.length > 0) {
+        params.append(key, payload[key].join(','));
+      }
+    }
+
+    const queryString = params.toString();
+    const query = queryString.replace('%20', ' ');
+    return query;
+  };
+
+  const appyFilter = async () => {
+    try {
+      var data = dataPayload();
+      const apply_filter_data = await fetchData.list_jobs(data, token);
+      console.log('apply_filter_data--------------', apply_filter_data);
+      if (apply_filter_data) {
+        navigation.navigate('FilterList', {item: apply_filter_data?.data});
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return (
     <View style={{flex: 1}}>
       <View
@@ -614,7 +655,7 @@ const VerticalTabView = () => {
               handleJobtypePress={handleJobtypePress}
               industrySelectedItem={industrySelectedItem}
               handleIndustryPress={handleIndustryPress}
-              worktypeSelectedIte={worktypeSelectedItem}
+              worktypeSelectedItem={worktypeSelectedItem}
               handleWorkTypePress={handleWorkTypePress}
             />
           </ScrollView>
@@ -664,7 +705,9 @@ const VerticalTabView = () => {
         </Button>
         <Button
           mode="contained"
-          onPress={() => {}}
+          onPress={() => {
+            appyFilter();
+          }}
           style={{
             marginVertical: 10,
             backgroundColor: Color.primary,
