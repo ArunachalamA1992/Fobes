@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, FlatList} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, FlatList } from 'react-native';
 import Color from '../../Global/Color';
 import JobItemCard from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
-const JobListScreen = ({navigation}) => {
+const JobListScreen = ({ navigation }) => {
   const [jobData, setJobData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [token]);
 
   const getData = async () => {
     try {
@@ -22,15 +22,16 @@ const JobListScreen = ({navigation}) => {
       console.log('error', error);
     }
   };
+
   return (
     <View style={styles.container}>
       <FlatList
         data={jobData}
         keyExtractor={(item, index) => item + index}
         showsVerticalScrollIndicator={false}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           return (
-            <JobItemCard item={item} navigation={navigation} token={token} />
+            <JobItemCard item={item} navigation={navigation} token={token} getData={getData} />
           );
         }}
       />

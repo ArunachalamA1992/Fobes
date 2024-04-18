@@ -683,6 +683,7 @@ const DetailedScreen = ({ navigation, route }) => {
                   item={item}
                   navigation={navigation}
                   token={token}
+                  getData={getData}
                 />
               );
             }}

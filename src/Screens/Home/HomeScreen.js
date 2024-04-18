@@ -39,7 +39,7 @@ var { width, height } = Dimensions.get('window');
 LogBox.ignoreAllLogs();
 
 const windowHeight = Dimensions.get('screen').height;
-const FullTime = ({ topCompany, navigation, jobData, token }) => {
+const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -85,6 +85,7 @@ const FullTime = ({ topCompany, navigation, jobData, token }) => {
                 item={item}
                 navigation={navigation}
                 token={token}
+                getData={getData}
               />
             );
           }}
@@ -151,12 +152,12 @@ const FullTime = ({ topCompany, navigation, jobData, token }) => {
                   elevation: 1,
                   backgroundColor: '#EFFAFF',
                 }}>
-                {item.logo === null  ?
+                {item?.logo == null ?
                   <Image
                     source={require('../../assets/logos/user.png')}
                     style={{
-                      width: 70,
-                      height: 70,
+                      width: 80,
+                      height: 80,
                       resizeMode: 'contain',
                       borderRadius: 100, backgroundColor: Color.softGrey, borderWidth: 0.5, borderColor: Color.lightgrey
                     }}
@@ -177,7 +178,7 @@ const FullTime = ({ topCompany, navigation, jobData, token }) => {
                     fontSize: 16,
                     color: Color.black,
                     fontFamily: Gilmer.Bold,
-                    paddingVertical: 5,
+                    paddingVertical: 5, textTransform: 'capitalize'
                   }}>
                   {item?.name}
                 </Text>
@@ -274,6 +275,7 @@ const FullTime = ({ topCompany, navigation, jobData, token }) => {
                 item={item}
                 navigation={navigation}
                 token={token}
+                getData={getData}
               />
             );
           }}
@@ -543,6 +545,7 @@ const HomeScreen = ({ navigation }) => {
         navigation={navigation}
         jobData={jobData}
         token={token}
+        getData={getData}
       />
     ),
     parttime: () => <PartTime />,

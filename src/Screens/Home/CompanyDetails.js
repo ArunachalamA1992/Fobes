@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,21 +10,21 @@ import {
   ScrollView,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {Media} from '../../Global/Media';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {ApplyJobData} from '../../Global/Content';
-import {JobCardHorizontal} from '../../Components/JobItemCard';
+import { Gilmer } from '../../Global/FontFamily';
+import { Media } from '../../Global/Media';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { ApplyJobData } from '../../Global/Content';
+import { JobCardHorizontal } from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import {useDispatch, useSelector} from 'react-redux';
-import {base_image_url} from '../../Config/base_url';
-import {Linking} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { base_image_url } from '../../Config/base_url';
+import { Linking } from 'react-native';
 
-const CompanyDetails = ({navigation, route}) => {
+const CompanyDetails = ({ navigation, route }) => {
   const [itemData] = useState(route?.params?.item);
   const [jobData, setJobData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
 
   useEffect(() => {
     getData();
@@ -49,7 +49,7 @@ const CompanyDetails = ({navigation, route}) => {
             style={{
               width: '100%',
               height: 150,
-              resizeMode: 'cover',
+              resizeMode: 'contain', borderColor: Color.white, borderWidth: 0.2
             }}
           />
 
@@ -78,7 +78,7 @@ const CompanyDetails = ({navigation, route}) => {
             />
           </View>
         </View>
-        <View style={{marginTop: 30, padding: 10}}>
+        <View style={{ marginTop: 30, padding: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -215,7 +215,7 @@ const CompanyDetails = ({navigation, route}) => {
           </View>
         </View>
 
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -237,7 +237,7 @@ const CompanyDetails = ({navigation, route}) => {
             }}>
             {itemData?.bio.replace(/<[^>]+>/g, '')}
           </Text>
-          <View style={{padding: 5}}>
+          <View style={{ padding: 5 }}>
             <View style={{}}>
               <Text
                 style={{
@@ -261,7 +261,7 @@ const CompanyDetails = ({navigation, route}) => {
                 {itemData?.phone}
               </Text>
             </View>
-            <View style={{marginVertical: 5}}>
+            <View style={{ marginVertical: 5 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -285,8 +285,8 @@ const CompanyDetails = ({navigation, route}) => {
               </Text>
             </View>
             {itemData?.website === null &&
-            itemData?.website === 'null' &&
-            itemData?.website === '' ? null : (
+              itemData?.website === 'null' &&
+              itemData?.website === '' ? null : (
               <View>
                 <Text
                   style={{
@@ -312,7 +312,7 @@ const CompanyDetails = ({navigation, route}) => {
               </View>
             )}
 
-            <View style={{marginVertical: 5}}>
+            <View style={{ marginVertical: 5 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -468,12 +468,13 @@ const CompanyDetails = ({navigation, route}) => {
           <FlatList
             data={jobData}
             keyExtractor={(item, index) => item + index}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               return (
                 <JobCardHorizontal
                   item={item}
                   navigation={navigation}
                   token={token}
+                  getData={getData}
                 />
               );
             }}
