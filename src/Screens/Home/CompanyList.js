@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,21 +7,21 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { Media } from '../../Global/Media';
+import {Media} from '../../Global/Media';
 import Color from '../../Global/Color';
-import { Gilmer } from '../../Global/FontFamily';
-import { Iconviewcomponent } from '../../Components/Icontag';
-import { useNavigation } from '@react-navigation/native';
+import {Gilmer} from '../../Global/FontFamily';
+import {Iconviewcomponent} from '../../Components/Icontag';
+import {useNavigation} from '@react-navigation/native';
 import fetchData from '../../Config/fetchData';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { base_image_url } from '../../Config/base_url';
+import {base_image_url} from '../../Config/base_url';
 
 const CompanyList = () => {
   const navigation = useNavigation();
   const [compData, setCompData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
+  var {token} = userData;
   const [loading, setLoading] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
   const [page, setPage] = useState(1);
@@ -93,7 +93,7 @@ const CompanyList = () => {
     try {
       const nextPage = page + 1;
       var data = 'page_number=' + nextPage;
-      const response = await fetchData.list_company(data);
+      const response = await fetchData.list_company(data, token);
       if (response?.data.length > 0) {
         setPage(nextPage);
         const updatedData = [...compData, ...response?.data];
@@ -111,7 +111,7 @@ const CompanyList = () => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={{ padding: 10 }}>
+        <View style={{padding: 10}}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
               <SkeletonPlaceholder.Item width="100%" height={150} />
@@ -119,37 +119,37 @@ const CompanyList = () => {
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
             </SkeletonPlaceholder.Item>
           </SkeletonPlaceholder>
@@ -158,11 +158,11 @@ const CompanyList = () => {
         <FlatList
           data={compData}
           keyExtractor={(item, index) => item + index}
-          renderItem={({ item, index }) => {
-            console.log("lskdngklsngn   ", JSON.stringify(item));
+          renderItem={({item, index}) => {
+            console.log('lskdngklsngn   ', JSON.stringify(item));
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate('CompanyDetails', { item })}
+                onPress={() => navigation.navigate('CompanyDetails', {item})}
                 key={index}
                 style={{
                   alignItems: 'center',
@@ -174,28 +174,36 @@ const CompanyList = () => {
                   marginTop: 10,
                   paddingHorizontal: 10,
                 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {item?.logo === "" && item?.logo === null && item?.logo === "null" ?
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  {item?.logo === '' &&
+                  item?.logo === null &&
+                  item?.logo === 'null' ? (
                     <Image
                       source={require('../../assets/logos/user.png')}
                       style={{
                         width: 70,
                         height: 70,
                         resizeMode: 'contain',
-                        borderRadius: 100, backgroundColor: Color.softGrey, borderWidth: 0.5, borderColor: Color.lightgrey
+                        borderRadius: 100,
+                        backgroundColor: Color.softGrey,
+                        borderWidth: 0.5,
+                        borderColor: Color.lightgrey,
                       }}
                     />
-                    :
+                  ) : (
                     <Image
-                      source={{ uri: base_image_url + item?.logo }}
+                      source={{uri: base_image_url + item?.logo}}
                       style={{
                         width: 70,
                         height: 70,
                         resizeMode: 'contain',
-                        borderRadius: 100, backgroundColor: Color.Venus, borderWidth: 0.5, borderColor: Color.lightgrey
+                        borderRadius: 100,
+                        backgroundColor: Color.Venus,
+                        borderWidth: 0.5,
+                        borderColor: Color.lightgrey,
                       }}
                     />
-                  }
+                  )}
                   <View
                     style={{
                       flex: 1,
@@ -208,7 +216,9 @@ const CompanyList = () => {
                         fontSize: 16,
                         color: Color.black,
                         fontFamily: Gilmer.Bold,
-                        textTransform: 'capitalize', paddingHorizontal: 5, paddingVertical: 5
+                        textTransform: 'capitalize',
+                        paddingHorizontal: 5,
+                        paddingVertical: 5,
                       }}
                       numberOfLines={2}>
                       {item.name}
@@ -252,14 +262,14 @@ const CompanyList = () => {
                     alignItems: 'center',
                     // paddingVertical: 10,
                   }}>
-
                   <Text
                     style={{
                       fontSize: 12,
                       color: Color.primary,
                       fontFamily: Gilmer.Bold,
                       textDecorationLine: 'underline',
-                      paddingVertical: 5, paddingHorizontal: 10
+                      paddingVertical: 5,
+                      paddingHorizontal: 10,
                     }}
                     numberOfLines={1}>
                     {item.comp_offer_count} Jobs Open

@@ -33,7 +33,7 @@ import EducationDetails from './Screens/Profile/EducationDetails';
 import EmploymentDetails from './Screens/Profile/EmploymentDetails';
 import SkillScreen from './Screens/Profile/Skills';
 import ProjectScreen from './Screens/Profile/ProjectScreen';
-import FilterScreen from './Screens/Home/FilterScreen';
+import FilterScreen from './Screens/Home/Filter/FilterScreen';
 import IntroductionScreen from './Screens/Profile/IntroductionScreen';
 import BasicDetails from './Screens/Profile/BasicDetails';
 import Applycompletion from './Screens/Home/Jobs/Applycompletion';

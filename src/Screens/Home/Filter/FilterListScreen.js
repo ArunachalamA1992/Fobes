@@ -1,30 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
-import Color from '../../Global/Color';
-import JobItemCard from '../../Components/JobItemCard';
-import fetchData from '../../Config/fetchData';
-import { useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {useSelector} from 'react-redux';
+import Color from '../../../Global/Color';
+import JobItemCard from '../../../Components/JobItemCard';
+import {FlatList} from 'react-native';
+import fetchData from '../../../Config/fetchData';
 
-const JobListScreen = ({ navigation }) => {
-  const [jobData, setJobData] = useState([]);
+const FilterListScreen = ({navigation, route}) => {
+  const [itemData, setItemData] = useState(route?.params?.item);
   const [loadMore, setLoadMore] = useState(false);
   const [page, setPage] = useState(1);
   const [endReached, setEndReached] = useState(false);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
-
-  useEffect(() => {
-    getData();
-  }, [token]);
-
-  const getData = async () => {
-    try {
-      const job_list = await fetchData.list_jobs(null, token);
-      setJobData(job_list?.data);
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
+  var {token} = userData;
 
   const loadMoreData = async () => {
     if (loadMore || endReached) {
@@ -37,8 +25,8 @@ const JobListScreen = ({ navigation }) => {
       const response = await fetchData.list_company(data, token);
       if (response?.data.length > 0) {
         setPage(nextPage);
-        const updatedData = [...jobData, ...response?.data];
-        setJobData(updatedData);
+        const updatedData = [...itemData, ...response?.data];
+        setItemData(updatedData);
       } else {
         setEndReached(true);
       }
@@ -51,12 +39,12 @@ const JobListScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={jobData}
+        data={itemData}
         keyExtractor={(item, index) => item + index}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item, index }) => {
+        renderItem={({item, index}) => {
           return (
-            <JobItemCard item={item} navigation={navigation} token={token} getData={getData} />
+            <JobItemCard item={item} navigation={navigation} token={token} />
           );
         }}
         onEndReached={() => {
@@ -76,4 +64,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JobListScreen;
+export default FilterListScreen;

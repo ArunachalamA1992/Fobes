@@ -9,10 +9,10 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {RadioButton} from 'react-native-paper';
-import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
+import Color from '../../../Global/Color';
+import {Gilmer} from '../../../Global/FontFamily';
 import CheckBox from '@react-native-community/checkbox';
-import CheckboxData, {RadioData} from '../../Components/Checkbox';
+import CheckboxData, {RadioData} from '../../../Components/Checkbox';
 
 const FilterScreen = ({navigation}) => {
   const [datePostedData] = useState([
