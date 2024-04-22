@@ -43,7 +43,6 @@ const SavedJobScreen = ({navigation}) => {
   };
 
   const getToggleJobs = async id => {
-    console.log('id----------------------------------------------------', id);
     try {
       var data = {job_id: id};
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);

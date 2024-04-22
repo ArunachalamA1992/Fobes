@@ -16,8 +16,20 @@ const common_fn = {
   AccordionAnimation: () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   },
-  calculateProfileCompletion: (resume, skills, details) => {
-    const totalFields = 3;
+  calculateProfileCompletion: (
+    resume,
+    skills,
+    education,
+    experience,
+    language,
+    gender,
+    birthdate,
+    marital_status,
+    email,
+    phone,
+    name,
+  ) => {
+    const totalFields = 13;
     let completedFields = 0;
 
     if (resume != null && resume?.length > 0) {
@@ -26,7 +38,31 @@ const common_fn = {
     if (skills?.length > 0) {
       completedFields++;
     }
-    if (details?.length > 0) {
+    if (education?.length > 0) {
+      completedFields++;
+    }
+    if (experience?.length > 0) {
+      completedFields++;
+    }
+    if (language?.length > 0) {
+      completedFields++;
+    }
+    if (gender?.length > 0) {
+      completedFields++;
+    }
+    if (birthdate?.length > 0) {
+      completedFields++;
+    }
+    if (marital_status?.length > 0) {
+      completedFields++;
+    }
+    if (email?.length > 0) {
+      completedFields++;
+    }
+    if (phone?.length > 0) {
+      completedFields++;
+    }
+    if (name?.length > 0) {
       completedFields++;
     }
 

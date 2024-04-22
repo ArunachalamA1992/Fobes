@@ -183,7 +183,17 @@ const ProfileScreen = ({navigation}) => {
     const profiledata = common_fn.calculateProfileCompletion(
       candidate_resume,
       candidate_skills,
-      [candidate_educations, candidate_experiences].flat(),
+      candidate_educations,
+      candidate_experiences,
+      candidate_language,
+      gender,
+      birth_date,
+      marital_status,
+      place,
+      experience_name,
+      email,
+      phone,
+      name,
     );
     setProfileStatus(profiledata);
   }, [
@@ -192,6 +202,15 @@ const ProfileScreen = ({navigation}) => {
     candidate_skills,
     candidate_educations,
     candidate_experiences,
+    candidate_language,
+    gender,
+    birth_date,
+    marital_status,
+    place,
+    experience_name,
+    email,
+    phone,
+    name,
   ]);
 
   useEffect(() => {

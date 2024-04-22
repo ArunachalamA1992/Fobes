@@ -595,7 +595,6 @@ const VerticalTabView = props => {
     try {
       var data = dataPayload();
       const apply_filter_data = await fetchData.list_jobs(data, token);
-      console.log('apply_filter_data--------------', apply_filter_data);
       if (apply_filter_data) {
         navigation.navigate('FilterList', {item: apply_filter_data?.data});
       }

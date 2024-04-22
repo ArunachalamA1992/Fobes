@@ -386,6 +386,7 @@ const HomeScreen = ({navigation}) => {
     social_links,
     candidate_resume,
     candidate_language,
+    phone,
     token,
   } = userData;
   const profile_complete_data = useSelector(
@@ -571,10 +572,35 @@ const HomeScreen = ({navigation}) => {
     const profiledata = common_fn.calculateProfileCompletion(
       candidate_resume,
       candidate_skills,
-      [candidate_educations, candidate_experiences].flat(),
+      candidate_educations,
+      candidate_experiences,
+      candidate_language,
+      gender,
+      birth_date,
+      marital_status,
+      place,
+      experience_name,
+      email,
+      phone,
+      name,
     );
     setProfileStatus(profiledata);
-  }, [profileStatus, candidate_resume, candidate_skills, candidate_educations]);
+  }, [
+    profileStatus,
+    candidate_resume,
+    candidate_skills,
+    candidate_educations,
+    candidate_experiences,
+    candidate_language,
+    gender,
+    birth_date,
+    marital_status,
+    place,
+    experience_name,
+    email,
+    phone,
+    name,
+  ]);
 
   return (
     <SafeAreaView style={styles.container}>

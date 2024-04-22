@@ -17,7 +17,8 @@ import {base_image_url} from '../../Config/base_url';
 import {Iconviewcomponent} from '../../Components/Icontag';
 
 const SearchScreen = ({navigation}) => {
-  const [search, setSearch] = useState('');
+  const [searchJob, setSearchJob] = useState('');
+  const [searchLocation, setSearchLocation] = useState('');
   const [TopCompany, setTopCompany] = useState([]);
   const [recentSearch] = useState([
     {
@@ -74,22 +75,22 @@ const SearchScreen = ({navigation}) => {
           placeholder="Search Jobs, Companies"
           placeholderTextColor={Color.grey}
           style={styles.searchView}
-          value={search}
+          value={searchJob}
           iconColor={Color.grey}
           inputStyle={{color: Color.black}}
-          onChangeText={search => setSearch(search)}
+          onChangeText={search => setSearchJob(search)}
         />
         <Searchbar
           placeholder="Search Location"
           placeholderTextColor={Color.grey}
           style={styles.searchView}
-          value={search}
+          value={searchLocation}
           icon={() => (
             <F6Icon name="location-dot" size={20} color={Color.lightgrey} />
           )}
           iconColor={Color.grey}
           inputStyle={{color: Color.black}}
-          onChangeText={search => setSearch(search)}
+          onChangeText={search => setSearchLocation(search)}
         />
         <View style={{marginTop: 20}}>
           <View
