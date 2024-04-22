@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,15 +13,15 @@ import {
 } from 'react-native';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {useTheme} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
+import { useTheme } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { Iconviewcomponent } from '../../Components/Icontag';
 import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DismissKeyboard = ({children}) => (
+const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
@@ -33,8 +33,9 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [emailValidError, setEmailValidError] = useState('');
   const [password, setPassword] = useState('');
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const [password_visible, setPasswordvisibility] = useState(false);
+  const [minPass, setMinPass] = useState("");
 
   const signIn = async () => {
     try {
@@ -43,7 +44,9 @@ const Login = () => {
           email: email,
           password: password,
         };
+        console.log("data =========== :", data);
         const login = await fetchData.login_with_pass(data, null);
+        // console.log("Success =========== :", JSON.stringify(login));
         if (login?.message == 'Login Successful') {
           const combinedData = {
             ...login?.data,
@@ -84,7 +87,7 @@ const Login = () => {
         }}>
         <Image
           source={require('../../assets/logos/fobes.png')}
-          style={{width: 100, height: 100, resizeMode: 'contain'}}
+          style={{ width: 100, height: 100, resizeMode: 'contain' }}
         />
         <View
           style={{
@@ -121,7 +124,7 @@ const Login = () => {
             Icontag={'Feather'}
             iconname={'mail'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
             style={styles.numberTextBox}
@@ -132,6 +135,7 @@ const Login = () => {
               setEmail(value);
               handleValidEmail(value);
             }}
+            keyboardType='email-address'
           />
         </View>
         {emailValidError ? (
@@ -148,17 +152,17 @@ const Login = () => {
           </Text>
         ) : null}
 
-        <View style={{marginTop: 20}}>
+        <View style={{ marginTop: 20 }}>
           <View
             style={[
               styles.NumberBoxConatiner,
-              {marginVertical: 5, paddingHorizontal: 15},
+              { marginVertical: 5, paddingHorizontal: 15 },
             ]}>
             <Iconviewcomponent
               Icontag={'MaterialCommunityIcons'}
               iconname={'lock'}
               icon_size={22}
-              iconstyle={{color: Color.transparantBlack}}
+              iconstyle={{ color: Color.transparantBlack }}
             />
             <TextInput
               style={styles.numberTextBox}
@@ -166,7 +170,21 @@ const Login = () => {
               placeholderTextColor={Color.cloudyGrey}
               secureTextEntry={!password_visible}
               value={password}
-              onChangeText={password => setPassword(password)}
+              keyboardType='name-phone-pad'
+              // onChangeText={password => setPassword(password)}
+              onChangeText={password => {
+                // setPassword(text),
+                if (password.length < 7) {
+                  // console.log("min --------- ", text)
+                  setMinPass("set minimum character as 6")
+                  setPassword(password);
+
+                } else {
+                  // console.log("max --------- ", text);
+                  setPassword(password)
+                  setMinPass("")
+                }
+              }}
             />
             <TouchableOpacity
               onPress={() => setPasswordvisibility(!password_visible)}
@@ -175,10 +193,12 @@ const Login = () => {
                 Icontag={'MaterialCommunityIcons'}
                 iconname={!password_visible ? 'eye-off' : 'eye'}
                 icon_size={22}
-                iconstyle={{color: Color.transparantBlack}}
+                iconstyle={{ color: Color.transparantBlack }}
               />
             </TouchableOpacity>
           </View>
+
+          {minPass != 'null' ? <Text style={{ width: '95%', paddingVertical: 5, fontSize: 14, color: 'red' }}>{minPass}</Text> : null}
         </View>
         <View
           style={{
@@ -205,7 +225,7 @@ const Login = () => {
                 color={Color.cloudyGrey}
               />
             </TouchableOpacity>
-            <View style={{marginHorizontal: 5}}>
+            <View style={{ marginHorizontal: 5 }}>
               <Text
                 style={{
                   fontSize: 14,
@@ -254,7 +274,7 @@ const Login = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View
           style={{
             flex: 1,
@@ -299,7 +319,7 @@ const Login = () => {
             source={{
               uri: 'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
             }}
-            style={{width: 45, height: 45, resizeMode: 'contain'}}
+            style={{ width: 45, height: 45, resizeMode: 'contain' }}
           />
           <Text
             style={{

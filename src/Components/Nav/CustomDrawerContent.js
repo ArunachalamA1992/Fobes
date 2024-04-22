@@ -97,7 +97,7 @@ const CustomDrawerContent = props => {
           backgroundColor: Color.primary,
           height: 200,
           alignItems: 'flex-start',
-          justifyContent: 'flex-start',
+          justifyContent: 'center',
           // flexDirection: 'row',
           padding: 10,
         }}>
@@ -107,7 +107,7 @@ const CustomDrawerContent = props => {
             width: 90,
             height: 90,
             resizeMode: 'contain',
-            borderRadius: 100,
+            borderRadius: 100, marginTop: 20
           }}
         />
         <View style={{ flex: 1, marginHorizontal: 5 }}>
@@ -128,7 +128,7 @@ const CustomDrawerContent = props => {
               fontFamily: Gilmer.SemiBold,
               marginVertical: 5,
             }}>
-            update profile
+            {email}
           </Text>
         </View>
         {/* <Icon

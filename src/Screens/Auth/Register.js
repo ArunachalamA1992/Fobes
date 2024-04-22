@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,23 +10,25 @@ import {
   ToastAndroid,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {scr_height, scr_width} from '../../Utils/Dimensions';
-import {Gilmer} from '../../Global/FontFamily';
-import {useTheme} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
+import { scr_height, scr_width } from '../../Utils/Dimensions';
+import { Gilmer } from '../../Global/FontFamily';
+import { useTheme } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Iconviewcomponent } from '../../Components/Icontag';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
 
-const Register = ({navigation}) => {
+const Register = ({ navigation }) => {
+  var { replace } = navigation;
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [emailValidError, setEmailValidError] = useState('');
   const [password, setPassword] = useState('');
-  const {colors} = useTheme();
+  const [minPass, setMinPass] = useState("");
+  const { colors } = useTheme();
   const [password_visible, setPasswordvisibility] = useState(false);
 
   const handleValidEmail = val => {
@@ -51,7 +53,7 @@ const Register = ({navigation}) => {
           role: 'candidate',
         };
         const register_data = await fetchData.register(data, null);
-        if (register_data?.message == 'Data Inserted Successfully') {
+        if (register_data?.message == 'Registered Successfully') {
           navigation.replace('Login');
           common_fn.showToast(register_data?.message);
         } else {
@@ -75,7 +77,7 @@ const Register = ({navigation}) => {
         }}>
         <Image
           source={require('../../assets/logos/fobes.png')}
-          style={{width: 100, height: 100, resizeMode: 'contain'}}
+          style={{ width: 100, height: 100, resizeMode: 'contain' }}
         />
         <Text
           style={{
@@ -111,10 +113,10 @@ const Register = ({navigation}) => {
             Icontag={'Ionicons'}
             iconname={'person'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
-            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
             placeholder="Full Name"
             placeholderTextColor={Color.transparantBlack}
             value={username}
@@ -129,10 +131,10 @@ const Register = ({navigation}) => {
             Icontag={'Ionicons'}
             iconname={'mail'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
-            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
             placeholder="Email Address"
             placeholderTextColor={Color.transparantBlack}
             onChangeText={text => {
@@ -159,10 +161,10 @@ const Register = ({navigation}) => {
             Icontag={'Ionicons'}
             iconname={'call'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
-            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
             placeholder="Mobile Number"
             placeholderTextColor={Color.transparantBlack}
             value={phone}
@@ -176,17 +178,30 @@ const Register = ({navigation}) => {
             Icontag={'MaterialCommunityIcons'}
             iconname={'lock'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
-            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
             placeholder="Create Password"
             placeholderTextColor={Color.transparantBlack}
             secureTextEntry={!password_visible}
             value={password}
-            onChangeText={text => setPassword(text)}
+            onChangeText={text => {
+              // setPassword(text),
+              if (text.length < 7) {
+                // console.log("min --------- ", text)
+                setMinPass("set minimum character as 6")
+                setPassword(text);
+
+              } else {
+                // console.log("max --------- ", text);
+                setPassword(text)
+                setMinPass("")
+              }
+            }}
             keyboardType="name-phone-pad"
           />
+
           <TouchableOpacity
             onPress={() => setPasswordvisibility(!password_visible)}
             style={styles.numberCountryCode}>
@@ -194,10 +209,11 @@ const Register = ({navigation}) => {
               Icontag={'MaterialCommunityIcons'}
               iconname={!password_visible ? 'eye-off' : 'eye'}
               icon_size={22}
-              iconstyle={{color: Color.transparantBlack}}
+              iconstyle={{ color: Color.transparantBlack }}
             />
           </TouchableOpacity>
         </View>
+        {minPass != 'null' ? <Text style={{ width: '95%', paddingVertical: 5, fontSize: 14, color: 'red' }}>{minPass}</Text> : null}
       </View>
       <TouchableOpacity
         onPress={() => signUp()}
@@ -208,11 +224,11 @@ const Register = ({navigation}) => {
           alignItems: 'center',
           borderRadius: 50,
         }}>
-        <Text style={{fontSize: 16, color: Color.white, textAlign: 'center'}}>
+        <Text style={{ fontSize: 16, color: Color.white, textAlign: 'center' }}>
           Sign Up
         </Text>
       </TouchableOpacity>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View
           style={{
             flex: 1,
@@ -257,7 +273,7 @@ const Register = ({navigation}) => {
             source={{
               uri: 'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
             }}
-            style={{width: 45, height: 45, resizeMode: 'contain'}}
+            style={{ width: 45, height: 45, resizeMode: 'contain' }}
           />
           <Text
             style={{

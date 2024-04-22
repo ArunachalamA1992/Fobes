@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,22 +9,22 @@ import {
   Dimensions,
 } from 'react-native';
 import Color from '../../../Global/Color';
-import {Gilmer} from '../../../Global/FontFamily';
-import {Iconviewcomponent} from '../../../Components/Icontag';
+import { Gilmer } from '../../../Global/FontFamily';
+import { Iconviewcomponent } from '../../../Components/Icontag';
 import fetchData from '../../../Config/fetchData';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import common_fn from '../../../Config/common_fn';
-import {base_image_url} from '../../../Config/base_url';
+import { base_image_url } from '../../../Config/base_url';
 
-const {height} = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
-const AppliedJobs = ({navigation}) => {
+const AppliedJobs = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [resultDate, setResultDate] = useState(null);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
   const [ApplyJobData, setApplyJobData] = useState([]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const AppliedJobs = ({navigation}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
               <SkeletonPlaceholder.Item width="100%" height={150} />
@@ -56,67 +56,67 @@ const AppliedJobs = ({navigation}) => {
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
             </SkeletonPlaceholder.Item>
           </SkeletonPlaceholder>
@@ -126,7 +126,7 @@ const AppliedJobs = ({navigation}) => {
           data={ApplyJobData}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             const currentDate = moment();
             const yourDate = moment(item?.created_at);
 
@@ -140,21 +140,20 @@ const AppliedJobs = ({navigation}) => {
               let result;
 
               if (Math.abs(daysAgo) > 0) {
-                result = `${Math.abs(daysAgo)} day${
-                  Math.abs(daysAgo) !== 1 ? 's' : ''
-                } ago`;
+                result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
+                  } ago`;
               } else if (Math.abs(hoursAgo) > 0) {
-                result = `${Math.abs(hoursAgo)} hour${
-                  Math.abs(hoursAgo) !== 1 ? 's' : ''
-                } ago`;
+                result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
+                  } ago`;
               } else {
-                result = `${Math.abs(minutesAgo)} minute${
-                  Math.abs(minutesAgo) !== 1 ? 's' : ''
-                } ago`;
+                result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
+                  } ago`;
               }
 
               setResultDate(result);
             }
+
+            // console.log("item ========== ", JSON.stringify(item));
             return (
               <TouchableOpacity
                 key={index}
@@ -167,11 +166,11 @@ const AppliedJobs = ({navigation}) => {
                   borderRadius: 5,
                 }}
                 onPress={() => {
-                  navigation.navigate('JobStatus', {item, resultDate});
+                  navigation.navigate('JobStatus', { item, resultDate });
                 }}>
-                <View style={{paddingVertical: 10}}>
+                <View style={{ paddingVertical: 10 }}>
                   <Image
-                    source={{uri: base_image_url + item?.job?.company?.logo}}
+                    source={{ uri: base_image_url + item?.job?.company?.logo }}
                     style={{
                       width: 70,
                       height: 70,
@@ -179,7 +178,7 @@ const AppliedJobs = ({navigation}) => {
                       borderRadius: 100,
                     }}
                   />
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View
                       style={{
                         flex: 1,
@@ -252,12 +251,12 @@ const AppliedJobs = ({navigation}) => {
                   }}>
                   <View
                     style={{
-                      // flex: 1,
+                      flex: 1,
                       flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
                       borderRadius: 5,
-                      padding: 5,
+                      padding: 5, paddingHorizontal: 10,
                       backgroundColor: '#DEFCE4',
                     }}>
                     <Iconviewcomponent
@@ -279,9 +278,9 @@ const AppliedJobs = ({navigation}) => {
                   </View>
                   <View
                     style={{
-                      // flex: 1,
-                      justifyContent: 'flex-start',
-                      alignItems: 'flex-start',
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
                     <Text
                       style={{
@@ -290,7 +289,7 @@ const AppliedJobs = ({navigation}) => {
                         backgroundColor: '#E9F9F6',
                         fontSize: 12,
                         color: Color.lightBlack,
-                        borderRadius: 5,
+                        borderRadius: 5, paddingHorizontal: 10,
                         fontFamily: Gilmer.Medium,
                       }}>
                       {item?.job?.job_type?.name}
@@ -298,18 +297,19 @@ const AppliedJobs = ({navigation}) => {
                   </View>
                   <View
                     style={{
-                      // flex: 1,
-                      justifyContent: 'flex-start',
-                      alignItems: 'flex-start',
+                      flex: 1,
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
                     <Text
                       style={{
                         padding: 5,
                         marginHorizontal: 5,
                         backgroundColor: '#E9F9F6',
-                        fontSize: 12,
+                        fontSize: 12, textAlign: 'justify',
                         color: Color.lightBlack,
-                        borderRadius: 5,
+                        borderRadius: 5, paddingHorizontal: 10,
                         fontFamily: Gilmer.Medium,
                       }}>
                       ₹{' '}
