@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,22 +10,21 @@ import {
   ScrollView,
 } from 'react-native';
 import Color from '../../Global/Color';
-import { Gilmer } from '../../Global/FontFamily';
-import { Media } from '../../Global/Media';
-import { Iconviewcomponent } from '../../Components/Icontag';
-import { ApplyJobData } from '../../Global/Content';
-import { JobCardHorizontal } from '../../Components/JobItemCard';
+import {Gilmer} from '../../Global/FontFamily';
+import {Media} from '../../Global/Media';
+import {Iconviewcomponent} from '../../Components/Icontag';
+import {ApplyJobData} from '../../Global/Content';
+import {JobCardHorizontal} from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import { useDispatch, useSelector } from 'react-redux';
-import { base_image_url } from '../../Config/base_url';
-import { Linking } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {base_image_url} from '../../Config/base_url';
+import {Linking} from 'react-native';
 
-const CompanyDetails = ({ navigation, route }) => {
+const CompanyDetails = ({navigation, route}) => {
   const [itemData] = useState(route?.params?.item);
   const [jobData, setJobData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
-
+  var {token} = userData;
   useEffect(() => {
     getData();
   }, []);
@@ -48,45 +47,61 @@ const CompanyDetails = ({ navigation, route }) => {
             }}
             style={{
               width: '100%',
-              height: 150,
-              resizeMode: 'contain', borderColor: Color.white, borderWidth: 0.2
+              height: 80,
+              resizeMode: 'contain',
             }}
           />
 
-          <View
-            style={{
-              width: 80,
-              height: 80,
-              position: 'absolute',
-              top: 90,
-              marginHorizontal: 10,
-              elevation: 2,
-              padding: 5,
-              backgroundColor: Color.white,
-              borderRadius: 100,
-            }}>
-            <Image
-              source={{
-                uri: base_image_url + itemData?.logo,
-              }}
+          {itemData?.logo == null ? (
+            <View
               style={{
-                width: '100%',
-                height: '100%',
-                resizeMode: 'contain',
+                padding: 10,
+                backgroundColor: Color.white,
+                position: 'absolute',
+                top: 40,
+                marginHorizontal: 10,
                 borderRadius: 100,
-              }}
-            />
-          </View>
+              }}>
+              <Image
+                source={Media?.user}
+                style={{
+                  width: 70,
+                  height: 70,
+                  resizeMode: 'contain',
+                  borderRadius: 100,
+                }}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                padding: 10,
+                backgroundColor: Color.white,
+                position: 'absolute',
+                top: 40,
+                marginHorizontal: 10,
+                borderRadius: 100,
+              }}>
+              <Image
+                source={{uri: base_image_url + itemData?.logo}}
+                style={{
+                  width: 70,
+                  height: 70,
+                  resizeMode: 'contain',
+                  borderRadius: 100,
+                }}
+              />
+            </View>
+          )}
         </View>
-        <View style={{ marginTop: 30, padding: 10 }}>
+        <View style={{marginTop: 50, padding: 10}}>
           <Text
             style={{
               fontSize: 16,
               color: Color.black,
               fontFamily: Gilmer.Bold,
             }}>
-            {itemData?.vision.replace(/<[^>]+>/g, '')}
-            {/* Business Development Executive */}
+            {itemData?.vision?.replace(/<[^>]+>/g, '')}
           </Text>
           <Text
             style={{
@@ -97,7 +112,6 @@ const CompanyDetails = ({ navigation, route }) => {
               paddingVertical: 10,
             }}>
             {itemData?.name}
-            {/* Avanexa Technologies */}
           </Text>
 
           {/* <View
@@ -215,7 +229,7 @@ const CompanyDetails = ({ navigation, route }) => {
           </View>
         </View>
 
-        <View style={{ padding: 10 }}>
+        <View style={{padding: 10}}>
           <Text
             style={{
               fontSize: 16,
@@ -235,9 +249,9 @@ const CompanyDetails = ({ navigation, route }) => {
               fontFamily: Gilmer.Medium,
               lineHeight: 25,
             }}>
-            {itemData?.bio.replace(/<[^>]+>/g, '')}
+            {itemData?.bio?.replace(/<[^>]+>/g, '')}
           </Text>
-          <View style={{ padding: 5 }}>
+          <View style={{padding: 5}}>
             <View style={{}}>
               <Text
                 style={{
@@ -261,7 +275,7 @@ const CompanyDetails = ({ navigation, route }) => {
                 {itemData?.phone}
               </Text>
             </View>
-            <View style={{ marginVertical: 5 }}>
+            <View style={{marginVertical: 5}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -285,8 +299,8 @@ const CompanyDetails = ({ navigation, route }) => {
               </Text>
             </View>
             {itemData?.website === null &&
-              itemData?.website === 'null' &&
-              itemData?.website === '' ? null : (
+            itemData?.website === 'null' &&
+            itemData?.website === '' ? null : (
               <View>
                 <Text
                   style={{
@@ -312,7 +326,7 @@ const CompanyDetails = ({ navigation, route }) => {
               </View>
             )}
 
-            <View style={{ marginVertical: 5 }}>
+            <View style={{marginVertical: 5}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -337,6 +351,8 @@ const CompanyDetails = ({ navigation, route }) => {
             </View>
 
             {itemData?.social_links === null ? (
+              <View />
+            ) : (
               <View>
                 <Text
                   style={{
@@ -440,7 +456,7 @@ const CompanyDetails = ({ navigation, route }) => {
                 </TouchableOpacity> */}
                 </View>
               </View>
-            ) : null}
+            )}
           </View>
         </View>
         <View
@@ -468,7 +484,7 @@ const CompanyDetails = ({ navigation, route }) => {
           <FlatList
             data={jobData}
             keyExtractor={(item, index) => item + index}
-            renderItem={({ item, index }) => {
+            renderItem={({item, index}) => {
               return (
                 <JobCardHorizontal
                   item={item}

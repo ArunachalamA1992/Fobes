@@ -168,15 +168,27 @@ const DetailedScreen = ({navigation, route}) => {
             useNativeDriver: false,
           },
         )}>
-        <Image
-          source={Media.user}
-          style={{
-            width: 100,
-            height: 100,
-            resizeMode: 'contain',
-            borderRadius: 100,
-          }}
-        />
+        {itemData?.company?.logo == null ? (
+          <Image
+            source={Media?.user}
+            style={{
+              width: 60,
+              height: 60,
+              resizeMode: 'contain',
+              borderRadius: 100,
+            }}
+          />
+        ) : (
+          <Image
+            source={{uri: base_image_url + itemData?.company?.logo}}
+            style={{
+              width: 60,
+              height: 60,
+              resizeMode: 'contain',
+              borderRadius: 100,
+            }}
+          />
+        )}
         <Text
           style={{
             fontSize: 20,

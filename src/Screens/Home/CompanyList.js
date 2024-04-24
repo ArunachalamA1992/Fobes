@@ -35,8 +35,11 @@ const CompanyList = () => {
   const getData = async () => {
     try {
       var data = `page_number=${page}`;
+      console.log('data----------------------------', data);
       const comp_list = await fetchData.list_company(data, token);
-      setCompData(comp_list?.data);
+      if (comp_list) {
+        setCompData(comp_list?.data);
+      }
     } catch (error) {
       console.log('error', error);
     }
@@ -159,15 +162,15 @@ const CompanyList = () => {
           data={compData}
           keyExtractor={(item, index) => item + index}
           renderItem={({item, index}) => {
-            console.log('lskdngklsngn   ', JSON.stringify(item));
             return (
               <TouchableOpacity
                 onPress={() => navigation.navigate('CompanyDetails', {item})}
                 key={index}
                 style={{
+                  flex: 1,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderColor: Color.cloudyGrey,
+                  borderColor: Color.lightgrey,
                   borderWidth: 1,
                   padding: 10,
                   borderRadius: 10,
@@ -181,12 +184,12 @@ const CompanyList = () => {
                     <Image
                       source={require('../../assets/logos/user.png')}
                       style={{
-                        width: 70,
-                        height: 70,
+                        width: 60,
+                        height: 60,
                         resizeMode: 'contain',
                         borderRadius: 100,
                         backgroundColor: Color.softGrey,
-                        borderWidth: 0.5,
+                        borderWidth: 1,
                         borderColor: Color.lightgrey,
                       }}
                     />
@@ -194,8 +197,8 @@ const CompanyList = () => {
                     <Image
                       source={{uri: base_image_url + item?.logo}}
                       style={{
-                        width: 70,
-                        height: 70,
+                        width: 60,
+                        height: 60,
                         resizeMode: 'contain',
                         borderRadius: 100,
                         backgroundColor: Color.Venus,
@@ -253,28 +256,19 @@ const CompanyList = () => {
                     icon_color={Color.Venus}
                   />
                 </View>
-
-                <View
+                <Text
                   style={{
-                    width: '100%',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    // paddingVertical: 10,
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: Color.primary,
-                      fontFamily: Gilmer.Bold,
-                      textDecorationLine: 'underline',
-                      paddingVertical: 5,
-                      paddingHorizontal: 10,
-                    }}
-                    numberOfLines={1}>
-                    {item.comp_offer_count} Jobs Open
-                  </Text>
-                </View>
+                    fontSize: 12,
+                    color: Color.primary,
+                    fontFamily: Gilmer.Bold,
+                    textDecorationLine: 'underline',
+                    textAlign: 'right',
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                  }}
+                  numberOfLines={1}>
+                  {item?.openings?.[0]?.vacancies} Jobs Open
+                </Text>
               </TouchableOpacity>
             );
           }}

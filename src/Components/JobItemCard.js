@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { Gilmer } from '../Global/FontFamily';
+import React, {useEffect, useState} from 'react';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Gilmer} from '../Global/FontFamily';
 import Color from '../Global/Color';
-import { Iconviewcomponent } from './Icontag';
-import { Media } from '../Global/Media';
+import {Iconviewcomponent} from './Icontag';
+import {Media} from '../Global/Media';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import fetchData from '../Config/fetchData';
 import common_fn from '../Config/common_fn';
+import {base_image_url} from '../Config/base_url';
 
 const JobItemCard = props => {
-  var { item, navigation, token, getData } = props;
+  var {item, navigation, token, getData} = props;
   const [resultDate, setResultDate] = useState(null);
   const currentDate = moment();
   const yourDate = moment(item?.created_at);
@@ -25,14 +27,17 @@ const JobItemCard = props => {
       let result;
 
       if (Math.abs(daysAgo) > 0) {
-        result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
-          } ago`;
+        result = `${Math.abs(daysAgo)} day${
+          Math.abs(daysAgo) !== 1 ? 's' : ''
+        } ago`;
       } else if (Math.abs(hoursAgo) > 0) {
-        result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
-          } ago`;
+        result = `${Math.abs(hoursAgo)} hour${
+          Math.abs(hoursAgo) !== 1 ? 's' : ''
+        } ago`;
       } else {
-        result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
-          } ago`;
+        result = `${Math.abs(minutesAgo)} minute${
+          Math.abs(minutesAgo) !== 1 ? 's' : ''
+        } ago`;
       }
 
       setResultDate(result);
@@ -41,11 +46,11 @@ const JobItemCard = props => {
 
   const getToggleJobs = async id => {
     try {
-      var data = { job_id: id };
+      var data = {job_id: id};
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
-        getData()
+        getData();
       }
     } catch (error) {
       console.log('error', error);
@@ -54,7 +59,7 @@ const JobItemCard = props => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DetailedScreen', { item })}
+      onPress={() => navigation.navigate('DetailedScreen', {item})}
       style={{
         marginVertical: 10,
         alignItems: 'center',
@@ -114,14 +119,27 @@ const JobItemCard = props => {
           alignItems: 'center',
           marginVertical: 15,
         }}>
-        <Image
-          source={Media.user}
-          style={{
-            width: 60,
-            height: 60,
-            resizeMode: 'cover',
-          }}
-        />
+        {item?.company?.logo == null ? (
+          <Image
+            source={Media?.user}
+            style={{
+              width: 60,
+              height: 60,
+              resizeMode: 'contain',
+              borderRadius: 100,
+            }}
+          />
+        ) : (
+          <Image
+            source={{uri: base_image_url + item?.company?.logo}}
+            style={{
+              width: 60,
+              height: 60,
+              resizeMode: 'contain',
+              borderRadius: 100,
+            }}
+          />
+        )}
         <View
           style={{
             flex: 1,
@@ -215,14 +233,15 @@ const JobItemCard = props => {
               alignItems: 'center',
               marginTop: 5,
             }}>
-            <Image
+            {/* <Image
               source={Media.vector}
               style={{
                 width: 20,
                 height: 20,
                 resizeMode: 'contain',
               }}
-            />
+            /> */}
+            <MCIcon name="shield-account" size={20} color={Color.primary} />
             <Text
               style={{
                 fontSize: 16,
@@ -240,7 +259,7 @@ const JobItemCard = props => {
 };
 
 export const JobCardHorizontal = props => {
-  var { item, navigation, token, getData } = props;
+  var {item, navigation, token, getData} = props;
   const [resultDate, setResultDate] = useState(null);
   const currentDate = moment();
   const yourDate = moment(item?.created_at);
@@ -256,14 +275,17 @@ export const JobCardHorizontal = props => {
       let result;
 
       if (Math.abs(daysAgo) > 0) {
-        result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
-          } ago`;
+        result = `${Math.abs(daysAgo)} day${
+          Math.abs(daysAgo) !== 1 ? 's' : ''
+        } ago`;
       } else if (Math.abs(hoursAgo) > 0) {
-        result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
-          } ago`;
+        result = `${Math.abs(hoursAgo)} hour${
+          Math.abs(hoursAgo) !== 1 ? 's' : ''
+        } ago`;
       } else {
-        result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
-          } ago`;
+        result = `${Math.abs(minutesAgo)} minute${
+          Math.abs(minutesAgo) !== 1 ? 's' : ''
+        } ago`;
       }
 
       setResultDate(result);
@@ -272,11 +294,11 @@ export const JobCardHorizontal = props => {
 
   const getToggleJobs = async id => {
     try {
-      var data = { job_id: id };
+      var data = {job_id: id};
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
-        getData()
+        getData();
       }
     } catch (error) {
       console.log('error', error);
@@ -284,7 +306,7 @@ export const JobCardHorizontal = props => {
   };
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DetailedScreen', { item })}
+      onPress={() => navigation.navigate('DetailedScreen', {item})}
       style={{
         width: 300,
         marginVertical: 10,
@@ -345,14 +367,27 @@ export const JobCardHorizontal = props => {
           alignItems: 'center',
           marginVertical: 15,
         }}>
-        <Image
-          source={Media.user}
-          style={{
-            width: 60,
-            height: 60,
-            resizeMode: 'cover',
-          }}
-        />
+        {item?.company?.logo == null ? (
+          <Image
+            source={Media?.user}
+            style={{
+              width: 60,
+              height: 60,
+              resizeMode: 'contain',
+              borderRadius: 100,
+            }}
+          />
+        ) : (
+          <Image
+            source={{uri: base_image_url + item?.company?.logo}}
+            style={{
+              width: 60,
+              height: 60,
+              resizeMode: 'contain',
+              borderRadius: 100,
+            }}
+          />
+        )}
         <View
           style={{
             flex: 1,
@@ -446,14 +481,15 @@ export const JobCardHorizontal = props => {
               alignItems: 'center',
               marginTop: 5,
             }}>
-            <Image
+            {/* <Image
               source={Media.vector}
               style={{
                 width: 20,
                 height: 20,
                 resizeMode: 'contain',
               }}
-            />
+            /> */}
+            <MCIcon name="shield-account" size={20} color={Color.primary} />
             <Text
               style={{
                 fontSize: 16,

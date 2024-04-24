@@ -39,7 +39,7 @@ var {width, height} = Dimensions.get('window');
 LogBox.ignoreAllLogs();
 
 const windowHeight = Dimensions.get('screen').height;
-const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
+const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
   return (
     <View style={{flex: 1}}>
       <View
@@ -152,8 +152,8 @@ const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
                   elevation: 1,
                   backgroundColor: '#EFFAFF',
                 }}>
-                {item?.logo == null ?
-                  (<Image
+                {item?.logo == null ? (
+                  <Image
                     source={require('../../assets/logos/user.png')}
                     style={{
                       width: 80,
@@ -181,14 +181,17 @@ const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
                     fontSize: 16,
                     color: Color.black,
                     fontFamily: Gilmer.Bold,
-                    paddingVertical: 5, textTransform: 'capitalize'
-                  }}>
+                    paddingVertical: 5,
+                    textTransform: 'capitalize',
+                  }}
+                  numberOfLines={1}>
                   {item?.name}
                 </Text>
                 <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
+                    marginVertical: 5,
                   }}>
                   <Iconviewcomponent
                     Icontag={'Fontisto'}
@@ -206,7 +209,7 @@ const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
                     {item?.district}
                   </Text>
                 </View>
-                {/* <Text
+                <Text
                   style={{
                     fontSize: 16,
                     color: Color.primary,
@@ -214,8 +217,8 @@ const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
                     textDecorationLine: 'underline',
                     paddingVertical: 5,
                   }}>
-                  {item.comp_offer_count} Jobs Open
-                </Text> */}
+                  {item?.openings?.[0]?.vacancies} Jobs Open
+                </Text>
               </TouchableOpacity>
             );
           }}
@@ -1057,69 +1060,69 @@ const HomeScreen = ({navigation}) => {
                 }}>
                 Explore by Categories
               </Text>
-              {/* <View style={{flex: 1}}> */}
-              <TabView
-                navigationState={{index, routes}}
-                renderScene={renderScene}
-                swipeEnabled={false}
-                onIndexChange={setIndex}
-                initialLayout={{width: layout.width}}
-                style={{
-                  minHeight: 1100,
-                }}
-                renderTabBar={() => {
-                  return (
-                    <View style={styles.TabviewContainer}>
-                      <TouchableOpacity
-                        style={{
-                          ...styles.TabViewServices,
-                          backgroundColor:
-                            index == 0 ? Color.primary : Color.lightgrey,
-                        }}
-                        onPress={() => setIndex(0)}>
-                        <Text
+              <View style={{flex: 1}}>
+                <TabView
+                  navigationState={{index, routes}}
+                  renderScene={renderScene}
+                  swipeEnabled={false}
+                  onIndexChange={setIndex}
+                  initialLayout={{width: layout.width}}
+                  style={{
+                    minHeight: 1150,
+                  }}
+                  renderTabBar={() => {
+                    return (
+                      <View style={styles.TabviewContainer}>
+                        <TouchableOpacity
                           style={{
-                            ...styles.TabViewName,
-                            color: index == 0 ? Color.white : Color.black,
-                          }}>
-                          Full Time
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          ...styles.TabViewServices,
-                          backgroundColor:
-                            index == 1 ? Color.primary : Color.lightgrey,
-                        }}
-                        onPress={() => setIndex(1)}>
-                        <Text
+                            ...styles.TabViewServices,
+                            backgroundColor:
+                              index == 0 ? Color.primary : Color.lightgrey,
+                          }}
+                          onPress={() => setIndex(0)}>
+                          <Text
+                            style={{
+                              ...styles.TabViewName,
+                              color: index == 0 ? Color.white : Color.black,
+                            }}>
+                            Full Time
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                           style={{
-                            ...styles.TabViewName,
-                            color: index == 1 ? Color.white : Color.black,
-                          }}>
-                          Part Time
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          ...styles.TabViewServices,
-                          backgroundColor:
-                            index == 3 ? Color.primary : Color.lightgrey,
-                        }}
-                        onPress={() => setIndex(3)}>
-                        <Text
+                            ...styles.TabViewServices,
+                            backgroundColor:
+                              index == 1 ? Color.primary : Color.lightgrey,
+                          }}
+                          onPress={() => setIndex(1)}>
+                          <Text
+                            style={{
+                              ...styles.TabViewName,
+                              color: index == 1 ? Color.white : Color.black,
+                            }}>
+                            Part Time
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                           style={{
-                            ...styles.TabViewName,
-                            color: index == 3 ? Color.white : Color.black,
-                          }}>
-                          Freelancer
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}
-              />
-              {/* </View> */}
+                            ...styles.TabViewServices,
+                            backgroundColor:
+                              index == 3 ? Color.primary : Color.lightgrey,
+                          }}
+                          onPress={() => setIndex(3)}>
+                          <Text
+                            style={{
+                              ...styles.TabViewName,
+                              color: index == 3 ? Color.white : Color.black,
+                            }}>
+                            Freelancer
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
             </View>
           </ScrollView>
         </View>
