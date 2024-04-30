@@ -39,7 +39,7 @@ var {width, height} = Dimensions.get('window');
 LogBox.ignoreAllLogs();
 
 const windowHeight = Dimensions.get('screen').height;
-const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
+const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
   return (
     <View style={{flex: 1}}>
       <View
@@ -109,7 +109,6 @@ const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
               fontSize: 16,
               color: 'black',
               fontFamily: Gilmer.Bold,
-              paddingHorizontal: 10,
             }}>
             Top Companies
           </Text>
@@ -152,8 +151,8 @@ const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
                   elevation: 1,
                   backgroundColor: '#EFFAFF',
                 }}>
-                {item?.logo == null ?
-                  (<Image
+                {item?.logo == null ? (
+                  <Image
                     source={require('../../assets/logos/user.png')}
                     style={{
                       width: 80,
@@ -181,14 +180,17 @@ const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
                     fontSize: 16,
                     color: Color.black,
                     fontFamily: Gilmer.Bold,
-                    paddingVertical: 5, textTransform: 'capitalize'
-                  }}>
+                    paddingVertical: 5,
+                    textTransform: 'capitalize',
+                  }}
+                  numberOfLines={1}>
                   {item?.name}
                 </Text>
                 <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
+                    marginVertical: 5,
                   }}>
                   <Iconviewcomponent
                     Icontag={'Fontisto'}
@@ -206,7 +208,7 @@ const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
                     {item?.district}
                   </Text>
                 </View>
-                {/* <Text
+                <Text
                   style={{
                     fontSize: 16,
                     color: Color.primary,
@@ -214,8 +216,8 @@ const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
                     textDecorationLine: 'underline',
                     paddingVertical: 5,
                   }}>
-                  {item.comp_offer_count} Jobs Open
-                </Text> */}
+                  {item?.openings?.[0]?.vacancies} Jobs Open
+                </Text>
               </TouchableOpacity>
             );
           }}
@@ -388,6 +390,7 @@ const HomeScreen = ({navigation}) => {
     social_links,
     candidate_resume,
     candidate_language,
+    phone,
     token,
   } = userData;
   const profile_complete_data = useSelector(
@@ -397,48 +400,6 @@ const HomeScreen = ({navigation}) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
 
-  // const [topCompany, setTopCompany] = useState([
-  //   {
-  //     id: 1,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  //   {
-  //     id: 2,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  //   {
-  //     id: 3,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  //   {
-  //     id: 4,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  //   {
-  //     id: 5,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  // ]);
   const [topCompany, setTopCompany] = useState([]);
 
   const [BuySection] = useState([
@@ -562,7 +523,7 @@ const HomeScreen = ({navigation}) => {
         cv: item?.uri,
       };
       const resume_data = await fetchData.upload_resume(data, token);
-      if (resume_data) {
+      if (resume_data?.message == 'CV Added Successful') {
         common_fn.showToast(resume_data?.message);
       }
     } catch (error) {
@@ -574,10 +535,59 @@ const HomeScreen = ({navigation}) => {
     const profiledata = common_fn.calculateProfileCompletion(
       candidate_resume,
       candidate_skills,
-      [candidate_educations, candidate_experiences].flat(),
+      candidate_educations,
+      candidate_experiences,
+      candidate_language,
+      gender,
+      birth_date,
+      marital_status,
+      place,
+      experience_name,
+      email,
+      phone,
+      name,
     );
     setProfileStatus(profiledata);
-  }, [profileStatus, candidate_resume, candidate_skills, candidate_educations]);
+  }, [
+    profileStatus,
+    candidate_resume,
+    candidate_skills,
+    candidate_educations,
+    candidate_experiences,
+    candidate_language,
+    gender,
+    birth_date,
+    marital_status,
+    place,
+    experience_name,
+    email,
+    phone,
+    name,
+  ]);
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     getAPiData();
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, [token]);
+
+  // const getAPiData = async () => {
+  //   try {
+  //     const single_data = await fetchData.single_candidate(null, token);
+  //     if (single_data) {
+  //       const combinedData = {
+  //         ...single_data?.data,
+  //         token: token,
+  //       };
+  //       dispatch(setUserData(combinedData));
+  //       await AsyncStorage.setItem('user_data', JSON.stringify(combinedData));
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.log('error', error);
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -840,9 +850,9 @@ const HomeScreen = ({navigation}) => {
                 borderRadius: 5,
               }}>
               <Iconviewcomponent
-                Icontag={'MaterialCommunityIcons'}
-                iconname={'filter-menu-outline'}
-                icon_size={28}
+                Icontag={'Ionicons'}
+                iconname={'list-outline'}
+                icon_size={25}
                 icon_color={Color.white}
               />
             </TouchableOpacity>
@@ -869,6 +879,10 @@ const HomeScreen = ({navigation}) => {
                       ? Color.green
                       : '#0BA02C'
                   }
+                  dashedStrokeConfig={{
+                    count: 10,
+                    width: 20,
+                  }}
                   activeStrokeWidth={10}
                   inActiveStrokeWidth={10}
                 />
@@ -1031,69 +1045,66 @@ const HomeScreen = ({navigation}) => {
                 }}>
                 Explore by Categories
               </Text>
-              {/* <View style={{flex: 1}}> */}
-              <TabView
-                navigationState={{index, routes}}
-                renderScene={renderScene}
-                swipeEnabled={false}
-                onIndexChange={setIndex}
-                initialLayout={{width: layout.width}}
-                style={{
-                  minHeight: 1100,
-                }}
-                renderTabBar={() => {
-                  return (
-                    <View style={styles.TabviewContainer}>
-                      <TouchableOpacity
-                        style={{
-                          ...styles.TabViewServices,
-                          backgroundColor:
-                            index == 0 ? Color.primary : Color.lightgrey,
-                        }}
-                        onPress={() => setIndex(0)}>
-                        <Text
+              <View style={{flex: 1}}>
+                <TabView
+                  navigationState={{index, routes}}
+                  renderScene={renderScene}
+                  swipeEnabled={false}
+                  onIndexChange={setIndex}
+                  initialLayout={{width: layout.width}}
+                  style={{
+                    minHeight: 1150,
+                  }}
+                  renderTabBar={() => {
+                    return (
+                      <View style={styles.TabviewContainer}>
+                        <TouchableOpacity
                           style={{
-                            ...styles.TabViewName,
-                            color: index == 0 ? Color.white : Color.black,
-                          }}>
-                          Full Time
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          ...styles.TabViewServices,
-                          backgroundColor:
-                            index == 1 ? Color.primary : Color.lightgrey,
-                        }}
-                        onPress={() => setIndex(1)}>
-                        <Text
+                            ...styles.TabViewServices,
+                            backgroundColor: index == 0 && Color.primary,
+                          }}
+                          onPress={() => setIndex(0)}>
+                          <Text
+                            style={{
+                              ...styles.TabViewName,
+                              color: index == 0 ? Color.white : Color.black,
+                            }}>
+                            Full Time
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                           style={{
-                            ...styles.TabViewName,
-                            color: index == 1 ? Color.white : Color.black,
-                          }}>
-                          Part Time
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          ...styles.TabViewServices,
-                          backgroundColor:
-                            index == 3 ? Color.primary : Color.lightgrey,
-                        }}
-                        onPress={() => setIndex(3)}>
-                        <Text
+                            ...styles.TabViewServices,
+                            backgroundColor: index == 1 && Color.primary,
+                          }}
+                          onPress={() => setIndex(1)}>
+                          <Text
+                            style={{
+                              ...styles.TabViewName,
+                              color: index == 1 ? Color.white : Color.black,
+                            }}>
+                            Part Time
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                           style={{
-                            ...styles.TabViewName,
-                            color: index == 3 ? Color.white : Color.black,
-                          }}>
-                          Freelancer
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}
-              />
-              {/* </View> */}
+                            ...styles.TabViewServices,
+                            backgroundColor: index == 2 && Color.primary,
+                          }}
+                          onPress={() => setIndex(2)}>
+                          <Text
+                            style={{
+                              ...styles.TabViewName,
+                              color: index == 2 ? Color.white : Color.black,
+                            }}>
+                            Freelancer
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
             </View>
           </ScrollView>
         </View>
@@ -1132,7 +1143,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   TabViewName: {
-    fontFamily: Gilmer.Bold,
+    fontFamily: Gilmer.Medium,
     fontSize: 14,
   },
   TabViewServices: {

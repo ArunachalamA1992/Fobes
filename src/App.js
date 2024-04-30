@@ -26,6 +26,9 @@ import SearchScreen from './Screens/Home/SearchScreen';
 import DetailedScreen from './Screens/Home/DetailedScreen';
 import {Iconviewcomponent} from './Components/Icontag';
 import FilterListScreen from './Screens/Home/Filter/FilterListScreen';
+import ForgotPassword from './Screens/Auth/ForgotPassword';
+import PassOtpVerify from './Screens/Auth/PassOtpVerify';
+import ResetPass from './Screens/Auth/ResetPass';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -95,33 +98,34 @@ const MainApp = () => {
         <Stack.Screen
           name="DetailedScreen"
           component={DetailedScreen}
-          options={({navigation, route}) => ({
-            headerTitle: '',
-            headerTitleStyle: {color: Color.black},
-            headerStyle: {backgroundColor: Color.white},
-            headerLeft: () => (
-              <TouchableOpacity
-                style={{marginHorizontal: 10}}
-                onPress={() => navigation.goBack()}>
-                <Iconviewcomponent
-                  Icontag={'Ionicons'}
-                  iconname={'arrow-back'}
-                  icon_size={30}
-                  icon_color={Color.black}
-                />
-              </TouchableOpacity>
-            ),
-            headerRight: () => (
-              <TouchableOpacity style={{right: 10}}>
-                <Iconviewcomponent
-                  Icontag={'AntDesign'}
-                  iconname={'sharealt'}
-                  icon_size={26}
-                  icon_color={Color.black}
-                />
-              </TouchableOpacity>
-            ),
-          })}
+          // options={({navigation, route}) => ({
+          //   headerTitle: '',
+          //   headerTitleStyle: {color: Color.black},
+          //   headerStyle: {backgroundColor: Color.white},
+          //   headerLeft: () => (
+          //     <TouchableOpacity
+          //       style={{marginHorizontal: 10}}
+          //       onPress={() => navigation.goBack()}>
+          //       <Iconviewcomponent
+          //         Icontag={'Ionicons'}
+          //         iconname={'arrow-back'}
+          //         icon_size={30}
+          //         icon_color={Color.black}
+          //       />
+          //     </TouchableOpacity>
+          //   ),
+          //   headerRight: () => (
+          //     <TouchableOpacity style={{right: 10}}>
+          //       <Iconviewcomponent
+          //         Icontag={'AntDesign'}
+          //         iconname={'sharealt'}
+          //         icon_size={26}
+          //         icon_color={Color.black}
+          //       />
+          //     </TouchableOpacity>
+          //   ),
+          // })}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="SearchScreen"
@@ -251,6 +255,63 @@ const MainApp = () => {
         <Stack.Screen
           name="FilterList"
           component={FilterListScreen}
+          options={({navigation, route}) => ({
+            headerTitle: '',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={({navigation, route}) => ({
+            headerTitle: '',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="PassOtpVerify"
+          component={PassOtpVerify}
+          options={({navigation, route}) => ({
+            headerTitle: '',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="ResetPass"
+          component={ResetPass}
           options={({navigation, route}) => ({
             headerTitle: '',
             headerTitleStyle: {color: Color.black},

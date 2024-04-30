@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   Text,
@@ -9,25 +9,41 @@ import {
 import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
 import {Button} from 'react-native-paper';
+import common_fn from '../../Config/common_fn';
+import fetchData from '../../Config/fetchData';
+import {useSelector} from 'react-redux';
+import moment from 'moment';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import FIcon from 'react-native-vector-icons/FontAwesome';
 
-const ProjectScreen = ({navigation}) => {
+const ProjectScreen = ({navigation, route}) => {
+  const [itemData] = useState(route.params.item);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
   const [projectSelectedItem, setProjectSelectedItem] = useState({
-    title: '',
-    project_employment: {},
-    project_status: {},
+    title: itemData?.title || '',
+    project_employment: itemData?.education_level || '',
+    project_status: itemData?.education_status || '',
     duration: {
-      from: '',
-      end: '',
+      from:
+        itemData.worked_from != undefined
+          ? new Date(itemData.worked_from)
+          : new Date(),
+      end:
+        itemData.worked_till != undefined
+          ? new Date(itemData.worked_till)
+          : new Date(),
     },
-    details: '',
-    location: '',
-    site: {},
-    nature_employment: {},
-    team_size: '',
-    role_in_project: '',
-    role_description: '',
+    details: itemData?.details || '',
+    location: itemData?.location || '',
+    site: itemData?.site || '',
+    nature_employment: itemData?.nature || '',
+    team_size: itemData?.size || '',
+    role_in_project: itemData?.role || '',
+    role_description: itemData?.role_description || '',
     skills: '',
   });
+
   const [projectemployment] = useState([
     {
       id: 1,
@@ -91,6 +107,111 @@ const ProjectScreen = ({navigation}) => {
       value: 'finished',
     },
   ]);
+
+  const getAPI = async () => {
+    try {
+      var data = {
+        projects: [
+          {
+            title: projectSelectedItem?.title,
+            education_level: projectSelectedItem?.project_employment,
+            education_status: projectSelectedItem?.project_status,
+            worked_from: moment(projectSelectedItem?.duration?.from).format(
+              'YYYY-MM-DD',
+            ),
+            worked_till: moment(projectSelectedItem?.duration?.end).format(
+              'YYYY-MM-DD',
+            ),
+            details: projectSelectedItem?.details,
+            location: projectSelectedItem?.location,
+            site: projectSelectedItem?.site,
+            nature: projectSelectedItem?.nature_employment,
+            size: projectSelectedItem?.team_size,
+            role: projectSelectedItem?.role_in_project,
+            role_description: projectSelectedItem?.role_description,
+            skills: [projectSelectedItem?.skills],
+          },
+        ],
+      };
+
+      if (itemData && itemData.id !== '' && itemData.id > 0) {
+        if (!data.projects[0]) {
+          data.projects[0] = {};
+        }
+        data.projects[0].id = itemData.id;
+      }
+      const projects_data = await fetchData.candidates_profile(data, token);
+      if (projects_data) {
+        common_fn.showToast(projects_data.message);
+        navigation.navigate('Profile');
+      } else {
+        common_fn.showToast(projects_data.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const [FromdatePickerVisible, setFromDatePickerVisible] = useState(false);
+
+  const showFromDatePicker = () => {
+    setFromDatePickerVisible(true);
+  };
+
+  const hideFromDatePicker = () => {
+    setFromDatePickerVisible(false);
+  };
+
+  const handleFromConfirm = date => {
+    setProjectSelectedItem({
+      title: projectSelectedItem?.title,
+      project_employment: projectSelectedItem?.project_employment,
+      project_status: projectSelectedItem?.project_status,
+      duration: {
+        from: date,
+        end: projectSelectedItem?.duration?.end,
+      },
+      details: projectSelectedItem?.details,
+      location: projectSelectedItem?.location,
+      site: projectSelectedItem?.site,
+      nature_employment: projectSelectedItem?.nature_employment,
+      team_size: projectSelectedItem?.team_size,
+      role_in_project: projectSelectedItem?.role_in_project,
+      role_description: projectSelectedItem?.role_description,
+      skills: projectSelectedItem?.skills,
+    });
+    hideFromDatePicker();
+  };
+  const [endDatePickerVisible, setEndDatePickerVisible] = useState(false);
+
+  const showEndDatePicker = () => {
+    setEndDatePickerVisible(true);
+  };
+
+  const hideEndDatePicker = () => {
+    setEndDatePickerVisible(false);
+  };
+
+  const handleEndConfirm = date => {
+    setProjectSelectedItem({
+      title: projectSelectedItem?.title,
+      project_employment: projectSelectedItem?.project_employment,
+      project_status: projectSelectedItem?.project_status,
+      duration: {
+        from: projectSelectedItem?.duration?.from,
+        end: date,
+      },
+      details: projectSelectedItem?.details,
+      location: projectSelectedItem?.location,
+      site: projectSelectedItem?.site,
+      nature_employment: projectSelectedItem?.nature_employment,
+      team_size: projectSelectedItem?.team_size,
+      role_in_project: projectSelectedItem?.role_in_project,
+      role_description: projectSelectedItem?.role_description,
+      skills: projectSelectedItem?.skills,
+    });
+    hideEndDatePicker();
+  };
   return (
     <View
       style={{
@@ -181,7 +302,7 @@ const ProjectScreen = ({navigation}) => {
                   key={index}
                   style={{
                     backgroundColor:
-                      projectSelectedItem?.project_employment?.id == item?.id
+                      projectSelectedItem?.project_employment == item?.name
                         ? '#9DCBE2'
                         : Color.white,
                     alignItems: 'center',
@@ -192,7 +313,7 @@ const ProjectScreen = ({navigation}) => {
                     marginHorizontal: 5,
                     borderWidth: 1,
                     borderColor:
-                      projectSelectedItem?.project_employment?.id == item?.id
+                      projectSelectedItem?.project_employment == item?.name
                         ? '#9DCBE2'
                         : Color.cloudyGrey,
                     flexDirection: 'row',
@@ -200,7 +321,7 @@ const ProjectScreen = ({navigation}) => {
                   onPress={() => {
                     setProjectSelectedItem({
                       title: projectSelectedItem?.title,
-                      project_employment: item,
+                      project_employment: item?.name,
                       project_status: projectSelectedItem?.project_status,
                       duration: {
                         from: projectSelectedItem?.duration?.from,
@@ -236,7 +357,7 @@ const ProjectScreen = ({navigation}) => {
           <Text
             style={{
               fontFamily: Gilmer.Bold,
-              fontSize: 18,
+              fontSize: 14,
               color: Color.black,
               textTransform: 'capitalize',
               marginHorizontal: 5,
@@ -256,7 +377,7 @@ const ProjectScreen = ({navigation}) => {
                   key={index}
                   style={{
                     backgroundColor:
-                      projectSelectedItem?.project_status?.id == item?.id
+                      projectSelectedItem?.project_status == item?.name
                         ? '#9DCBE2'
                         : Color.white,
                     // width: 150,
@@ -268,7 +389,7 @@ const ProjectScreen = ({navigation}) => {
                     marginHorizontal: 5,
                     borderWidth: 1,
                     borderColor:
-                      projectSelectedItem?.project_status?.id == item?.id
+                      projectSelectedItem?.project_status == item?.name
                         ? '#9DCBE2'
                         : Color.cloudyGrey,
                     flexDirection: 'row',
@@ -278,7 +399,7 @@ const ProjectScreen = ({navigation}) => {
                       title: projectSelectedItem?.title,
                       project_employment:
                         projectSelectedItem?.project_employment,
-                      project_status: item,
+                      project_status: item?.name,
                       duration: {
                         from: projectSelectedItem?.duration?.from,
                         end: projectSelectedItem?.duration?.end,
@@ -323,7 +444,7 @@ const ProjectScreen = ({navigation}) => {
               }}>
               Worked From
             </Text>
-            <TextInput
+            {/* <TextInput
               placeholder="Worked From"
               placeholderTextColor={Color.cloudyGrey}
               value={projectSelectedItem?.duration?.from}
@@ -357,6 +478,44 @@ const ProjectScreen = ({navigation}) => {
                 color: Color.cloudyGrey,
                 fontWeight: 'bold',
               }}
+            /> */}
+            <TouchableOpacity
+              onPress={() => showFromDatePicker()}
+              style={{
+                marginVertical: 10,
+                marginHorizontal: 10,
+                paddingHorizontal: 10,
+                padding: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderBottomColor: Color.cloudyGrey,
+                borderBottomWidth: 1,
+                borderRadius: 5,
+                marginVertical: 10,
+                marginHorizontal: 10,
+                paddingHorizontal: 10,
+                fontSize: 14,
+                color: Color.cloudyGrey,
+              }}>
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  fontFamily: Gilmer.Medium,
+                }}>
+                {moment(projectSelectedItem?.duration?.from).format(
+                  'MMM, YYYY',
+                )}
+              </Text>
+              <FIcon name="calendar" size={20} color={Color.black} />
+            </TouchableOpacity>
+            <DateTimePickerModal
+              date={projectSelectedItem?.duration?.from}
+              isVisible={FromdatePickerVisible}
+              mode="date"
+              onConfirm={handleFromConfirm}
+              onCancel={hideFromDatePicker}
             />
           </View>
           <View style={{marginVertical: 10, flex: 1}}>
@@ -368,7 +527,7 @@ const ProjectScreen = ({navigation}) => {
               }}>
               Worked Till
             </Text>
-            <TextInput
+            {/* <TextInput
               placeholder="Worked Till"
               placeholderTextColor={Color.cloudyGrey}
               value={projectSelectedItem?.duration?.end}
@@ -402,6 +561,43 @@ const ProjectScreen = ({navigation}) => {
                 color: Color.cloudyGrey,
                 fontWeight: 'bold',
               }}
+            /> */}
+
+            <TouchableOpacity
+              onPress={() => showEndDatePicker()}
+              style={{
+                marginVertical: 10,
+                marginHorizontal: 10,
+                paddingHorizontal: 10,
+                padding: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderBottomColor: Color.cloudyGrey,
+                borderBottomWidth: 1,
+                borderRadius: 5,
+                marginVertical: 10,
+                marginHorizontal: 10,
+                paddingHorizontal: 10,
+                fontSize: 14,
+                color: Color.cloudyGrey,
+              }}>
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  fontFamily: Gilmer.Medium,
+                }}>
+                {moment(projectSelectedItem?.duration?.end).format('MMM, YYYY')}
+              </Text>
+              <FIcon name="calendar" size={20} color={Color.black} />
+            </TouchableOpacity>
+            <DateTimePickerModal
+              date={projectSelectedItem?.duration?.end}
+              isVisible={endDatePickerVisible}
+              mode="date"
+              onConfirm={handleEndConfirm}
+              onCancel={hideEndDatePicker}
             />
           </View>
         </View>
@@ -519,7 +715,7 @@ const ProjectScreen = ({navigation}) => {
                   key={index}
                   style={{
                     backgroundColor:
-                      projectSelectedItem?.site?.id == item?.id
+                      projectSelectedItem?.site == item?.name
                         ? '#9DCBE2'
                         : Color.white,
                     // width: 150,
@@ -531,7 +727,7 @@ const ProjectScreen = ({navigation}) => {
                     marginHorizontal: 5,
                     borderWidth: 1,
                     borderColor:
-                      projectSelectedItem?.site?.id == item?.id
+                      projectSelectedItem?.site == item?.name
                         ? '#9DCBE2'
                         : Color.cloudyGrey,
                     flexDirection: 'row',
@@ -548,7 +744,7 @@ const ProjectScreen = ({navigation}) => {
                       },
                       details: projectSelectedItem?.details,
                       location: projectSelectedItem?.location,
-                      site: item,
+                      site: item?.name,
                       nature_employment: projectSelectedItem?.nature_employment,
                       team_size: projectSelectedItem?.team_size,
                       role_in_project: projectSelectedItem?.role_in_project,
@@ -596,7 +792,7 @@ const ProjectScreen = ({navigation}) => {
                   key={index}
                   style={{
                     backgroundColor:
-                      projectSelectedItem?.nature_employment?.id == item?.id
+                      projectSelectedItem?.nature_employment == item?.name
                         ? '#9DCBE2'
                         : Color.white,
                     // width: 150,
@@ -608,7 +804,7 @@ const ProjectScreen = ({navigation}) => {
                     marginHorizontal: 5,
                     borderWidth: 1,
                     borderColor:
-                      projectSelectedItem?.nature_employment?.id == item?.id
+                      projectSelectedItem?.nature_employment == item?.name
                         ? '#9DCBE2'
                         : Color.cloudyGrey,
                     flexDirection: 'row',
@@ -626,7 +822,7 @@ const ProjectScreen = ({navigation}) => {
                       details: projectSelectedItem?.details,
                       location: projectSelectedItem?.location,
                       site: projectSelectedItem?.site,
-                      nature_employment: item,
+                      nature_employment: item?.name,
                       team_size: projectSelectedItem?.team_size,
                       role_in_project: projectSelectedItem?.role_in_project,
                       role_description: projectSelectedItem?.role_description,
@@ -854,7 +1050,7 @@ const ProjectScreen = ({navigation}) => {
             mode="contained"
             onPress={async () => {
               try {
-                navigation.navigate('Profile');
+                getAPI();
               } catch (err) {}
             }}
             style={{

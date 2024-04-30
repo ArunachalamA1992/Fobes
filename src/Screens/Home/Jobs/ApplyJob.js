@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,11 +13,15 @@ import {Iconviewcomponent} from '../../../Components/Icontag';
 import {pick} from 'react-native-document-picker';
 import common_fn from '../../../Config/common_fn';
 import fetchData from '../../../Config/fetchData';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {setUserData} from '../../../Redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 
-const ApplyJob = ({ navigation, route }) => {
+const ApplyJob = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const [job_id] = useState(route?.params?.job_id);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token, candidate_resume} = userData;
@@ -29,19 +33,60 @@ const ApplyJob = ({ navigation, route }) => {
     cover_letter: '',
   });
 
+  useEffect(() => {
+    getAPiData();
+  }, [token]);
+
   const getApplyjob = async () => {
     try {
-      console.log("check clicked");
       var data = {
         job_id: job_id,
         candidate_resume_id: apply_job?.resume?.id,
         cover_letter: apply_job?.cover_letter,
         application_group_id: 1,
       };
-      const Saved_Jobs = await fetchData.create_applied_job(data, token);
-      if (Saved_Jobs) {
-        common_fn.showToast(Saved_Jobs?.message);
-        navigation.replace('Applycompletion');
+      if (apply_job?.resume?.length > 0) {
+        const create_job = await fetchData.create_applied_job(data, token);
+        if (create_job?.message == 'Job Applied successfully') {
+          common_fn.showToast(create_job?.message);
+          navigation.replace('Applycompletion');
+        } else {
+          common_fn.showToast(create_job?.message);
+        }
+      } else {
+        common_fn.showToast('Please Select the Mandatory field');
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const getAPiData = async () => {
+    try {
+      const single_data = await fetchData.single_candidate(null, token);
+      if (single_data) {
+        const combinedData = {
+          ...single_data?.data,
+          token: token,
+        };
+        dispatch(setUserData(combinedData));
+        await AsyncStorage.setItem('user_data', JSON.stringify(combinedData));
+      } else {
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const getResumeUpload = async item => {
+    try {
+      var data = {
+        name: item?.name,
+        cv: item?.uri,
+      };
+      const resume_data = await fetchData.upload_resume(data, token);
+      if (resume_data?.message == 'CV Added Successful') {
+        common_fn.showToast(resume_data?.message);
       }
     } catch (error) {
       console.log('error', error);
@@ -54,8 +99,8 @@ const ApplyJob = ({ navigation, route }) => {
         style={{
           backgroundColor: Color.white,
         }}>
-        <View style={{ marginVertical: 10 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{marginVertical: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text
               style={{
                 fontFamily: Gilmer.Bold,
@@ -76,7 +121,7 @@ const ApplyJob = ({ navigation, route }) => {
             </Text>
           </View>
           <TextInput
-            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
+            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
             placeholder="Enter your Full Name"
             placeholderTextColor={Color.transparantBlack}
             value={apply_job?.name}
@@ -91,8 +136,8 @@ const ApplyJob = ({ navigation, route }) => {
             keyboardType="name-phone-pad"
           />
         </View>
-        <View style={{ marginVertical: 10 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{marginVertical: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text
               style={{
                 fontFamily: Gilmer.Bold,
@@ -115,7 +160,7 @@ const ApplyJob = ({ navigation, route }) => {
             </Text>
           </View>
           <TextInput
-            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
+            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
             placeholder="Provide Portfolio link"
             placeholderTextColor={Color.transparantBlack}
             value={apply_job?.portfolio}
@@ -130,8 +175,8 @@ const ApplyJob = ({ navigation, route }) => {
             keyboardType="name-phone-pad"
           />
         </View>
-        <View style={{ marginVertical: 10 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{marginVertical: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text
               style={{
                 fontFamily: Gilmer.Bold,
@@ -198,7 +243,7 @@ const ApplyJob = ({ navigation, route }) => {
                         textTransform: 'capitalize',
                         marginHorizontal: 10,
                       }}>
-                      Apr 01
+                      {moment(item?.created_at).format('MMM, YYYY')}
                     </Text>
                   </View>
                   <Icon
@@ -232,13 +277,8 @@ const ApplyJob = ({ navigation, route }) => {
           <TouchableOpacity
             onPress={async () => {
               try {
-                const [{ name, uri }] = await pick();
-                setApply_job({
-                  name: apply_job?.name,
-                  portfolio: apply_job?.portfolio,
-                  resume: { name, uri },
-                  cover_letter: apply_job?.cover_letter,
-                });
+                const [{name, uri}] = await pick();
+                getResumeUpload({name, uri});
               } catch (error) {
                 console.log('error', error);
               }
@@ -288,8 +328,8 @@ const ApplyJob = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
 
-        <View style={{ marginVertical: 10 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{marginVertical: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text
               style={{
                 paddingVertical: 5,

@@ -47,6 +47,14 @@ export default {
     let url = api_name + 'cv';
     return api.postMethod(url, data, token);
   },
+  delete_resume: (data, token) => {
+    let url = api_name + 'cv/' + data;
+    return api.deleteMethod(url, token);
+  },
+  update_resume: (data, token) => {
+    let url = api_name + 'cv/' + data;
+    return api.putMethod(url, token);
+  },
   list_bookmarks: (data, token) => {
     let url = api_name + 'candidates/bookmarks';
     return api.getMethod(url, token);
@@ -66,5 +74,21 @@ export default {
   list_company: (data, token) => {
     let url = api_name + 'company?' + data;
     return api.getMethod(url, token);
+  },
+  upload_profile: (data, token) => {
+    let url = api_name + 'candidates/profile';
+    return api.postMethod(url, data, token);
+  },
+  forgot_password: (data, token) => {
+    let url = api_name + 'users/forgot_password';
+    return api.postMethod(url, data, token);
+  },
+  password_otp: (data, token) => {
+    let url = api_name + 'users/verifyOtp';
+    return api.postMethod(url, data, token);
+  },
+  resetPassword: (data, token) => {
+    let url = api_name + 'users/resetPassword';
+    return api.postMethod(url, data, token);
   },
 };

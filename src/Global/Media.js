@@ -2,6 +2,7 @@ export const Media = {
   user: require('../assets/logos/user.png'),
   status: require('../assets/images/app_status.png'),
   vector: require('../assets/images/vector.png'),
+  logo: require('../assets/logos/fobes.png'),
   aboutUs:
     'https://albion-backend.s3.ap-south-1.amazonaws.com/Fobes/aboutUs.jpg',
   contactUs:

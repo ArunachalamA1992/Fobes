@@ -48,11 +48,11 @@ export const api = {
     });
   },
 
-  putMethod: (url, data, token) => {
+  putMethod: (url, token) => {
     var headers = api.header(token);
     return new Promise((resolve, reject) => {
       axios
-        .put(baseUrl + url, data, {
+        .put(baseUrl + url, {
           headers: headers,
         })
         .then(res => {
@@ -80,11 +80,11 @@ export const api = {
     });
   },
 
-  deleteMethod: (url, data, token) => {
+  deleteMethod: (url, token) => {
     var headers = api.header(token);
     return new Promise((resolve, reject) => {
       axios
-        .delete(baseUrl + url, data, {
+        .delete(baseUrl + url, {
           headers: headers,
         })
         .then(res => {

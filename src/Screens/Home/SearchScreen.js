@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Searchbar} from 'react-native-paper';
+import {Button, Searchbar} from 'react-native-paper';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import {Gilmer} from '../../Global/FontFamily';
 import fetchData from '../../Config/fetchData';
@@ -17,7 +17,8 @@ import {base_image_url} from '../../Config/base_url';
 import {Iconviewcomponent} from '../../Components/Icontag';
 
 const SearchScreen = ({navigation}) => {
-  const [search, setSearch] = useState('');
+  const [searchJob, setSearchJob] = useState('');
+  const [searchLocation, setSearchLocation] = useState('');
   const [TopCompany, setTopCompany] = useState([]);
   const [recentSearch] = useState([
     {
@@ -74,23 +75,37 @@ const SearchScreen = ({navigation}) => {
           placeholder="Search Jobs, Companies"
           placeholderTextColor={Color.grey}
           style={styles.searchView}
-          value={search}
+          value={searchJob}
           iconColor={Color.grey}
           inputStyle={{color: Color.black}}
-          onChangeText={search => setSearch(search)}
+          onChangeText={search => setSearchJob(search)}
         />
         <Searchbar
           placeholder="Search Location"
           placeholderTextColor={Color.grey}
           style={styles.searchView}
-          value={search}
+          value={searchLocation}
           icon={() => (
             <F6Icon name="location-dot" size={20} color={Color.lightgrey} />
           )}
           iconColor={Color.grey}
           inputStyle={{color: Color.black}}
-          onChangeText={search => setSearch(search)}
+          onChangeText={search => setSearchLocation(search)}
         />
+
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{
+            width: '100%',
+            height: 50,
+            marginVertical: 10,
+            backgroundColor: Color.primary,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 5,
+          }}>
+          <Text style={{fontSize: 16, color: Color.white}}>Search</Text>
+        </TouchableOpacity>
         <View style={{marginTop: 20}}>
           <View
             style={{
