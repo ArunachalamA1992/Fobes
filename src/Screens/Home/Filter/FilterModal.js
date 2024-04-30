@@ -57,7 +57,7 @@ const FilterModal = props => {
               <Icon name="close" size={20} color={Color.primary} />
             </TouchableOpacity>
           </View>
-          <VerticalTabView navigation={navigation} />
+          <VerticalTabView navigation={navigation} visible={filterVisible}/>
         </View>
       </View>
     </Modal>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -21,7 +21,13 @@ import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DismissKeyboard = ({children}) => (
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+
+const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
@@ -35,6 +41,23 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [password_visible, setPasswordvisibility] = useState(false);
   const [minPass, setMinPass] = useState('');
+
+  useEffect(() => {
+    try {
+      GoogleSignin.configure({
+        scopes: ['email', 'profile'],
+        webClientId:
+          '375312400820-b7p9j55sv1i76l7ndh17josclr7blc5t.apps.googleusercontent.com',
+        offlineAccess: false,
+        // webClientId: '1080007356916-6amrf74qvgd060rprqqeegs06s168dn1.apps.googleusercontent.com',
+        // offlineAccess: true,
+        // hostedDomain: '',
+        // forceConsentPrompt: true,
+      });
+    } catch (error) {
+      console.log('error ----------- : ', error);
+    }
+  }, []);
 
   const signIn = async () => {
     try {
@@ -73,6 +96,56 @@ const Login = () => {
       setEmailValidError('');
     }
   };
+
+  const googleSignIn = async (navigation) => {
+    try {
+      const replace = navigation
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log("User info ============== :", JSON.stringify(userInfo));
+      // if (userInfo) {
+      //   var data = {
+      //     email: userInfo?.user?.email,
+      //   };
+      //   const updateProfiledata = await fetchData.login_with_gmail(data);
+      //   console.log(updateProfiledata);
+      //   if (updateProfiledata.message) {
+      //     dispatch(setUserData(updateProfiledata?.users));
+
+      //     setPercentage(percentage);
+      //     const UserLogin = {
+      //       ...updateProfiledata?.users,
+      //     };
+      //     await AsyncStorage.setItem(
+      //       'user_data',
+      //       JSON.stringify(updateProfiledata?.users),
+      //     );
+      //     await AsyncStorage.setItem(
+      //       'action_login_type',
+      //       JSON.stringify({ login_type: 'properties' }),
+      //     );
+      //     dispatch(setLoginType('properties'));
+      //     if (percentage == 100) {
+      //       replace('TabNavigator', UserLogin);
+      //     } else {
+      //       replace('TabNavigator', UserLogin);
+      //     }
+      //   }
+      // }
+    } catch (error) {
+      console.log("catch in google_Signing", error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -309,7 +382,7 @@ const Login = () => {
               backgroundColor: Color.lightgrey,
             }}></View>
         </View>
-        <TouchableOpacity
+        <TouchableOpacity onPress={() => googleSignIn()}
           style={{
             flexDirection: 'row',
             justifyContent: 'center',

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "375312400820",
+    "project_id": "fobes-94a68",
+    "storage_bucket": "fobes-94a68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375312400820:android:7025695b58018bc97832e1",
+        "android_client_info": {
+          "package_name": "com.fobesjobportal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375312400820-o1gugbr0dltr0mi5vj5sudcjm2bq5ug7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fobesjobportal",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "375312400820-b7p9j55sv1i76l7ndh17josclr7blc5t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB78SJl8Gjaa_Y0ZOX1pTAi_m0Rm6mK0mY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375312400820-b7p9j55sv1i76l7ndh17josclr7blc5t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
