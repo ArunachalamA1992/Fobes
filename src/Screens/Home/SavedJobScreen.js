@@ -18,6 +18,7 @@ import common_fn from '../../Config/common_fn';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {scr_height, scr_width} from '../../Utils/Dimensions';
 import {base_image_url} from '../../Config/base_url';
+import {Media} from '../../Global/Media';
 
 const {height} = Dimensions.get('window');
 const SavedJobScreen = ({navigation}) => {

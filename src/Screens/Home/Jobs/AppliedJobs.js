@@ -171,8 +171,8 @@ const AppliedJobs = ({navigation}) => {
                   <Image
                     source={{uri: base_image_url + item?.job?.company?.logo}}
                     style={{
-                      width: 70,
-                      height: 70,
+                      width: 60,
+                      height: 60,
                       resizeMode: 'contain',
                       borderRadius: 100,
                     }}
@@ -299,7 +299,6 @@ const AppliedJobs = ({navigation}) => {
                   <View
                     style={{
                       flex: 1,
-                      width: '100%',
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
@@ -316,9 +315,10 @@ const AppliedJobs = ({navigation}) => {
                         fontFamily: Gilmer.Medium,
                       }}>
                       ₹{' '}
-                      {common_fn.formatNumberWithSuffix(item?.job?.min_salary)}{' '}
+                      {/* {common_fn.formatNumberWithSuffix(item?.job?.min_salary)}{' '}
                       -{' '}
-                      {common_fn.formatNumberWithSuffix(item?.job?.max_salary)}
+                      {common_fn.formatNumberWithSuffix(item?.job?.max_salary)} */}
+                      ₹ {item?.job?.min_salary} - {item?.job?.max_salary}
                     </Text>
                   </View>
                 </View>

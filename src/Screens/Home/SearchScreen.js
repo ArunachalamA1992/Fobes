@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Searchbar} from 'react-native-paper';
+import {Button, Searchbar} from 'react-native-paper';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import {Gilmer} from '../../Global/FontFamily';
 import fetchData from '../../Config/fetchData';
@@ -92,6 +92,20 @@ const SearchScreen = ({navigation}) => {
           inputStyle={{color: Color.black}}
           onChangeText={search => setSearchLocation(search)}
         />
+
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{
+            width: '100%',
+            height: 50,
+            marginVertical: 10,
+            backgroundColor: Color.primary,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 5,
+          }}>
+          <Text style={{fontSize: 16, color: Color.white}}>Search</Text>
+        </TouchableOpacity>
         <View style={{marginTop: 20}}>
           <View
             style={{

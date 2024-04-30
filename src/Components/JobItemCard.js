@@ -209,8 +209,9 @@ const JobItemCard = props => {
               paddingHorizontal: 5,
               marginTop: 5,
             }}>
-            ₹ {common_fn.formatNumberWithSuffix(item.min_salary)} -{' '}
-            {common_fn.formatNumberWithSuffix(item?.max_salary)}
+            {/* ₹ {common_fn.formatNumberWithSuffix(item.min_salary)} -{' '}
+            {common_fn.formatNumberWithSuffix(item?.max_salary)} */}
+            ₹ {item?.min_salary} - {item?.max_salary}
           </Text>
         </View>
         <View
@@ -457,8 +458,9 @@ export const JobCardHorizontal = props => {
               paddingHorizontal: 5,
               marginTop: 5,
             }}>
-            ₹ {common_fn.formatNumberWithSuffix(item.min_salary)} -{' '}
-            {common_fn.formatNumberWithSuffix(item?.max_salary)}
+            {/* ₹ {common_fn.formatNumberWithSuffix(item.min_salary)} -{' '}
+            {common_fn.formatNumberWithSuffix(item?.max_salary)} */}
+            ₹ {item?.min_salary} - {item?.max_salary}
           </Text>
         </View>
         <View

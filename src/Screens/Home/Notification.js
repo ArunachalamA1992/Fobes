@@ -14,7 +14,7 @@ const Notification = ({navigation}) => {
       sub_name:
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       time: '3.00pm',
-      dt: '2024-04-03T12:11:05.381Z',
+      dt: '2024-04-25T12:11:05.381Z',
     },
     {
       id: 2,
@@ -23,7 +23,7 @@ const Notification = ({navigation}) => {
       sub_name:
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       time: '3.00pm',
-      dt: '2024-04-02T12:11:05.381Z',
+      dt: '2024-04-24T12:11:05.381Z',
     },
     {
       id: 3,

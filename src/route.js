@@ -84,6 +84,7 @@ export const HomeStack = () => {
         component={AboutUs}
         options={({navigation, route}) => ({
           headerTitle: 'About Us',
+          headerTitleAlign: 'center',
           headerTitleStyle: {color: Color.white},
           headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
@@ -103,6 +104,7 @@ export const HomeStack = () => {
         component={ContactUs}
         options={({navigation, route}) => ({
           headerTitle: 'Contact Us',
+          headerTitleAlign: 'center',
           headerTitleStyle: {color: Color.white},
           headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
@@ -122,6 +124,7 @@ export const HomeStack = () => {
         component={FAQs}
         options={({navigation, route}) => ({
           headerTitle: 'FAQs',
+          headerTitleAlign: 'center',
           headerTitleStyle: {color: Color.white},
           headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (
@@ -401,8 +404,7 @@ export const ProfileStack = () => {
         name="Profile"
         component={ProfileScreen}
         options={({navigation}) => ({
-          headerTitle: 'Profile',
-          headerTitleAlign: 'center',
+          headerTitle: '',
           headerTitleStyle: {color: Color.black},
           headerStyle: {backgroundColor: Color.white, elevation: 0},
           headerLeft: () => (

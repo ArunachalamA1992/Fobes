@@ -122,6 +122,8 @@ const BasicDetails = ({navigation}) => {
         ? 'experienced'
         : 'fresher' || '',
     experience: experience_id || {},
+    current_ctc: '',
+    expected_ctc: '',
     gender: gender || '',
     city: {},
     marital_status: marital_status || '',
@@ -286,6 +288,8 @@ const BasicDetails = ({navigation}) => {
       qualify: selectBasic?.qualify,
       work_experiance: selectBasic?.work_experiance,
       experience: selectBasic?.experience,
+      current_ctc: selectBasic?.current_ctc,
+      expected_ctc: selectBasic?.expected_ctc,
       gender: selectBasic?.gender,
       city: selectBasic?.city,
       marital_status: selectBasic?.marital_status,
@@ -306,6 +310,8 @@ const BasicDetails = ({navigation}) => {
       qualify: selectBasic?.qualify,
       work_experiance: selectBasic?.work_experiance,
       experience: selectBasic?.experience,
+      current_ctc: selectBasic?.current_ctc,
+      expected_ctc: selectBasic?.expected_ctc,
       gender: selectBasic?.gender,
       city: selectBasic?.city,
       marital_status: selectBasic?.marital_status,
@@ -394,6 +400,8 @@ const BasicDetails = ({navigation}) => {
                   qualify: selectBasic?.qualify,
                   work_experiance: selectBasic?.work_experiance,
                   experience: selectBasic?.experience,
+                  current_ctc: selectBasic?.current_ctc,
+                  expected_ctc: selectBasic?.expected_ctc,
                   gender: selectBasic?.gender,
                   city: selectBasic?.city,
                   marital_status: selectBasic?.marital_status,
@@ -447,6 +455,8 @@ const BasicDetails = ({navigation}) => {
                   qualify: selectBasic?.qualify,
                   work_experiance: selectBasic?.work_experiance,
                   experience: selectBasic?.experience,
+                  current_ctc: selectBasic?.current_ctc,
+                  expected_ctc: selectBasic?.expected_ctc,
                   gender: selectBasic?.gender,
                   city: selectBasic?.city,
                   marital_status: selectBasic?.marital_status,
@@ -540,6 +550,8 @@ const BasicDetails = ({navigation}) => {
                   qualify: selectBasic?.qualify,
                   work_experiance: selectBasic?.work_experiance,
                   experience: selectBasic?.experience,
+                  current_ctc: selectBasic?.current_ctc,
+                  expected_ctc: selectBasic?.expected_ctc,
                   gender: selectBasic?.gender,
                   city: item,
                   marital_status: selectBasic?.marital_status,
@@ -600,6 +612,8 @@ const BasicDetails = ({navigation}) => {
                         qualify: item?.education_id,
                         work_experiance: selectBasic?.work_experiance,
                         experience: selectBasic?.experience,
+                        current_ctc: selectBasic?.current_ctc,
+                        expected_ctc: selectBasic?.expected_ctc,
                         gender: selectBasic?.gender,
                         city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,
@@ -674,6 +688,8 @@ const BasicDetails = ({navigation}) => {
                         qualify: selectBasic?.qualify,
                         work_experiance: item?.value,
                         experience: selectBasic?.experience,
+                        current_ctc: selectBasic?.current_ctc,
+                        expected_ctc: selectBasic?.expected_ctc,
                         gender: selectBasic?.gender,
                         city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,
@@ -738,6 +754,8 @@ const BasicDetails = ({navigation}) => {
                     qualify: selectBasic?.qualify,
                     work_experiance: selectBasic?.work_experiance,
                     experience: item,
+                    current_ctc: selectBasic?.current_ctc,
+                    expected_ctc: selectBasic?.expected_ctc,
                     gender: selectBasic?.gender,
                     city: selectBasic?.city,
                     marital_status: selectBasic?.marital_status,
@@ -749,6 +767,94 @@ const BasicDetails = ({navigation}) => {
                 }}
               />
             )}
+          </View>
+          <View style={{marginVertical: 10}}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: Color.black,
+                fontFamily: Gilmer.Bold,
+              }}>
+              Your Current CTC
+            </Text>
+            <TextInput
+              placeholder="Enter Your Current CTC"
+              placeholderTextColor={Color.cloudyGrey}
+              value={selectBasic?.professional_title}
+              onChangeText={text => {
+                setSelectBasic({
+                  professional_title: selectBasic?.professional_title,
+                  personal_website: selectBasic?.personal_website,
+                  dob: selectBasic?.dob,
+                  qualify: selectBasic?.qualify,
+                  work_experiance: selectBasic?.work_experiance,
+                  experience: selectBasic?.experience,
+                  current_ctc: text,
+                  expected_ctc: selectBasic?.expected_ctc,
+                  gender: selectBasic?.gender,
+                  city: selectBasic?.city,
+                  marital_status: selectBasic?.marital_status,
+                  biography: selectBasic?.biography,
+                  profession: selectBasic?.profession,
+                  availability: selectBasic?.availability,
+                  social_profile: selectBasic?.social_profile,
+                });
+              }}
+              style={{
+                borderColor: Color.cloudyGrey,
+                borderWidth: 1,
+                borderRadius: 5,
+                marginVertical: 10,
+                paddingHorizontal: 10,
+                fontSize: 14,
+                color: Color.cloudyGrey,
+                fontFamily: Gilmer.Medium,
+              }}
+            />
+          </View>
+          <View style={{marginVertical: 10}}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: Color.black,
+                fontFamily: Gilmer.Bold,
+              }}>
+              Your Expected CTC
+            </Text>
+            <TextInput
+              placeholder="Enter Your Expected CTC"
+              placeholderTextColor={Color.cloudyGrey}
+              value={selectBasic?.professional_title}
+              onChangeText={text => {
+                setSelectBasic({
+                  professional_title: selectBasic?.professional_title,
+                  personal_website: selectBasic?.personal_website,
+                  dob: selectBasic?.dob,
+                  qualify: selectBasic?.qualify,
+                  work_experiance: selectBasic?.work_experiance,
+                  experience: selectBasic?.experience,
+                  current_ctc: selectBasic?.current_ctc,
+                  expected_ctc: text,
+                  gender: selectBasic?.gender,
+                  city: selectBasic?.city,
+                  marital_status: selectBasic?.marital_status,
+                  biography: selectBasic?.biography,
+                  profession: selectBasic?.profession,
+                  availability: selectBasic?.availability,
+                  social_profile: selectBasic?.social_profile,
+                });
+              }}
+              style={{
+                borderColor: Color.cloudyGrey,
+                borderWidth: 1,
+                borderRadius: 5,
+                marginVertical: 10,
+                paddingHorizontal: 10,
+                fontSize: 14,
+                color: Color.cloudyGrey,
+                fontFamily: Gilmer.Medium,
+              }}
+            />
           </View>
           <View style={{marginVertical: 10}}>
             <Text
@@ -777,6 +883,8 @@ const BasicDetails = ({navigation}) => {
                         qualify: selectBasic?.qualify,
                         work_experiance: selectBasic?.work_experiance,
                         experience: selectBasic?.experience,
+                        current_ctc: selectBasic?.current_ctc,
+                        expected_ctc: selectBasic?.expected_ctc,
                         gender: item?.value,
                         city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,
@@ -840,6 +948,8 @@ const BasicDetails = ({navigation}) => {
                         qualify: selectBasic?.qualify,
                         work_experiance: selectBasic?.work_experiance,
                         experience: selectBasic?.experience,
+                        current_ctc: selectBasic?.current_ctc,
+                        expected_ctc: selectBasic?.expected_ctc,
                         gender: selectBasic?.gender,
                         city: selectBasic?.city,
                         marital_status: item?.title,
@@ -897,6 +1007,8 @@ const BasicDetails = ({navigation}) => {
                   qualify: selectBasic?.qualify,
                   work_experiance: selectBasic?.work_experiance,
                   experience: selectBasic?.experience,
+                  current_ctc: selectBasic?.current_ctc,
+                  expected_ctc: selectBasic?.expected_ctc,
                   gender: selectBasic?.gender,
                   city: selectBasic?.city,
                   marital_status: selectBasic?.marital_status,
@@ -950,6 +1062,8 @@ const BasicDetails = ({navigation}) => {
                   qualify: selectBasic?.qualify,
                   work_experiance: selectBasic?.work_experiance,
                   experience: selectBasic?.experience,
+                  current_ctc: selectBasic?.current_ctc,
+                  expected_ctc: selectBasic?.expected_ctc,
                   gender: selectBasic?.gender,
                   city: selectBasic?.city,
                   marital_status: selectBasic?.marital_status,
@@ -993,6 +1107,8 @@ const BasicDetails = ({navigation}) => {
                   qualify: selectBasic?.qualify,
                   work_experiance: selectBasic?.work_experiance,
                   experience: selectBasic?.experience,
+      current_ctc: selectBasic?.current_ctc,
+      expected_ctc: selectBasic?.expected_ctc,
                   gender: selectBasic?.gender,
                   city: selectBasic?.city,
                   marital_status: selectBasic?.marital_status,
@@ -1055,6 +1171,8 @@ const BasicDetails = ({navigation}) => {
                         qualify: selectBasic?.qualify,
                         work_experiance: selectBasic?.work_experiance,
                         experience: selectBasic?.experience,
+                        current_ctc: selectBasic?.current_ctc,
+                        expected_ctc: selectBasic?.expected_ctc,
                         gender: selectBasic?.gender,
                         city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,
@@ -1080,6 +1198,8 @@ const BasicDetails = ({navigation}) => {
                         qualify: selectBasic?.qualify,
                         work_experiance: selectBasic?.work_experiance,
                         experience: selectBasic?.experience,
+                        current_ctc: selectBasic?.current_ctc,
+                        expected_ctc: selectBasic?.expected_ctc,
                         gender: selectBasic?.gender,
                         city: selectBasic?.city,
                         marital_status: selectBasic?.marital_status,

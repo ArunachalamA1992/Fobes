@@ -109,7 +109,6 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
               fontSize: 16,
               color: 'black',
               fontFamily: Gilmer.Bold,
-              paddingHorizontal: 10,
             }}>
             Top Companies
           </Text>
@@ -401,48 +400,6 @@ const HomeScreen = ({navigation}) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
 
-  // const [topCompany, setTopCompany] = useState([
-  //   {
-  //     id: 1,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  //   {
-  //     id: 2,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  //   {
-  //     id: 3,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  //   {
-  //     id: 4,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  //   {
-  //     id: 5,
-  //     comp_logo: Media.propertyMain,
-  //     comp_name: 'Calibre Infotech',
-  //     comp_address: 'Coimbatore',
-  //     comp_offer_count: '10',
-  //     image: Media.propertyMain,
-  //   },
-  // ]);
   const [topCompany, setTopCompany] = useState([]);
 
   const [BuySection] = useState([
@@ -566,7 +523,7 @@ const HomeScreen = ({navigation}) => {
         cv: item?.uri,
       };
       const resume_data = await fetchData.upload_resume(data, token);
-      if (resume_data) {
+      if (resume_data?.message == 'CV Added Successful') {
         common_fn.showToast(resume_data?.message);
       }
     } catch (error) {
@@ -607,6 +564,30 @@ const HomeScreen = ({navigation}) => {
     phone,
     name,
   ]);
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     getAPiData();
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, [token]);
+
+  // const getAPiData = async () => {
+  //   try {
+  //     const single_data = await fetchData.single_candidate(null, token);
+  //     if (single_data) {
+  //       const combinedData = {
+  //         ...single_data?.data,
+  //         token: token,
+  //       };
+  //       dispatch(setUserData(combinedData));
+  //       await AsyncStorage.setItem('user_data', JSON.stringify(combinedData));
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.log('error', error);
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -869,9 +850,9 @@ const HomeScreen = ({navigation}) => {
                 borderRadius: 5,
               }}>
               <Iconviewcomponent
-                Icontag={'MaterialCommunityIcons'}
-                iconname={'filter-menu-outline'}
-                icon_size={28}
+                Icontag={'Ionicons'}
+                iconname={'list-outline'}
+                icon_size={25}
                 icon_color={Color.white}
               />
             </TouchableOpacity>
@@ -898,6 +879,10 @@ const HomeScreen = ({navigation}) => {
                       ? Color.green
                       : '#0BA02C'
                   }
+                  dashedStrokeConfig={{
+                    count: 10,
+                    width: 20,
+                  }}
                   activeStrokeWidth={10}
                   inActiveStrokeWidth={10}
                 />
@@ -1076,8 +1061,7 @@ const HomeScreen = ({navigation}) => {
                         <TouchableOpacity
                           style={{
                             ...styles.TabViewServices,
-                            backgroundColor:
-                              index == 0 ? Color.primary : Color.lightgrey,
+                            backgroundColor: index == 0 && Color.primary,
                           }}
                           onPress={() => setIndex(0)}>
                           <Text
@@ -1091,8 +1075,7 @@ const HomeScreen = ({navigation}) => {
                         <TouchableOpacity
                           style={{
                             ...styles.TabViewServices,
-                            backgroundColor:
-                              index == 1 ? Color.primary : Color.lightgrey,
+                            backgroundColor: index == 1 && Color.primary,
                           }}
                           onPress={() => setIndex(1)}>
                           <Text
@@ -1106,14 +1089,13 @@ const HomeScreen = ({navigation}) => {
                         <TouchableOpacity
                           style={{
                             ...styles.TabViewServices,
-                            backgroundColor:
-                              index == 3 ? Color.primary : Color.lightgrey,
+                            backgroundColor: index == 2 && Color.primary,
                           }}
-                          onPress={() => setIndex(3)}>
+                          onPress={() => setIndex(2)}>
                           <Text
                             style={{
                               ...styles.TabViewName,
-                              color: index == 3 ? Color.white : Color.black,
+                              color: index == 2 ? Color.white : Color.black,
                             }}>
                             Freelancer
                           </Text>
@@ -1161,7 +1143,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   TabViewName: {
-    fontFamily: Gilmer.Bold,
+    fontFamily: Gilmer.Medium,
     fontSize: 14,
   },
   TabViewServices: {

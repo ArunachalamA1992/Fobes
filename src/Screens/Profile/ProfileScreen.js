@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import Color from '../../Global/Color';
 import {Media} from '../../Global/Media';
@@ -24,11 +26,14 @@ import {setCompleteProfile, setUserData} from '../../Redux';
 import fetchData from '../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
-import {base_image_url} from '../../Config/base_url';
+import {baseUrl, base_image_url} from '../../Config/base_url';
 import RNFetchBlob from 'rn-fetch-blob';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
 
 const ProfileScreen = ({navigation}) => {
   const [resumeVisible, setResumeVisible] = useState(false);
+  const [profileImage, setProfileImage] = useState([]);
   const dispatch = useDispatch();
   const userData = useSelector(state => state.UserReducer.userData);
   var {
@@ -88,6 +93,7 @@ const ProfileScreen = ({navigation}) => {
     social_links,
     candidate_resume,
     candidate_language,
+    candidate_project,
     phone,
     token,
   } = userData;
@@ -145,10 +151,10 @@ const ProfileScreen = ({navigation}) => {
 
   const downloadResume = async file => {
     let date = new Date();
-    let pdfURL = base_pdf_url + file;
-
-    let ext = getExtension(file);
-    let fileExt = ext ? '.' + ext[0] : '';
+    let image_URL = base_image_url + file;
+    console.log('image_URL', image_URL);
+    let ext = getExtension(image_URL);
+    ext = '.' + ext[0];
 
     const {config, fs} = RNFetchBlob;
     let DocumentDir = fs.dirs.DocumentDir;
@@ -159,23 +165,19 @@ const ProfileScreen = ({navigation}) => {
         notification: true,
         path:
           DocumentDir +
-          '/fobes' +
+          '/Fobes' +
           '/File_' +
           Math.floor(date.getTime() + date.getSeconds() / 2) +
-          fileExt, // Use file extension here
+          ext,
         description: 'pdf',
       },
     };
-
+    console.log('image_URL', image_URL);
     config(options)
-      .fetch('GET', pdfURL)
+      .fetch('GET', image_URL)
       .then(async res => {
-        console.log('res', res);
-        // console.log('res.data', res.data);
+        console.log('res.data', res);
         // Alert.alert('Success', `${item.product_name} Downloaded Successfully`);
-      })
-      .catch(error => {
-        console.error('Download failed:', error);
       });
   };
 
@@ -218,7 +220,7 @@ const ProfileScreen = ({navigation}) => {
       getAPiData();
     }, 1000);
     return () => clearInterval(interval);
-  }, [userData]);
+  }, [token, userData]);
 
   const getAPiData = async () => {
     try {
@@ -243,12 +245,114 @@ const ProfileScreen = ({navigation}) => {
         name: item?.name,
         cv: item?.uri,
       };
+      console.log('data--------------------', data);
       const resume_data = await fetchData.upload_resume(data, token);
-      if (resume_data) {
+      console.log('resume_data', resume_data);
+      if (resume_data?.message == 'CV Added Successful') {
         common_fn.showToast(resume_data?.message);
       }
     } catch (error) {
       console.log('error', error);
+    }
+  };
+
+  const getUpdate_resume = async item => {
+    try {
+      var data = {
+        name: item?.name,
+        cv: item?.uri,
+      };
+      const update_resume = await fetchData.update_resume(data, token);
+      if (update_resume) {
+        common_fn.showToast(update_resume?.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const deleteResume = async id => {
+    try {
+      const delete_data = await fetchData.delete_resume(id, token);
+      if (delete_data) {
+        common_fn.showToast(delete_data?.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const requestCameraPermission = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Camera Permission',
+            message: 'App needs camera permission',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } else {
+        return true;
+      }
+    } catch (error) {
+      console.log('Error in requesting camera permission: ', error);
+      return false;
+    }
+  };
+
+  const captureImage = async () => {
+    try {
+      let options = {
+        mediaType: 'photo',
+        maxWidth: 300,
+        maxHeight: 550,
+        quality: 1,
+        videoQuality: 'low',
+        durationLimit: 30,
+        saveToPhotos: true,
+      };
+      const isCameraPermitted = await requestCameraPermission();
+      if (isCameraPermitted) {
+        launchCamera(options, async response => {
+          console.log('response?.assets', response?.assets);
+          setProfileImage(response?.assets);
+          await uploadProfileImage();
+        });
+      } else {
+        console.log('Please grant camera permissions to capture image.');
+      }
+    } catch (error) {
+      console.log('Error in capturing image: ', error);
+    }
+  };
+
+  useEffect(() => {
+    uploadProfileImage();
+  }, [profileImage?.length]);
+
+  const uploadProfileImage = async () => {
+    try {
+      if (profileImage?.length > 0) {
+        const formData = new FormData();
+        const {uri, fileName, type} = profileImage?.[0];
+        formData.append('profile', {uri, type, name: fileName});
+        const response = await axios.post(
+          `${baseUrl}api/candidates/profile`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        console.log('Image upload response:', response);
+        common_fn.showToast(response?.data?.message);
+      }
+    } catch (error) {
+      console.log('Error uploading profile image:', error);
     }
   };
 
@@ -260,37 +364,76 @@ const ProfileScreen = ({navigation}) => {
             backgroundColor: Color.white,
             padding: 10,
           }}>
-          <Image
-            source={Media.user}
-            style={{
-              width: 120,
-              height: 120,
-              resizeMode: 'contain',
+          <TouchableOpacity
+            onPress={() => {
+              captureImage();
             }}
-          />
+            style={{
+              width: 100,
+            }}>
+            {image != '' || image != null ? (
+              <Image
+                source={{uri: base_image_url + image}}
+                style={{
+                  width: 100,
+                  height: 100,
+                  resizeMode: 'contain',
+                  borderRadius: 100,
+                  borderWidth: 1,
+                  borderColor: Color.lightgrey,
+                }}
+              />
+            ) : (
+              <Image
+                source={Media.user}
+                style={{
+                  width: 100,
+                  height: 100,
+                  resizeMode: 'contain',
+                  borderRadius: 100,
+                  borderWidth: 1,
+                  borderColor: Color.lightgrey,
+                }}
+              />
+            )}
+            <View
+              style={{
+                position: 'absolute',
+                right: 10,
+                bottom: 0,
+                backgroundColor: Color.white,
+                padding: 10,
+                borderRadius: 100,
+                borderColor: '#EAEAEF',
+                borderWidth: 1,
+              }}>
+              <FIcon name="camera" size={20} color={Color.primary} />
+            </View>
+          </TouchableOpacity>
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
               marginHorizontal: 10,
+              marginVertical: 10,
             }}>
             <View style={{flex: 1}}>
               <Text
                 style={{
                   fontFamily: Gilmer.Bold,
-                  fontSize: 20,
+                  fontSize: 18,
                   color: Color.black,
                 }}>
-                {name}
+                {name != null ? name : 'Add your Name'}
               </Text>
               <Text
                 style={{
                   fontFamily: Gilmer.Medium,
-                  fontSize: 16,
-                  color: Color.cloudyGrey,
+                  fontSize: 14,
+                  marginTop: 5,
+                  color: bio != null ? Color.cloudyGrey : Color.primary,
                 }}>
-                {bio}
-                {/* Dream big, work hard, stay focused */}
+                {bio != null ? bio : 'Add your Bio'}
               </Text>
             </View>
             <TouchableOpacity
@@ -299,10 +442,10 @@ const ProfileScreen = ({navigation}) => {
               }}
               style={{
                 backgroundColor: '#DBF3FF',
-                padding: 15,
+                padding: 10,
                 borderRadius: 100,
               }}>
-              <FIcon name="pencil" size={25} color={Color.blue} />
+              <FIcon name="pencil" size={20} color={Color.blue} />
             </TouchableOpacity>
           </View>
           <View
@@ -321,11 +464,16 @@ const ProfileScreen = ({navigation}) => {
                 style={{
                   fontFamily: Gilmer.Medium,
                   fontSize: 14,
-                  color: Color.lightBlack,
+                  color:
+                    candidate_experiences?.length > 0
+                      ? Color.cloudyGrey
+                      : Color.primary,
                   marginHorizontal: 5,
                 }}>
-                {candidate_experiences?.[0]?.['department']} at{' '}
-                {candidate_experiences?.[0]?.['company']}
+                {candidate_experiences?.length > 0
+                  ? `${candidate_experiences?.[0]?.['department']} at
+                ${candidate_experiences?.[0]?.['company']}`
+                  : 'Add your Experience'}
               </Text>
             </View>
             <View
@@ -343,7 +491,6 @@ const ProfileScreen = ({navigation}) => {
                   marginHorizontal: 10,
                 }}>
                 {district}, {country}
-                {/* Coimbatore, Tamilnadu */}
               </Text>
             </View>
           </View>
@@ -454,6 +601,10 @@ const ProfileScreen = ({navigation}) => {
                   ? Color.green
                   : '#0BA02C'
               }
+              dashedStrokeConfig={{
+                count: 10,
+                width: 20,
+              }}
               activeStrokeWidth={10}
               inActiveStrokeWidth={10}
             />
@@ -602,7 +753,7 @@ const ProfileScreen = ({navigation}) => {
                 style={{
                   flex: 1,
                   fontFamily: Gilmer.Medium,
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Color.black,
                   textTransform: 'capitalize',
                 }}>
@@ -651,10 +802,15 @@ const ProfileScreen = ({navigation}) => {
                   style={{
                     fontFamily: Gilmer.Medium,
                     fontSize: 14,
-                    color: Color.lightBlack,
+                    color:
+                      experience_name != null
+                        ? Color.lightBlack
+                        : Color.primary,
                     marginHorizontal: 10,
                   }}>
-                  {experience_name}
+                  {experience_name != null
+                    ? experience_name
+                    : 'Add your experience status'}
                 </Text>
               </View>
               <View
@@ -673,10 +829,10 @@ const ProfileScreen = ({navigation}) => {
                   style={{
                     fontFamily: Gilmer.Medium,
                     fontSize: 14,
-                    color: Color.lightBlack,
+                    color: place != null ? Color.lightBlack : Color.primary,
                     marginHorizontal: 10,
                   }}>
-                  {place}
+                  {place != null ? place : 'Add your location'}
                 </Text>
               </View>
               <View
@@ -691,10 +847,10 @@ const ProfileScreen = ({navigation}) => {
                   style={{
                     fontFamily: Gilmer.Medium,
                     fontSize: 14,
-                    color: Color.lightBlack,
+                    color: email != null ? Color.lightBlack : Color.primary,
                     marginHorizontal: 10,
                   }}>
-                  {email}
+                  {email != null ? email : 'Add your Email'}
                 </Text>
               </View>
               <View
@@ -713,10 +869,10 @@ const ProfileScreen = ({navigation}) => {
                   style={{
                     fontFamily: Gilmer.Medium,
                     fontSize: 14,
-                    color: Color.lightBlack,
+                    color: website != null ? Color.lightBlack : Color.primary,
                     marginHorizontal: 10,
                   }}>
-                  {website}
+                  {website != null ? website : 'Add your Website link'}
                 </Text>
               </View>
               <View
@@ -734,7 +890,7 @@ const ProfileScreen = ({navigation}) => {
                     color: Color.lightBlack,
                     marginHorizontal: 10,
                   }}>
-                  {phone}
+                  {phone != null ? phone : 'Add your mobile number'}
                 </Text>
               </View>
             </View>
@@ -751,7 +907,7 @@ const ProfileScreen = ({navigation}) => {
                 style={{
                   flex: 1,
                   fontFamily: Gilmer.Medium,
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Color.black,
                   textTransform: 'capitalize',
                 }}>
@@ -797,22 +953,21 @@ const ProfileScreen = ({navigation}) => {
                       marginVertical: 10,
                       borderWidth: 1,
                       borderColor: Color.cloudyGrey,
-                      padding: 20,
+                      padding: 10,
                       borderRadius: 10,
                     }}>
                     <FIcon
                       name={'folder-open'}
-                      size={40}
+                      size={30}
                       color={Color.sunShade}
                     />
                     <View style={{marginHorizontal: 10, flex: 1}}>
                       <Text
                         style={{
                           fontFamily: Gilmer.SemiBold,
-                          fontSize: 18,
+                          fontSize: 16,
                           color: Color.black,
                           textTransform: 'capitalize',
-                          marginHorizontal: 10,
                         }}>
                         {item?.name}
                       </Text>
@@ -822,12 +977,16 @@ const ProfileScreen = ({navigation}) => {
                           fontSize: 14,
                           color: Color.cloudyGrey,
                           textTransform: 'capitalize',
-                          marginHorizontal: 10,
+                          marginTop: 5,
                         }}>
-                        Apr 01
+                        {moment(item?.created_at).format('MMM DD, YYYY')}
                       </Text>
                     </View>
-                    <FIcon name={'download'} size={25} color={Color.black} />
+                    <FIcon
+                      name={'download'}
+                      size={20}
+                      color={Color.lightgrey}
+                    />
                   </TouchableOpacity>
                 );
               })
@@ -886,7 +1045,7 @@ const ProfileScreen = ({navigation}) => {
                 style={{
                   flex: 1,
                   fontFamily: Gilmer.Medium,
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Color.black,
                   textTransform: 'capitalize',
                 }}>
@@ -916,18 +1075,19 @@ const ProfileScreen = ({navigation}) => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text
-              style={{
-                fontFamily: Gilmer.Medium,
-                fontSize: 16,
-                color: Color.black,
-                textTransform: 'capitalize',
-                marginHorizontal: 10,
-                marginVertical: 10,
-              }}>
-              {bio}
-              {/* Dream big, work hard, stay focused */}
-            </Text>
+            {bio != null && (
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 16,
+                  color: Color.black,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 10,
+                  marginVertical: 10,
+                }}>
+                {bio}
+              </Text>
+            )}
           </View>
         </View>
         <View
@@ -945,7 +1105,7 @@ const ProfileScreen = ({navigation}) => {
               style={{
                 flex: 1,
                 fontFamily: Gilmer.Medium,
-                fontSize: 18,
+                fontSize: 16,
                 color: Color.black,
                 textTransform: 'capitalize',
               }}>
@@ -975,38 +1135,40 @@ const ProfileScreen = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              marginVertical: 10,
-            }}>
-            {candidate_skills?.map((item, index) => {
-              return (
-                <View
-                  key={index}
-                  style={{
-                    backgroundColor: '#EAEAEF50',
-                    padding: 10,
-                    borderRadius: 50,
-                    marginHorizontal: 10,
-                    marginVertical: 5,
-                  }}>
-                  <Text
+          {candidate_skills?.length > 0 && (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                marginVertical: 10,
+              }}>
+              {candidate_skills?.map((item, index) => {
+                return (
+                  <View
+                    key={index}
                     style={{
-                      fontFamily: Gilmer.Medium,
-                      fontSize: 16,
-                      color: Color.black,
-                      textTransform: 'capitalize',
-                      paddingHorizontal: 15,
+                      backgroundColor: '#EAEAEF50',
+                      padding: 10,
+                      borderRadius: 50,
+                      marginHorizontal: 10,
+                      marginVertical: 5,
                     }}>
-                    {item?.name}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
+                    <Text
+                      style={{
+                        fontFamily: Gilmer.Medium,
+                        fontSize: 16,
+                        color: Color.black,
+                        textTransform: 'capitalize',
+                        paddingHorizontal: 15,
+                      }}>
+                      {item?.name}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          )}
         </View>
         <View
           style={{
@@ -1023,7 +1185,7 @@ const ProfileScreen = ({navigation}) => {
               style={{
                 flex: 1,
                 fontFamily: Gilmer.Medium,
-                fontSize: 18,
+                fontSize: 16,
                 color: Color.black,
                 textTransform: 'capitalize',
               }}>
@@ -1052,34 +1214,11 @@ const ProfileScreen = ({navigation}) => {
                 Add
               </Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Experience');
-              }}
-              style={{
-                backgroundColor: '#DBF3FF',
-                paddingHorizontal: 10,
-                borderRadius: 50,
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: 5,
-              }}>
-              <FIcon name="pencil" size={18} color={Color.blue} />
-              <Text
-                style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 14,
-                  color: Color.blue,
-                  marginHorizontal: 5,
-                  marginVertical: 5,
-                }}>
-                Edit Info
-              </Text>
-            </TouchableOpacity> */}
           </View>
           {candidate_experiences?.map((item, index) => {
             return (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
                   navigation.navigate('Experience', {item: item});
                 }}
@@ -1088,10 +1227,11 @@ const ProfileScreen = ({navigation}) => {
                   alignItems: 'flex-start',
                   marginVertical: 15,
                 }}>
-                <Image
+                {/* <Image
                   source={Media.user}
                   style={{width: 50, height: 50, resizeMode: 'contain'}}
-                />
+                /> */}
+                <FIcon name="briefcase" size={35} color={Color.cloudyGrey} />
                 <View style={{flex: 1}}>
                   <Text
                     style={{
@@ -1102,7 +1242,6 @@ const ProfileScreen = ({navigation}) => {
                       marginHorizontal: 10,
                       marginTop: 5,
                     }}>
-                    {/* UI designer */}
                     {item?.designation}
                   </Text>
                   <Text
@@ -1114,7 +1253,6 @@ const ProfileScreen = ({navigation}) => {
                       marginHorizontal: 10,
                       marginTop: 5,
                     }}>
-                    {/* Avanexa Technologies - Full Time */}
                     {item?.company}
                   </Text>
                   <Text
@@ -1126,8 +1264,10 @@ const ProfileScreen = ({navigation}) => {
                       marginHorizontal: 10,
                       marginTop: 5,
                     }}>
-                    {/* Jan 2023 - Present */}
-                    {item?.start} - {item?.end}
+                    {moment(item?.start).format('MMM, YYYY')} -{' '}
+                    {item?.end != null
+                      ? moment(item?.end).format('MMM, YYYY')
+                      : 'Present'}
                   </Text>
                 </View>
                 <FIcon
@@ -1155,7 +1295,7 @@ const ProfileScreen = ({navigation}) => {
               style={{
                 flex: 1,
                 fontFamily: Gilmer.Medium,
-                fontSize: 18,
+                fontSize: 16,
                 color: Color.black,
                 textTransform: 'capitalize',
               }}>
@@ -1184,34 +1324,11 @@ const ProfileScreen = ({navigation}) => {
                 Add
               </Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Education', {item: {}});
-              }}
-              style={{
-                backgroundColor: '#DBF3FF',
-                paddingHorizontal: 10,
-                borderRadius: 50,
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: 5,
-              }}>
-              <FIcon name="pencil" size={18} color={Color.blue} />
-              <Text
-                style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 14,
-                  color: Color.blue,
-                  marginHorizontal: 5,
-                  marginVertical: 5,
-                }}>
-                Edit Info
-              </Text>
-            </TouchableOpacity> */}
           </View>
           {candidate_educations?.map((item, index) => {
             return (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
                   navigation.navigate('Education', {item});
                 }}
@@ -1220,9 +1337,14 @@ const ProfileScreen = ({navigation}) => {
                   alignItems: 'flex-start',
                   marginVertical: 15,
                 }}>
-                <Image
+                {/* <Image
                   source={Media.user}
                   style={{width: 50, height: 50, resizeMode: 'contain'}}
+                /> */}
+                <FIcon
+                  name="graduation-cap"
+                  size={35}
+                  color={Color.cloudyGrey}
                 />
                 <View style={{flex: 1}}>
                   <Text
@@ -1284,7 +1406,7 @@ const ProfileScreen = ({navigation}) => {
               style={{
                 flex: 1,
                 fontFamily: Gilmer.Medium,
-                fontSize: 18,
+                fontSize: 16,
                 color: Color.black,
                 textTransform: 'capitalize',
               }}>
@@ -1292,7 +1414,7 @@ const ProfileScreen = ({navigation}) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Project');
+                navigation.navigate('Project', {item: {}});
               }}
               style={{
                 backgroundColor: '#DBF3FF',
@@ -1313,77 +1435,69 @@ const ProfileScreen = ({navigation}) => {
                 Add
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Project');
-              }}
-              style={{
-                backgroundColor: '#DBF3FF',
-                paddingHorizontal: 10,
-                borderRadius: 50,
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginHorizontal: 5,
-              }}>
-              <FIcon name="pencil" size={18} color={Color.blue} />
-              <Text
-                style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 14,
-                  color: Color.blue,
-                  marginHorizontal: 5,
-                  marginVertical: 5,
-                }}>
-                Edit Info
-              </Text>
-            </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              marginVertical: 15,
-            }}>
-            <Image
-              source={Media.user}
-              style={{width: 50, height: 50, resizeMode: 'contain'}}
-            />
-            <View style={{flex: 1}}>
-              <Text
+          {candidate_project?.map((item, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  navigation.navigate('Project', {item: item});
+                }}
                 style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 16,
-                  color: Color.black,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
-                  marginTop: 5,
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                  marginVertical: 15,
                 }}>
-                Albion Mobile app
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 14,
-                  color: Color.black,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                }}>
-                User Research, UI Designing
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Gilmer.Regular,
-                  fontSize: 12,
-                  color: Color.cloudyGrey,
-                  textTransform: 'capitalize',
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                }}>
-                Jan 2024 - Mar 2024
-              </Text>
-            </View>
-          </View>
+                <Icon
+                  name="document-attach"
+                  size={35}
+                  color={Color.cloudyGrey}
+                />
+                <View style={{flex: 1}}>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 16,
+                      color: Color.black,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                    }}>
+                    {item?.title}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 14,
+                      color: Color.black,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                    }}>
+                    {item?.role}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Regular,
+                      fontSize: 12,
+                      color: Color.cloudyGrey,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                    }}>
+                    {moment(item?.worked_from).format('MMM, YYYY')} -{' '}
+                    {moment(item?.worked_till).format('MMM, YYYY')}
+                  </Text>
+                </View>
+                <FIcon
+                  name="pencil"
+                  size={20}
+                  color={Color.blue}
+                  style={{marginHorizontal: 20, marginVertical: 10}}
+                />
+              </TouchableOpacity>
+            );
+          })}
         </View>
         <View
           style={{
@@ -1400,7 +1514,7 @@ const ProfileScreen = ({navigation}) => {
               style={{
                 flex: 1,
                 fontFamily: Gilmer.Medium,
-                fontSize: 18,
+                fontSize: 16,
                 color: Color.black,
                 textTransform: 'capitalize',
               }}>
@@ -1431,102 +1545,111 @@ const ProfileScreen = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={{flex: 1, marginVertical: 10}}>
-            <Text
-              style={{
-                fontFamily: Gilmer.Medium,
-                fontSize: 16,
-                color: Color.cloudyGrey,
-                textTransform: 'capitalize',
-                marginHorizontal: 10,
-              }}>
-              Gender
-            </Text>
-            <Text
-              style={{
-                fontFamily: Gilmer.Medium,
-                fontSize: 16,
-                color: Color.black,
-                textTransform: 'capitalize',
-                marginHorizontal: 20,
-                marginTop: 5,
-              }}>
-              {gender}
-            </Text>
-          </View>
-          <View style={{flex: 1, marginVertical: 10}}>
-            <Text
-              style={{
-                fontFamily: Gilmer.Medium,
-                fontSize: 16,
-                color: Color.cloudyGrey,
-                textTransform: 'capitalize',
-                marginHorizontal: 10,
-              }}>
-              Marital Status
-            </Text>
-            <Text
-              style={{
-                fontFamily: Gilmer.Medium,
-                fontSize: 16,
-                color: Color.black,
-                textTransform: 'capitalize',
-                marginHorizontal: 20,
-                marginTop: 5,
-              }}>
-              {marital_status}
-            </Text>
-          </View>
-          <View style={{flex: 1, marginVertical: 10}}>
-            <Text
-              style={{
-                fontFamily: Gilmer.Medium,
-                fontSize: 16,
-                color: Color.cloudyGrey,
-                textTransform: 'capitalize',
-                marginHorizontal: 10,
-              }}>
-              Languages Known
-            </Text>
-            {candidate_language?.map((item, index) => {
-              return (
-                <Text
-                  style={{
-                    fontFamily: Gilmer.Medium,
-                    fontSize: 16,
-                    color: Color.black,
-                    textTransform: 'capitalize',
-                    marginHorizontal: 20,
-                    marginTop: 5,
-                  }}>
-                  {item?.name},
-                </Text>
-              );
-            })}
-          </View>
-          <View style={{flex: 1, marginVertical: 10}}>
-            <Text
-              style={{
-                fontFamily: Gilmer.Medium,
-                fontSize: 16,
-                color: Color.cloudyGrey,
-                textTransform: 'capitalize',
-                marginHorizontal: 10,
-              }}>
-              Date of Birth
-            </Text>
-            <Text
-              style={{
-                fontFamily: Gilmer.Medium,
-                fontSize: 16,
-                color: Color.black,
-                textTransform: 'capitalize',
-                marginHorizontal: 20,
-                marginTop: 5,
-              }}>
-              {moment(birth_date).format('YYYY-MM-DD')}
-            </Text>
-          </View>
+          {gender != null && (
+            <View style={{flex: 1, marginVertical: 10}}>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 10,
+                }}>
+                Gender
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 14,
+                  color: Color.black,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 20,
+                  marginTop: 5,
+                }}>
+                {gender}
+              </Text>
+            </View>
+          )}
+          {marital_status != null && (
+            <View style={{flex: 1, marginVertical: 10}}>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 10,
+                }}>
+                Marital Status
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 14,
+                  color: Color.black,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 20,
+                  marginTop: 5,
+                }}>
+                {marital_status}
+              </Text>
+            </View>
+          )}
+          {candidate_language?.length > 0 && (
+            <View style={{flex: 1, marginVertical: 10}}>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 10,
+                }}>
+                Languages Known
+              </Text>
+              {candidate_language?.map((item, index) => {
+                return (
+                  <Text
+                    key={index}
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 14,
+                      color: Color.black,
+                      textTransform: 'capitalize',
+                      marginHorizontal: 20,
+                      marginTop: 5,
+                    }}>
+                    {item?.name},
+                  </Text>
+                );
+              })}
+            </View>
+          )}
+          {birth_date != null && (
+            <View style={{flex: 1, marginVertical: 10}}>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 10,
+                }}>
+                Date of Birth
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 14,
+                  color: Color.black,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 20,
+                  marginTop: 5,
+                }}>
+                {moment(birth_date).format('YYYY-MM-DD')}
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
       <Modal
@@ -1583,11 +1706,8 @@ const ProfileScreen = ({navigation}) => {
               <>
                 {candidate_resume?.map((item, index) => {
                   return (
-                    <TouchableOpacity
+                    <View
                       key={index}
-                      onPress={() => {
-                        downloadResume(item?.file);
-                      }}
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -1621,11 +1741,32 @@ const ProfileScreen = ({navigation}) => {
                             textTransform: 'capitalize',
                             marginHorizontal: 10,
                           }}>
-                          Apr 01
+                          {moment(item?.created_at).format('MMM, YYYY')}
                         </Text>
                       </View>
-                      <FIcon name={'download'} size={25} color={Color.black} />
-                    </TouchableOpacity>
+                      <View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            downloadResume(item?.file);
+                          }}>
+                          <FIcon
+                            name={'download'}
+                            size={25}
+                            color={Color.black}
+                          />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            deleteResume(item?.id);
+                          }}>
+                          <FIcon
+                            name={'download'}
+                            size={25}
+                            color={Color.black}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   );
                 })}
                 <View
@@ -1634,7 +1775,7 @@ const ProfileScreen = ({navigation}) => {
                     alignItems: 'center',
                     justifyContent: 'flex-end',
                   }}>
-                  <Button
+                  {/* <Button
                     mode="contained"
                     onPress={async () => {
                       try {
@@ -1653,8 +1794,8 @@ const ProfileScreen = ({navigation}) => {
                     }}
                     textColor="#000">
                     Delete
-                  </Button>
-                  <Button
+                  </Button> */}
+                  {/* <Button
                     mode="contained"
                     onPress={async () => {
                       try {
@@ -1662,6 +1803,7 @@ const ProfileScreen = ({navigation}) => {
                           1,
                           navigation,
                         );
+                        getUpdate_resume(data);
                         if (data) {
                           dispatch(
                             setCompleteProfile({
@@ -1684,7 +1826,7 @@ const ProfileScreen = ({navigation}) => {
                     {candidate_resume != null && candidate_resume?.length > 0
                       ? 'Update Resume'
                       : 'Upload Resume'}
-                  </Button>
+                  </Button> */}
                 </View>
               </>
             ) : (

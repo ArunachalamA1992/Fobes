@@ -11,6 +11,7 @@ import {
   ScrollView,
   Animated,
   Linking,
+  Share,
 } from 'react-native';
 import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
@@ -20,6 +21,7 @@ import JobItemCard from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
 import {useSelector} from 'react-redux';
 import RenderHtml from 'react-native-render-html';
+import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import common_fn from '../../Config/common_fn';
 import {base_image_url} from '../../Config/base_url';
@@ -130,9 +132,10 @@ const DetailedScreen = ({navigation, route}) => {
     {
       id: 2,
       title: 'Salary',
-      value: `₹ ${common_fn.formatNumberWithSuffix(
-        itemData.min_salary,
-      )} - ${common_fn.formatNumberWithSuffix(itemData?.max_salary)}`,
+      // value: `₹ ${common_fn.formatNumberWithSuffix(
+      //   itemData.min_salary,
+      // )} - ${common_fn.formatNumberWithSuffix(itemData?.max_salary)}`,
+      value: `₹ ${itemData?.min_salary} - ${itemData?.max_salary}`,
     },
     {id: 3, title: 'Location', value: itemData?.place},
     {id: 4, title: 'Vacancies', value: itemData?.vacancies},
@@ -151,14 +154,38 @@ const DetailedScreen = ({navigation, route}) => {
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
+        getData();
       }
     } catch (error) {
       console.log('error', error);
     }
   };
 
+  const share_job = async id => {
+    try {
+      await Share.share({message: '' + id});
+    } catch (error) {
+      common_fn.showToast(error.message);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backIcon}
+          onPress={() => navigation.goBack()}>
+          <Icon name="arrow-back" size={30} color={Color.black} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => share_job()} style={styles.iconView}>
+          <Icon
+            name="share-social-outline"
+            size={30}
+            color={Color.black}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      </View>
       <ScrollView
         style={{flex: 1, padding: 10}}
         showsVerticalScrollIndicator={false}
@@ -787,6 +814,25 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: Color.white,
+  },
+  header: {
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  backIcon: {
+    paddingHorizontal: 10,
+  },
+  iconView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingEnd: 2,
+    height: 30,
+  },
+  icon: {
+    paddingEnd: 12,
   },
   numberCountryCode: {
     height: 48,

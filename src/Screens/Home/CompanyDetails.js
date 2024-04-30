@@ -13,10 +13,9 @@ import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
 import {Media} from '../../Global/Media';
 import {Iconviewcomponent} from '../../Components/Icontag';
-import {ApplyJobData} from '../../Global/Content';
 import {JobCardHorizontal} from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {base_image_url} from '../../Config/base_url';
 import {Linking} from 'react-native';
 
@@ -482,7 +481,7 @@ const CompanyDetails = ({navigation, route}) => {
             </Text>
           </View>
           <FlatList
-            data={jobData}
+            data={itemData?.openings}
             keyExtractor={(item, index) => item + index}
             renderItem={({item, index}) => {
               return (
