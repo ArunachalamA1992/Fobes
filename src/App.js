@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {LogBox, StatusBar, TouchableOpacity, View} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -29,11 +29,63 @@ import FilterListScreen from './Screens/Home/Filter/FilterListScreen';
 import ForgotPassword from './Screens/Auth/ForgotPassword';
 import PassOtpVerify from './Screens/Auth/PassOtpVerify';
 import ResetPass from './Screens/Auth/ResetPass';
+import {Linking} from 'react-native';
+import {navigationRef} from '../RootNavigation';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const MyDrawer = () => {
+  const linking = {
+    prefixes: ['fobes://'],
+    config: {
+      initialRouteName: 'Home',
+      screens: {
+        Home: 'home',
+        DetailedScreen: 'detailed/:id',
+      },
+    },
+  };
+
+  useEffect(() => {
+    const handleInitialUrl = async () => {
+      try {
+        const initialUrl = await Linking.getInitialURL();
+        if (initialUrl) {
+          const reviewMatch = initialUrl.match(/\/review\/(\d+)/);
+          if (reviewMatch) {
+            const id = reviewMatch[1];
+            navigationRef.current?.navigate('DetailedScreen', {id});
+          }
+        }
+      } catch (error) {
+        console.error('Error handling initial URL:', error);
+      }
+    };
+
+    handleInitialUrl();
+  }, []);
+
+  useEffect(() => {
+    const handleDeepLink = ({url}) => {
+      try {
+        const reviewMatch = url.match(/\/review\/(\d+)/);
+        if (reviewMatch) {
+          const id = reviewMatch[1];
+          navigationRef?.current?.navigate('DetailedScreen', {id});
+        }
+      } catch (error) {
+        console.error('Error handling deep link:', error);
+      }
+    };
+
+    const subscription = Linking.addEventListener('url', handleDeepLink);
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   return (
     <PaperProvider>
       <NavigationContainer>

@@ -48,11 +48,11 @@ export const api = {
     });
   },
 
-  putMethod: (url, token) => {
+  putMethod: (url, data, token) => {
     var headers = api.header(token);
     return new Promise((resolve, reject) => {
       axios
-        .put(baseUrl + url, {
+        .put(baseUrl + url, data, {
           headers: headers,
         })
         .then(res => {

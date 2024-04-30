@@ -168,7 +168,7 @@ const SavedJobScreen = ({navigation}) => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('DetailedScreen', {item});
+                  navigation.navigate('DetailedScreen', {id: item?.id});
                 }}
                 key={index}
                 style={{

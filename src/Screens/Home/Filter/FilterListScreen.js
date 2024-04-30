@@ -22,7 +22,7 @@ const FilterListScreen = ({navigation, route}) => {
     try {
       const nextPage = page + 1;
       var data = 'page_number=' + nextPage;
-      const response = await fetchData.list_company(data, token);
+      const response = await fetchData.filter_job(data, token);
       if (response?.data.length > 0) {
         setPage(nextPage);
         const updatedData = [...itemData, ...response?.data];
