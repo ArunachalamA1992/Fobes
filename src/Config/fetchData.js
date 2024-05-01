@@ -1,4 +1,4 @@
-import {api} from './api';
+import { api } from './api';
 
 const api_name = 'api/';
 
@@ -91,4 +91,15 @@ export default {
     let url = api_name + 'users/resetPassword';
     return api.postMethod(url, data, token);
   },
+  aboutUsData: () => {
+    let url = api_name + 'job/aboutus';
+    return api.getMethod(url);
+  },
+  contactUsData: (data, token) => {
+    let url = api_name + 'job/contact';
+    return api.postMethod(url, data, token);
+  },
+
+
+
 };

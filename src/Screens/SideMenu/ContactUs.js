@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -12,11 +12,14 @@ import {
   ScrollView,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Media} from '../../Global/Media';
-import {scr_width} from '../../Utils/Dimensions';
-import {useDispatch} from 'react-redux';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {Gilmer} from '../../Global/FontFamily';
+import { Media } from '../../Global/Media';
+import { scr_width } from '../../Utils/Dimensions';
+import { useDispatch, useSelector } from 'react-redux';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
+import common_fn from '../../Config/common_fn';
+import fetchData from '../../Config/fetchData';
+import { useNavigation } from '@react-navigation/native';
 
 const ContactUs = () => {
   let listOffset = useRef({});
@@ -24,12 +27,22 @@ const ContactUs = () => {
   let isListGliding = useRef(false);
   const [tabIndex, setIndex] = useState(0);
 
+  const navigation = useNavigation();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const userData = useSelector(state => state.UserReducer.userData);
+  // console.log("userData ========== : ",JSON.stringify(userData));
+  var { token } = userData;
+
   const [routes] = useState([
-    {id: 1, title: 'Buy'},
-    {id: 2, title: 'Rent'},
-    {id: 3, title: 'Rent'},
-    {id: 4, title: 'Rent'},
-    {id: 5, title: 'Rent'},
+    { id: 1, title: 'Buy' },
+    { id: 2, title: 'Rent' },
+    { id: 3, title: 'Rent' },
+    { id: 4, title: 'Rent' },
+    { id: 5, title: 'Rent' },
   ]);
   const [BuySection] = useState([
     {
@@ -37,13 +50,13 @@ const ContactUs = () => {
       title: 'Apply Albion Home Online',
       data: ['Apply Albion Home Online'],
     },
-    {id: 3, title: 'How it works', data: ['How it works']},
+    { id: 3, title: 'How it works', data: ['How it works'] },
   ]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    scrollY.addListener(({value}) => {
+    scrollY.addListener(({ value }) => {
       const curRoute = routes[tabIndex].key;
       listOffset.current[curRoute] = value;
     });
@@ -99,11 +112,43 @@ const ContactUs = () => {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
+
+  async function sendMessageFunc() {
+    try {
+
+
+      if (username != "" && email != "" && subject != "" && message != "") {
+        // console.log("Check ========= :", username + "\n" + " Email ----- :" + email + "\n" + "Subejct ------- :" + subject + "\n" + "Message -------- :" + message);
+
+        var data = {
+          name: username,
+          email: email,
+          subject: subject,
+          message: message,
+        };
+        const contactUsResponse = await fetchData.contactUsData(data, token);
+        // console.log("response ======== : ", JSON.stringify(contactUsResponse));
+        if (contactUsResponse?.status == true) {
+          common_fn.showToast(contactUsResponse?.message);
+          navigation.replace('Home');
+        } else {
+          common_fn.showToast(contactUsResponse?.message);
+        }
+
+      } else {
+        common_fn.showToast("Please fill mandatory fields");
+      }
+
+    } catch (error) {
+      console.log("catch in sendMessage_Func : ", error);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image
-          source={{uri: Media.contactUs}}
+          source={{ uri: Media.contactUs }}
           style={{
             width: '100%',
             height: 220,
@@ -145,7 +190,7 @@ const ContactUs = () => {
                   Icontag={'Feather'}
                   iconname={'phone-call'}
                   icon_size={20}
-                  iconstyle={{color: Color.primary}}
+                  iconstyle={{ color: Color.primary }}
                 />
               </View>
               <Text
@@ -179,7 +224,7 @@ const ContactUs = () => {
                   Icontag={'Ionicons'}
                   iconname={'mail'}
                   icon_size={20}
-                  iconstyle={{color: Color.primary}}
+                  iconstyle={{ color: Color.primary }}
                 />
               </View>
               <Text
@@ -274,7 +319,7 @@ const ContactUs = () => {
             Get In Touch
           </Text>
 
-          <View style={{marginVertical: 20}}>
+          <View style={{ marginVertical: 20 }}>
             <Text
               style={{
                 fontSize: 14,
@@ -288,11 +333,11 @@ const ContactUs = () => {
               <TextInput
                 placeholder="Enter Your Name"
                 placeholderTextColor={Color.grey}
-                value={''}
+                value={username}
                 keyboardType="name-phone-pad"
-                maxLength={10}
                 onChangeText={text => {
-                  console.log('text --------- :', text);
+                  setUsername(text)
+                  // console.log('text --------- :', text);
                 }}
                 style={styles.numberTextBox}
               />
@@ -313,11 +358,11 @@ const ContactUs = () => {
               <TextInput
                 placeholder="Enter Your Email"
                 placeholderTextColor={Color.grey}
-                value={''}
+                value={email}
                 keyboardType="email-address"
-                maxLength={10}
                 onChangeText={text => {
-                  console.log('text --------- :', text);
+                  setEmail(text)
+                  // console.log('text --------- :', text);
                 }}
                 style={styles.numberTextBox}
               />
@@ -337,11 +382,10 @@ const ContactUs = () => {
               <TextInput
                 placeholder="Enter your Subjects"
                 placeholderTextColor={Color.grey}
-                value={''}
+                value={subject}
                 keyboardType="name-phone-pad"
-                maxLength={10}
                 onChangeText={text => {
-                  console.log('text --------- :', text);
+                  setSubject(text)
                 }}
                 style={styles.numberTextBox}
               />
@@ -360,10 +404,10 @@ const ContactUs = () => {
             <TextInput
               placeholder="Enter your Message ..."
               placeholderTextColor={Color.cloudyGrey}
-              value={''}
+              value={message}
               textAlignVertical="top"
               onChangeText={text => {
-                console.log('message ============= :', text);
+                setMessage(text)
               }}
               multiline
               style={{
@@ -379,7 +423,7 @@ const ContactUs = () => {
               }}
             />
           </View>
-          <TouchableOpacity
+          <TouchableOpacity onPress={() => sendMessageFunc()}
             activeOpacity={0.7}
             style={{
               width: '100%',
@@ -390,7 +434,7 @@ const ContactUs = () => {
               alignItems: 'center',
               borderRadius: 5,
             }}>
-            <Text style={{fontSize: 16, color: 'white'}}>Send Message</Text>
+            <Text style={{ fontSize: 16, color: 'white' }}>Send Message</Text>
           </TouchableOpacity>
         </View>
 

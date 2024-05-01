@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -15,9 +15,10 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
 import { Media } from '../../Global/Media';
-import { scr_width } from '../../Utils/Dimensions';
+import { scr_height, scr_width } from '../../Utils/Dimensions';
 import { Gilmer } from '../../Global/FontFamily';
 import { Iconviewcomponent } from '../../Components/Icontag';
+import fetchData from '../../Config/fetchData';
 
 const aboutData = [
   {
@@ -46,6 +47,30 @@ const AboutUs = () => {
   const navigation = useNavigation();
   const [netInfo_State, setNetinfo] = useState(true);
   const [height, setHeight] = useState(undefined);
+  const [jobCount, setJobCount] = useState(0);
+  const [compCount, setCompCount] = useState(0);
+  const [candiCount, setCandiCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+    setLoading(true);
+    getData().finally(() => setLoading(false));
+  }, []);
+
+  const getData = async () => {
+    try {
+      const comp_list = await fetchData.aboutUsData();
+      // console.log('data----------------------------', JSON.stringify(comp_list));
+      setJobCount(comp_list?.data?.job_count)
+      setCompCount(comp_list?.data?.company_count)
+      setCandiCount(comp_list?.data?.candidate_count)
+
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
 
   function renderHeaderItem() {
     try {
@@ -128,7 +153,7 @@ const AboutUs = () => {
                   color: Color.black,
                   fontFamily: Gilmer.SemiBold,
                 }}>
-                52
+                {jobCount}
               </Text>
               <Text
                 style={{
@@ -152,7 +177,7 @@ const AboutUs = () => {
                   color: Color.black,
                   fontFamily: Gilmer.SemiBold,
                 }}>
-                1345
+                {compCount}
               </Text>
               <Text
                 style={{
@@ -176,7 +201,7 @@ const AboutUs = () => {
                   color: Color.black,
                   fontFamily: Gilmer.SemiBold,
                 }}>
-                2462
+                {candiCount}
               </Text>
               <Text
                 style={{
@@ -473,25 +498,41 @@ const AboutUs = () => {
           <Text style={{ color: 'white' }}>No Internet Connection</Text>
         </Animated.View>
       )}
-
-      <View
-        style={{
-          width: '100%',
-          height: height,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'white',
-        }}>
-        <FlatList
-          data={aboutData}
-          keyExtractor={(item, index) => item + index}
-          ListHeaderComponent={() => renderHeaderItem()}
-          renderItem={({ item, index }) => renderAboutItem(item, index)}
-          ListFooterComponent={() => renderFooterItem()}
-          style={{ width: '95%' }}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      {loading ? (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: scr_height,
+          }}>
+          {/* <Image
+            source={{ uri: Media.aboutUs }}
+            style={{ width: 80, height: 80, resizeMode: 'contain' }}
+          /> */}
+          <Image
+            source={require('../../assets/logos/fobes_logo.png')}
+            style={{ width: 100, height: 100, resizeMode: 'contain' }}
+          />
+        </View>
+      ) :
+        (<View
+          style={{
+            width: '100%',
+            height: height,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'white',
+          }}>
+          <FlatList
+            data={aboutData}
+            keyExtractor={(item, index) => item + index}
+            ListHeaderComponent={() => renderHeaderItem()}
+            renderItem={({ item, index }) => renderAboutItem(item, index)}
+            ListFooterComponent={() => renderFooterItem()}
+            style={{ width: '95%' }}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>)}
     </View>
   );
 };
