@@ -44,6 +44,8 @@ const ProfileScreen = ({navigation}) => {
     website,
     photo,
     cv,
+    applied_jobs,
+    profile_view,
     bio,
     marital_status,
     birth_date,
@@ -149,38 +151,71 @@ const ProfileScreen = ({navigation}) => {
     return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined;
   };
 
-  const downloadResume = async file => {
+  // const downloadResume = async (file, name) => {
+  //   try {
+  //     let date = new Date();
+  //     let image_URL = base_image_url + file;
+  //     console.log('image_URL', image_URL);
+  //     let ext = getExtension(file);
+  //     ext = '.' + ext[0];
+  //     console.log('ext', ext);
+
+  //     const {config, fs} = RNFetchBlob;
+  //     let download = fs.dirs.DownloadDir;
+  //     console.log('DocumentDir', download);
+  //     let options = {
+  //       fileCache: true,
+  //       addAndroidDownloads: {
+  //         useDownloadManager: true,
+  //         notification: true,
+  //         path: download + '/' + name + ext,
+  //         description: 'pdf',
+  //       },
+  //     };
+  //     console.log('options', options);
+  //     config(options)
+  //       .fetch('GET', image_URL)
+  //       .then(async res => {
+  //         console.log('Downloaded file:', res);
+  //       })
+  //       .catch(error => {
+  //         console.log('error', error);
+  //       });
+  //   } catch (error) {
+  //     console.error('Download failed:', error);
+  //   }
+  // };
+  const downloadResume = async () => {
     let date = new Date();
-    let image_URL = base_image_url + file;
-    console.log('image_URL', image_URL);
-    let ext = getExtension(image_URL);
-    ext = '.' + ext[0];
-
-    const {config, fs} = RNFetchBlob;
-    let DocumentDir = fs.dirs.DocumentDir;
-    let options = {
-      fileCache: true,
-      addAndroidDownloads: {
-        useDownloadManager: true,
-        notification: true,
-        path:
-          DocumentDir +
-          '/Fobes' +
-          '/File_' +
-          Math.floor(date.getTime() + date.getSeconds() / 2) +
-          ext,
-        description: 'pdf',
-      },
-    };
-    console.log('image_URL', image_URL);
-    config(options)
-      .fetch('GET', image_URL)
-      .then(async res => {
-        console.log('res.data', res);
-        // Alert.alert('Success', `${item.product_name} Downloaded Successfully`);
-      });
+    let image_URL = [base_image_url + file];
+    console.log('image_URL', image_URL, base_image_url + file);
+    image_URL.map(itemImage => {
+      console.log('itemImage', itemImage);
+      // let ext = getExtension(itemImage);
+      // ext = '.' + ext[0];
+      // const {config, fs} = RNFetchBlob;
+      // let PictureDir = fs.dirs.PictureDir;
+      // let options = {
+      //   fileCache: true,
+      //   addAndroidDownloads: {
+      //     useDownloadManager: true,
+      //     notification: true,
+      //     path:
+      //       PictureDir +
+      //       '/DocStorage' +
+      //       '/File_' +
+      //       Math.floor(date.getTime() + date.getSeconds() / 2) +
+      //       ext,
+      //     description: 'Image',
+      //   },
+      // };
+      // config(options)
+      //   .fetch('GET', itemImage)
+      //   .then(async res => {
+      //     console.log('res.data', res);
+      //   });
+    });
   };
-
   useEffect(() => {
     const profiledata = common_fn.calculateProfileCompletion(
       candidate_resume,
@@ -245,9 +280,7 @@ const ProfileScreen = ({navigation}) => {
         name: item?.name,
         cv: item?.uri,
       };
-      console.log('data--------------------', data);
       const resume_data = await fetchData.upload_resume(data, token);
-      console.log('resume_data', resume_data);
       if (resume_data?.message == 'CV Added Successful') {
         common_fn.showToast(resume_data?.message);
       }
@@ -255,16 +288,15 @@ const ProfileScreen = ({navigation}) => {
       console.log('error', error);
     }
   };
-
-  const getUpdate_resume = async item => {
+  const getUpdate_resume = async (item, id) => {
     try {
       var data = {
         name: item?.name,
         cv: item?.uri,
       };
-      const update_resume = await fetchData.update_resume(data, token);
-      if (update_resume) {
-        common_fn.showToast(update_resume?.message);
+      const resume_data = await fetchData.update_resume(data, id, token);
+      if (resume_data?.message == 'CV Updated Successful') {
+        common_fn.showToast(resume_data?.message);
       }
     } catch (error) {
       console.log('error', error);
@@ -529,7 +561,7 @@ const ProfileScreen = ({navigation}) => {
                   fontSize: 16,
                   color: Color.secondary,
                 }}>
-                15
+                {applied_jobs}
               </Text>
               <Text
                 style={{
@@ -563,7 +595,7 @@ const ProfileScreen = ({navigation}) => {
                   fontSize: 16,
                   color: Color.secondary,
                 }}>
-                80
+                {profile_view}
               </Text>
               <Text
                 style={{
@@ -942,52 +974,91 @@ const ProfileScreen = ({navigation}) => {
             {candidate_resume != null && candidate_resume?.length > 0 ? (
               candidate_resume?.map((item, index) => {
                 return (
-                  <TouchableOpacity
+                  <View
                     key={index}
-                    onPress={() => {
-                      downloadResume(item?.file);
-                    }}
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
                       marginVertical: 10,
                       borderWidth: 1,
                       borderColor: Color.cloudyGrey,
-                      padding: 10,
                       borderRadius: 10,
                     }}>
-                    <FIcon
-                      name={'folder-open'}
-                      size={30}
-                      color={Color.sunShade}
-                    />
-                    <View style={{marginHorizontal: 10, flex: 1}}>
-                      <Text
-                        style={{
-                          fontFamily: Gilmer.SemiBold,
-                          fontSize: 16,
-                          color: Color.black,
-                          textTransform: 'capitalize',
+                    <View
+                      style={{
+                        flex: 1,
+                        padding: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                      <FIcon
+                        name={'folder-open'}
+                        size={30}
+                        color={Color.sunShade}
+                      />
+                      <View style={{flex: 1, marginHorizontal: 5}}>
+                        <Text
+                          style={{
+                            fontFamily: Gilmer.SemiBold,
+                            fontSize: 16,
+                            color: Color.black,
+                            textTransform: 'capitalize',
+                          }}
+                          numberOfLines={1}>
+                          {item?.name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: Gilmer.Medium,
+                            fontSize: 14,
+                            color: Color.cloudyGrey,
+                            textTransform: 'capitalize',
+                            marginTop: 5,
+                          }}>
+                          {moment(item?.created_at).format('MMM DD, YYYY')}
+                        </Text>
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => {
+                          downloadResume(item?.file, item?.name);
                         }}>
-                        {item?.name}
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: Gilmer.Medium,
-                          fontSize: 14,
-                          color: Color.cloudyGrey,
-                          textTransform: 'capitalize',
-                          marginTop: 5,
-                        }}>
-                        {moment(item?.created_at).format('MMM DD, YYYY')}
-                      </Text>
+                        <FIcon
+                          name={'download'}
+                          size={25}
+                          color={Color.green}
+                        />
+                      </TouchableOpacity>
                     </View>
-                    <FIcon
-                      name={'download'}
-                      size={20}
-                      color={Color.lightgrey}
-                    />
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        try {
+                          const data = await common_fn.profileupdate(
+                            1,
+                            navigation,
+                          );
+                          getUpdate_resume(data, item?.id);
+                          if (data) {
+                            dispatch(
+                              setCompleteProfile({
+                                resume: data,
+                                details: details,
+                                skills: skills,
+                              }),
+                            );
+                          }
+                        } catch (err) {
+                          console.error('Error occurred:', err);
+                        }
+                      }}
+                      style={{
+                        marginVertical: 5,
+                        alignItems: 'flex-end',
+                        marginHorizontal: 30,
+                      }}>
+                      <MCIcon name={'pencil'} size={25} color={Color.primary} />
+                    </TouchableOpacity>
+                  </View>
                 );
               })
             ) : (
@@ -1747,23 +1818,20 @@ const ProfileScreen = ({navigation}) => {
                       <View>
                         <TouchableOpacity
                           onPress={() => {
-                            downloadResume(item?.file);
+                            downloadResume(item?.file, item?.name);
                           }}>
                           <FIcon
                             name={'download'}
                             size={25}
-                            color={Color.black}
+                            color={Color.green}
                           />
                         </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => {
                             deleteResume(item?.id);
-                          }}>
-                          <FIcon
-                            name={'download'}
-                            size={25}
-                            color={Color.black}
-                          />
+                          }}
+                          style={{marginVertical: 10}}>
+                          <MCIcon name={'delete'} size={25} color={Color.red} />
                         </TouchableOpacity>
                       </View>
                     </View>

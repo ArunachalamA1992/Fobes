@@ -23,6 +23,10 @@ export default {
     let url = api_name + 'jobs';
     return api.getMethod(url, token);
   },
+  filter_job: (data, token) => {
+    let url = api_name + 'jobs?' + data;
+    return api.getMethod(url, token);
+  },
   single_candidate: (data, token) => {
     let url = api_name + 'candidates';
     return api.getMethod(url, token);
@@ -39,6 +43,14 @@ export default {
     let url = api_name + 'job/skills';
     return api.getMethod(url, token);
   },
+  job_type: (data, token) => {
+    let url = api_name + 'job/jobtype';
+    return api.getMethod(url, token);
+  },
+  industry_type: (data, token) => {
+    let url = api_name + 'job/industry';
+    return api.getMethod(url, token);
+  },
   list_language: (data, token) => {
     let url = api_name + 'job/language';
     return api.getMethod(url, token);
@@ -51,9 +63,9 @@ export default {
     let url = api_name + 'cv/' + data;
     return api.deleteMethod(url, token);
   },
-  update_resume: (data, token) => {
-    let url = api_name + 'cv/' + data;
-    return api.putMethod(url, token);
+  update_resume: (data, id, token) => {
+    let url = api_name + 'cv/' + id;
+    return api.putMethod(url, data, token);
   },
   list_bookmarks: (data, token) => {
     let url = api_name + 'candidates/bookmarks';

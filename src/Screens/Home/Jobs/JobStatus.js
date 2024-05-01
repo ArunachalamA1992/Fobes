@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Color from '../../../Global/Color';
-import { Gilmer } from '../../../Global/FontFamily';
-import { Iconviewcomponent } from '../../../Components/Icontag';
-import { Button } from 'react-native-paper';
+import {Gilmer} from '../../../Global/FontFamily';
+import {Iconviewcomponent} from '../../../Components/Icontag';
+import {Button} from 'react-native-paper';
 import StepIndicator from 'react-native-step-indicator';
-import { Media } from '../../../Global/Media';
+import {Media} from '../../../Global/Media';
 import fetchData from '../../../Config/fetchData';
 import common_fn from '../../../Config/common_fn';
-import { useSelector } from 'react-redux';
-import { base_image_url } from '../../../Config/base_url';
+import {useSelector} from 'react-redux';
+import {base_image_url} from '../../../Config/base_url';
 import JobItemCard from '../../../Components/JobItemCard';
 
 const customStyles = {
@@ -42,11 +42,11 @@ const labels = [
   'Application Shortlisted by HR',
 ];
 
-const JobStatus = ({ navigation, route }) => {
+const JobStatus = ({navigation, route}) => {
   const [itemData] = useState(route.params.item);
   const [date] = useState(route.params.resultDate);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
+  var {token} = userData;
   const [jobData, setJobData] = useState([]);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const JobStatus = ({ navigation, route }) => {
             justifyContent: 'center',
           }}>
           <Image
-            source={{ uri: base_image_url + itemData?.job?.company?.logo }}
+            source={{uri: base_image_url + itemData?.job?.company?.logo}}
             style={{
               width: 100,
               height: 100,
@@ -136,7 +136,7 @@ const JobStatus = ({ navigation, route }) => {
           <Button
             mode="contained"
             onPress={async () => {
-              navigation.navigate('DetailedScreen', { item: itemData?.job });
+              navigation.navigate('DetailedScreen', {item: itemData?.job?.id});
             }}
             style={{
               width: '50%',
@@ -148,7 +148,7 @@ const JobStatus = ({ navigation, route }) => {
             textColor="#000">
             View Job Description
           </Button>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Iconviewcomponent
               Icontag={'MaterialCommunityIcons'}
               iconname={'clock-outline'}
@@ -191,7 +191,7 @@ const JobStatus = ({ navigation, route }) => {
             labels={labels}
             direction="vertical"
           />
-          <View style={{ position: 'absolute', top: 10, right: 10 }}>
+          <View style={{position: 'absolute', top: 10, right: 10}}>
             <Image
               source={require('../../../assets/images/app_status.png')}
               style={{
@@ -215,8 +215,12 @@ const JobStatus = ({ navigation, route }) => {
         </Text>
         {jobData.map((item, index) => {
           return (
-            <JobItemCard item={item} navigation={navigation} token={token}
-              getData={getData} />
+            <JobItemCard
+              item={item}
+              navigation={navigation}
+              token={token}
+              getData={getData}
+            />
           );
         })}
       </ScrollView>

@@ -6,6 +6,7 @@ import CheckboxData, {RadioData} from './Checkbox';
 import {Button, Divider} from 'react-native-paper';
 import fetchData from '../Config/fetchData';
 import {useSelector} from 'react-redux';
+import common_fn from '../Config/common_fn';
 
 const TabContent = ({
   item,
@@ -51,9 +52,9 @@ const TabContent = ({
           return (
             <RadioData
               key={index}
-              label={item.title}
-              checked={experienceSelectedItem.includes(item.id)}
-              onPress={() => handleExperiencePress(item.id)}
+              label={item.name}
+              checked={experienceSelectedItem.includes(item.experience_id)}
+              onPress={() => handleExperiencePress(item.experience_id)}
             />
           );
         })}
@@ -95,7 +96,7 @@ const TabContent = ({
           return (
             <RadioData
               key={index}
-              label={item.title}
+              label={item.name}
               checked={jobtypeSelectedItem.includes(item.id)}
               onPress={() => handleJobtypePress(item.id)}
             />
@@ -136,7 +137,7 @@ const TabContent = ({
           return (
             <CheckboxData
               key={index}
-              label={item.title}
+              label={item.name}
               checked={industrySelectedItem.includes(item.id)}
               onPress={() => handleIndustryPress(item.id)}
             />
@@ -176,76 +177,7 @@ const VerticalTabView = props => {
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
 
-  const filterOptions = [
-    {
-      date_posted: [
-        {id: 1, title: 'All'},
-        {id: 2, title: 'Past Week'},
-        {id: 3, title: 'Past Month'},
-        {id: 4, title: 'Past 24 Hours'},
-      ],
-    },
-    {
-      experience: [
-        {id: 1, title: 'Fresher'},
-        {id: 2, title: 'Experienced'},
-      ],
-    },
-    {
-      distance: [
-        {id: 1, title: 'All'},
-        {id: 2, title: 'Within 5 Km'},
-        {id: 3, title: 'Within 10 Km'},
-        {id: 4, title: 'Within 50 Km'},
-      ],
-    },
-    {
-      job_type: [
-        {id: 1, title: 'Full-time'},
-        {id: 2, title: 'Part-time'},
-        {id: 3, title: 'Contract'},
-        {id: 4, title: 'Internship'},
-      ],
-    },
-    {
-      location: '',
-    },
-    {
-      industry: [
-        {id: 1, title: 'Custom software development', checked: true},
-        {id: 2, title: 'Software Prototyping', checked: false},
-        {id: 3, title: 'DevOps Automation', checked: false},
-        {id: 4, title: 'Web Application Development', checked: false},
-        {id: 5, title: 'Mobile Application Development', checked: false},
-        {id: 6, title: 'Cloud Computing', checked: false},
-      ],
-    },
-    {
-      work_type: [
-        {
-          id: 1,
-          title: 'on-site',
-          value: 'on_site',
-        },
-        {
-          id: 2,
-          title: 'Hybrid',
-          value: 'hybrid',
-        },
-        {
-          id: 3,
-          title: 'Remote',
-          value: 'remote',
-        },
-        {
-          id: 4,
-          title: 'Internship',
-          value: 'internship',
-        },
-      ],
-    },
-  ];
-  const [datePostedData] = useState([
+  const [datePostedData, setDatePostedData] = useState([
     {
       id: 1,
       title: 'All',
@@ -268,7 +200,7 @@ const VerticalTabView = props => {
     },
   ]);
 
-  const [distanceData] = useState([
+  const [distanceData, setDistanceData] = useState([
     {
       id: 1,
       title: 'All',
@@ -291,7 +223,7 @@ const VerticalTabView = props => {
     },
   ]);
 
-  const [jobtypeData] = useState([
+  const [jobtypeData, setJobtypeData] = useState([
     {
       id: 1,
       title: 'Full-time',
@@ -337,18 +269,7 @@ const VerticalTabView = props => {
     },
   ]);
 
-  const [ExperienceData] = useState([
-    {
-      id: 1,
-      title: 'Fresher',
-      value: 'fresher',
-    },
-    {
-      id: 2,
-      title: 'Experienced',
-      value: 'experienced',
-    },
-  ]);
+  const [ExperienceData, setExperienceData] = useState([]);
   const [filterSelectedItem, setFilterSelectedItem] = useState({
     date_posted: [],
     experience: [],
@@ -359,7 +280,7 @@ const VerticalTabView = props => {
     work_type: [],
   });
 
-  const [industryData] = useState([
+  const [industryData, setIndustryData] = useState([
     {id: 1, title: 'Custom software development', checked: true},
     {id: 2, title: 'Software Prototyping', checked: false},
     {id: 3, title: 'DevOps Automation', checked: false},
@@ -368,6 +289,80 @@ const VerticalTabView = props => {
     {id: 6, title: 'Cloud Computing', checked: false},
   ]);
 
+  useEffect(() => {
+    getApiData();
+  }, [ExperienceData]);
+
+  const getApiData = async () => {
+    try {
+      //experiance
+      const experience_data = await fetchData.get_experience(null, token);
+      setExperienceData(experience_data?.data);
+      //jobType
+      const job_type_data = await fetchData.job_type(null, token);
+      setJobtypeData(job_type_data?.data);
+      //industry type
+      const industry_type_data = await fetchData.industry_type(null, token);
+      setIndustryData(industry_type_data?.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const filterOptions = [
+    {
+      date_posted: [
+        {id: 1, title: 'All'},
+        {id: 2, title: 'Past Week'},
+        {id: 3, title: 'Past Month'},
+        {id: 4, title: 'Past 24 Hours'},
+      ],
+    },
+    {
+      experience: ExperienceData,
+    },
+    {
+      distance: [
+        {id: 1, title: 'All'},
+        {id: 2, title: 'Within 5 Km'},
+        {id: 3, title: 'Within 10 Km'},
+        {id: 4, title: 'Within 50 Km'},
+      ],
+    },
+    {
+      job_type: jobtypeData,
+    },
+    {
+      location: '',
+    },
+    {
+      industry: industryData,
+    },
+    {
+      work_type: [
+        {
+          id: 1,
+          title: 'on-site',
+          value: 'on_site',
+        },
+        {
+          id: 2,
+          title: 'Hybrid',
+          value: 'hybrid',
+        },
+        {
+          id: 3,
+          title: 'Remote',
+          value: 'remote',
+        },
+        {
+          id: 4,
+          title: 'Internship',
+          value: 'internship',
+        },
+      ],
+    },
+  ];
   const [dateSelectedItem, setDateSelectedItem] = useState([]);
   const handleDatePress = itemId => {
     if (dateSelectedItem.includes(itemId)) {
@@ -409,7 +404,7 @@ const VerticalTabView = props => {
       setFilterSelectedItem({
         date_posted: filterSelectedItem?.date_posted,
         experience: filterSelectedItem?.experience?.filter(
-          single => single.id !== itemId,
+          single => single.experience_id !== itemId,
         ),
         distance: filterSelectedItem?.distance,
         job_type: filterSelectedItem?.job_type,
@@ -419,7 +414,9 @@ const VerticalTabView = props => {
       });
     } else {
       setExperienceSelectedItem([...experienceSelectedItem, itemId]);
-      const selectedItem = ExperienceData.find(single => single.id === itemId);
+      const selectedItem = ExperienceData.find(
+        single => single.experience_id === itemId,
+      );
       setFilterSelectedItem({
         date_posted: filterSelectedItem?.date_posted,
         experience: [...filterSelectedItem?.experience, selectedItem],
@@ -570,31 +567,44 @@ const VerticalTabView = props => {
   ];
 
   const dataPayload = () => {
-    const params = new URLSearchParams();
     const payload = {
-      page_no: 1,
-      location: filterSelectedItem?.location,
-      experience: filterSelectedItem?.experience.map(item => item.title),
-      jobtype: filterSelectedItem?.job_type.map(item => item.title),
-      industry: filterSelectedItem?.industry.map(item => item.title),
-      date_posted: filterSelectedItem?.date_posted.map(item => item.title),
+      page: 1,
+      location: filterSelectedItem?.location?.city,
+      experience_id: filterSelectedItem?.experience
+        .filter(item => item.experience_id)
+        .map(item => item.experience_id)
+        .join(','),
+      job_type_id: filterSelectedItem?.job_type
+        .filter(item => item.id)
+        .map(item => item.id)
+        .join(','),
+      industry_type_id: filterSelectedItem?.industry
+        .filter(item => item.industry_type_id)
+        .map(item => item.industry_type_id)
+        .join(','),
+      created_at: filterSelectedItem?.date_posted
+        .filter(item => item.value)
+        .map(item => item.value)
+        .join(','),
     };
 
-    for (const key in payload) {
-      if (payload[key]?.length > 0) {
-        params.append(key, payload[key].join(','));
-      }
-    }
+    const queryString = Object.entries(payload)
+      .filter(([key, value]) => value !== undefined && value !== '')
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
 
-    const queryString = params.toString();
-    const query = queryString.replace('%20', ' ');
-    return query;
+    return queryString;
   };
 
   const appyFilter = async () => {
     try {
       var data = dataPayload();
-      const apply_filter_data = await fetchData.list_jobs(data, token);
+      console.log('data', data);
+      const apply_filter_data = await fetchData.filter_job(data, token);
+      console.log(
+        'apply_filter_data---------------------------',
+        apply_filter_data,
+      );
       if (apply_filter_data) {
         navigation.navigate('FilterList', {item: apply_filter_data?.data});
       }

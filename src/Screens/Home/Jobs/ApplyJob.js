@@ -45,7 +45,7 @@ const ApplyJob = ({navigation, route}) => {
         cover_letter: apply_job?.cover_letter,
         application_group_id: 1,
       };
-      if (apply_job?.resume?.length > 0) {
+      if (apply_job?.resume?.file != undefined) {
         const create_job = await fetchData.create_applied_job(data, token);
         if (create_job?.message == 'Job Applied successfully') {
           common_fn.showToast(create_job?.message);

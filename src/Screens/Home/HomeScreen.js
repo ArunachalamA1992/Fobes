@@ -464,27 +464,27 @@ const HomeScreen = ({ navigation }) => {
 
   const getData = useCallback(async () => {
     try {
+      setLoading(true);
       const job_list = await fetchData.list_jobs(null, token);
       // console.log("LIst ----------- : ",JSON.stringify(job_list));
       if (job_list) {
         setJobData(job_list?.data);
-        setLoading(false);
       }
-      var data = `page_number=1`;
+
       const top_company_list = await fetchData.list_company(data, token);
       if (top_company_list) {
         setTopCompany(top_company_list?.data);
-        setLoading(false);
       }
     } catch (error) {
       console.log('error', error);
+    } finally {
+      setLoading(false);
     }
   }, [token]);
 
   useEffect(() => {
-    setLoading(true);
-    getData().finally(() => setLoading(false));
-  }, [name, token]);
+    getData();
+  }, [getData]);
 
   const getUserData = async () => {
     try {
@@ -566,29 +566,30 @@ const HomeScreen = ({ navigation }) => {
     name,
   ]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     getAPiData();
-  //   }, 1000);
-  //   return () => clearInterval(interval);
-  // }, [token]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getAPiData();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-  // const getAPiData = async () => {
-  //   try {
-  //     const single_data = await fetchData.single_candidate(null, token);
-  //     if (single_data) {
-  //       const combinedData = {
-  //         ...single_data?.data,
-  //         token: token,
-  //       };
-  //       dispatch(setUserData(combinedData));
-  //       await AsyncStorage.setItem('user_data', JSON.stringify(combinedData));
-  //     } else {
-  //     }
-  //   } catch (error) {
-  //     console.log('error', error);
-  //   }
-  // };
+  const getAPiData = useCallback(async () => {
+    try {
+      const single_data = await fetchData.single_candidate(null, token);
+      if (single_data) {
+        const combinedData = {
+          ...single_data?.data,
+          token: token,
+        };
+        if (combinedData !== userData) {
+          dispatch(setUserData(combinedData));
+          await AsyncStorage.setItem('user_data', JSON.stringify(combinedData));
+        }
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  }, [token]);
 
   return (
     <SafeAreaView style={styles.container}>
