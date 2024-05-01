@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,12 +15,12 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import Color from '../../Global/Color';
-import { Gilmer } from '../../Global/FontFamily';
-import { Media } from '../../Global/Media';
-import { Iconviewcomponent } from '../../Components/Icontag';
+import {Gilmer} from '../../Global/FontFamily';
+import {Media} from '../../Global/Media';
+import {Iconviewcomponent} from '../../Components/Icontag';
 import JobItemCard from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import RenderHtml from 'react-native-render-html';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
@@ -30,7 +30,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 LogBox.ignoreAllLogs();
 
-const IconData = ({ item }) => {
+const IconData = ({item}) => {
   const formattedItem = item.replace(/_/g, '').toLowerCase();
   switch (formattedItem) {
     case 'experience':
@@ -71,16 +71,14 @@ const IconData = ({ item }) => {
       );
   }
 };
-const DetailedScreen = ({ navigation, route }) => {
-  const [itemData] = useState(route?.params?.item);
-  const [jobData, setJobData] = useState([]);
+const DetailedScreen = ({navigation, route}) => {
   const [id] = useState(route?.params?.id);
   const {width: windowWidth} = useWindowDimensions();
   const [singleJobData, setSingleJobdata] = useState({});
   const [loading, setLoading] = useState(false);
   const [similarJobdata, setSimilarJobdata] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
+  var {token} = userData;
 
   useEffect(() => {
     setLoading(true);
@@ -127,21 +125,24 @@ const DetailedScreen = ({ navigation, route }) => {
       let result;
 
       if (Math.abs(daysAgo) > 0) {
-        result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
-          } ago`;
+        result = `${Math.abs(daysAgo)} day${
+          Math.abs(daysAgo) !== 1 ? 's' : ''
+        } ago`;
       } else if (Math.abs(hoursAgo) > 0) {
-        result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
-          } ago`;
+        result = `${Math.abs(hoursAgo)} hour${
+          Math.abs(hoursAgo) !== 1 ? 's' : ''
+        } ago`;
       } else {
-        result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
-          } ago`;
+        result = `${Math.abs(minutesAgo)} minute${
+          Math.abs(minutesAgo) !== 1 ? 's' : ''
+        } ago`;
       }
 
       setResultDate(result);
     }
   }, [currentDate, yourDate, singleJobData]);
 
-  const [features] = useState([
+  const features = [
     {
       id: 1,
       title: 'Experience',
@@ -150,7 +151,7 @@ const DetailedScreen = ({ navigation, route }) => {
     {
       id: 2,
       title: 'Salary',
-      value: `₹ ${singleJobData?.min_salary || 'N/A'} - ₹ ${
+      value: `₹ ${singleJobData?.min_salary || 'N/A'} - ${
         singleJobData?.max_salary || 'N/A'
       }`,
     },
@@ -164,7 +165,7 @@ const DetailedScreen = ({ navigation, route }) => {
       title: 'Vacancies',
       value: singleJobData?.vacancies || 'N/A',
     },
-  ]);
+  ];
 
   const source = {
     html: `${singleJobData?.description}`,
@@ -176,7 +177,7 @@ const DetailedScreen = ({ navigation, route }) => {
 
   const getToggleJobs = async id => {
     try {
-      var data = { job_id: id };
+      var data = {job_id: id};
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
@@ -187,11 +188,14 @@ const DetailedScreen = ({ navigation, route }) => {
     }
   };
 
-  const share_job = async id => {
+  const share_job = async jobId => {
+    const jobDeepLink = `fobes://detailed/${jobId}`;
+    const message = `Check out this job: ${jobDeepLink}`;
+
     try {
-      await Share.share({ message: '' + id });
+      await Share.share({message});
     } catch (error) {
-      common_fn.showToast(error.message);
+      console.error(error.message);
     }
   };
 
@@ -203,7 +207,9 @@ const DetailedScreen = ({ navigation, route }) => {
           onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={30} color={Color.black} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => share_job()} style={styles.iconView}>
+        <TouchableOpacity
+          onPress={() => share_job(singleJobData?.id)}
+          style={styles.iconView}>
           <Icon
             name="share-social-outline"
             size={30}
@@ -216,11 +222,118 @@ const DetailedScreen = ({ navigation, route }) => {
         <View style={{padding: 10}}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
-              <SkeletonPlaceholder.Item width="40%" height={10} />
+              <SkeletonPlaceholder.Item
+                width={80}
+                height={80}
+                borderRadius={100}
+              />
             </SkeletonPlaceholder.Item>
-            <SkeletonPlaceholder.Item style={{}}>
+            <SkeletonPlaceholder.Item style={{marginTop: 10}}>
               <SkeletonPlaceholder.Item width="40%" height={10} />
+              <SkeletonPlaceholder.Item
+                width="80%"
+                height={10}
+                marginTop={10}
+              />
             </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
+              style={{
+                marginTop: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <SkeletonPlaceholder.Item width="30%" height={30} />
+              <SkeletonPlaceholder.Item
+                width="30%"
+                height={30}
+                marginLeft={20}
+              />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
+              style={{
+                marginTop: 30,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <SkeletonPlaceholder.Item width="40%" height={50} />
+              <SkeletonPlaceholder.Item
+                width="40%"
+                height={50}
+                marginLeft={20}
+              />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item
+              style={{
+                marginTop: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <SkeletonPlaceholder.Item width="40%" height={50} />
+              <SkeletonPlaceholder.Item
+                width="40%"
+                height={50}
+                marginLeft={20}
+              />
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder>
+              <SkeletonPlaceholder.Item
+                width="20%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="40%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="70%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="40%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="70%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="40%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="70%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="40%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="70%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="40%"
+                height={10}
+                marginTop={20}
+              />
+              <SkeletonPlaceholder.Item
+                width="70%"
+                height={10}
+                marginTop={20}
+              />
+            </SkeletonPlaceholder>
           </SkeletonPlaceholder>
         </View>
       ) : (
@@ -331,21 +444,23 @@ const DetailedScreen = ({ navigation, route }) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'space-between',
+              justifyContent: 'space-evenly',
               flexWrap: 'wrap',
               marginVertical: 10,
-              marginHorizontal: 10,
+              marginHorizontal: 5,
             }}>
             {features?.map((item, index) => {
               return (
                 <View
                   key={index}
                   style={{
+                    width: '45%',
                     backgroundColor: '#EFFAFF',
                     padding: 10,
                     flexDirection: 'row',
                     alignItems: 'center',
                     marginVertical: 10,
+                    marginHorizontal: 5,
                     borderRadius: 10,
                   }}>
                   <IconData item={item?.title} />
@@ -383,19 +498,20 @@ const DetailedScreen = ({ navigation, route }) => {
               }}>
               Job Description
             </Text>
-            {/* <Text
-            style={{
-              fontSize: 14,
-              color: Color.cloudyGrey,
-              textAlign: 'justify',
-              marginHorizontal: 10,
-              marginVertical: 10,
-              fontFamily: Gilmer.Medium,
-              lineHeight: 25,
-            }}>
-            {singleJobData?.description}
-          </Text> */}
-            <RenderHtml source={source} contentWidth={windowWidth} />
+            <RenderHtml
+              source={source}
+              contentWidth={windowWidth}
+              tagsStyles={{
+                body: {
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  textAlign: 'justify',
+                  marginHorizontal: 10,
+                  fontFamily: Gilmer.Medium,
+                  lineHeight: 25,
+                },
+              }}
+            />
           </View>
           {/* <View
           style={{
@@ -611,19 +727,21 @@ const DetailedScreen = ({ navigation, route }) => {
               }}>
               About Company
             </Text>
-            {/* <Text
-            style={{
-              fontSize: 14,
-              color: Color.cloudyGrey,
-              textAlign: 'justify',
-              marginHorizontal: 10,
-              marginVertical: 10,
-              fontFamily: Gilmer.Medium,
-              lineHeight: 25,
-            }}>
-            {singleJobData?.company?.bio}
-          </Text> */}
-            <RenderHtml source={company_source} contentWidth={windowWidth} />
+            <RenderHtml
+              source={company_source}
+              contentWidth={windowWidth}
+              tagsStyles={{
+                body: {
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  textAlign: 'justify',
+                  marginHorizontal: 10,
+                  marginVertical: 10,
+                  fontFamily: Gilmer.Medium,
+                  lineHeight: 25,
+                },
+              }}
+            />
           </View>
           <View style={{}}>
             <Text
@@ -787,7 +905,7 @@ const DetailedScreen = ({ navigation, route }) => {
           // opacity: headerOpacity,
           padding: 10,
           backgroundColor: Color.softGrey,
-          transform: [{ translateY: taby }],
+          transform: [{translateY: taby}],
         }}>
         <View
           style={{
@@ -853,7 +971,6 @@ const DetailedScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: Color.white,
   },
   header: {

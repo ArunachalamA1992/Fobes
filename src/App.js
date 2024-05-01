@@ -41,8 +41,12 @@ const MyDrawer = () => {
     config: {
       initialRouteName: 'Home',
       screens: {
-        Home: 'home',
-        DetailedScreen: 'detailed/:id',
+        Home: {
+          path: 'home',
+        },
+        DetailedScreen: {
+          path: 'detailed/:id',
+        },
       },
     },
   };
@@ -52,11 +56,7 @@ const MyDrawer = () => {
       try {
         const initialUrl = await Linking.getInitialURL();
         if (initialUrl) {
-          const reviewMatch = initialUrl.match(/\/review\/(\d+)/);
-          if (reviewMatch) {
-            const id = reviewMatch[1];
-            navigationRef.current?.navigate('DetailedScreen', {id});
-          }
+          handleDeepLink({url: initialUrl});
         }
       } catch (error) {
         console.error('Error handling initial URL:', error);
@@ -69,11 +69,11 @@ const MyDrawer = () => {
   useEffect(() => {
     const handleDeepLink = ({url}) => {
       try {
-        const reviewMatch = url.match(/\/review\/(\d+)/);
-        if (reviewMatch) {
-          const id = reviewMatch[1];
-          navigationRef?.current?.navigate('DetailedScreen', {id});
-        }
+        const route = url.replace(/.*?:\/\//g, '');
+        const id = route.match(/\/([^\/]+)\/?$/)[1];
+        // You can use this id to navigate to the appropriate screen
+        // Example:
+        // navigation.navigate('DetailedScreen', { id });
       } catch (error) {
         console.error('Error handling deep link:', error);
       }
@@ -88,7 +88,7 @@ const MyDrawer = () => {
 
   return (
     <PaperProvider>
-      <NavigationContainer>
+      <NavigationContainer linking={linking} ref={navigationRef}>
         <Drawer.Navigator
           initialRouteName="Home"
           screenOptions={{swipeEnabled: false}}
@@ -96,6 +96,11 @@ const MyDrawer = () => {
           <Drawer.Screen
             name="Home"
             component={MainApp}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="DetailedScreen"
+            component={DetailedScreen}
             options={{headerShown: false}}
           />
         </Drawer.Navigator>

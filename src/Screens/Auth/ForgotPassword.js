@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   TouchableWithoutFeedback,
@@ -8,21 +8,21 @@ import {
   Text,
   View,
 } from 'react-native';
-import { Button } from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
-import { Gilmer } from '../../Global/FontFamily';
+import {Gilmer} from '../../Global/FontFamily';
 import Color from '../../Global/Color';
-import { Media } from '../../Global/Media';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {Media} from '../../Global/Media';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const DismissKeyboard = ({ children }) => (
+const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
 );
 
-const ForgotPassword = ({ navigation }) => {
+const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState(false);
 
@@ -44,14 +44,13 @@ const ForgotPassword = ({ navigation }) => {
       };
       if (email?.trimStart().trimEnd()) {
         const forgot_password = await fetchData.forgot_password(data);
-        console.log("forgot_password --------- : ", JSON.stringify(forgot_password));
         if (forgot_password) {
-          // navigation.navigate('NumberVerify', {
-          //   id: forgot_password?.id,
-          //   data: data,
-          // });
+          navigation.navigate('PassOtpVerify', {
+            id: forgot_password?.id,
+            data: data,
+          });
           common_fn.showToast(forgot_password?.message);
-          navigation.replace("Auth")
+          // navigation.replace("Auth")
         } else {
           common_fn.showToast(forgot_password?.message);
         }
@@ -65,14 +64,14 @@ const ForgotPassword = ({ navigation }) => {
 
   function gotoLogin() {
     try {
-      navigation.navigate("Login")
+      navigation.navigate('Login');
     } catch (error) {
       console.log('catch in goto_Login :', error);
     }
   }
   function gotoRegister() {
     try {
-      navigation.navigate("Register")
+      navigation.navigate('Register');
     } catch (error) {
       console.log('catch in goto_Register :', error);
     }
@@ -82,29 +81,38 @@ const ForgotPassword = ({ navigation }) => {
     <DismissKeyboard>
       <View
         style={{
-          flex: 1, width: '100%',
+          flex: 1,
+          width: '100%',
           backgroundColor: Color.white,
           padding: 20,
-          justifyContent: 'center', alignItems: 'center'
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
         <View
           style={{
             flex: 1,
-            width: '100%', justifyContent: 'flex-end',
+            width: '100%',
+            justifyContent: 'flex-end',
             alignItems: 'center',
           }}>
           <Image
             source={Media.logo}
-            style={{ width: 100, height: 100, resizeMode: 'contain' }}
+            style={{width: 100, height: 100, resizeMode: 'contain'}}
           />
         </View>
         <View
           style={{
             flex: 1,
-            width: '100%', justifyContent: 'center',
+            width: '100%',
+            justifyContent: 'center',
             marginVertical: 20,
           }}>
-          <View style={{ width: '100%', justifyContent: 'center', marginVertical: 5 }}>
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'center',
+              marginVertical: 5,
+            }}>
             <Text
               style={{
                 fontFamily: Gilmer.Medium,
@@ -141,25 +149,67 @@ const ForgotPassword = ({ navigation }) => {
             onPress={() => {
               forgotfn(navigation);
             }}
-            style={{ width: '100%', height: 45, backgroundColor: Color.primary, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginVertical: 20 }}>
-            <Text style={{ fontSize: 15, color: Color.white }}>Forgot Password</Text>
+            style={{
+              width: '100%',
+              height: 45,
+              backgroundColor: Color.primary,
+              borderRadius: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginVertical: 20,
+            }}>
+            <Text style={{fontSize: 15, color: Color.white}}>
+              Forgot Password
+            </Text>
           </TouchableOpacity>
         </View>
-        <View style={{
-          flex: 1,
-          width: '100%', flexDirection: 'row',
-          marginVertical: 20, justifyContent: 'space-between', alignItems: 'flex-end'
-        }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontFamily: Gilmer.Medium, fontSize: 13, color: Color.Venus, }}>Go back to </Text>
+        <View
+          style={{
+            flex: 1,
+            width: '100%',
+            flexDirection: 'row',
+            marginVertical: 20,
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontFamily: Gilmer.Medium,
+                fontSize: 13,
+                color: Color.Venus,
+              }}>
+              Go back to{' '}
+            </Text>
             <TouchableOpacity onPress={() => gotoLogin()}>
-              <Text style={{ fontFamily: Gilmer.Medium, fontSize: 15, color: Color.primary, }}>Log In</Text>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 15,
+                  color: Color.primary,
+                }}>
+                Log In
+              </Text>
             </TouchableOpacity>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontFamily: Gilmer.Medium, fontSize: 13, color: Color.Venus, }}>Don't have an account? </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontFamily: Gilmer.Medium,
+                fontSize: 13,
+                color: Color.Venus,
+              }}>
+              Don't have an account?{' '}
+            </Text>
             <TouchableOpacity onPress={() => gotoRegister()}>
-              <Text style={{ fontFamily: Gilmer.Medium, fontSize: 15, color: Color.primary, }}>Register</Text>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 15,
+                  color: Color.primary,
+                }}>
+                Register
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -177,7 +227,8 @@ const styles = StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 5, marginVertical: 10,
+    borderRadius: 5,
+    marginVertical: 10,
   },
   numberCountryCode: {
     color: Color.cloudyGrey,
@@ -198,7 +249,8 @@ const styles = StyleSheet.create({
     padding: 10,
     color: Color.black,
     marginVertical: 10,
-    fontSize: 14, marginVertical: 10,
+    fontSize: 14,
+    marginVertical: 10,
     fontFamily: Gilmer.Medium,
   },
   RequestView: {

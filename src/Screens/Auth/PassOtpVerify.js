@@ -10,13 +10,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import Color from '../../Config/Color';
 import {Media} from '../../Global/Media';
 import OTPInput from '../../Components/OTPInput';
 import {Button} from 'react-native-elements';
 import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
 import {Gilmer} from '../../Global/FontFamily';
+import Color from '../../Global/Color';
 
 const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

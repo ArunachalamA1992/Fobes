@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -27,7 +27,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 
-const DismissKeyboard = ({ children }) => (
+const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
@@ -97,12 +97,12 @@ const Login = () => {
     }
   };
 
-  const googleSignIn = async (navigation) => {
+  const googleSignIn = async navigation => {
     try {
-      const replace = navigation
+      const replace = navigation;
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log("User info ============== :", JSON.stringify(userInfo));
+      console.log('User info ============== :', JSON.stringify(userInfo));
       // if (userInfo) {
       //   var data = {
       //     email: userInfo?.user?.email,
@@ -133,7 +133,7 @@ const Login = () => {
       //   }
       // }
     } catch (error) {
-      console.log("catch in google_Signing", error);
+      console.log('catch in google_Signing', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -145,7 +145,6 @@ const Login = () => {
       }
     }
   };
-
 
   return (
     <View style={styles.container}>
@@ -382,7 +381,8 @@ const Login = () => {
               backgroundColor: Color.lightgrey,
             }}></View>
         </View>
-        <TouchableOpacity onPress={() => googleSignIn()}
+        <TouchableOpacity
+          onPress={() => googleSignIn()}
           style={{
             flexDirection: 'row',
             justifyContent: 'center',

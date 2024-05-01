@@ -35,6 +35,7 @@ const ProfileScreen = ({navigation}) => {
   const [resumeVisible, setResumeVisible] = useState(false);
   const [profileImage, setProfileImage] = useState([]);
   const dispatch = useDispatch();
+  const [profileStatus, setProfileStatus] = useState(0);
   const userData = useSelector(state => state.UserReducer.userData);
   var {
     title,
@@ -126,21 +127,30 @@ const ProfileScreen = ({navigation}) => {
       icon: 'card-account-details-outline',
     },
   ]);
-  const [profileStatus, setProfileStatus] = useState(0);
-  const filteredProfileCompletion = profileCompletion.filter(item => {
+
+  const filteredProfileCompletion = profileCompletion?.filter(item => {
     if (
       candidate_resume != null &&
       candidate_resume?.length > 0 &&
-      item.id === 1
+      item?.id === 1
     ) {
       return false;
     }
-    if (candidate_skills?.length > 0 && item.id === 2) {
+    if (candidate_skills?.length > 0 && item?.id === 2) {
       return false;
     }
     if (
-      [...candidate_educations, ...candidate_experiences]?.length > 0 &&
-      item.id === 3
+      candidate_educations?.length > 0 &&
+      candidate_experiences?.length > 0 &&
+      candidate_language?.length > 0 &&
+      gender?.length > 0 &&
+      birth_date?.length > 0 &&
+      marital_status?.length > 0 &&
+      place?.length > 0 &&
+      (experience_name?.length > 0) & (email?.length > 0) &&
+      phone?.length > 0 &&
+      name?.length > 0 &&
+      item?.id === 3
     ) {
       return false;
     }
@@ -151,71 +161,33 @@ const ProfileScreen = ({navigation}) => {
     return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined;
   };
 
-  // const downloadResume = async (file, name) => {
-  //   try {
-  //     let date = new Date();
-  //     let image_URL = base_image_url + file;
-  //     console.log('image_URL', image_URL);
-  //     let ext = getExtension(file);
-  //     ext = '.' + ext[0];
-  //     console.log('ext', ext);
-
-  //     const {config, fs} = RNFetchBlob;
-  //     let download = fs.dirs.DownloadDir;
-  //     console.log('DocumentDir', download);
-  //     let options = {
-  //       fileCache: true,
-  //       addAndroidDownloads: {
-  //         useDownloadManager: true,
-  //         notification: true,
-  //         path: download + '/' + name + ext,
-  //         description: 'pdf',
-  //       },
-  //     };
-  //     console.log('options', options);
-  //     config(options)
-  //       .fetch('GET', image_URL)
-  //       .then(async res => {
-  //         console.log('Downloaded file:', res);
-  //       })
-  //       .catch(error => {
-  //         console.log('error', error);
-  //       });
-  //   } catch (error) {
-  //     console.error('Download failed:', error);
-  //   }
-  // };
-  const downloadResume = async () => {
-    let date = new Date();
+  const downloadResume = async (file, name) => {
     let image_URL = [base_image_url + file];
-    console.log('image_URL', image_URL, base_image_url + file);
     image_URL.map(itemImage => {
-      console.log('itemImage', itemImage);
-      // let ext = getExtension(itemImage);
-      // ext = '.' + ext[0];
-      // const {config, fs} = RNFetchBlob;
-      // let PictureDir = fs.dirs.PictureDir;
-      // let options = {
-      //   fileCache: true,
-      //   addAndroidDownloads: {
-      //     useDownloadManager: true,
-      //     notification: true,
-      //     path:
-      //       PictureDir +
-      //       '/DocStorage' +
-      //       '/File_' +
-      //       Math.floor(date.getTime() + date.getSeconds() / 2) +
-      //       ext,
-      //     description: 'Image',
-      //   },
-      // };
-      // config(options)
-      //   .fetch('GET', itemImage)
-      //   .then(async res => {
-      //     console.log('res.data', res);
-      //   });
+      let ext = getExtension(itemImage);
+      ext = '.' + ext[0];
+      const {config, fs} = RNFetchBlob;
+      let DownloadDir = fs.dirs.DownloadDir;
+      config({
+        path: DownloadDir + '/Fobes' + '/' + name + ext,
+        // addAndroidDownloads: {
+        //   useDownloadManager: true,
+        //   notification: true,
+        //   description: 'PDF file',
+        //   mime: 'application/pdf',
+        // },
+      })
+        .fetch('GET', itemImage)
+        .then(async res => {
+          console.log('res.data----------', res?.path);
+          common_fn.showToast('Your Resume has been successfully downloaded.');
+        })
+        .catch(error => {
+          console.error(error);
+        });
     });
   };
+
   useEffect(() => {
     const profiledata = common_fn.calculateProfileCompletion(
       candidate_resume,

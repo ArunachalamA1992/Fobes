@@ -1,9 +1,9 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
-import Color from '../Config/Color';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Gilmer} from '../Global/FontFamily';
+import Color from '../Global/Color';
 
 const CheckboxData = ({label, checked, onPress}) => {
   return (
