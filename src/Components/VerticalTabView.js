@@ -146,7 +146,6 @@ const TabContent = ({
       </View>
     );
   } else if (item?.work_type) {
-    console.log('worktypeSelectedItem', worktypeSelectedItem);
     return (
       <View
         style={{
@@ -174,6 +173,7 @@ const TabContent = ({
 const VerticalTabView = props => {
   var {navigation} = props;
   const [selectedTab, setSelectedTab] = useState(0);
+  const [ExperienceData, setExperienceData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
 
@@ -250,26 +250,15 @@ const VerticalTabView = props => {
     {
       id: 1,
       title: 'on-site',
-      value: 'on_site',
+      value: 0,
     },
     {
       id: 2,
-      title: 'Hybrid',
-      value: 'hybrid',
-    },
-    {
-      id: 3,
       title: 'Remote',
-      value: 'remote',
-    },
-    {
-      id: 4,
-      title: 'Internship',
-      value: 'internship',
+      value: 1,
     },
   ]);
 
-  const [ExperienceData, setExperienceData] = useState([]);
   const [filterSelectedItem, setFilterSelectedItem] = useState({
     date_posted: [],
     experience: [],
@@ -343,22 +332,12 @@ const VerticalTabView = props => {
         {
           id: 1,
           title: 'on-site',
-          value: 'on_site',
+          value: 0,
         },
         {
           id: 2,
-          title: 'Hybrid',
-          value: 'hybrid',
-        },
-        {
-          id: 3,
           title: 'Remote',
-          value: 'remote',
-        },
-        {
-          id: 4,
-          title: 'Internship',
-          value: 'internship',
+          value: 1,
         },
       ],
     },
@@ -586,6 +565,10 @@ const VerticalTabView = props => {
         .filter(item => item.value)
         .map(item => item.value)
         .join(','),
+      is_remote: filterSelectedItem?.date_posted
+        .filter(item => item.value)
+        .map(item => item.value)
+        .join(','),
     };
 
     const queryString = Object.entries(payload)
@@ -599,12 +582,7 @@ const VerticalTabView = props => {
   const appyFilter = async () => {
     try {
       var data = dataPayload();
-      console.log('data', data);
       const apply_filter_data = await fetchData.filter_job(data, token);
-      console.log(
-        'apply_filter_data---------------------------',
-        apply_filter_data,
-      );
       if (apply_filter_data) {
         navigation.navigate('FilterList', {item: apply_filter_data?.data});
       }

@@ -38,7 +38,6 @@ var {width, height} = Dimensions.get('window');
 
 LogBox.ignoreAllLogs();
 
-const windowHeight = Dimensions.get('screen').height;
 const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
   return (
     <View style={{flex: 1}}>
@@ -292,36 +291,508 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
   );
 };
 
-const PartTime = ({}) => {
+const PartTime = ({topCompany, navigation, jobData, token, getData}) => {
   return (
-    <View style={{flex: 1, marginVertical: 20}}>
-      <Text
+    <View style={{flex: 1}}>
+      <View
         style={{
-          fontSize: 16,
-          color: '#0033A0',
-          fontFamily: Gilmer.Bold,
-          textAlign: 'center',
-          paddingHorizontal: 10,
+          marginVertical: 10,
+          alignItems: 'center',
         }}>
-        Still progress
-      </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 16,
+              color: Color.black,
+              fontFamily: Gilmer.Bold,
+            }}>
+            You Might Like
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('JobListScreen')}
+            style={{padding: 5}}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#0033A0',
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 10,
+              }}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={jobData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({item, index}) => {
+            return (
+              <JobCardHorizontal
+                item={item}
+                navigation={navigation}
+                token={token}
+                getData={getData}
+              />
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 16,
+              color: 'black',
+              fontFamily: Gilmer.Bold,
+            }}>
+            Top Companies
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CompanyList')}
+            style={{padding: 5}}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#0033A0',
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 10,
+              }}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={topCompany}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({item, index}) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('CompanyDetails', {
+                    item: item,
+                  });
+                }}
+                key={index}
+                style={{
+                  width: 180,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderColor: Color.white,
+                  borderWidth: 0.5,
+                  marginVertical: 10,
+                  padding: 10,
+                  margin: 5,
+                  borderRadius: 10,
+                  elevation: 1,
+                  backgroundColor: '#EFFAFF',
+                }}>
+                {item?.logo == null ? (
+                  <Image
+                    source={require('../../assets/logos/user.png')}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      resizeMode: 'contain',
+                      borderRadius: 100,
+                      backgroundColor: Color.softGrey,
+                      borderWidth: 0.5,
+                      borderColor: Color.lightgrey,
+                    }}
+                  />
+                ) : (
+                  <Image
+                    source={{uri: base_image_url + item?.logo}}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      resizeMode: 'contain',
+                      borderRadius: 100,
+                    }}
+                  />
+                )}
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.black,
+                    fontFamily: Gilmer.Bold,
+                    paddingVertical: 5,
+                    textTransform: 'capitalize',
+                  }}
+                  numberOfLines={1}>
+                  {item?.name}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginVertical: 5,
+                  }}>
+                  <Iconviewcomponent
+                    Icontag={'Fontisto'}
+                    iconname={'map-marker-alt'}
+                    icon_size={20}
+                    icon_color={Color.Venus}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: Color.Venus,
+                      fontFamily: Gilmer.Medium,
+                      paddingHorizontal: 5,
+                    }}>
+                    {item?.district}
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.primary,
+                    fontFamily: Gilmer.Medium,
+                    textDecorationLine: 'underline',
+                    paddingVertical: 5,
+                  }}>
+                  {item?.openings?.[0]?.vacancies} Jobs Open
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        <Image
+          source={require('../../assets/images/banner.png')}
+          style={{
+            width: '100%',
+            height: 170,
+            resizeMode: 'contain',
+          }}
+        />
+      </View>
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 16,
+              color: Color.black,
+              fontFamily: Gilmer.Bold,
+              paddingHorizontal: 10,
+            }}>
+            Recommended Jobs
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('JobListScreen')}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#0033A0',
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 10,
+              }}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={jobData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({item, index}) => {
+            return (
+              <JobCardHorizontal
+                item={item}
+                navigation={navigation}
+                token={token}
+                getData={getData}
+              />
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
     </View>
   );
 };
 
-const Freelancer = ({}) => {
+const Freelancer = ({topCompany, navigation, jobData, token, getData}) => {
   return (
-    <View style={{flex: 1, marginVertical: 20}}>
-      <Text
+    <View style={{flex: 1}}>
+      <View
         style={{
-          fontSize: 16,
-          color: '#0033A0',
-          fontFamily: Gilmer.Bold,
-          textAlign: 'center',
-          paddingHorizontal: 10,
+          marginVertical: 10,
+          alignItems: 'center',
         }}>
-        Still progress
-      </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 16,
+              color: Color.black,
+              fontFamily: Gilmer.Bold,
+            }}>
+            You Might Like
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('JobListScreen')}
+            style={{padding: 5}}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#0033A0',
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 10,
+              }}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={jobData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({item, index}) => {
+            return (
+              <JobCardHorizontal
+                item={item}
+                navigation={navigation}
+                token={token}
+                getData={getData}
+              />
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 16,
+              color: 'black',
+              fontFamily: Gilmer.Bold,
+            }}>
+            Top Companies
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CompanyList')}
+            style={{padding: 5}}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#0033A0',
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 10,
+              }}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={topCompany}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({item, index}) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('CompanyDetails', {
+                    item: item,
+                  });
+                }}
+                key={index}
+                style={{
+                  width: 180,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderColor: Color.white,
+                  borderWidth: 0.5,
+                  marginVertical: 10,
+                  padding: 10,
+                  margin: 5,
+                  borderRadius: 10,
+                  elevation: 1,
+                  backgroundColor: '#EFFAFF',
+                }}>
+                {item?.logo == null ? (
+                  <Image
+                    source={require('../../assets/logos/user.png')}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      resizeMode: 'contain',
+                      borderRadius: 100,
+                      backgroundColor: Color.softGrey,
+                      borderWidth: 0.5,
+                      borderColor: Color.lightgrey,
+                    }}
+                  />
+                ) : (
+                  <Image
+                    source={{uri: base_image_url + item?.logo}}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      resizeMode: 'contain',
+                      borderRadius: 100,
+                    }}
+                  />
+                )}
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.black,
+                    fontFamily: Gilmer.Bold,
+                    paddingVertical: 5,
+                    textTransform: 'capitalize',
+                  }}
+                  numberOfLines={1}>
+                  {item?.name}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginVertical: 5,
+                  }}>
+                  <Iconviewcomponent
+                    Icontag={'Fontisto'}
+                    iconname={'map-marker-alt'}
+                    icon_size={20}
+                    icon_color={Color.Venus}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: Color.Venus,
+                      fontFamily: Gilmer.Medium,
+                      paddingHorizontal: 5,
+                    }}>
+                    {item?.district}
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.primary,
+                    fontFamily: Gilmer.Medium,
+                    textDecorationLine: 'underline',
+                    paddingVertical: 5,
+                  }}>
+                  {item?.openings?.[0]?.vacancies} Jobs Open
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        <Image
+          source={require('../../assets/images/banner.png')}
+          style={{
+            width: '100%',
+            height: 170,
+            resizeMode: 'contain',
+          }}
+        />
+      </View>
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 16,
+              color: Color.black,
+              fontFamily: Gilmer.Bold,
+              paddingHorizontal: 10,
+            }}>
+            Recommended Jobs
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('JobListScreen')}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#0033A0',
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 10,
+              }}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={jobData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({item, index}) => {
+            return (
+              <JobCardHorizontal
+                item={item}
+                navigation={navigation}
+                token={token}
+                getData={getData}
+              />
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
     </View>
   );
 };
@@ -398,21 +869,9 @@ const HomeScreen = ({navigation}) => {
   );
   var {resume, details, skills} = profile_complete_data;
   const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(1);
 
   const [topCompany, setTopCompany] = useState([]);
-
-  const [BuySection] = useState([
-    {
-      id: 1,
-      title: 'Apply Albion Home Online',
-      data: ['Apply Albion Home Online'],
-    },
-    {id: 2, title: 'Check your Eligibility', data: ['Check your Eligibility']},
-    {id: 3, title: 'Top Company', data: ['Top Company']},
-    {id: 3, title: 'Banner', data: ['Banner']},
-    {id: 3, title: 'RecommendedJobs', data: ['RecommendedJobs']},
-  ]);
 
   const [profileCompletion] = useState([
     {
@@ -474,12 +933,15 @@ const HomeScreen = ({navigation}) => {
   const getData = useCallback(async () => {
     try {
       setLoading(true);
-      const job_list = await fetchData.list_jobs(null, token);
+      var data = `job_type_id=` + index;
+      const job_list = await fetchData.filter_job(data, token);
       if (job_list) {
         setJobData(job_list?.data);
       }
       //top company list
-      const top_company_list = await fetchData.list_company(null, token);
+      var data = 'page_number=' + 1;
+      const top_company_list = await fetchData.list_company(data, token);
+      console.log('top_company_list', top_company_list);
       if (top_company_list) {
         setTopCompany(top_company_list?.data);
       }
@@ -521,8 +983,24 @@ const HomeScreen = ({navigation}) => {
         getData={getData}
       />
     ),
-    parttime: () => <PartTime />,
-    freelancer: () => <Freelancer />,
+    parttime: () => (
+      <PartTime
+        topCompany={topCompany}
+        navigation={navigation}
+        jobData={jobData}
+        token={token}
+        getData={getData}
+      />
+    ),
+    freelancer: () => (
+      <Freelancer
+        topCompany={topCompany}
+        navigation={navigation}
+        jobData={jobData}
+        token={token}
+        getData={getData}
+      />
+    ),
   });
 
   const getResumeUpload = async item => {
@@ -776,7 +1254,7 @@ const HomeScreen = ({navigation}) => {
           </SkeletonPlaceholder>
         </View>
       ) : (
-        <View>
+        <View style={{flex: 1}}>
           <View
             style={{
               marginVertical: 10,
@@ -867,9 +1345,7 @@ const HomeScreen = ({navigation}) => {
               />
             </TouchableOpacity>
           </View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{flexGrow: 1}}>
+          <ScrollView showsVerticalScrollIndicator={false} style={{}}>
             <View style={{flex: 1, marginVertical: 10}}>
               <View
                 style={{
@@ -1040,81 +1516,304 @@ const HomeScreen = ({navigation}) => {
                 </View>
               </ScrollView>
             </View>
-            <View
+            <Text
               style={{
                 flex: 1,
+                fontSize: 16,
+                color: Color.black,
+                fontFamily: Gilmer.Bold,
                 marginVertical: 10,
               }}>
-              <Text
+              Explore by Categories
+            </Text>
+            <View style={styles.TabviewContainer}>
+              <TouchableOpacity
                 style={{
-                  flex: 1,
-                  fontSize: 16,
-                  color: Color.black,
-                  fontFamily: Gilmer.Bold,
-                  marginVertical: 10,
-                }}>
-                Explore by Categories
-              </Text>
-              <View style={{flex: 1}}>
-                <TabView
-                  navigationState={{index, routes}}
-                  renderScene={renderScene}
-                  swipeEnabled={false}
-                  onIndexChange={setIndex}
-                  initialLayout={{width: layout.width}}
+                  ...styles.TabViewServices,
+                  backgroundColor: index == 1 ? Color.primary : Color.white,
+                }}
+                onPress={() => setIndex(1)}>
+                <Text
                   style={{
-                    minHeight: 1150,
-                  }}
-                  renderTabBar={() => {
-                    return (
-                      <View style={styles.TabviewContainer}>
-                        <TouchableOpacity
-                          style={{
-                            ...styles.TabViewServices,
-                            backgroundColor: index == 0 && Color.primary,
-                          }}
-                          onPress={() => setIndex(0)}>
-                          <Text
-                            style={{
-                              ...styles.TabViewName,
-                              color: index == 0 ? Color.white : Color.black,
-                            }}>
-                            Full Time
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{
-                            ...styles.TabViewServices,
-                            backgroundColor: index == 1 && Color.primary,
-                          }}
-                          onPress={() => setIndex(1)}>
-                          <Text
-                            style={{
-                              ...styles.TabViewName,
-                              color: index == 1 ? Color.white : Color.black,
-                            }}>
-                            Part Time
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{
-                            ...styles.TabViewServices,
-                            backgroundColor: index == 2 && Color.primary,
-                          }}
-                          onPress={() => setIndex(2)}>
-                          <Text
-                            style={{
-                              ...styles.TabViewName,
-                              color: index == 2 ? Color.white : Color.black,
-                            }}>
-                            Freelancer
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    );
-                  }}
-                />
+                    ...styles.TabViewName,
+                    color: index == 1 ? Color.white : Color.black,
+                  }}>
+                  Full Time
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  ...styles.TabViewServices,
+                  backgroundColor: index == 2 ? Color.primary : Color.white,
+                }}
+                onPress={() => setIndex(2)}>
+                <Text
+                  style={{
+                    ...styles.TabViewName,
+                    color: index == 2 ? Color.white : Color.black,
+                  }}>
+                  Part Time
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  ...styles.TabViewServices,
+                  backgroundColor: index == 3 ? Color.primary : Color.white,
+                }}
+                onPress={() => setIndex(3)}>
+                <Text
+                  style={{
+                    ...styles.TabViewName,
+                    color: index == 3 ? Color.white : Color.black,
+                  }}>
+                  Freelancer
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                marginVertical: 10,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 16,
+                    color: Color.black,
+                    fontFamily: Gilmer.Bold,
+                  }}>
+                  You Might Like
+                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('JobListScreen')}
+                  style={{padding: 5}}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: '#0033A0',
+                      fontFamily: Gilmer.Bold,
+                      paddingHorizontal: 10,
+                    }}>
+                    See All
+                  </Text>
+                </TouchableOpacity>
               </View>
+              <FlatList
+                data={jobData}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({item, index}) => {
+                  return (
+                    <JobCardHorizontal
+                      item={item}
+                      navigation={navigation}
+                      token={token}
+                      getData={getData}
+                    />
+                  );
+                }}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <View
+              style={{
+                marginVertical: 10,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 16,
+                    color: 'black',
+                    fontFamily: Gilmer.Bold,
+                  }}>
+                  Top Companies
+                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('CompanyList')}
+                  style={{padding: 5}}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: '#0033A0',
+                      fontFamily: Gilmer.Bold,
+                      paddingHorizontal: 10,
+                    }}>
+                    See All
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <FlatList
+                data={topCompany}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({item, index}) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('CompanyDetails', {
+                          item: item,
+                        });
+                      }}
+                      key={index}
+                      style={{
+                        width: 180,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderColor: Color.white,
+                        borderWidth: 0.5,
+                        marginVertical: 10,
+                        padding: 10,
+                        margin: 5,
+                        borderRadius: 10,
+                        elevation: 1,
+                        backgroundColor: '#EFFAFF',
+                      }}>
+                      {item?.logo == null ? (
+                        <Image
+                          source={require('../../assets/logos/user.png')}
+                          style={{
+                            width: 80,
+                            height: 80,
+                            resizeMode: 'contain',
+                            borderRadius: 100,
+                            backgroundColor: Color.softGrey,
+                            borderWidth: 0.5,
+                            borderColor: Color.lightgrey,
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          source={{uri: base_image_url + item?.logo}}
+                          style={{
+                            width: 80,
+                            height: 80,
+                            resizeMode: 'contain',
+                            borderRadius: 100,
+                          }}
+                        />
+                      )}
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: Color.black,
+                          fontFamily: Gilmer.Bold,
+                          paddingVertical: 5,
+                          textTransform: 'capitalize',
+                        }}
+                        numberOfLines={1}>
+                        {item?.name}
+                      </Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginVertical: 5,
+                        }}>
+                        <Iconviewcomponent
+                          Icontag={'Fontisto'}
+                          iconname={'map-marker-alt'}
+                          icon_size={20}
+                          icon_color={Color.Venus}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: Color.Venus,
+                            fontFamily: Gilmer.Medium,
+                            paddingHorizontal: 5,
+                          }}>
+                          {item?.district}
+                        </Text>
+                      </View>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: Color.primary,
+                          fontFamily: Gilmer.Medium,
+                          textDecorationLine: 'underline',
+                          paddingVertical: 5,
+                        }}>
+                        {item?.openings?.[0]?.vacancies} Jobs Open
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                }}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <View
+              style={{
+                marginVertical: 10,
+              }}>
+              <Image
+                source={require('../../assets/images/banner.png')}
+                style={{
+                  width: '100%',
+                  height: 170,
+                  resizeMode: 'contain',
+                }}
+              />
+            </View>
+            <View
+              style={{
+                marginVertical: 10,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 16,
+                    color: Color.black,
+                    fontFamily: Gilmer.Bold,
+                    paddingHorizontal: 10,
+                  }}>
+                  Recommended Jobs
+                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('JobListScreen')}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: '#0033A0',
+                      fontFamily: Gilmer.Bold,
+                      paddingHorizontal: 10,
+                    }}>
+                    See All
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <FlatList
+                data={jobData}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({item, index}) => {
+                  return (
+                    <JobCardHorizontal
+                      item={item}
+                      navigation={navigation}
+                      token={token}
+                      getData={getData}
+                    />
+                  );
+                }}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
             </View>
           </ScrollView>
         </View>

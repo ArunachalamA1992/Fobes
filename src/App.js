@@ -24,7 +24,6 @@ import Applycompletion from './Screens/Home/Jobs/Applycompletion';
 import BasicDetails from './Screens/Profile/BasicDetails';
 import SearchScreen from './Screens/Home/SearchScreen';
 import DetailedScreen from './Screens/Home/DetailedScreen';
-import {Iconviewcomponent} from './Components/Icontag';
 import FilterListScreen from './Screens/Home/Filter/FilterListScreen';
 import ForgotPassword from './Screens/Auth/ForgotPassword';
 import PassOtpVerify from './Screens/Auth/PassOtpVerify';

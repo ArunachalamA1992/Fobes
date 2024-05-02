@@ -144,6 +144,7 @@ export const HomeStack = () => {
         component={TermsCondition}
         options={({navigation, route}) => ({
           headerTitle: 'Terms & Conditions',
+          headerTitleAlign: 'center',
           headerTitleStyle: {color: Color.white},
           headerStyle: {backgroundColor: Color.primary},
           headerLeft: () => (

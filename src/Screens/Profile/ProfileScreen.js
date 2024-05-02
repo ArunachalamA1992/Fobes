@@ -242,7 +242,7 @@ const ProfileScreen = ({navigation}) => {
       } else {
       }
     } catch (error) {
-      console.log('error', error);
+      console.log('profile error', error);
     }
   };
 

@@ -148,7 +148,7 @@ const ProjectScreen = ({navigation, route}) => {
         common_fn.showToast(projects_data.message);
       }
     } catch (error) {
-      console.log('error', error);
+      console.log('project error', error);
     }
   };
 
@@ -444,41 +444,6 @@ const ProjectScreen = ({navigation, route}) => {
               }}>
               Worked From
             </Text>
-            {/* <TextInput
-              placeholder="Worked From"
-              placeholderTextColor={Color.cloudyGrey}
-              value={projectSelectedItem?.duration?.from}
-              onChangeText={text => {
-                setProjectSelectedItem({
-                  title: projectSelectedItem?.title,
-                  project_employment: projectSelectedItem?.project_employment,
-                  project_status: projectSelectedItem?.project_status,
-                  duration: {
-                    from: text,
-                    end: projectSelectedItem?.duration?.end,
-                  },
-                  details: projectSelectedItem?.details,
-                  location: projectSelectedItem?.location,
-                  site: projectSelectedItem?.site,
-                  nature_employment: projectSelectedItem?.nature_employment,
-                  team_size: projectSelectedItem?.team_size,
-                  role_in_project: projectSelectedItem?.role_in_project,
-                  role_description: projectSelectedItem?.role_description,
-                  skills: projectSelectedItem?.skills,
-                });
-              }}
-              style={{
-                borderBottomColor: Color.cloudyGrey,
-                borderBottomWidth: 1,
-                borderRadius: 5,
-                marginVertical: 10,
-                marginHorizontal: 10,
-                paddingHorizontal: 10,
-                fontSize: 14,
-                color: Color.cloudyGrey,
-                fontWeight: 'bold',
-              }}
-            /> */}
             <TouchableOpacity
               onPress={() => showFromDatePicker()}
               style={{
@@ -527,42 +492,6 @@ const ProjectScreen = ({navigation, route}) => {
               }}>
               Worked Till
             </Text>
-            {/* <TextInput
-              placeholder="Worked Till"
-              placeholderTextColor={Color.cloudyGrey}
-              value={projectSelectedItem?.duration?.end}
-              onChangeText={text => {
-                setProjectSelectedItem({
-                  title: projectSelectedItem?.title,
-                  project_employment: projectSelectedItem?.project_employment,
-                  project_status: projectSelectedItem?.project_status,
-                  duration: {
-                    from: projectSelectedItem?.duration?.from,
-                    end: text,
-                  },
-                  details: projectSelectedItem?.details,
-                  location: projectSelectedItem?.location,
-                  site: projectSelectedItem?.site,
-                  nature_employment: projectSelectedItem?.nature_employment,
-                  team_size: projectSelectedItem?.team_size,
-                  role_in_project: projectSelectedItem?.role_in_project,
-                  role_description: projectSelectedItem?.role_description,
-                  skills: projectSelectedItem?.skills,
-                });
-              }}
-              style={{
-                borderBottomColor: Color.cloudyGrey,
-                borderBottomWidth: 1,
-                borderRadius: 5,
-                marginVertical: 10,
-                marginHorizontal: 10,
-                paddingHorizontal: 10,
-                fontSize: 14,
-                color: Color.cloudyGrey,
-                fontWeight: 'bold',
-              }}
-            /> */}
-
             <TouchableOpacity
               onPress={() => showEndDatePicker()}
               style={{
@@ -1034,10 +963,8 @@ const ProjectScreen = ({navigation, route}) => {
           }}>
           <Button
             mode="contained"
-            onPress={async () => {
-              try {
-                navigation.navigate('Profile');
-              } catch (err) {}
+            onPress={() => {
+              navigation.navigate('Profile');
             }}
             style={{
               backgroundColor: '#DBF3FF',
@@ -1048,10 +975,8 @@ const ProjectScreen = ({navigation, route}) => {
           </Button>
           <Button
             mode="contained"
-            onPress={async () => {
-              try {
-                getAPI();
-              } catch (err) {}
+            onPress={() => {
+              getAPI();
             }}
             style={{
               backgroundColor: Color.primary,

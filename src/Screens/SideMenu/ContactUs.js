@@ -1,123 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  Animated,
-  UIManager,
-  Platform,
   Image,
   TextInput,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
 import Color from '../../Global/Color';
-import { Media } from '../../Global/Media';
-import { scr_width } from '../../Utils/Dimensions';
-import { useDispatch, useSelector } from 'react-redux';
-import { Iconviewcomponent } from '../../Components/Icontag';
-import { Gilmer } from '../../Global/FontFamily';
+import {Media} from '../../Global/Media';
+import {useSelector} from 'react-redux';
+import {Iconviewcomponent} from '../../Components/Icontag';
+import {Gilmer} from '../../Global/FontFamily';
 import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const ContactUs = () => {
-  let listOffset = useRef({});
-  let listRefArr = useRef([]);
-  let isListGliding = useRef(false);
-  const [tabIndex, setIndex] = useState(0);
-
   const navigation = useNavigation();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
 
   const userData = useSelector(state => state.UserReducer.userData);
-  // console.log("userData ========== : ",JSON.stringify(userData));
-  var { token } = userData;
-
-  const [routes] = useState([
-    { id: 1, title: 'Buy' },
-    { id: 2, title: 'Rent' },
-    { id: 3, title: 'Rent' },
-    { id: 4, title: 'Rent' },
-    { id: 5, title: 'Rent' },
-  ]);
-  const [BuySection] = useState([
-    {
-      id: 1,
-      title: 'Apply Albion Home Online',
-      data: ['Apply Albion Home Online'],
-    },
-    { id: 3, title: 'How it works', data: ['How it works'] },
-  ]);
-
-  const scrollY = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    scrollY.addListener(({ value }) => {
-      const curRoute = routes[tabIndex].key;
-      listOffset.current[curRoute] = value;
-    });
-    return () => {
-      scrollY.removeAllListeners();
-    };
-  }, []);
-
-  const onMomentumScrollBegin = () => {
-    isListGliding.current = true;
-  };
-
-  const onMomentumScrollEnd = () => {
-    isListGliding.current = false;
-    syncScrollOffset();
-  };
-
-  const onScrollEndDrag = () => {
-    syncScrollOffset();
-  };
-
-  const syncScrollOffset = () => {
-    // const curRouteKey = routes[tabIndex].key;
-    listRefArr.current.forEach(item => {
-      if (item.key !== curRouteKey) {
-        if (scrollY._value < HeaderHeight && scrollY._value >= 0) {
-          if (item.value) {
-            item.value.scrollToOffset({
-              offset: scrollY._value,
-              animated: false,
-            });
-            listOffset.current[item.key] = scrollY._value;
-          }
-        } else if (scrollY._value >= HeaderHeight) {
-          if (
-            listOffset.current[item.key] < HeaderHeight ||
-            listOffset.current[item.key] == null
-          ) {
-            if (item.value) {
-              item.value.scrollToOffset({
-                offset: HeaderHeight,
-                animated: false,
-              });
-              listOffset.current[item.key] = HeaderHeight;
-            }
-          }
-        }
-      }
-    });
-  };
-
-  if (Platform.OS === 'android') {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-
+  var {token} = userData;
 
   async function sendMessageFunc() {
     try {
-
-
-      if (username != "" && email != "" && subject != "" && message != "") {
+      if (username != '' && email != '' && subject != '' && message != '') {
         // console.log("Check ========= :", username + "\n" + " Email ----- :" + email + "\n" + "Subejct ------- :" + subject + "\n" + "Message -------- :" + message);
 
         var data = {
@@ -134,13 +46,11 @@ const ContactUs = () => {
         } else {
           common_fn.showToast(contactUsResponse?.message);
         }
-
       } else {
-        common_fn.showToast("Please fill mandatory fields");
+        common_fn.showToast('Please fill mandatory fields');
       }
-
     } catch (error) {
-      console.log("catch in sendMessage_Func : ", error);
+      console.log('catch in sendMessage_Func : ', error);
     }
   }
 
@@ -148,7 +58,7 @@ const ContactUs = () => {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image
-          source={{ uri: Media.contactUs }}
+          source={{uri: Media.contactUs}}
           style={{
             width: '100%',
             height: 220,
@@ -190,7 +100,7 @@ const ContactUs = () => {
                   Icontag={'Feather'}
                   iconname={'phone-call'}
                   icon_size={20}
-                  iconstyle={{ color: Color.primary }}
+                  iconstyle={{color: Color.primary}}
                 />
               </View>
               <Text
@@ -224,7 +134,7 @@ const ContactUs = () => {
                   Icontag={'Ionicons'}
                   iconname={'mail'}
                   icon_size={20}
-                  iconstyle={{ color: Color.primary }}
+                  iconstyle={{color: Color.primary}}
                 />
               </View>
               <Text
@@ -319,7 +229,7 @@ const ContactUs = () => {
             Get In Touch
           </Text>
 
-          <View style={{ marginVertical: 20 }}>
+          <View style={{marginVertical: 20}}>
             <Text
               style={{
                 fontSize: 14,
@@ -336,7 +246,7 @@ const ContactUs = () => {
                 value={username}
                 keyboardType="name-phone-pad"
                 onChangeText={text => {
-                  setUsername(text)
+                  setUsername(text);
                   // console.log('text --------- :', text);
                 }}
                 style={styles.numberTextBox}
@@ -361,7 +271,7 @@ const ContactUs = () => {
                 value={email}
                 keyboardType="email-address"
                 onChangeText={text => {
-                  setEmail(text)
+                  setEmail(text);
                   // console.log('text --------- :', text);
                 }}
                 style={styles.numberTextBox}
@@ -385,7 +295,7 @@ const ContactUs = () => {
                 value={subject}
                 keyboardType="name-phone-pad"
                 onChangeText={text => {
-                  setSubject(text)
+                  setSubject(text);
                 }}
                 style={styles.numberTextBox}
               />
@@ -407,7 +317,7 @@ const ContactUs = () => {
               value={message}
               textAlignVertical="top"
               onChangeText={text => {
-                setMessage(text)
+                setMessage(text);
               }}
               multiline
               style={{
@@ -423,7 +333,8 @@ const ContactUs = () => {
               }}
             />
           </View>
-          <TouchableOpacity onPress={() => sendMessageFunc()}
+          <TouchableOpacity
+            onPress={() => sendMessageFunc()}
             activeOpacity={0.7}
             style={{
               width: '100%',
@@ -434,7 +345,7 @@ const ContactUs = () => {
               alignItems: 'center',
               borderRadius: 5,
             }}>
-            <Text style={{ fontSize: 16, color: 'white' }}>Send Message</Text>
+            <Text style={{fontSize: 16, color: 'white'}}>Send Message</Text>
           </TouchableOpacity>
         </View>
 

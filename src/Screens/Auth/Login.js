@@ -5,16 +5,13 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  Animated,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  Linking,
 } from 'react-native';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
-import {useTheme} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {Iconviewcomponent} from '../../Components/Icontag';
 import common_fn from '../../Config/common_fn';
@@ -23,7 +20,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 

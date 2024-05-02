@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component, useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,13 +11,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Color from '../../Global/Color';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
-import NetInfo from '@react-native-community/netinfo';
-import { Media } from '../../Global/Media';
-import { scr_height, scr_width } from '../../Utils/Dimensions';
-import { Gilmer } from '../../Global/FontFamily';
-import { Iconviewcomponent } from '../../Components/Icontag';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {Media} from '../../Global/Media';
+import {scr_height, scr_width} from '../../Utils/Dimensions';
+import {Gilmer} from '../../Global/FontFamily';
+import {Iconviewcomponent} from '../../Components/Icontag';
 import fetchData from '../../Config/fetchData';
 
 const aboutData = [
@@ -52,7 +51,6 @@ const AboutUs = () => {
   const [candiCount, setCandiCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
-
   useEffect(() => {
     setLoading(true);
     getData().finally(() => setLoading(false));
@@ -62,23 +60,21 @@ const AboutUs = () => {
     try {
       const comp_list = await fetchData.aboutUsData();
       // console.log('data----------------------------', JSON.stringify(comp_list));
-      setJobCount(comp_list?.data?.job_count)
-      setCompCount(comp_list?.data?.company_count)
-      setCandiCount(comp_list?.data?.candidate_count)
-
+      setJobCount(comp_list?.data?.job_count);
+      setCompCount(comp_list?.data?.company_count);
+      setCandiCount(comp_list?.data?.candidate_count);
     } catch (error) {
       console.log('error', error);
     }
   };
 
-
   function renderHeaderItem() {
     try {
       return (
-        <View style={{ width: '100%', alignItems: 'center' }}>
-          <View style={{ width: scr_width }}>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={{width: scr_width}}>
             <Image
-              source={{ uri: Media.aboutUs }}
+              source={{uri: Media.aboutUs}}
               style={{
                 width: scr_width,
                 height: 220,
@@ -87,13 +83,14 @@ const AboutUs = () => {
             />
           </View>
 
-          <View style={{ width: '100%', padding: 10 }}>
+          <View style={{width: '100%', padding: 10}}>
             <Text
               style={{
                 fontSize: 20,
                 color: '#000',
                 textAlign: 'justify',
-                fontFamily: Gilmer.SemiBold, letterSpacing: 0.5,
+                fontFamily: Gilmer.SemiBold,
+                letterSpacing: 0.5,
               }}>
               We’re a highly skilled and professionals team
             </Text>
@@ -105,7 +102,8 @@ const AboutUs = () => {
                 textAlign: 'justify',
                 fontFamily: Gilmer.Regular,
                 textAlign: 'justify',
-                lineHeight: 25, letterSpacing: 0.5,
+                lineHeight: 25,
+                letterSpacing: 0.5,
                 paddingVertical: 10,
               }}>
               At Fobes, we're more than just a job portal; we're your partner in
@@ -121,7 +119,8 @@ const AboutUs = () => {
                 fontFamily: Gilmer.Regular,
                 textAlign: 'justify',
                 lineHeight: 25,
-                paddingVertical: 10, letterSpacing: 0.5,
+                paddingVertical: 10,
+                letterSpacing: 0.5,
               }}>
               We believe in connecting talent with opportunity, ensuring that
               every individual finds meaningful work, and every employer
@@ -140,12 +139,12 @@ const AboutUs = () => {
               alignItems: 'center',
               padding: 10,
             }}>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
                 iconname={'bag-check-outline'}
                 icon_size={26}
-                iconstyle={{ color: Color.cloudyGrey, paddingVertical: 5 }}
+                iconstyle={{color: Color.cloudyGrey, paddingVertical: 5}}
               />
               <Text
                 style={{
@@ -159,17 +158,18 @@ const AboutUs = () => {
                 style={{
                   fontSize: 14,
                   color: Color.cloudyGrey,
-                  fontFamily: Gilmer.Regular, letterSpacing: 0.5,
+                  fontFamily: Gilmer.Regular,
+                  letterSpacing: 0.5,
                 }}>
                 Live Jobs
               </Text>
             </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Iconviewcomponent
                 Icontag={'FontAwesome'}
                 iconname={'building-o'}
                 icon_size={26}
-                iconstyle={{ color: Color.cloudyGrey, paddingVertical: 5 }}
+                iconstyle={{color: Color.cloudyGrey, paddingVertical: 5}}
               />
               <Text
                 style={{
@@ -183,17 +183,18 @@ const AboutUs = () => {
                 style={{
                   fontSize: 14,
                   color: Color.cloudyGrey,
-                  fontFamily: Gilmer.Regular, letterSpacing: 0.5,
+                  fontFamily: Gilmer.Regular,
+                  letterSpacing: 0.5,
                 }}>
                 Companies
               </Text>
             </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Iconviewcomponent
                 Icontag={'Feather'}
                 iconname={'users'}
                 icon_size={26}
-                iconstyle={{ color: Color.cloudyGrey, paddingVertical: 5 }}
+                iconstyle={{color: Color.cloudyGrey, paddingVertical: 5}}
               />
               <Text
                 style={{
@@ -207,7 +208,8 @@ const AboutUs = () => {
                 style={{
                   fontSize: 14,
                   color: Color.cloudyGrey,
-                  fontFamily: Gilmer.Regular, letterSpacing: 0.5,
+                  fontFamily: Gilmer.Regular,
+                  letterSpacing: 0.5,
                 }}>
                 Candidates
               </Text>
@@ -225,7 +227,9 @@ const AboutUs = () => {
               style={{
                 paddingHorizontal: 1,
                 fontSize: 18,
-                color: 'black', fontFamily: Gilmer.Medium, letterSpacing: 0.5,
+                color: 'black',
+                fontFamily: Gilmer.Medium,
+                letterSpacing: 0.5,
               }}>
               Why Choose Fobes
             </Text>
@@ -240,10 +244,10 @@ const AboutUs = () => {
   function renderAboutItem(item, index) {
     try {
       return (
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{width: '100%', alignItems: 'center'}}>
           <View
-            style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            style={{width: '100%', paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View
                 style={{
                   width: 5,
@@ -256,7 +260,10 @@ const AboutUs = () => {
                   fontSize: 16,
                   color: '#000',
                   textAlign: 'justify',
-                  marginHorizontal: 10, fontFamily: Gilmer.Medium, letterSpacing: 0.5, lineHeight: 25,
+                  marginHorizontal: 10,
+                  fontFamily: Gilmer.Medium,
+                  letterSpacing: 0.5,
+                  lineHeight: 25,
                 }}>
                 {item.rent_title}
               </Text>
@@ -266,8 +273,10 @@ const AboutUs = () => {
                 width: '100%',
                 fontSize: 15,
                 color: '#666',
-                textAlign: 'justify', fontFamily: Gilmer.Regular,
-                lineHeight: 25, letterSpacing: 0.5,
+                textAlign: 'justify',
+                fontFamily: Gilmer.Regular,
+                lineHeight: 25,
+                letterSpacing: 0.5,
               }}>
               {item.rent_subText}
             </Text>
@@ -283,31 +292,38 @@ const AboutUs = () => {
     try {
       return (
         <View
-          style={{ width: '100%', alignItems: 'center', paddingHorizontal: 5 }}>
+          style={{width: '100%', alignItems: 'center', paddingHorizontal: 5}}>
           <View
             style={{
               width: '100%',
               flexDirection: 'row',
               alignItems: 'center',
-              marginTop: 20, paddingHorizontal: 5
+              marginTop: 20,
+              paddingHorizontal: 5,
             }}>
             <Text
               style={{
                 width: '95%',
                 fontSize: 18,
-                color: 'black', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5
+                color: 'black',
+                fontFamily: Gilmer.Medium,
+                lineHeight: 20,
+                letterSpacing: 0.5,
               }}>
               Our Mission
             </Text>
           </View>
-          <View style={{ width: '100%' }}>
+          <View style={{width: '100%'}}>
             <Text
               style={{
                 paddingHorizontal: 5,
                 fontSize: 15,
                 color: Color.cloudyGrey,
-                textAlign: 'justify', lineHeight: 25, paddingVertical: 10,
-                fontFamily: Gilmer.Regular, letterSpacing: 0.5
+                textAlign: 'justify',
+                lineHeight: 25,
+                paddingVertical: 10,
+                fontFamily: Gilmer.Regular,
+                letterSpacing: 0.5,
               }}>
               At Fobes, our mission is to empower individuals and organizations
               to achieve their full potential by connecting talent with
@@ -320,8 +336,10 @@ const AboutUs = () => {
                 fontSize: 15,
                 color: Color.cloudyGrey,
                 textAlign: 'justify',
-                fontFamily: Gilmer.Regular, lineHeight: 25,
-                paddingVertical: 10, letterSpacing: 0.5
+                fontFamily: Gilmer.Regular,
+                lineHeight: 25,
+                paddingVertical: 10,
+                letterSpacing: 0.5,
               }}>
               We are dedicated to delivering quality connections. We strive for
               excellence in matching talent to the right opportunities,
@@ -330,12 +348,15 @@ const AboutUs = () => {
           </View>
 
           <View
-            style={{ width: '100%', marginVertical: 10, alignItems: 'center' }}>
+            style={{width: '100%', marginVertical: 10, alignItems: 'center'}}>
             <Text
               style={{
                 width: '95%',
                 fontSize: 18,
-                color: 'black', fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5
+                color: 'black',
+                fontFamily: Gilmer.Medium,
+                lineHeight: 20,
+                letterSpacing: 0.5,
               }}>
               Contact Us
             </Text>
@@ -343,7 +364,10 @@ const AboutUs = () => {
               style={{
                 width: '95%',
                 fontSize: 16,
-                color: '#666', fontFamily: Gilmer.Medium, lineHeight: 25, letterSpacing: 0.5,
+                color: '#666',
+                fontFamily: Gilmer.Medium,
+                lineHeight: 25,
+                letterSpacing: 0.5,
                 paddingTop: 10,
               }}>
               For any other queries and feedback can reach us with below address{' '}
@@ -370,7 +394,7 @@ const AboutUs = () => {
                   Icontag={'Feather'}
                   iconname={'phone-call'}
                   icon_size={22}
-                  iconstyle={{ color: Color.primary }}
+                  iconstyle={{color: Color.primary}}
                 />
               </View>
               <Text
@@ -378,7 +402,10 @@ const AboutUs = () => {
                   fontSize: 18,
                   color: 'black',
                   fontFamily: 'Gilmer-SemiBold',
-                  paddingHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
+                  paddingHorizontal: 10,
+                  fontFamily: Gilmer.Medium,
+                  lineHeight: 20,
+                  letterSpacing: 0.5,
                 }}>
                 +91 994-330-0100
               </Text>
@@ -404,7 +431,7 @@ const AboutUs = () => {
                   Icontag={'Ionicons'}
                   iconname={'mail'}
                   icon_size={22}
-                  iconstyle={{ color: Color.primary }}
+                  iconstyle={{color: Color.primary}}
                 />
               </View>
               <Text
@@ -412,7 +439,10 @@ const AboutUs = () => {
                   width: '95%',
                   fontSize: 18,
                   color: 'black',
-                  paddingHorizontal: 10, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
+                  paddingHorizontal: 10,
+                  fontFamily: Gilmer.Medium,
+                  lineHeight: 20,
+                  letterSpacing: 0.5,
                 }}>
                 admin@fobes.in
               </Text>
@@ -434,7 +464,7 @@ const AboutUs = () => {
               }}>
               <Image
                 source={require('../../assets/logos/fobes.png')}
-                style={{ width: '80%', height: 50, resizeMode: 'contain' }}
+                style={{width: '80%', height: 50, resizeMode: 'contain'}}
               />
             </View>
             <View
@@ -448,7 +478,10 @@ const AboutUs = () => {
                 style={{
                   textAlign: 'left',
                   fontSize: 18,
-                  color: Color.primary, fontFamily: Gilmer.Medium, lineHeight: 20, letterSpacing: 0.5,
+                  color: Color.primary,
+                  fontFamily: Gilmer.Medium,
+                  lineHeight: 20,
+                  letterSpacing: 0.5,
                 }}>
                 Fobes Skill Itech Private Limited
               </Text>
@@ -456,7 +489,10 @@ const AboutUs = () => {
                 style={{
                   textAlign: 'justify',
                   fontSize: 14,
-                  color: '#666', fontFamily: Gilmer.Medium, lineHeight: 25, letterSpacing: 0.5,
+                  color: '#666',
+                  fontFamily: Gilmer.Medium,
+                  lineHeight: 25,
+                  letterSpacing: 0.5,
                 }}>
                 You are hired! Get yourself registered. The top companies in the
                 league are hiring now.
@@ -495,7 +531,7 @@ const AboutUs = () => {
             opacity: 0.5,
             padding: 10,
           }}>
-          <Text style={{ color: 'white' }}>No Internet Connection</Text>
+          <Text style={{color: 'white'}}>No Internet Connection</Text>
         </Animated.View>
       )}
       {loading ? (
@@ -511,11 +547,11 @@ const AboutUs = () => {
           /> */}
           <Image
             source={require('../../assets/logos/fobes_logo.png')}
-            style={{ width: 100, height: 100, resizeMode: 'contain' }}
+            style={{width: 100, height: 100, resizeMode: 'contain'}}
           />
         </View>
-      ) :
-        (<View
+      ) : (
+        <View
           style={{
             width: '100%',
             height: height,
@@ -527,12 +563,13 @@ const AboutUs = () => {
             data={aboutData}
             keyExtractor={(item, index) => item + index}
             ListHeaderComponent={() => renderHeaderItem()}
-            renderItem={({ item, index }) => renderAboutItem(item, index)}
+            renderItem={({item, index}) => renderAboutItem(item, index)}
             ListFooterComponent={() => renderFooterItem()}
-            style={{ width: '95%' }}
+            style={{width: '95%'}}
             showsVerticalScrollIndicator={false}
           />
-        </View>)}
+        </View>
+      )}
     </View>
   );
 };
