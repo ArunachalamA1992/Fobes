@@ -121,7 +121,7 @@ const BasicDetails = ({navigation}) => {
       selectBasic?.work_experiance != 'fresher'
         ? 'experienced'
         : 'fresher' || '',
-    experience: experience_id || {},
+    experience: experience_id || '',
     current_ctc: '',
     expected_ctc: '',
     gender: gender || '',
@@ -331,21 +331,32 @@ const BasicDetails = ({navigation}) => {
         title: selectBasic?.professional_title,
         website: selectBasic?.personal_website,
         birth_date: moment(selectBasic?.dob).format('YYYY-MM-DD'),
-        gender: selectBasic?.gender?.value,
-        marital_status: selectBasic?.marital_status?.value,
+        gender: selectBasic?.gender,
+        marital_status: selectBasic?.marital_status,
         sociallink: selectBasic?.social_profile,
         bio: selectBasic?.biography,
         // available_in: selectBasic?.availability?.name,
         education_id: selectBasic?.qualify,
-        experience_id: selectBasic?.experience?.experience_id,
+        experience_id: selectBasic?.experience,
         // profession_id: selectBasic?.profession?.profession_id,
       };
-      const intro_data = await fetchData.candidates_profile(data, token);
-      if (intro_data) {
-        common_fn.showToast(intro_data?.message);
-        navigation.navigate('Education', {item: {}});
+      if (
+        selectBasic?.gender?.length != 0 &&
+        selectBasic?.marital_status?.length != 0
+      ) {
+        const intro_data = await fetchData.candidates_profile(data, token);
+        if (intro_data) {
+          common_fn.showToast(intro_data?.message);
+          if (candidate_educations?.length > 0) {
+            navigation.navigate('StepEducation');
+          } else {
+            navigation.navigate('Education', {item: {}});
+          }
+        } else {
+          common_fn.showToast(intro_data?.message);
+        }
       } else {
-        common_fn.showToast(intro_data?.message);
+        common_fn.showToast('Please Select the fields');
       }
     } catch (error) {
       console.log('error', error);
@@ -742,7 +753,7 @@ const BasicDetails = ({navigation}) => {
                 search
                 maxHeight={300}
                 labelField="name"
-                valueField="name"
+                valueField="experience_id"
                 placeholder={'Select item'}
                 searchPlaceholder="Search..."
                 value={selectBasic?.experience}
@@ -753,7 +764,7 @@ const BasicDetails = ({navigation}) => {
                     dob: selectBasic?.dob,
                     qualify: selectBasic?.qualify,
                     work_experiance: selectBasic?.work_experiance,
-                    experience: item,
+                    experience: item?.experience_id,
                     current_ctc: selectBasic?.current_ctc,
                     expected_ctc: selectBasic?.expected_ctc,
                     gender: selectBasic?.gender,
@@ -780,7 +791,7 @@ const BasicDetails = ({navigation}) => {
             <TextInput
               placeholder="Enter Your Current CTC"
               placeholderTextColor={Color.cloudyGrey}
-              value={selectBasic?.professional_title}
+              value={selectBasic?.current_ctc}
               onChangeText={text => {
                 setSelectBasic({
                   professional_title: selectBasic?.professional_title,
@@ -824,7 +835,7 @@ const BasicDetails = ({navigation}) => {
             <TextInput
               placeholder="Enter Your Expected CTC"
               placeholderTextColor={Color.cloudyGrey}
-              value={selectBasic?.professional_title}
+              value={selectBasic?.expected_ctc}
               onChangeText={text => {
                 setSelectBasic({
                   professional_title: selectBasic?.professional_title,
@@ -952,7 +963,7 @@ const BasicDetails = ({navigation}) => {
                         expected_ctc: selectBasic?.expected_ctc,
                         gender: selectBasic?.gender,
                         city: selectBasic?.city,
-                        marital_status: item?.title,
+                        marital_status: item?.value,
                         biography: selectBasic?.biography,
                         profession: selectBasic?.profession,
                         availability: selectBasic?.availability,

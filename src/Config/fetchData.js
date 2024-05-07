@@ -1,4 +1,4 @@
-import { api } from './api';
+import {api} from './api';
 
 const api_name = 'api/';
 
@@ -25,6 +25,10 @@ export default {
   },
   filter_job: (data, token) => {
     let url = api_name + 'jobs?' + data;
+    return api.getMethod(url, token);
+  },
+  recommended_jobs: (data, token) => {
+    let url = api_name + 'jobs/recommended_jobs';
     return api.getMethod(url, token);
   },
   single_candidate: (data, token) => {
@@ -71,6 +75,14 @@ export default {
     let url = api_name + 'candidates/bookmarks';
     return api.getMethod(url, token);
   },
+  search: (data, token) => {
+    let url = api_name + 'jobs/ajax?' + data;
+    return api.getMethod(url, token);
+  },
+  add_search: (data, token) => {
+    let url = api_name + 'jobs/ajax';
+    return api.postMethod(url, token);
+  },
   toggle_bookmarks: (data, token) => {
     let url = api_name + 'candidates/bookmarks';
     return api.postMethod(url, data, token);
@@ -111,7 +123,4 @@ export default {
     let url = api_name + 'job/contact';
     return api.postMethod(url, data, token);
   },
-
-
-
 };

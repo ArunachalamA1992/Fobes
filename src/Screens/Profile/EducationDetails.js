@@ -45,7 +45,7 @@ const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 const EducationDetails = ({navigation, route}) => {
   const [itemData] = useState(route.params.item);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var {token, candidate_experiences} = userData;
   const [HigherQualification] = useState([
     {
       id: 1,
@@ -123,7 +123,11 @@ const EducationDetails = ({navigation, route}) => {
       const education_data = await fetchData.candidates_profile(data, token);
       if (education_data) {
         common_fn.showToast(education_data.message);
-        navigation.navigate('Experience', {item: {}});
+        if (candidate_experiences?.length > 0) {
+          navigation.navigate('StepEmployment');
+        } else {
+          navigation.navigate('Experience', {item: {}});
+        }
       } else {
         common_fn.showToast(education_data.message);
       }

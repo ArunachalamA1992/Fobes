@@ -462,6 +462,7 @@ const ProfileScreen = ({navigation}) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 marginVertical: 5,
+                justifyContent: 'flex-start',
               }}>
               <FIcon name="briefcase" size={20} color={Color.lightBlack} />
               <Text
@@ -1270,11 +1271,7 @@ const ProfileScreen = ({navigation}) => {
                   alignItems: 'flex-start',
                   marginVertical: 15,
                 }}>
-                {/* <Image
-                  source={Media.user}
-                  style={{width: 50, height: 50, resizeMode: 'contain'}}
-                /> */}
-                <FIcon name="briefcase" size={35} color={Color.cloudyGrey} />
+                <FIcon name="briefcase" size={25} color={Color.cloudyGrey} />
                 <View style={{flex: 1}}>
                   <Text
                     style={{
@@ -1283,7 +1280,6 @@ const ProfileScreen = ({navigation}) => {
                       color: Color.black,
                       textTransform: 'capitalize',
                       marginHorizontal: 10,
-                      marginTop: 5,
                     }}>
                     {item?.designation}
                   </Text>
@@ -1380,13 +1376,9 @@ const ProfileScreen = ({navigation}) => {
                   alignItems: 'flex-start',
                   marginVertical: 15,
                 }}>
-                {/* <Image
-                  source={Media.user}
-                  style={{width: 50, height: 50, resizeMode: 'contain'}}
-                /> */}
                 <FIcon
                   name="graduation-cap"
-                  size={35}
+                  size={25}
                   color={Color.cloudyGrey}
                 />
                 <View style={{flex: 1}}>
@@ -1397,7 +1389,6 @@ const ProfileScreen = ({navigation}) => {
                       color: Color.black,
                       textTransform: 'capitalize',
                       marginHorizontal: 10,
-                      marginTop: 5,
                     }}>
                     {item?.degree}
                   </Text>
@@ -1493,7 +1484,7 @@ const ProfileScreen = ({navigation}) => {
                 }}>
                 <Icon
                   name="document-attach"
-                  size={35}
+                  size={25}
                   color={Color.cloudyGrey}
                 />
                 <View style={{flex: 1}}>

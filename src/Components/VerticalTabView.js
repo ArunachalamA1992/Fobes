@@ -1,12 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import {Gilmer} from '../Global/FontFamily';
 import Color from '../Global/Color';
 import CheckboxData, {RadioData} from './Checkbox';
-import {Button, Divider} from 'react-native-paper';
+import {Button, Divider, Searchbar} from 'react-native-paper';
 import fetchData from '../Config/fetchData';
 import {useSelector} from 'react-redux';
 import common_fn from '../Config/common_fn';
+import axios from 'axios';
+import {Dropdown} from 'react-native-element-dropdown';
 
 const TabContent = ({
   item,
@@ -22,6 +30,7 @@ const TabContent = ({
   handleIndustryPress,
   worktypeSelectedItem,
   handleWorkTypePress,
+  locationData,
 }) => {
   if (item?.date_posted) {
     return (
@@ -105,27 +114,44 @@ const TabContent = ({
       </View>
     );
   } else if (item?.location) {
+    console.log('locationData', locationData);
     return (
-      <TouchableOpacity
+      <View
         style={{
-          height: 50,
-          backgroundColor: Color.white,
-          borderColor: Color.Venus,
-          borderWidth: 1,
-          borderRadius: 10,
           marginVertical: 10,
-          justifyContent: 'center',
         }}>
         <Text
           style={{
             fontSize: 14,
-            color: Color.lightBlack,
+            color: Color.black,
             fontFamily: Gilmer.Bold,
-            paddingHorizontal: 10,
           }}>
           Select Location
         </Text>
-      </TouchableOpacity>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: Color.white,
+            padding: 10,
+          }}>
+          <Dropdown
+            style={[styles.dropdown, {borderColor: 'blue'}]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={locationData}
+            search
+            maxHeight={300}
+            labelField="value"
+            valueField="value"
+            placeholder={'Select item'}
+            searchPlaceholder="Search..."
+            value={'selectBasic?.value'}
+            onChange={item => {}}
+          />
+        </View>
+      </View>
     );
   } else if (item?.industry) {
     return (
@@ -174,6 +200,7 @@ const VerticalTabView = props => {
   var {navigation} = props;
   const [selectedTab, setSelectedTab] = useState(0);
   const [ExperienceData, setExperienceData] = useState([]);
+  const [search, setSearch] = useState('');
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
 
@@ -223,28 +250,7 @@ const VerticalTabView = props => {
     },
   ]);
 
-  const [jobtypeData, setJobtypeData] = useState([
-    {
-      id: 1,
-      title: 'Full-time',
-      value: 'full_time',
-    },
-    {
-      id: 2,
-      title: 'Part-time',
-      value: 'part_time',
-    },
-    {
-      id: 3,
-      title: 'Contract',
-      value: 'contract',
-    },
-    {
-      id: 4,
-      title: 'Internship',
-      value: 'internship',
-    },
-  ]);
+  const [jobtypeData, setJobtypeData] = useState([]);
 
   const [worktypeData] = useState([
     {
@@ -264,19 +270,13 @@ const VerticalTabView = props => {
     experience: [],
     distance: [],
     job_type: [],
-    location: {},
+    location: [],
     industry: [],
     work_type: [],
   });
 
-  const [industryData, setIndustryData] = useState([
-    {id: 1, title: 'Custom software development', checked: true},
-    {id: 2, title: 'Software Prototyping', checked: false},
-    {id: 3, title: 'DevOps Automation', checked: false},
-    {id: 4, title: 'Web Application Development', checked: false},
-    {id: 5, title: 'Mobile Application Development', checked: false},
-    {id: 6, title: 'Cloud Computing', checked: false},
-  ]);
+  const [industryData, setIndustryData] = useState([]);
+  const [locationData, setLocationData] = useState([]);
 
   useEffect(() => {
     getApiData();
@@ -294,7 +294,7 @@ const VerticalTabView = props => {
       const industry_type_data = await fetchData.industry_type(null, token);
       setIndustryData(industry_type_data?.data);
     } catch (error) {
-      console.log('error', error);
+      console.log('Filter error', error);
     }
   };
 
@@ -322,7 +322,7 @@ const VerticalTabView = props => {
       job_type: jobtypeData,
     },
     {
-      location: '',
+      location: locationData,
     },
     {
       industry: industryData,
@@ -644,6 +644,7 @@ const VerticalTabView = props => {
               handleIndustryPress={handleIndustryPress}
               worktypeSelectedItem={worktypeSelectedItem}
               handleWorkTypePress={handleWorkTypePress}
+              locationData={locationData}
             />
           </ScrollView>
         </View>
@@ -670,7 +671,7 @@ const VerticalTabView = props => {
               experience: [],
               distance: [],
               job_type: [],
-              location: {},
+              location: '',
               industry: [],
               work_type: [],
             });
@@ -710,3 +711,42 @@ const VerticalTabView = props => {
 };
 
 export default VerticalTabView;
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 16,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});

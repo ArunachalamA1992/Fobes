@@ -250,7 +250,7 @@ const JobItemCard = props => {
                 fontFamily: Gilmer.Bold,
                 paddingHorizontal: 5,
               }}>
-              {item.job_comp_applicant}
+              {item.applicants}
             </Text>
           </View>
         </View>
@@ -499,7 +499,7 @@ export const JobCardHorizontal = props => {
                 fontFamily: Gilmer.Bold,
                 paddingHorizontal: 5,
               }}>
-              {item.job_comp_applicant}
+              {item.applicants}
             </Text>
           </View>
         </View>

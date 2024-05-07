@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {LogBox, StatusBar, TouchableOpacity, View} from 'react-native';
+import {LogBox, StatusBar, View} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -22,7 +22,7 @@ import Notification from './Screens/Home/Notification';
 import SkillScreen from './Screens/Profile/Skills';
 import Applycompletion from './Screens/Home/Jobs/Applycompletion';
 import BasicDetails from './Screens/Profile/BasicDetails';
-import SearchScreen from './Screens/Home/SearchScreen';
+import SearchScreen from './Screens/Home/Search/SearchScreen';
 import DetailedScreen from './Screens/Home/DetailedScreen';
 import FilterListScreen from './Screens/Home/Filter/FilterListScreen';
 import ForgotPassword from './Screens/Auth/ForgotPassword';
@@ -30,6 +30,7 @@ import PassOtpVerify from './Screens/Auth/PassOtpVerify';
 import ResetPass from './Screens/Auth/ResetPass';
 import {Linking} from 'react-native';
 import {navigationRef} from '../RootNavigation';
+import SearchDataList from './Screens/Home/Search/SearchDataList';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -204,6 +205,26 @@ const MainApp = () => {
           })}
         />
         <Stack.Screen
+          name="SearchDataList"
+          component={SearchDataList}
+          options={({navigation, route}) => ({
+            headerTitle: 'Jobs',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
           name="AppliedJobs"
           component={AppliedJobs}
           options={({navigation, route}) => ({
@@ -249,14 +270,14 @@ const MainApp = () => {
           options={({navigation, route}) => ({
             headerTitle: 'Applied Jobs Status',
             headerTitleAlign: 'center',
-            headerTitleStyle: {color: Color.white},
-            headerStyle: {backgroundColor: Color.primary},
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
               <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
-                  color={Color.white}
+                  color={Color.black}
                   onPress={() => navigation.goBack()}
                 />
               </View>

@@ -77,6 +77,7 @@ const DetailedScreen = ({navigation, route}) => {
   const [singleJobData, setSingleJobdata] = useState({});
   const [loading, setLoading] = useState(false);
   const [similarJobdata, setSimilarJobdata] = useState([]);
+  const [jobApplied, setJobApplied] = useState(false);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
 
@@ -98,6 +99,12 @@ const DetailedScreen = ({navigation, route}) => {
       ]);
       setSimilarJobdata(similarJobData?.data);
       setSingleJobdata(singleJobData?.data[0]);
+
+      const PendingProduct = await fetchData.list_job_Applied(null, token);
+      const appliedJobs = PendingProduct?.data.map(item => item?.job?.id);
+      const selectedJobId = singleJobData?.data[0]?.id;
+      const isJobApplied = appliedJobs.includes(selectedJobId);
+      setJobApplied(isJobApplied);
     } catch (error) {
       throw new Error('Failed to fetch data');
     }
@@ -943,6 +950,7 @@ const DetailedScreen = ({navigation, route}) => {
                 Linking.openURL(singleJobData?.apply_email);
               }
             }}
+            disabled={jobApplied}
             style={{
               flex: 1,
               height: 50,
@@ -950,7 +958,7 @@ const DetailedScreen = ({navigation, route}) => {
               alignItems: 'center',
               borderRadius: 50,
               marginHorizontal: 10,
-              backgroundColor: Color.primary,
+              backgroundColor: jobApplied ? Color.cloudyGrey : Color.primary,
             }}>
             <Text
               style={{
@@ -959,7 +967,7 @@ const DetailedScreen = ({navigation, route}) => {
                 alignItems: 'center',
                 color: Color.white,
               }}>
-              Apply Now
+              {jobApplied ? 'Applied' : 'Apply Now'}
             </Text>
           </TouchableOpacity>
         </View>

@@ -168,9 +168,10 @@ const IntroductionScreen = ({navigation}) => {
             />
           </View>
 
-          {candidate_experiences?.map((item, index) => {
-            return item?.currently_working == 1 ? (
+          {candidate_experiences?.length > 0 ? (
+            candidate_experiences.map((item, index) => (
               <TouchableOpacity
+                key={index}
                 style={{
                   marginTop: 10,
                   backgroundColor: '#9DCBE2',
@@ -191,7 +192,9 @@ const IntroductionScreen = ({navigation}) => {
                       marginHorizontal: 5,
                       marginVertical: 5,
                     }}>
-                    Currenttly working as
+                    {item?.currently_working == 1
+                      ? 'Currently working as'
+                      : 'Previous experience as'}
                   </Text>
                   <Text
                     style={{
@@ -201,17 +204,51 @@ const IntroductionScreen = ({navigation}) => {
                       marginHorizontal: 5,
                       marginVertical: 5,
                     }}>
-                    {candidate_experiences?.length > 0
+                    {item?.currently_working == 1
                       ? `${item?.department}, ${item?.company}`
-                      : 'Eg: Software Engineer, etc'}
+                      : `${item?.department}, ${item?.company}`}
                   </Text>
                 </View>
-                <FIcon name="pencil" size={20} color={Color.blue} />
+                {item?.currently_working == 1 && (
+                  <FIcon name="pencil" size={20} color={Color.blue} />
+                )}
               </TouchableOpacity>
-            ) : (
-              <View />
-            );
-          })}
+            ))
+          ) : (
+            <TouchableOpacity
+              style={{
+                marginTop: 10,
+                backgroundColor: '#9DCBE2',
+                padding: 10,
+                borderRadius: 10,
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+              }}>
+              <View style={{flex: 1}}>
+                <Text
+                  style={{
+                    fontFamily: Gilmer.Medium,
+                    fontSize: 14,
+                    color: Color.primary,
+                    marginHorizontal: 5,
+                    marginVertical: 5,
+                  }}>
+                  Eg:
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: Gilmer.Medium,
+                    fontSize: 14,
+                    color: Color.black,
+                    marginHorizontal: 5,
+                    marginVertical: 5,
+                  }}>
+                  Software Engineer, etc
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Experience', {item: {}});
@@ -221,7 +258,6 @@ const IntroductionScreen = ({navigation}) => {
               style={{
                 fontFamily: Gilmer.Bold,
                 fontSize: 16,
-                fontWeight: 'bold',
                 color: Color.primary,
                 marginHorizontal: 5,
                 marginVertical: 5,

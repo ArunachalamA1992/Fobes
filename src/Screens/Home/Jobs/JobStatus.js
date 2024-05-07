@@ -44,10 +44,11 @@ const labels = [
 
 const JobStatus = ({navigation, route}) => {
   const [itemData] = useState(route.params.item);
+  console.log('itemData?.job?.id', itemData?.job?.id);
   const [date] = useState(route.params.resultDate);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
-  const [jobData, setJobData] = useState([]);
+  const [SimilarData, setSimilarData] = useState([]);
 
   useEffect(() => {
     getData();
@@ -55,8 +56,8 @@ const JobStatus = ({navigation, route}) => {
 
   const getData = async () => {
     try {
-      const job_list = await fetchData.list_jobs(null, token);
-      setJobData(job_list?.data);
+      const SimilarData_list = await fetchData.recommended_jobs(null, token);
+      setSimilarData(SimilarData_list?.data);
     } catch (error) {
       console.log('error', error);
     }
@@ -136,7 +137,7 @@ const JobStatus = ({navigation, route}) => {
           <Button
             mode="contained"
             onPress={async () => {
-              navigation.navigate('DetailedScreen', {item: itemData?.job?.id});
+              navigation.navigate('DetailedScreen', {id: itemData?.job?.id});
             }}
             style={{
               width: '50%',
@@ -213,7 +214,7 @@ const JobStatus = ({navigation, route}) => {
           }}>
           Similar Jobs
         </Text>
-        {jobData.map((item, index) => {
+        {SimilarData.map((item, index) => {
           return (
             <JobItemCard
               item={item}

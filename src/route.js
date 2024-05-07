@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
-import F5Icon from 'react-native-vector-icons/Ionicons';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeScreen from './Screens/Home/HomeScreen';
 import AboutUs from './Screens/SideMenu/AboutUs';
@@ -13,30 +11,26 @@ import TermsCondition from './Screens/SideMenu/TermsCondition';
 import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
 import Color from './Global/Color';
 import ProfileScreen from './Screens/Profile/ProfileScreen';
-import LogoTitle, {PrimeLogoTitle} from './Components/LogoTitle';
 import {NavigationDrawerStructure} from './Components/Nav/NavDrawer';
 import Login from './Screens/Auth/Login';
 import Register from './Screens/Auth/Register';
-import {Media} from './Global/Media';
-import {Gilmer} from './Global/FontFamily';
 import FAQs from './Screens/SideMenu/FAQs';
 import AppliedJobs from './Screens/Home/Jobs/AppliedJobs';
 import {Iconviewcomponent} from './Components/Icontag';
 import {Badge} from 'react-native-paper';
 import JobListScreen from './Screens/Home/JobListScreen';
-import DetailedScreen from './Screens/Home/DetailedScreen';
 import ApplyJob from './Screens/Home/Jobs/ApplyJob';
 import CompanyList from './Screens/Home/CompanyList';
 import CompanyDetails from './Screens/Home/CompanyDetails';
 import SavedJobScreen from './Screens/Home/SavedJobScreen';
 import EducationDetails from './Screens/Profile/EducationDetails';
 import EmploymentDetails from './Screens/Profile/EmploymentDetails';
-import SkillScreen from './Screens/Profile/Skills';
 import ProjectScreen from './Screens/Profile/ProjectScreen';
 import FilterScreen from './Screens/Home/Filter/FilterScreen';
 import IntroductionScreen from './Screens/Profile/IntroductionScreen';
-import BasicDetails from './Screens/Profile/BasicDetails';
-import Applycompletion from './Screens/Home/Jobs/Applycompletion';
+import RecommendedListScreen from './Screens/Home/RecommendedJobs';
+import StepEducation from './Screens/Profile/StepEducation';
+import StepEmployment from './Screens/Profile/StepEmployment';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -183,6 +177,26 @@ export const HomeStack = () => {
         component={JobListScreen}
         options={({navigation, route}) => ({
           headerTitle: 'Job List',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {color: Color.black},
+          headerStyle: {backgroundColor: Color.white},
+          headerLeft: () => (
+            <View style={{marginHorizontal: 10}}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.black}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="recommendedjob"
+        component={RecommendedListScreen}
+        options={({navigation, route}) => ({
+          headerTitle: 'Recommended Jobs',
           headerTitleAlign: 'center',
           headerTitleStyle: {color: Color.black},
           headerStyle: {backgroundColor: Color.white},
@@ -501,6 +515,46 @@ export const ProfileStack = () => {
         component={ProjectScreen}
         options={({navigation, route}) => ({
           headerTitle: 'Projects',
+          headerTitleStyle: {color: Color.black},
+          headerTitleAlign: 'center',
+          headerStyle: {backgroundColor: Color.white},
+          headerLeft: () => (
+            <View style={{marginHorizontal: 10}}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.black}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="StepEducation"
+        component={StepEducation}
+        options={({navigation, route}) => ({
+          headerTitle: 'Select Education',
+          headerTitleStyle: {color: Color.black},
+          headerTitleAlign: 'center',
+          headerStyle: {backgroundColor: Color.white},
+          headerLeft: () => (
+            <View style={{marginHorizontal: 10}}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={Color.black}
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="StepEmployment"
+        component={StepEmployment}
+        options={({navigation, route}) => ({
+          headerTitle: 'Select Employment',
           headerTitleStyle: {color: Color.black},
           headerTitleAlign: 'center',
           headerStyle: {backgroundColor: Color.white},

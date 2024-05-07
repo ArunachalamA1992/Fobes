@@ -314,10 +314,6 @@ const AppliedJobs = ({navigation}) => {
                         paddingHorizontal: 10,
                         fontFamily: Gilmer.Medium,
                       }}>
-                      ₹{' '}
-                      {/* {common_fn.formatNumberWithSuffix(item?.job?.min_salary)}{' '}
-                      -{' '}
-                      {common_fn.formatNumberWithSuffix(item?.job?.max_salary)} */}
                       ₹ {item?.job?.min_salary} - {item?.job?.max_salary}
                     </Text>
                   </View>

@@ -20,6 +20,7 @@ const ProjectScreen = ({navigation, route}) => {
   const [itemData] = useState(route.params.item);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
+
   const [projectSelectedItem, setProjectSelectedItem] = useState({
     title: itemData?.title || '',
     project_employment: itemData?.education_level || '',

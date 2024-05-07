@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, FlatList} from 'react-native';
 import Color from '../../Global/Color';
 import JobItemCard from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-const JobListScreen = ({ navigation }) => {
+const JobListScreen = ({navigation}) => {
   const [jobData, setJobData] = useState([]);
   const [loadMore, setLoadMore] = useState(false);
   const [page, setPage] = useState(1);
   const [endReached, setEndReached] = useState(false);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
+  var {token} = userData;
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const JobListScreen = ({ navigation }) => {
     try {
       const nextPage = page + 1;
       var data = 'page_number=' + nextPage;
-      const response = await fetchData.list_company(data, token);
+      const response = await fetchData.filter_job(data, token);
       if (response?.data.length > 0) {
         setPage(nextPage);
         const updatedData = [...jobData, ...response?.data];
@@ -54,7 +54,7 @@ const JobListScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={{ padding: 10 }}>
+        <View style={{padding: 10}}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
               <SkeletonPlaceholder.Item width="100%" height={150} />
@@ -62,37 +62,37 @@ const JobListScreen = ({ navigation }) => {
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
             </SkeletonPlaceholder.Item>
           </SkeletonPlaceholder>
@@ -102,9 +102,14 @@ const JobListScreen = ({ navigation }) => {
           data={jobData}
           keyExtractor={(item, index) => item + index}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => {
+          renderItem={({item, index}) => {
             return (
-              <JobItemCard item={item} navigation={navigation} token={token} getData={getData} />
+              <JobItemCard
+                item={item}
+                navigation={navigation}
+                token={token}
+                getData={getData}
+              />
             );
           }}
           onEndReached={() => {
@@ -117,6 +122,8 @@ const JobListScreen = ({ navigation }) => {
   );
 };
 
+export default JobListScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -124,5 +131,3 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white,
   },
 });
-
-export default JobListScreen;
