@@ -1,4 +1,3 @@
-//import liraries
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -11,13 +10,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
 import {Media} from '../../Global/Media';
 import {scr_height, scr_width} from '../../Utils/Dimensions';
 import {Gilmer} from '../../Global/FontFamily';
 import {Iconviewcomponent} from '../../Components/Icontag';
 import fetchData from '../../Config/fetchData';
+import {useSelector} from 'react-redux';
 
 const aboutData = [
   {
@@ -40,10 +38,9 @@ const aboutData = [
   },
 ];
 
-// create a component
-const AboutUs = () => {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
+const AboutUs = ({navigation}) => {
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
   const [netInfo_State, setNetinfo] = useState(true);
   const [height, setHeight] = useState(undefined);
   const [jobCount, setJobCount] = useState(0);
@@ -58,8 +55,7 @@ const AboutUs = () => {
 
   const getData = async () => {
     try {
-      const comp_list = await fetchData.aboutUsData();
-      // console.log('data----------------------------', JSON.stringify(comp_list));
+      const comp_list = await fetchData.aboutUsData(null, token);
       setJobCount(comp_list?.data?.job_count);
       setCompCount(comp_list?.data?.company_count);
       setCandiCount(comp_list?.data?.candidate_count);
@@ -574,7 +570,6 @@ const AboutUs = () => {
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -584,5 +579,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//make this component available to the app
 export default AboutUs;

@@ -115,9 +115,9 @@ export default {
     let url = api_name + 'users/resetPassword';
     return api.postMethod(url, data, token);
   },
-  aboutUsData: () => {
+  aboutUsData: (data, token) => {
     let url = api_name + 'job/aboutus';
-    return api.getMethod(url);
+    return api.getMethod(url, token);
   },
   contactUsData: (data, token) => {
     let url = api_name + 'job/contact';

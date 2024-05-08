@@ -517,7 +517,7 @@ const BasicDetails = ({navigation}) => {
                   color: Color.cloudyGrey,
                   fontFamily: Gilmer.Medium,
                 }}>
-                {moment(selectBasic?.dob).format('YYYY-MM-DD')}
+                {moment(selectBasic?.dob).format('DD-MM-YYYY')}
               </Text>
               <FIcon name="calendar" size={20} color={Color.black} />
             </TouchableOpacity>
@@ -1308,5 +1308,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: Color.black,
   },
 });

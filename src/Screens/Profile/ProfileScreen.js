@@ -30,9 +30,11 @@ import {baseUrl, base_image_url} from '../../Config/base_url';
 import RNFetchBlob from 'rn-fetch-blob';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
+import {Iconviewcomponent} from '../../Components/Icontag';
 
 const ProfileScreen = ({navigation}) => {
   const [resumeVisible, setResumeVisible] = useState(false);
+  const [imageVisible, setImageVisible] = useState(false);
   const [profileImage, setProfileImage] = useState([]);
   const dispatch = useDispatch();
   const [profileStatus, setProfileStatus] = useState(0);
@@ -320,7 +322,6 @@ const ProfileScreen = ({navigation}) => {
       const isCameraPermitted = await requestCameraPermission();
       if (isCameraPermitted) {
         launchCamera(options, async response => {
-          console.log('response?.assets', response?.assets);
           setProfileImage(response?.assets);
           await uploadProfileImage();
         });
@@ -332,6 +333,23 @@ const ProfileScreen = ({navigation}) => {
     }
   };
 
+  const imagePicker = async from => {
+    try {
+      let options = {
+        mediaType: 'photo',
+        maxWidth: 300,
+        maxHeight: 550,
+        quality: 1,
+        selectionLimit: 0,
+      };
+      launchImageLibrary(options, async response => {
+        setProfileImage(response?.assets);
+        await uploadProfileImage();
+      });
+    } catch (error) {
+      console.log('catch in Image_picker  ', error);
+    }
+  };
   useEffect(() => {
     uploadProfileImage();
   }, [profileImage?.length]);
@@ -370,7 +388,7 @@ const ProfileScreen = ({navigation}) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              captureImage();
+              setImageVisible(true);
             }}
             style={{
               width: 100,
@@ -1903,6 +1921,110 @@ const ProfileScreen = ({navigation}) => {
                 </Button>
               </>
             )}
+          </View>
+        </View>
+      </Modal>
+      <Modal transparent={true} animationType="slide" visible={imageVisible}>
+        <Pressable
+          style={{
+            flex: 1,
+            backgroundColor: Color.transparantBlack,
+          }}
+          onPress={() => {
+            setImageVisible(false);
+          }}
+        />
+        <View
+          style={{
+            backgroundColor: Color.white,
+            borderTopRightRadius: 10,
+            borderTopLeftRadius: 10,
+            padding: 20,
+          }}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: Color.cloudyGrey,
+              fontFamily: Gilmer.Medium,
+              marginHorizontal: 5,
+            }}>
+            Please pick your image from camera or gallery
+          </Text>
+          <View
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginVertical: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => captureImage()}
+              style={{
+                alignItems: 'center',
+                flexDirection: 'row',
+                marginHorizontal: 5,
+                borderWidth: 1,
+                borderColor: Color.lightgrey,
+                borderRadius: 10,
+                padding: 10,
+              }}>
+              <Iconviewcomponent
+                viewstyle={{
+                  width: 40,
+                  height: 40,
+                  backgroundColor: Color.primary,
+                  padding: 10,
+                  borderRadius: 30,
+                }}
+                Icontag={'AntDesign'}
+                icon_size={18}
+                icon_color={'white'}
+                iconname={'camera'}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
+                  marginHorizontal: 5,
+                }}>
+                Camera
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => imagePicker()}
+              style={{
+                alignItems: 'center',
+                flexDirection: 'row',
+                marginHorizontal: 5,
+                borderWidth: 1,
+                borderColor: Color.lightgrey,
+                borderRadius: 10,
+                padding: 10,
+              }}>
+              <Iconviewcomponent
+                viewstyle={{
+                  width: 40,
+                  height: 40,
+                  backgroundColor: Color.primary,
+                  padding: 10,
+                  borderRadius: 30,
+                }}
+                Icontag={'AntDesign'}
+                icon_size={18}
+                icon_color={'white'}
+                iconname={'picture'}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
+                  marginHorizontal: 5,
+                }}>
+                Gallery
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

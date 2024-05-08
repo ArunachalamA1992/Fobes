@@ -250,7 +250,7 @@ const ProjectScreen = ({navigation, route}) => {
             value={projectSelectedItem?.title}
             onChangeText={text => {
               setProjectSelectedItem({
-                title: projectSelectedItem?.title,
+                title: text,
                 project_employment: projectSelectedItem?.project_employment,
                 project_status: projectSelectedItem?.project_status,
                 duration: {

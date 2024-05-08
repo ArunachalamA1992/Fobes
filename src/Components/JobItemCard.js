@@ -165,7 +165,7 @@ const JobItemCard = props => {
               textAlign: 'justify',
             }}
             numberOfLines={1}>
-            {item.job_category_name}
+            {item?.company?.name}
           </Text>
         </View>
         <TouchableOpacity
@@ -414,7 +414,7 @@ export const JobCardHorizontal = props => {
               textAlign: 'justify',
             }}
             numberOfLines={1}>
-            {item.job_category_name}
+            {item?.company?.name}
           </Text>
         </View>
         <TouchableOpacity
