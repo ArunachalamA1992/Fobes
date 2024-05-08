@@ -8,15 +8,10 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Platform,
-  UIManager,
   LogBox,
-  SectionList,
-  useWindowDimensions,
   Dimensions,
 } from 'react-native';
 import {Iconviewcomponent} from '../../Components/Icontag';
-import {Media} from '../../Global/Media';
 import Color from '../../Global/Color';
 import {Gilmer} from '../../Global/FontFamily';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -26,10 +21,8 @@ import {setCompleteProfile, setUserData} from '../../Redux';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import common_fn from '../../Config/common_fn';
-import {ApplyJobData} from '../../Global/Content';
 import {JobCardHorizontal} from '../../Components/JobItemCard';
 import FilterModal from './Filter/FilterModal';
-import {TabView, SceneMap} from 'react-native-tab-view';
 import fetchData from '../../Config/fetchData';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {base_image_url} from '../../Config/base_url';
@@ -511,7 +504,7 @@ const PartTime = ({topCompany, navigation, jobData, token, getData}) => {
             Recommended Jobs
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('JobListScreen')}>
+            onPress={() => navigation.navigate('recommendedjob')}>
             <Text
               style={{
                 fontSize: 16,
@@ -764,7 +757,7 @@ const Freelancer = ({topCompany, navigation, jobData, token, getData}) => {
             Recommended Jobs
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('JobListScreen')}>
+            onPress={() => navigation.navigate('recommendedjob')}>
             <Text
               style={{
                 fontSize: 16,
@@ -1619,7 +1612,9 @@ const HomeScreen = ({navigation}) => {
                       You Might Like
                     </Text>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('JobListScreen')}
+                      onPress={() =>
+                        navigation.navigate('JobListScreen', {index})
+                      }
                       style={{padding: 5}}>
                       <Text
                         style={{
@@ -1670,7 +1665,7 @@ const HomeScreen = ({navigation}) => {
                               color: Color.primary,
                               fontFamily: Gilmer.Bold,
                             }}>
-                            No Company Found
+                            No Jobs Found
                           </Text>
                         </View>
                       );
@@ -1925,7 +1920,7 @@ const HomeScreen = ({navigation}) => {
                               color: Color.primary,
                               fontFamily: Gilmer.Bold,
                             }}>
-                            No Company Found
+                            No Recommended Jobs Found
                           </Text>
                         </View>
                       );

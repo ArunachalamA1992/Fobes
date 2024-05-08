@@ -1045,7 +1045,7 @@ const ProfileScreen = ({navigation}) => {
                       style={{
                         marginVertical: 5,
                         alignItems: 'flex-end',
-                        marginHorizontal: 30,
+                        marginHorizontal: 20,
                       }}>
                       <MCIcon name={'pencil'} size={25} color={Color.primary} />
                     </TouchableOpacity>

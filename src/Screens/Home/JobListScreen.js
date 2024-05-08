@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, FlatList} from 'react-native';
+import {StyleSheet, View, FlatList, Text, Dimensions} from 'react-native';
 import Color from '../../Global/Color';
 import JobItemCard from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
 import {useSelector} from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Gilmer} from '../../Global/FontFamily';
 
-const JobListScreen = ({navigation}) => {
+const {height} = Dimensions.get('window');
+const JobListScreen = ({navigation, route}) => {
+  const [index] = useState(route.params.index);
   const [jobData, setJobData] = useState([]);
   const [loadMore, setLoadMore] = useState(false);
   const [page, setPage] = useState(1);
@@ -22,7 +26,8 @@ const JobListScreen = ({navigation}) => {
 
   const getData = async () => {
     try {
-      const job_list = await fetchData.list_jobs(null, token);
+      var data = `job_type_id=` + index;
+      const job_list = await fetchData.filter_job(data, token);
       setJobData(job_list?.data);
     } catch (error) {
       console.log('error', error);
@@ -110,6 +115,37 @@ const JobListScreen = ({navigation}) => {
                 token={token}
                 getData={getData}
               />
+            );
+          }}
+          ListEmptyComponent={() => {
+            return (
+              <View
+                style={{
+                  height: height / 1.5,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginVertical: 10,
+                  width: '100%',
+                }}>
+                <MCIcon
+                  name="briefcase-variant-off"
+                  color={Color.primary}
+                  size={25}
+                />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    padding: 5,
+                    paddingHorizontal: 20,
+                    marginStart: 5,
+                    borderRadius: 5,
+                    marginVertical: 10,
+                    color: Color.primary,
+                    fontFamily: Gilmer.Bold,
+                  }}>
+                  No Jobs Found
+                </Text>
+              </View>
             );
           }}
           onEndReached={() => {

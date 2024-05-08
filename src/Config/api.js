@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {baseUrl, base_auctionUrl, base_geolocation_Url} from './base_url';
+import {baseUrl} from './base_url';
 
 export const api = {
   header: token => {
@@ -13,7 +13,6 @@ export const api = {
     }
     return header;
   },
-
   getMethod: (url, token) => {
     var headers = api.header(token);
     return new Promise((resolve, reject) => {
@@ -29,7 +28,6 @@ export const api = {
         .catch(err => reject(err));
     });
   },
-
   postMethod: (url, data, token) => {
     var headers = api.header(token);
     const formData = new FormData();
@@ -47,7 +45,6 @@ export const api = {
         .catch(err => resolve(err.response.data));
     });
   },
-
   putMethod: (url, data, token) => {
     var headers = api.header(token);
     return new Promise((resolve, reject) => {
@@ -63,7 +60,6 @@ export const api = {
         .catch(err => reject(err));
     });
   },
-
   patchMethod: (url, data, token) => {
     var headers = api.header(token);
     return new Promise((resolve, reject) => {
@@ -79,7 +75,6 @@ export const api = {
         .catch(err => reject(err));
     });
   },
-
   deleteMethod: (url, token) => {
     var headers = api.header(token);
     return new Promise((resolve, reject) => {

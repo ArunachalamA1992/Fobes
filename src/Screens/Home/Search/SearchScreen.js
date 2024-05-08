@@ -21,6 +21,8 @@ import common_fn from '../../../Config/common_fn';
 import axios from 'axios';
 
 const SearchScreen = ({navigation}) => {
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
   const [searchJob, setSearchJob] = useState('');
   const [type, setType] = useState('');
   const [searchLocation, setSearchLocation] = useState('');
@@ -32,8 +34,11 @@ const SearchScreen = ({navigation}) => {
     data: [],
     visible: false,
   });
+  const [LocationSuggestion, setLocationSuggestion] = useState({
+    data: [],
+    visible: false,
+  });
 
-  const [LocationSuggestion, setLocationSuggestion] = useState({});
   const [recentSearch] = useState([
     {
       id: 1,
@@ -46,8 +51,7 @@ const SearchScreen = ({navigation}) => {
       value: 'experienced',
     },
   ]);
-  const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+
   const [MostSearch] = useState([
     {
       id: 1,
@@ -137,13 +141,14 @@ const SearchScreen = ({navigation}) => {
       const response = await axios.get(
         `https://nominatim.openstreetmap.org/search?format=json&limit=1&city=${text}`,
       );
-      console.log('response', JSON.stringify(response?.data));
-      // setLocationSuggestion(response?.data?.features?.[0]?.properties);
+      setLocationSuggestion({
+        data: response?.data,
+        visible: true,
+      });
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
   };
-
   return (
     <View
       style={{
@@ -219,10 +224,10 @@ const SearchScreen = ({navigation}) => {
         inputStyle={{color: Color.black}}
         onChangeText={search => {
           setSearchLocation(search);
-          // fetchSuggestions(search);
+          fetchSuggestions(search);
         }}
       />
-      {/* {LocationSuggestion?.length != 0 && (
+      {LocationSuggestion?.data?.length != 0 && (
         <View
           style={{
             maxHeight: 200,
@@ -232,9 +237,33 @@ const SearchScreen = ({navigation}) => {
             borderRadius: 5,
             marginTop: 5,
           }}>
-          <Text>{LocationSuggestion?.display_name}</Text>
+          {LocationSuggestion?.data?.map((item, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  setSearchLocation(item?.display_name?.split(',')[0]);
+                  setLocationSuggestion({
+                    data: [],
+                    visible: false,
+                  });
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: Gilmer.Medium,
+                    color: Color.black,
+                  }}>
+                  {item?.display_name?.split(',')[0]}
+                </Text>
+                {index < LocationSuggestion?.data.length - 1 && (
+                  <Divider style={{height: 1, marginVertical: 5}} />
+                )}
+              </TouchableOpacity>
+            );
+          })}
         </View>
-      )} */}
+      )}
 
       <TouchableOpacity
         activeOpacity={0.7}

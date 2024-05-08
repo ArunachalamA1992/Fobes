@@ -464,12 +464,15 @@ const styles = StyleSheet.create({
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 14,
+    color: Color.black,
   },
   placeholderStyle: {
     fontSize: 16,
+    color: Color.cloudyGrey,
   },
   selectedTextStyle: {
     fontSize: 16,
+    color: Color.black,
   },
   iconStyle: {
     width: 20,

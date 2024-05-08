@@ -13,12 +13,15 @@ import {Gilmer} from '../../Global/FontFamily';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-element-dropdown';
-import {Button} from 'react-native-paper';
+import {Button, Searchbar} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
+import axios from 'axios';
+import F6Icon from 'react-native-vector-icons/FontAwesome6';
+import {Divider} from 'react-native-elements';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -50,67 +53,27 @@ const BasicDetails = ({navigation}) => {
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [HigherQualification, setHigherQualification] = useState([]);
   const [experienceData, setExperienceData] = useState([]);
+  const [searchLocation, setSearchLocation] = useState('');
+  const [country, setCountry] = useState('');
   const userData = useSelector(state => state.UserReducer.userData);
   var {
     title,
-    first_name,
-    last_name,
     gender,
     website,
-    photo,
-    cv,
     bio,
     marital_status,
     birth_date,
-    visibility,
-    cv_visibility,
-    received_job_alert,
-    profile_complete,
-    candidate_updated_at,
-    address,
-    exact_location,
-    neighborhood,
-    locality,
-    place,
-    district,
-    postcode,
-    region,
-    country,
-    long,
-    lat,
-    status,
-    available_in,
-    whatsapp_number,
-    name,
-    username,
-    email,
-    image,
-    role,
-    recent_activities_alert,
-    job_expired_alert,
-    new_job_alert,
-    shortlisted_alert,
-    is_demo_field,
-    created_at,
-    updated_at,
-    auth_type,
-    google_id,
-    facebook_id,
-    provider,
-    provider_id,
     experience_id,
-    experience_name,
     education_id,
-    education_name,
     candidate_educations,
-    candidate_experiences,
-    candidate_skills,
     social_links,
-    candidate_resume,
-    candidate_language,
-    phone,
     token,
   } = userData;
+
+  const [LocationSuggestion, setLocationSuggestion] = useState({
+    data: [],
+    visible: false,
+  });
 
   const [selectBasic, setSelectBasic] = useState({
     professional_title: title || '',
@@ -178,43 +141,6 @@ const BasicDetails = ({navigation}) => {
     {
       name: 'Team Leader',
       profession_id: 6,
-    },
-  ]);
-  const [CityData] = useState([
-    {
-      id: 1,
-      city: 'Salem',
-      value: 'Salem',
-    },
-    {
-      id: 2,
-      city: 'Coimbatore',
-      value: 'Coimbatore',
-    },
-    {
-      id: 3,
-      city: 'Trichy',
-      value: 'Trichy',
-    },
-    {
-      id: 4,
-      city: 'Bangalore',
-      value: 'Bangalore',
-    },
-    {
-      id: 5,
-      city: 'Chennai',
-      value: 'Chennai',
-    },
-    {
-      id: 6,
-      city: 'Bangalore',
-      value: 'Bangalore',
-    },
-    {
-      id: 7,
-      city: 'Hyderabad',
-      value: 'Hyderabad',
     },
   ]);
   const [socialData] = useState([
@@ -335,6 +261,10 @@ const BasicDetails = ({navigation}) => {
         marital_status: selectBasic?.marital_status,
         sociallink: selectBasic?.social_profile,
         bio: selectBasic?.biography,
+        place: searchLocation,
+        exact_location: searchLocation,
+        district: searchLocation,
+        country: country,
         // available_in: selectBasic?.availability?.name,
         education_id: selectBasic?.qualify,
         experience_id: selectBasic?.experience,
@@ -377,6 +307,20 @@ const BasicDetails = ({navigation}) => {
       setExperienceData(experience_data?.data);
     } catch (error) {
       console.log('error', error);
+    }
+  };
+
+  const fetchSuggestions = async text => {
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&city=${text}`,
+      );
+      setLocationSuggestion({
+        data: response?.data,
+        visible: true,
+      });
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
     }
   };
 
@@ -539,40 +483,59 @@ const BasicDetails = ({navigation}) => {
               }}>
               Current City
             </Text>
-            <Dropdown
-              style={[styles.dropdown, {borderColor: 'blue'}]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={CityData}
-              search
-              maxHeight={300}
-              labelField="city"
-              valueField="city"
-              placeholder={'Select item'}
-              searchPlaceholder="Search..."
-              value={selectBasic?.city?.value}
-              onChange={item => {
-                setSelectBasic({
-                  professional_title: selectBasic?.professional_title,
-                  personal_website: selectBasic?.personal_website,
-                  dob: selectBasic?.dob,
-                  qualify: selectBasic?.qualify,
-                  work_experiance: selectBasic?.work_experiance,
-                  experience: selectBasic?.experience,
-                  current_ctc: selectBasic?.current_ctc,
-                  expected_ctc: selectBasic?.expected_ctc,
-                  gender: selectBasic?.gender,
-                  city: item,
-                  marital_status: selectBasic?.marital_status,
-                  biography: selectBasic?.biography,
-                  profession: selectBasic?.profession,
-                  availability: selectBasic?.availability,
-                  social_profile: selectBasic?.social_profile,
-                });
+            <Searchbar
+              placeholder="Search Location"
+              placeholderTextColor={Color.grey}
+              style={styles.searchView}
+              value={searchLocation}
+              icon={() => (
+                <F6Icon name="location-dot" size={20} color={Color.lightgrey} />
+              )}
+              iconColor={Color.grey}
+              inputStyle={{color: Color.black}}
+              onChangeText={search => {
+                setSearchLocation(search);
+                fetchSuggestions(search);
               }}
             />
+            {LocationSuggestion?.data?.length != 0 && (
+              <View
+                style={{
+                  maxHeight: 200,
+                  padding: 10,
+                  backgroundColor: Color.white,
+                  elevation: 3,
+                  borderRadius: 5,
+                  marginTop: 5,
+                }}>
+                {LocationSuggestion?.data?.map((item, index) => {
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        setSearchLocation(item?.display_name?.split(',')[0]);
+                        setCountry(item?.displayName.split(',').pop().trim());
+                        setLocationSuggestion({
+                          data: [],
+                          visible: false,
+                        });
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontFamily: Gilmer.Medium,
+                          color: Color.black,
+                        }}>
+                        {item?.display_name?.split(',')[0]}
+                      </Text>
+                      {index < LocationSuggestion?.data.length - 1 && (
+                        <Divider style={{height: 1, marginVertical: 5}} />
+                      )}
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            )}
           </View>
           <View style={{marginVertical: 10}}>
             <Text
@@ -1041,7 +1004,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          {/* <View style={{marginVertical: 10}}>
             <Text
               style={{
                 fontSize: 16,
@@ -1085,7 +1048,7 @@ const BasicDetails = ({navigation}) => {
                 });
               }}
             />
-          </View>
+          </View> */}
           {/* <View style={{marginVertical: 10}}>
             <Text
               style={{
@@ -1294,12 +1257,15 @@ const styles = StyleSheet.create({
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 14,
+    color: Color.black,
   },
   placeholderStyle: {
     fontSize: 16,
+    color: Color.cloudyGrey,
   },
   selectedTextStyle: {
     fontSize: 16,
+    color: Color.black,
   },
   iconStyle: {
     width: 20,
@@ -1309,5 +1275,10 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
     color: Color.black,
+  },
+  searchView: {
+    borderRadius: 10,
+    backgroundColor: '#EAEAEF50',
+    marginTop: 10,
   },
 });

@@ -19,6 +19,7 @@ import {FlatList} from 'react-native';
 import JobItemCard from '../../../Components/JobItemCard';
 import {Gilmer} from '../../../Global/FontFamily';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import axios from 'axios';
 
 const {height} = Dimensions.get('screen');
 
@@ -32,6 +33,10 @@ const SearchDataList = ({navigation, route}) => {
   const [page, setPage] = useState(1);
   const [endReached, setEndReached] = useState(false);
   const [jobSuggestions, setJobSuggestions] = useState({
+    data: [],
+    visible: false,
+  });
+  const [LocationSuggestion, setLocationSuggestion] = useState({
     data: [],
     visible: false,
   });
@@ -125,6 +130,20 @@ const SearchDataList = ({navigation, route}) => {
       console.error('Error fetching data:', error);
     } finally {
       setLoadMore(false);
+    }
+  };
+
+  const fetchSuggestions = async text => {
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&city=${text}`,
+      );
+      setLocationSuggestion({
+        data: response?.data,
+        visible: true,
+      });
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
     }
   };
 
@@ -351,8 +370,48 @@ const SearchDataList = ({navigation, route}) => {
                 )}
                 iconColor={Color.grey}
                 inputStyle={{color: Color.black}}
-                onChangeText={search => setSearchLocation(search)}
+                onChangeText={search => {
+                  setSearchLocation(search);
+                  fetchSuggestions(search);
+                }}
               />
+              {LocationSuggestion?.data?.length != 0 && (
+                <View
+                  style={{
+                    maxHeight: 200,
+                    padding: 10,
+                    backgroundColor: Color.white,
+                    elevation: 3,
+                    borderRadius: 5,
+                    marginTop: 5,
+                  }}>
+                  {LocationSuggestion?.data?.map((item, index) => {
+                    return (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => {
+                          setSearchLocation(item?.display_name?.split(',')[0]);
+                          setLocationSuggestion({
+                            data: [],
+                            visible: false,
+                          });
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontFamily: Gilmer.Medium,
+                            color: Color.black,
+                          }}>
+                          {item?.display_name?.split(',')[0]}
+                        </Text>
+                        {index < LocationSuggestion?.data.length - 1 && (
+                          <Divider style={{height: 1, marginVertical: 5}} />
+                        )}
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              )}
               <View
                 style={{
                   flexDirection: 'row',

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -46,28 +46,8 @@ const EducationDetails = ({navigation, route}) => {
   const [itemData] = useState(route.params.item);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token, candidate_experiences} = userData;
-  const [HigherQualification] = useState([
-    {
-      id: 1,
-      name: '10th Or Below',
-    },
-    {
-      id: 2,
-      name: '12th Pass',
-    },
-    {
-      id: 3,
-      name: 'Diploma',
-    },
-    {
-      id: 4,
-      name: 'Graduate',
-    },
-    {
-      id: 5,
-      name: 'Post Graduate',
-    },
-  ]);
+  const [yearCompletionData, setYearCompletionData] = useState([]);
+
   const [selectEducation, setSelectEducation] = useState({
     qualify: {},
     degree: itemData?.degree || '',
@@ -79,28 +59,26 @@ const EducationDetails = ({navigation, route}) => {
     },
     year_completion: itemData?.year || '',
   });
-  const [yearcompletiondata] = useState([
-    {
-      id: 1,
-      name: '2010',
-      value: '2010',
-    },
-    {
-      id: 2,
-      name: '2011',
-      value: '2011',
-    },
-    {
-      id: 3,
-      name: '2022',
-      value: '2022',
-    },
-    {
-      id: 4,
-      name: '2024',
-      value: '2024',
-    },
-  ]);
+
+  useEffect(() => {
+    const generateYears = () => {
+      const currentYear = new Date().getFullYear();
+      const yearsArray = [];
+
+      for (let i = 0; i <= 30; i++) {
+        const year = currentYear - i;
+        yearsArray.push({
+          id: i + 1,
+          name: year.toString(),
+          value: year.toString(),
+        });
+      }
+
+      return yearsArray;
+    };
+
+    setYearCompletionData(generateYears());
+  }, []);
 
   const getAPI = async () => {
     try {
@@ -435,7 +413,7 @@ const EducationDetails = ({navigation, route}) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={yearcompletiondata}
+            data={yearCompletionData}
             value={selectEducation?.year_completion}
             maxHeight={300}
             labelField="name"
@@ -505,12 +483,15 @@ const styles = StyleSheet.create({
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 14,
+    color: Color.black,
   },
   placeholderStyle: {
     fontSize: 16,
+    color: Color.cloudyGrey,
   },
   selectedTextStyle: {
     fontSize: 16,
+    color: Color.black,
   },
   iconStyle: {
     width: 20,

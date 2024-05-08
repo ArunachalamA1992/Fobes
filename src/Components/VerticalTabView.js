@@ -12,9 +12,8 @@ import CheckboxData, {RadioData} from './Checkbox';
 import {Button, Divider, Searchbar} from 'react-native-paper';
 import fetchData from '../Config/fetchData';
 import {useSelector} from 'react-redux';
-import common_fn from '../Config/common_fn';
 import axios from 'axios';
-import {Dropdown} from 'react-native-element-dropdown';
+import F6Icon from 'react-native-vector-icons/FontAwesome6';
 
 const TabContent = ({
   item,
@@ -31,6 +30,11 @@ const TabContent = ({
   worktypeSelectedItem,
   handleWorkTypePress,
   locationData,
+  fetchSuggestions,
+  setLocationSuggestion,
+  LocationSuggestion,
+  setSearchLocation,
+  searchLocation,
 }) => {
   if (item?.date_posted) {
     return (
@@ -114,7 +118,6 @@ const TabContent = ({
       </View>
     );
   } else if (item?.location) {
-    console.log('locationData', locationData);
     return (
       <View
         style={{
@@ -125,32 +128,62 @@ const TabContent = ({
             fontSize: 14,
             color: Color.black,
             fontFamily: Gilmer.Bold,
+            marginVertical: 10,
           }}>
           Select Location
         </Text>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: Color.white,
-            padding: 10,
-          }}>
-          <Dropdown
-            style={[styles.dropdown, {borderColor: 'blue'}]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={locationData}
-            search
-            maxHeight={300}
-            labelField="value"
-            valueField="value"
-            placeholder={'Select item'}
-            searchPlaceholder="Search..."
-            value={'selectBasic?.value'}
-            onChange={item => {}}
-          />
-        </View>
+        <Searchbar
+          placeholder="Search Location"
+          placeholderTextColor={Color.grey}
+          style={styles.searchView}
+          value={searchLocation}
+          icon={() => (
+            <F6Icon name="location-dot" size={20} color={Color.lightgrey} />
+          )}
+          iconColor={Color.grey}
+          inputStyle={{color: Color.black}}
+          onChangeText={search => {
+            setSearchLocation(search);
+            fetchSuggestions(search);
+          }}
+        />
+        {LocationSuggestion?.data?.length != 0 && (
+          <View
+            style={{
+              maxHeight: 200,
+              padding: 10,
+              backgroundColor: Color.white,
+              elevation: 3,
+              borderRadius: 5,
+              marginTop: 5,
+            }}>
+            {LocationSuggestion?.data?.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => {
+                    setSearchLocation(item?.display_name?.split(',')[0]);
+                    setLocationSuggestion({
+                      data: [],
+                      visible: false,
+                    });
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: Gilmer.Medium,
+                      color: Color.black,
+                    }}>
+                    {item?.display_name?.split(',')[0]}
+                  </Text>
+                  {index < LocationSuggestion?.data.length - 1 && (
+                    <Divider style={{height: 1, marginVertical: 5}} />
+                  )}
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        )}
       </View>
     );
   } else if (item?.industry) {
@@ -201,6 +234,11 @@ const VerticalTabView = props => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [ExperienceData, setExperienceData] = useState([]);
   const [search, setSearch] = useState('');
+  const [searchLocation, setSearchLocation] = useState('');
+  const [LocationSuggestion, setLocationSuggestion] = useState({
+    data: [],
+    visible: false,
+  });
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
 
@@ -322,7 +360,7 @@ const VerticalTabView = props => {
       job_type: jobtypeData,
     },
     {
-      location: locationData,
+      location: LocationSuggestion,
     },
     {
       industry: industryData,
@@ -569,6 +607,7 @@ const VerticalTabView = props => {
         .filter(item => item.value)
         .map(item => item.value)
         .join(','),
+      place: searchLocation,
     };
 
     const queryString = Object.entries(payload)
@@ -591,6 +630,19 @@ const VerticalTabView = props => {
     }
   };
 
+  const fetchSuggestions = async text => {
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&city=${text}`,
+      );
+      setLocationSuggestion({
+        data: response?.data,
+        visible: true,
+      });
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  };
   return (
     <View style={{flex: 1}}>
       <View
@@ -645,6 +697,11 @@ const VerticalTabView = props => {
               worktypeSelectedItem={worktypeSelectedItem}
               handleWorkTypePress={handleWorkTypePress}
               locationData={locationData}
+              fetchSuggestions={fetchSuggestions}
+              setLocationSuggestion={setLocationSuggestion}
+              LocationSuggestion={LocationSuggestion}
+              setSearchLocation={setSearchLocation}
+              searchLocation={searchLocation}
             />
           </ScrollView>
         </View>
@@ -734,12 +791,15 @@ const styles = StyleSheet.create({
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 14,
+    color: Color.black,
   },
   placeholderStyle: {
     fontSize: 16,
+    color: Color.cloudyGrey,
   },
   selectedTextStyle: {
     fontSize: 16,
+    color: Color.black,
   },
   iconStyle: {
     width: 20,
@@ -749,5 +809,10 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
     color: Color.black,
+  },
+  searchView: {
+    borderRadius: 10,
+    backgroundColor: '#EAEAEF50',
+    marginTop: 10,
   },
 });
