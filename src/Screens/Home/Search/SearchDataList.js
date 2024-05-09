@@ -8,7 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Button, Divider, Searchbar} from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Button,
+  Divider,
+  Searchbar,
+} from 'react-native-paper';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,6 +34,9 @@ const SearchDataList = ({navigation, route}) => {
   const [searchJob, setSearchJob] = useState(route.params.jobs);
   const [jobData, setJobData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [SearchloadMore, setSearchLoadMore] = useState(false);
+  const [Searchpage, setSearchPage] = useState(1);
+  const [SearchendReached, setSearchEndReached] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
   const [page, setPage] = useState(1);
   const [endReached, setEndReached] = useState(false);
@@ -72,6 +80,7 @@ const SearchDataList = ({navigation, route}) => {
     try {
       setLoading(true);
       var data = `place=${searchLocation}&${type}=${searchJob}`;
+      console.log('data', data);
       const job_list = await fetchData.filter_job(data, token);
       setJobData(job_list?.data);
     } catch (error) {
@@ -110,6 +119,29 @@ const SearchDataList = ({navigation, route}) => {
     }
   };
 
+  const loadSearchMoreData = async () => {
+    if (SearchloadMore || SearchendReached) {
+      return;
+    }
+    setSearchLoadMore(true);
+    try {
+      const nextPage = page + 1;
+      var data = `search=${searchJob}&page=${nextPage}&limit=10`;
+      const filterData = await fetchData.search(data, token);
+      if (filterData.length > 0) {
+        setSearchPage(nextPage);
+        const updatedData = [...jobSuggestions, ...filterData];
+        setJobSuggestions(updatedData);
+      } else {
+        setSearchEndReached(true);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setSearchLoadMore(false);
+    }
+  };
+
   const loadMoreData = async () => {
     if (loadMore || endReached) {
       return;
@@ -117,12 +149,12 @@ const SearchDataList = ({navigation, route}) => {
     setLoadMore(true);
     try {
       const nextPage = page + 1;
-      var data = `search=${searchJob}&page=${nextPage}&limit=10`;
-      const filterData = await fetchData.search(data, token);
-      if (filterData.length > 0) {
+      var data = `place=${searchLocation}&${type}=${searchJob}&page=${nextPage}`;
+      const filterData = await fetchData.filter_job(data, token);
+      if (filterData?.data?.length > 0) {
         setPage(nextPage);
-        const updatedData = [...jobSuggestions, ...filterData];
-        setJobSuggestions(updatedData);
+        const updatedData = [...jobData, ...filterData?.data];
+        setJobData(updatedData);
       } else {
         setEndReached(true);
       }
@@ -265,6 +297,30 @@ const SearchDataList = ({navigation, route}) => {
                 </View>
               );
             }}
+            onEndReached={() => {
+              loadMoreData();
+            }}
+            ListFooterComponent={() => {
+              return (
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                  {loadMore && (
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: Color.black,
+                          marginHorizontal: 10,
+                          fontFamily: Gilmer.Medium,
+                        }}>
+                        Loading...
+                      </Text>
+                      <ActivityIndicator />
+                    </View>
+                  )}
+                </View>
+              );
+            }}
+            onEndReachedThreshold={3}
             showsVerticalScrollIndicator={false}
           />
           <Modal
@@ -340,7 +396,7 @@ const SearchDataList = ({navigation, route}) => {
                       );
                     }}
                     onEndReached={() => {
-                      loadMoreData();
+                      loadSearchMoreData();
                     }}
                     onEndReachedThreshold={3}
                   />

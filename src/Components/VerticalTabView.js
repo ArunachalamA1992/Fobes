@@ -621,10 +621,7 @@ const VerticalTabView = props => {
   const appyFilter = async () => {
     try {
       var data = dataPayload();
-      const apply_filter_data = await fetchData.filter_job(data, token);
-      if (apply_filter_data) {
-        navigation.navigate('FilterList', {item: apply_filter_data?.data});
-      }
+      navigation.navigate('FilterList', {item: data});
     } catch (error) {
       console.log('error', error);
     }

@@ -41,7 +41,7 @@ const JobListScreen = ({navigation, route}) => {
     setLoadMore(true);
     try {
       const nextPage = page + 1;
-      var data = 'page_number=' + nextPage;
+      var data = 'page=' + nextPage;
       const response = await fetchData.filter_job(data, token);
       if (response?.data.length > 0) {
         setPage(nextPage);

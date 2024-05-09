@@ -34,8 +34,7 @@ const CompanyList = () => {
 
   const getData = async () => {
     try {
-      var data = `page_number=${page}`;
-      console.log('data----------------------------', data);
+      var data = `page=${page}`;
       const comp_list = await fetchData.list_company(data, token);
       if (comp_list) {
         setCompData(comp_list?.data);
@@ -95,7 +94,7 @@ const CompanyList = () => {
     setLoadMore(true);
     try {
       const nextPage = page + 1;
-      var data = 'page_number=' + nextPage;
+      var data = 'page=' + nextPage;
       const response = await fetchData.list_company(data, token);
       if (response?.data.length > 0) {
         setPage(nextPage);
