@@ -27,6 +27,8 @@ import moment from 'moment';
 import common_fn from '../../Config/common_fn';
 import {base_image_url} from '../../Config/base_url';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {setUserData} from '../../Redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 LogBox.ignoreAllLogs();
 
@@ -72,7 +74,7 @@ const IconData = ({item}) => {
   }
 };
 const DetailedScreen = ({navigation, route}) => {
-  const [id] = useState(route?.params?.id);
+  const [slug] = useState(route?.params?.slug);
   const {width: windowWidth} = useWindowDimensions();
   const [singleJobData, setSingleJobdata] = useState({});
   const [loading, setLoading] = useState(false);
@@ -80,6 +82,15 @@ const DetailedScreen = ({navigation, route}) => {
   const [jobApplied, setJobApplied] = useState(false);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const taby = scrollY.interpolate({
+    inputRange: [0, 100],
+    outputRange: [100, 0],
+    extrapolateRight: 'clamp',
+  });
+  const [resultDate, setResultDate] = useState(null);
+  const currentDate = moment();
+  const yourDate = moment(singleJobData?.created_at);
 
   useEffect(() => {
     setLoading(true);
@@ -95,7 +106,7 @@ const DetailedScreen = ({navigation, route}) => {
     try {
       const [similarJobData, singleJobData] = await Promise.all([
         fetchData.list_jobs(null, token),
-        fetchData.filter_job('id=' + id, token),
+        fetchData.filter_job('slug=' + slug, token),
       ]);
       setSimilarJobdata(similarJobData?.data);
       setSingleJobdata(singleJobData?.data[0]);
@@ -109,17 +120,6 @@ const DetailedScreen = ({navigation, route}) => {
       throw new Error('Failed to fetch data');
     }
   };
-
-  const scrollY = useRef(new Animated.Value(0)).current;
-
-  const taby = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [100, 0],
-    extrapolateRight: 'clamp',
-  });
-  const [resultDate, setResultDate] = useState(null);
-  const currentDate = moment();
-  const yourDate = moment(singleJobData?.created_at);
 
   useEffect(() => {
     const daysAgo = currentDate.diff(yourDate, 'days');
@@ -195,8 +195,8 @@ const DetailedScreen = ({navigation, route}) => {
     }
   };
 
-  const share_job = async jobId => {
-    const jobDeepLink = `fobes://detailed/${jobId}`;
+  const share_job = async slug => {
+    const jobDeepLink = `https://fobes.in/job/${slug}`;
     const message = `Check out this job: ${jobDeepLink}`;
 
     try {
@@ -215,7 +215,7 @@ const DetailedScreen = ({navigation, route}) => {
           <Icon name="arrow-back" size={30} color={Color.black} />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => share_job(singleJobData?.id)}
+          onPress={() => share_job(singleJobData?.slug)}
           style={styles.iconView}>
           <Icon
             name="share-social-outline"

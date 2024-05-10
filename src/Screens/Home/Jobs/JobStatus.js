@@ -137,7 +137,9 @@ const JobStatus = ({navigation, route}) => {
           <Button
             mode="contained"
             onPress={async () => {
-              navigation.navigate('DetailedScreen', {id: itemData?.job?.id});
+              navigation.navigate('DetailedScreen', {
+                slug: itemData?.job?.slug,
+              });
             }}
             style={{
               width: '50%',

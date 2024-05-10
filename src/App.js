@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawerContent from './Components/Nav/CustomDrawerContent';
-import {Provider} from 'react-redux';
+import {Provider, useDispatch} from 'react-redux';
 
 import {Provider as PaperProvider} from 'react-native-paper';
 import OnboardOne from './Screens/Onboarding/OnboardOne';
@@ -31,13 +31,17 @@ import ResetPass from './Screens/Auth/ResetPass';
 import {Linking} from 'react-native';
 import {navigationRef} from '../RootNavigation';
 import SearchDataList from './Screens/Home/Search/SearchDataList';
+import {setUserData} from './Redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const MyDrawer = () => {
+  const dispatch = useDispatch();
+
   const linking = {
-    prefixes: ['fobes://'],
+    prefixes: ['https://fobes.in/job', 'fobes://'],
     config: {
       initialRouteName: 'Home',
       screens: {
@@ -45,13 +49,40 @@ const MyDrawer = () => {
           path: 'home',
         },
         DetailedScreen: {
-          path: 'detailed/:id',
+          path: '/:slug',
         },
       },
     },
   };
 
   useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('user_data');
+        if (value !== null) {
+          dispatch(setUserData(JSON.parse(value)));
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
+    };
+
+    getUserData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleDeepLink = ({url}) => {
+      try {
+        const route = url.replace(/.*?:\/\//g, '');
+        const id = route.match(/\/([^\/]+)\/?$/)[1];
+        // navigation.navigate('DetailedScreen', { slug });
+      } catch (error) {
+        console.error('Error handling deep link:', error);
+      }
+    };
+
+    const subscription = Linking.addEventListener('url', handleDeepLink);
+
     const handleInitialUrl = async () => {
       try {
         const initialUrl = await Linking.getInitialURL();
@@ -64,22 +95,6 @@ const MyDrawer = () => {
     };
 
     handleInitialUrl();
-  }, []);
-
-  useEffect(() => {
-    const handleDeepLink = ({url}) => {
-      try {
-        const route = url.replace(/.*?:\/\//g, '');
-        const id = route.match(/\/([^\/]+)\/?$/)[1];
-        // You can use this id to navigate to the appropriate screen
-        // Example:
-        // navigation.navigate('DetailedScreen', { id });
-      } catch (error) {
-        console.error('Error handling deep link:', error);
-      }
-    };
-
-    const subscription = Linking.addEventListener('url', handleDeepLink);
 
     return () => {
       subscription.remove();
@@ -230,14 +245,14 @@ const MainApp = () => {
           options={({navigation, route}) => ({
             headerTitle: 'Applied Jobs',
             headerTitleAlign: 'center',
-            headerTitleStyle: {color: Color.white},
-            headerStyle: {backgroundColor: Color.primary},
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
               <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
-                  color={Color.white}
+                  color={Color.black}
                   onPress={() => navigation.goBack()}
                 />
               </View>

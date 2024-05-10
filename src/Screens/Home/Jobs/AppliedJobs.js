@@ -22,7 +22,6 @@ const {height} = Dimensions.get('window');
 
 const AppliedJobs = ({navigation}) => {
   const [loading, setLoading] = useState(false);
-  const [resultDate, setResultDate] = useState(null);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
   const [ApplyJobData, setApplyJobData] = useState([]);
@@ -127,31 +126,26 @@ const AppliedJobs = ({navigation}) => {
           renderItem={({item, index}) => {
             const currentDate = moment();
             const yourDate = moment(item?.created_at);
-
             const daysAgo = currentDate.diff(yourDate, 'days');
             const hoursAgo = currentDate.diff(yourDate, 'hours');
             const minutesAgo = currentDate.diff(yourDate, 'minutes');
 
+            let result;
+
             if (daysAgo === 0 && hoursAgo === 0 && minutesAgo === 0) {
-              setResultDate('Just now');
+              result = 'Just now';
+            } else if (Math.abs(daysAgo) > 0) {
+              result = `${Math.abs(daysAgo)} day${
+                Math.abs(daysAgo) !== 1 ? 's' : ''
+              } ago`;
+            } else if (Math.abs(hoursAgo) > 0) {
+              result = `${Math.abs(hoursAgo)} hour${
+                Math.abs(hoursAgo) !== 1 ? 's' : ''
+              } ago`;
             } else {
-              let result;
-
-              if (Math.abs(daysAgo) > 0) {
-                result = `${Math.abs(daysAgo)} day${
-                  Math.abs(daysAgo) !== 1 ? 's' : ''
-                } ago`;
-              } else if (Math.abs(hoursAgo) > 0) {
-                result = `${Math.abs(hoursAgo)} hour${
-                  Math.abs(hoursAgo) !== 1 ? 's' : ''
-                } ago`;
-              } else {
-                result = `${Math.abs(minutesAgo)} minute${
-                  Math.abs(minutesAgo) !== 1 ? 's' : ''
-                } ago`;
-              }
-
-              setResultDate(result);
+              result = `${Math.abs(minutesAgo)} minute${
+                Math.abs(minutesAgo) !== 1 ? 's' : ''
+              } ago`;
             }
             return (
               <TouchableOpacity
@@ -165,7 +159,7 @@ const AppliedJobs = ({navigation}) => {
                   borderRadius: 5,
                 }}
                 onPress={() => {
-                  navigation.navigate('JobStatus', {item, resultDate});
+                  navigation.navigate('JobStatus', {item, result});
                 }}>
                 <View style={{paddingVertical: 10}}>
                   <Image
@@ -273,7 +267,7 @@ const AppliedJobs = ({navigation}) => {
                         fontFamily: Gilmer.Medium,
                         paddingHorizontal: 5,
                       }}>
-                      Applied {resultDate}
+                      Applied {result}
                     </Text>
                   </View>
                   <View
