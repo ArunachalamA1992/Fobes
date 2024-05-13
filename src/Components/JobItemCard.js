@@ -59,7 +59,7 @@ const JobItemCard = props => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DetailedScreen', {id: item?.id})}
+      onPress={() => navigation.navigate('DetailedScreen', {slug: item?.slug})}
       style={{
         marginVertical: 10,
         alignItems: 'center',
@@ -307,7 +307,7 @@ export const JobCardHorizontal = props => {
   };
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DetailedScreen', {id: item?.id})}
+      onPress={() => navigation.navigate('DetailedScreen', {slug: item?.slug})}
       style={{
         width: 300,
         marginVertical: 10,

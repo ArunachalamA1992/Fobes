@@ -251,7 +251,7 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
             Recommended Jobs
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('recommendedjob')}>
+            onPress={() => navigation.navigate('JobListScreen', {index})}>
             <Text
               style={{
                 fontSize: 16,
@@ -903,7 +903,7 @@ const HomeScreen = ({navigation}) => {
         setRecommendedJobs(recommended_job_list?.data);
       }
       //top company list
-      var data = 'page_number=' + 1;
+      var data = 'page=' + 1;
       const top_company_list = await fetchData.list_company(data, token);
       if (top_company_list) {
         setTopCompany(top_company_list?.data);
@@ -1595,6 +1595,8 @@ const HomeScreen = ({navigation}) => {
                 <View
                   style={{
                     marginVertical: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}>
                   <View
                     style={{
@@ -1677,6 +1679,8 @@ const HomeScreen = ({navigation}) => {
                 <View
                   style={{
                     marginVertical: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}>
                   <View
                     style={{
@@ -1852,6 +1856,8 @@ const HomeScreen = ({navigation}) => {
                 <View
                   style={{
                     marginVertical: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}>
                   <View
                     style={{
@@ -1870,7 +1876,9 @@ const HomeScreen = ({navigation}) => {
                       Recommended Jobs
                     </Text>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('recommendedjob')}>
+                      onPress={() =>
+                        navigation.navigate('JobListScreen', {index})
+                      }>
                       <Text
                         style={{
                           fontSize: 16,

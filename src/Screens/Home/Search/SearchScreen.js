@@ -67,7 +67,7 @@ const SearchScreen = ({ navigation }) => {
 
   const getData = useCallback(async () => {
     try {
-      var data = `page_number=1`;
+      var data = `page=1`;
       const top_company_list = await fetchData.list_company(data, token);
       if (top_company_list) {
         setTopCompany(top_company_list?.data);
