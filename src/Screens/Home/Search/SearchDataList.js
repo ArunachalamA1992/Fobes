@@ -260,7 +260,7 @@ const SearchDataList = ({navigation, route}) => {
                       color: Color.primary,
                       fontFamily: Gilmer.Bold,
                     }}>
-                    No Company Found
+                    Job Not Found
                   </Text>
                 </View>
               );

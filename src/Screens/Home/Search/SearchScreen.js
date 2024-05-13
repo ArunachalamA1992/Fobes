@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -9,20 +9,20 @@ import {
   View,
 } from 'react-native';
 import Color from '../../../Global/Color';
-import {Button, Searchbar} from 'react-native-paper';
+import { Button, Searchbar } from 'react-native-paper';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
-import {Gilmer} from '../../../Global/FontFamily';
+import { Gilmer } from '../../../Global/FontFamily';
 import fetchData from '../../../Config/fetchData';
-import {useSelector} from 'react-redux';
-import {base_image_url} from '../../../Config/base_url';
-import {Iconviewcomponent} from '../../../Components/Icontag';
-import {Divider} from 'react-native-elements';
+import { useSelector } from 'react-redux';
+import { base_image_url } from '../../../Config/base_url';
+import { Iconviewcomponent } from '../../../Components/Icontag';
+import { Divider } from 'react-native-elements';
 import common_fn from '../../../Config/common_fn';
 import axios from 'axios';
 
-const SearchScreen = ({navigation}) => {
+const SearchScreen = ({ navigation }) => {
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
   const [searchJob, setSearchJob] = useState('');
   const [type, setType] = useState('');
   const [searchLocation, setSearchLocation] = useState('');
@@ -162,7 +162,7 @@ const SearchScreen = ({navigation}) => {
         style={styles.searchView}
         value={searchJob}
         iconColor={Color.grey}
-        inputStyle={{color: Color.black}}
+        inputStyle={{ color: Color.black }}
         onChangeText={search => propertySearch(search)}
       />
       {jobSuggestions?.visible == true && (
@@ -178,7 +178,7 @@ const SearchScreen = ({navigation}) => {
           <FlatList
             data={jobSuggestions?.data}
             keyExtractor={(item, index) => item + index}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               return (
                 <TouchableOpacity
                   key={index}
@@ -199,7 +199,7 @@ const SearchScreen = ({navigation}) => {
                     {item?.keyword}
                   </Text>
                   {index < jobSuggestions?.data.length - 1 && (
-                    <Divider style={{height: 1, marginVertical: 5}} />
+                    <Divider style={{ height: 1, marginVertical: 5 }} />
                   )}
                 </TouchableOpacity>
               );
@@ -221,7 +221,7 @@ const SearchScreen = ({navigation}) => {
           <F6Icon name="location-dot" size={20} color={Color.lightgrey} />
         )}
         iconColor={Color.grey}
-        inputStyle={{color: Color.black}}
+        inputStyle={{ color: Color.black }}
         onChangeText={search => {
           setSearchLocation(search);
           fetchSuggestions(search);
@@ -257,7 +257,7 @@ const SearchScreen = ({navigation}) => {
                   {item?.display_name?.split(',')[0]}
                 </Text>
                 {index < LocationSuggestion?.data.length - 1 && (
-                  <Divider style={{height: 1, marginVertical: 5}} />
+                  <Divider style={{ height: 1, marginVertical: 5 }} />
                 )}
               </TouchableOpacity>
             );
@@ -279,11 +279,11 @@ const SearchScreen = ({navigation}) => {
         onPress={() => {
           getSearchData();
         }}>
-        <Text style={{fontSize: 16, color: Color.white}}>Search</Text>
+        <Text style={{ fontSize: 16, color: Color.white }}>Search</Text>
       </TouchableOpacity>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -300,16 +300,21 @@ const SearchScreen = ({navigation}) => {
               }}>
               Recent Search
             </Text>
-            <Text
-              style={{
-                fontFamily: Gilmer.Medium,
-                fontSize: 14,
-                color: Color.primary,
-                textTransform: 'capitalize',
-                marginHorizontal: 5,
-              }}>
-              Clear All
-            </Text>
+            <TouchableOpacity onPress={() => {
+              setSearchJob(""),
+              setSearchLocation("")
+            }}>
+              <Text
+                style={{
+                  fontFamily: Gilmer.Medium,
+                  fontSize: 14,
+                  color: Color.primary,
+                  textTransform: 'capitalize',
+                  marginHorizontal: 5,
+                }}>
+                Clear All
+              </Text>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -349,7 +354,7 @@ const SearchScreen = ({navigation}) => {
             })}
           </View>
         </View>
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           <Text
             style={{
               fontFamily: Gilmer.Bold,
@@ -398,7 +403,7 @@ const SearchScreen = ({navigation}) => {
             })}
           </View>
         </View>
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           <Text
             style={{
               fontFamily: Gilmer.Bold,
@@ -452,7 +457,7 @@ const SearchScreen = ({navigation}) => {
                       />
                     ) : (
                       <Image
-                        source={{uri: base_image_url + item?.logo}}
+                        source={{ uri: base_image_url + item?.logo }}
                         style={{
                           width: 80,
                           height: 80,
