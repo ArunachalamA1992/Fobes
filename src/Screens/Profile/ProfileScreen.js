@@ -10,6 +10,7 @@ import {
   Pressable,
   Platform,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import Color from '../../Global/Color';
 import {Media} from '../../Global/Media';
@@ -378,6 +379,36 @@ const ProfileScreen = ({navigation}) => {
     }
   };
 
+  const deleteUser = async () => {
+    try {
+      Alert.alert(
+        '',
+        'Do You like to remove your account',
+        [
+          {
+            text: 'No',
+            onPress: async () => {},
+          },
+          {
+            text: 'Yes',
+            onPress: async () => {
+              const usersData = await fetchData.delete_user(null, token);
+              console.log('usersData-------------------------', usersData);
+              if (usersData) {
+                common_fn?.showToast(userData?.message);
+                navigation.replace('Auth');
+                AsyncStorage.clear();
+                dispatch(setUserData({}));
+              }
+            },
+          },
+        ],
+        {cancelable: false},
+      );
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -1702,6 +1733,35 @@ const ProfileScreen = ({navigation}) => {
               </Text>
             </View>
           )}
+        </View>
+        <View
+          style={{
+            backgroundColor: Color.white,
+            padding: 10,
+            marginVertical: 10,
+          }}>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginHorizontal: 10,
+            }}
+            onPress={() => {
+              deleteUser();
+            }}>
+            <FIcon name="trash" size={18} color={Color.red} />
+            <Text
+              style={{
+                fontFamily: Gilmer.Medium,
+                fontSize: 14,
+                color: Color.blue,
+                marginHorizontal: 5,
+                marginVertical: 5,
+              }}>
+              Delete Your Account
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <Modal

@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {LogBox, StatusBar, View} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawerContent from './Components/Nav/CustomDrawerContent';
-import {Provider, useDispatch} from 'react-redux';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 
 import {Provider as PaperProvider} from 'react-native-paper';
 import OnboardOne from './Screens/Onboarding/OnboardOne';
@@ -31,8 +31,9 @@ import ResetPass from './Screens/Auth/ResetPass';
 import {Linking} from 'react-native';
 import {navigationRef} from '../RootNavigation';
 import SearchDataList from './Screens/Home/Search/SearchDataList';
-import {setUserData} from './Redux';
+import {setNotificationCount, setUserData} from './Redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import fetchData from './Config/fetchData';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -133,6 +134,43 @@ const App = () => {
 };
 
 const MainApp = () => {
+  const dispatch = useDispatch();
+  const [getData, setGetData] = useState([]);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
+  const notificationCount = useSelector(
+    state => state.UserReducer.notificationCount,
+  );
+
+  const getNotificationData = async () => {
+    try {
+      const notifyData = await fetchData.notification(null, token);
+      if (notifyData) {
+        setGetData(notifyData.data);
+      }
+    } catch (error) {
+      console.log('catch in getNotification_Data : ', error);
+    }
+  };
+
+  useEffect(() => {
+    const notify = setInterval(() => {
+      getNotificationData();
+      unreadNotify();
+    }, 2000);
+    return () => {
+      clearInterval(notify);
+    };
+  }, [getData, userData, notificationCount]);
+
+  const unreadNotify = async () => {
+    let unreadNotifications = getData.filter(
+      notification => notification?.read_at == null,
+    );
+    // setUnreadCount(unreadNotifications.length);
+    dispatch(setNotificationCount(unreadNotifications.length));
+  };
+
   return (
     <>
       <StatusBar backgroundColor={Color.white} barStyle={'dark-content'} />

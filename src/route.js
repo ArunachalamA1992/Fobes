@@ -31,11 +31,15 @@ import IntroductionScreen from './Screens/Profile/IntroductionScreen';
 import RecommendedListScreen from './Screens/Home/RecommendedJobs';
 import StepEducation from './Screens/Profile/StepEducation';
 import StepEmployment from './Screens/Profile/StepEmployment';
+import {useSelector} from 'react-redux';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const HomeStack = () => {
+  const notificationCount = useSelector(
+    state => state.UserReducer.notificationCount,
+  );
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
@@ -61,7 +65,7 @@ export const HomeStack = () => {
                   right: 0,
                   zIndex: 1,
                 }}>
-                {0}
+                {notificationCount}
               </Badge>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
@@ -327,6 +331,9 @@ export const HomeStack = () => {
 };
 
 export const AppliedStack = () => {
+  const notificationCount = useSelector(
+    state => state.UserReducer.notificationCount,
+  );
   return (
     <Stack.Navigator initialRouteName="Prime">
       <Stack.Screen
@@ -353,7 +360,7 @@ export const AppliedStack = () => {
                   right: 0,
                   zIndex: 1,
                 }}>
-                {0}
+                {notificationCount}
               </Badge>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
@@ -370,6 +377,9 @@ export const AppliedStack = () => {
 };
 
 export const SavedJobStack = () => {
+  const notificationCount = useSelector(
+    state => state.UserReducer.notificationCount,
+  );
   return (
     <Stack.Navigator initialRouteName="Saved">
       <Stack.Screen
@@ -396,7 +406,7 @@ export const SavedJobStack = () => {
                   right: 0,
                   zIndex: 1,
                 }}>
-                {0}
+                {notificationCount}
               </Badge>
               <Iconviewcomponent
                 Icontag={'Ionicons'}
@@ -413,6 +423,9 @@ export const SavedJobStack = () => {
 };
 
 export const ProfileStack = () => {
+  const notificationCount = useSelector(
+    state => state.UserReducer.notificationCount,
+  );
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -438,7 +451,7 @@ export const ProfileStack = () => {
                   right: 0,
                   zIndex: 1,
                 }}>
-                {0}
+                {notificationCount}
               </Badge>
               <Iconviewcomponent
                 Icontag={'Ionicons'}

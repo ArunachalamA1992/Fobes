@@ -3,4 +3,5 @@ export {
   setCompleteProfile,
   setAsync,
   setOnBoardVisible,
+  setNotificationCount,
 } from './user/UserAction';

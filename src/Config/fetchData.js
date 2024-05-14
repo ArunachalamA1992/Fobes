@@ -31,6 +31,10 @@ export default {
     let url = api_name + 'jobs/recommended_jobs';
     return api.getMethod(url, token);
   },
+  related_jobs: (data, token) => {
+    let url = api_name + 'jobs/related_jobs/' + data;
+    return api.getMethod(url, token);
+  },
   single_candidate: (data, token) => {
     let url = api_name + 'candidates';
     return api.getMethod(url, token);
@@ -122,5 +126,21 @@ export default {
   contactUsData: (data, token) => {
     let url = api_name + 'job/contact';
     return api.postMethod(url, data, token);
+  },
+  notification: (data, token) => {
+    let url = api_name + 'notification';
+    return api.getMethod(url, token);
+  },
+  update_notification: (data, token) => {
+    let url = api_name + 'notification/' + data;
+    return api.getpatchMethod(url, token);
+  },
+  mark_all_notification: (data, token) => {
+    let url = api_name + 'notification';
+    return api.putMethod(url, data, token);
+  },
+  delete_user: (data, token) => {
+    let url = api_name + 'candidates';
+    return api.deleteMethod(url, token);
   },
 };

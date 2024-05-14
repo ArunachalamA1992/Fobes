@@ -576,7 +576,7 @@ const VerticalTabView = props => {
   const tabs = [
     'Date Posted',
     'Experience',
-    'Distance',
+    // 'Distance',
     'Job Type',
     'Location',
     'Industry',

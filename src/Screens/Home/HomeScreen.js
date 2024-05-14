@@ -817,6 +817,7 @@ const HomeScreen = ({navigation}) => {
     phone,
     token,
   } = userData;
+
   const profile_complete_data = useSelector(
     state => state.UserReducer.profile_complete,
   );
@@ -902,12 +903,6 @@ const HomeScreen = ({navigation}) => {
       if (recommended_job_list) {
         setRecommendedJobs(recommended_job_list?.data);
       }
-      //top company list
-      var data = 'page=' + 1;
-      const top_company_list = await fetchData.list_company(data, token);
-      if (top_company_list) {
-        setTopCompany(top_company_list?.data);
-      }
     } catch (error) {
       console.log('error', error);
     } finally {
@@ -915,8 +910,24 @@ const HomeScreen = ({navigation}) => {
     }
   }, [token, index]);
 
+  const company_data = useCallback(async () => {
+    try {
+      var company_data = `page=1`;
+      const top_company_list = await fetchData.list_company(
+        company_data,
+        token,
+      );
+      if (top_company_list) {
+        setTopCompany(top_company_list?.data);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  }, [token, index]);
+
   useEffect(() => {
     getData();
+    company_data();
   }, [getData, index]);
 
   const getUserData = async () => {

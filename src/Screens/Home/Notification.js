@@ -1,40 +1,78 @@
-import React, {useState} from 'react';
-import {FlatList, Image, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Color from '../../Global/Color';
 import {Media} from '../../Global/Media';
 import {Gilmer} from '../../Global/FontFamily';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import fetchData from '../../Config/fetchData';
+import {useSelector} from 'react-redux';
+import moment from 'moment';
+import common_fn from '../../Config/common_fn';
+
+const {height} = Dimensions.get('window');
 
 const Notification = ({navigation}) => {
-  const [notificationData] = useState([
-    {
-      id: 1,
-      image: Media.user,
-      name: 'New Job Posted',
-      sub_name:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      time: '3.00pm',
-      dt: '2024-04-25T12:11:05.381Z',
-    },
-    {
-      id: 2,
-      image: Media.user,
-      name: 'New Job Posted',
-      sub_name:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      time: '3.00pm',
-      dt: '2024-04-24T12:11:05.381Z',
-    },
-    {
-      id: 3,
-      image: Media.user,
-      name: 'New Job Posted',
-      sub_name:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      time: '3.00pm',
-      dt: '2024-03-07T12:11:05.381Z',
-    },
-  ]);
+  const [notificationData, setNotificationData] = useState([]);
+  const userData = useSelector(state => state.UserReducer.userData);
+  var {token} = userData;
+
+  useEffect(() => {
+    getNotification();
+  }, []);
+
+  const getNotification = useCallback(async () => {
+    try {
+      const notification_list = await fetchData.notification(null, token);
+      if (notification_list) {
+        setNotificationData(notification_list?.data);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  }, [token]);
+
+  const single_notification = async id => {
+    try {
+      const data = id;
+      const notification_list = await fetchData.update_notification(
+        data,
+        token,
+      );
+      console.log(
+        'notification_list-----------------------------',
+        notification_list,
+      );
+      if (notification_list) {
+        common_fn?.showToast(notification_list?.message);
+        getNotification();
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const getMarkAllData = useCallback(async () => {
+    try {
+      const notification_list = await fetchData.mark_all_notification(
+        {},
+        token,
+      );
+      if (notification_list) {
+        common_fn?.showToast(notification_list?.message);
+        getNotification();
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  }, [token]);
 
   const groupNotificationsByDate = () => {
     const today = new Date();
@@ -47,7 +85,7 @@ const Notification = ({navigation}) => {
     };
 
     notificationData.forEach(notification => {
-      const notificationDate = new Date(notification.dt);
+      const notificationDate = new Date(notification?.created_at);
       if (notificationDate.toDateString() === today.toDateString()) {
         groupedNotifications['Today'].push(notification);
       } else if (notificationDate.toDateString() === yesterday.toDateString()) {
@@ -71,104 +109,147 @@ const Notification = ({navigation}) => {
           {category: 'Earlier', data: groupedNotifications['Earlier']},
         ]}
         keyExtractor={(item, index) => item.category}
-        renderItem={({item}) => (
-          <View>
-            {item.data.length > 0 && (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginVertical: 10,
-                }}>
-                <Text
-                  style={{
-                    flex: 1,
-                    fontSize: 18,
-                    color: Color.lightBlack,
-                    fontFamily: Gilmer.Bold,
-                    marginVertical: 5,
-                  }}>
-                  {item.category}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    color: Color.cloudyGrey,
-                    fontFamily: Gilmer.Medium,
-                    marginVertical: 5,
-                  }}>
-                  {'Mark all as read'}
-                </Text>
-              </View>
-            )}
-            {item.data.map((notification, index) => (
-              <View
-                key={index}
-                style={{
-                  flex: 1,
-                  borderColor: Color.lightgrey,
-                  borderWidth: 1,
-                  padding: 10,
-                  borderRadius: 10,
-                  marginVertical: 5,
-                }}>
+        renderItem={({item, index}) => {
+          return (
+            <View key={index}>
+              {item.data.length > 0 && (
                 <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'flex-start',
+                    marginVertical: 10,
                   }}>
-                  <Image
-                    source={notification.image}
-                    style={{width: 80, height: 80, resizeMode: 'contain'}}
-                  />
-                  <View
+                  <Text
                     style={{
                       flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'flex-start',
-                      paddingHorizontal: 10,
+                      fontSize: 18,
+                      color: Color.lightBlack,
+                      fontFamily: Gilmer.Bold,
+                      marginVertical: 5,
                     }}>
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        color: Color.lightBlack,
-                        fontFamily: Gilmer.Bold,
-                        marginVertical: 5,
-                      }}>
-                      {notification?.name}
-                    </Text>
+                    {item.category}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      getMarkAllData();
+                    }}>
                     <Text
                       style={{
                         fontSize: 14,
                         color: Color.cloudyGrey,
                         fontFamily: Gilmer.Medium,
-                      }}
-                      numberOfLines={2}>
-                      {notification.sub_name}
+                        marginVertical: 5,
+                      }}>
+                      {'Mark all as read'}
                     </Text>
-                  </View>
-                  <View style={{alignItems: 'center'}}>
-                    <Icon
-                      name="information-circle"
-                      size={20}
-                      color={Color.primary}
-                    />
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: Color.cloudyGrey,
-                        fontFamily: Gilmer.Medium,
-                      }}
-                      numberOfLines={2}>
-                      {notification.time}
-                    </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
-              </View>
-            ))}
-          </View>
-        )}
+              )}
+              {item.data.map((single_notify, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={{
+                    flex: 1,
+                    borderColor: Color.lightgrey,
+                    borderWidth: 1,
+                    padding: 10,
+                    borderRadius: 10,
+                    marginVertical: 5,
+                  }}
+                  disabled={single_notify?.read_at != null}
+                  onPress={() => {
+                    single_notification(single_notify?.id);
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                    }}>
+                    {/* <Image
+                  source={single_notify.image}
+                  style={{width: 80, height: 80, resizeMode: 'contain'}}
+                /> */}
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                        paddingHorizontal: 10,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          color: Color.lightBlack,
+                          fontFamily: Gilmer.Bold,
+                          marginVertical: 5,
+                        }}>
+                        {single_notify?.notification?.title}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          color: Color.cloudyGrey,
+                          fontFamily: Gilmer.Medium,
+                        }}
+                        numberOfLines={2}>
+                        {single_notify?.notification?.title2}
+                      </Text>
+                    </View>
+                    <View style={{alignItems: 'center'}}>
+                      <Icon
+                        name="information-circle"
+                        size={20}
+                        color={Color.primary}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: Color.cloudyGrey,
+                          fontFamily: Gilmer.Medium,
+                        }}
+                        numberOfLines={2}>
+                        {/* {single_notify.time} */}
+                        {moment(single_notify?.created_at).format('HH:mm:ss')}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          );
+        }}
+        ListEmptyComponent={() => {
+          return (
+            <View
+              style={{
+                height: height / 1.5,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginVertical: 10,
+                width: '100%',
+              }}>
+              <MCIcon
+                name="briefcase-variant-off"
+                color={Color.primary}
+                size={20}
+              />
+              <Text
+                style={{
+                  fontSize: 12,
+                  padding: 5,
+                  paddingHorizontal: 20,
+                  marginStart: 5,
+                  borderRadius: 5,
+                  marginVertical: 10,
+                  color: Color.primary,
+                  fontFamily: Gilmer.Bold,
+                }}>
+                No Notification Found
+              </Text>
+            </View>
+          );
+        }}
         showsVerticalScrollIndicator={false}
       />
     </View>

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -100,6 +100,7 @@ const DetailedScreen = ({navigation, route}) => {
         console.log('Error fetching data:', error);
         setLoading(false);
       });
+    getRelatedJobs();
   }, [token]);
 
   const getData = async () => {
@@ -108,7 +109,7 @@ const DetailedScreen = ({navigation, route}) => {
         fetchData.list_jobs(null, token),
         fetchData.filter_job('slug=' + slug, token),
       ]);
-      setSimilarJobdata(similarJobData?.data);
+      // setSimilarJobdata(similarJobData?.data);
       setSingleJobdata(singleJobData?.data[0]);
 
       const PendingProduct = await fetchData.list_job_Applied(null, token);
@@ -194,6 +195,18 @@ const DetailedScreen = ({navigation, route}) => {
       console.log('error', error);
     }
   };
+  console.log('singleJobData?.id', singleJobData?.id);
+  const getRelatedJobs = useCallback(async () => {
+    try {
+      var data = singleJobData?.id;
+      const related_list = await fetchData.related_jobs(data, token);
+      if (related_list) {
+        setSimilarJobdata(related_list?.data);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  }, [token]);
 
   const share_job = async slug => {
     const jobDeepLink = `https://fobes.in/job/${slug}`;
@@ -344,183 +357,186 @@ const DetailedScreen = ({navigation, route}) => {
           </SkeletonPlaceholder>
         </View>
       ) : (
-        <ScrollView
-          style={{flex: 1, padding: 10}}
-          showsVerticalScrollIndicator={false}
-          onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {y: scrollY}}}],
-            {
-              useNativeDriver: false,
-            },
-          )}>
-          {singleJobData?.company?.logo == null ? (
-            <Image
-              source={Media?.user}
-              style={{
-                width: 60,
-                height: 60,
-                resizeMode: 'contain',
-                borderRadius: 100,
-              }}
-            />
-          ) : (
-            <Image
-              source={{uri: base_image_url + singleJobData?.company?.logo}}
-              style={{
-                width: 60,
-                height: 60,
-                resizeMode: 'contain',
-                borderRadius: 100,
-              }}
-            />
-          )}
-          <Text
-            style={{
-              fontSize: 20,
-              color: Color.black,
-              fontFamily: Gilmer.Bold,
-              paddingHorizontal: 10,
-            }}>
-            {singleJobData?.title} | {singleJobData?.role}
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('CompanyDetails', {
-                item: singleJobData?.company,
-              });
-            }}>
+        <View style={{flex: 1}}>
+          <ScrollView
+            style={{flex: 1, padding: 10}}
+            contentContainerStyle={{paddingBottom: 120}}
+            showsVerticalScrollIndicator={false}
+            scrollEventThrottle={16}
+            onScroll={Animated.event(
+              [{nativeEvent: {contentOffset: {y: scrollY}}}],
+              {
+                useNativeDriver: false,
+              },
+            )}>
+            {singleJobData?.company?.logo == null ? (
+              <Image
+                source={Media?.user}
+                style={{
+                  width: 60,
+                  height: 60,
+                  resizeMode: 'contain',
+                  borderRadius: 100,
+                }}
+              />
+            ) : (
+              <Image
+                source={{uri: base_image_url + singleJobData?.company?.logo}}
+                style={{
+                  width: 60,
+                  height: 60,
+                  resizeMode: 'contain',
+                  borderRadius: 100,
+                }}
+              />
+            )}
             <Text
               style={{
-                fontSize: 14,
-                color: Color.cloudyGrey,
-                fontFamily: Gilmer.Medium,
+                fontSize: 20,
+                color: Color.black,
+                fontFamily: Gilmer.Bold,
                 paddingHorizontal: 10,
-                marginVertical: 5,
               }}>
-              {singleJobData?.company?.name}
+              {singleJobData?.title} | {singleJobData?.role}
             </Text>
-          </TouchableOpacity>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              marginVertical: 10,
-            }}>
-            <View
-              style={{
-                backgroundColor: '#DEFCE4',
-                padding: 5,
-                paddingHorizontal: 20,
-                borderRadius: 5,
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('CompanyDetails', {
+                  item: singleJobData?.company,
+                });
               }}>
               <Text
                 style={{
                   fontSize: 14,
-                  color: Color.green,
+                  color: Color.cloudyGrey,
                   fontFamily: Gilmer.Medium,
+                  paddingHorizontal: 10,
+                  marginVertical: 5,
                 }}>
-                {singleJobData?.job_type?.name}
+                {singleJobData?.company?.name}
               </Text>
+            </TouchableOpacity>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                marginVertical: 10,
+              }}>
+              <View
+                style={{
+                  backgroundColor: '#DEFCE4',
+                  padding: 5,
+                  paddingHorizontal: 20,
+                  borderRadius: 5,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: Color.green,
+                    fontFamily: Gilmer.Medium,
+                  }}>
+                  {singleJobData?.job_type?.name}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginHorizontal: 10,
+                }}>
+                <Iconviewcomponent
+                  Icontag={'Ionicons'}
+                  iconname={'time-outline'}
+                  icon_size={20}
+                  icon_color={Color.Venus}
+                />
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: Color.cloudyGrey,
+                    paddingHorizontal: 5,
+                    fontFamily: Gilmer.Medium,
+                  }}>
+                  {resultDate}
+                </Text>
+              </View>
             </View>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginHorizontal: 10,
+                justifyContent: 'space-evenly',
+                flexWrap: 'wrap',
+                marginVertical: 10,
+                marginHorizontal: 5,
               }}>
-              <Iconviewcomponent
-                Icontag={'Ionicons'}
-                iconname={'time-outline'}
-                icon_size={20}
-                icon_color={Color.Venus}
-              />
+              {features?.map((item, index) => {
+                return (
+                  <View
+                    key={index}
+                    style={{
+                      width: '45%',
+                      backgroundColor: '#EFFAFF',
+                      padding: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginVertical: 10,
+                      marginHorizontal: 5,
+                      borderRadius: 10,
+                    }}>
+                    <IconData item={item?.title} />
+                    <View style={{marginHorizontal: 5}}>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          color: Color.cloudyGrey,
+                          fontFamily: Gilmer.Regular,
+                          paddingHorizontal: 5,
+                        }}>
+                        {item?.title}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: Color.black,
+                          fontFamily: Gilmer.Bold,
+                          paddingHorizontal: 5,
+                        }}>
+                        {item?.value}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })}
+            </View>
+            <View style={{}}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: Color.cloudyGrey,
+                  fontSize: 16,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
                   paddingHorizontal: 5,
-                  fontFamily: Gilmer.Medium,
                 }}>
-                {resultDate}
+                Job Description
               </Text>
+              <RenderHtml
+                source={source}
+                contentWidth={windowWidth}
+                tagsStyles={{
+                  body: {
+                    fontSize: 14,
+                    color: Color.cloudyGrey,
+                    textAlign: 'justify',
+                    marginHorizontal: 10,
+                    fontFamily: Gilmer.Medium,
+                    lineHeight: 25,
+                  },
+                }}
+              />
             </View>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-evenly',
-              flexWrap: 'wrap',
-              marginVertical: 10,
-              marginHorizontal: 5,
-            }}>
-            {features?.map((item, index) => {
-              return (
-                <View
-                  key={index}
-                  style={{
-                    width: '45%',
-                    backgroundColor: '#EFFAFF',
-                    padding: 10,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginVertical: 10,
-                    marginHorizontal: 5,
-                    borderRadius: 10,
-                  }}>
-                  <IconData item={item?.title} />
-                  <View style={{marginHorizontal: 5}}>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        color: Color.cloudyGrey,
-                        fontFamily: Gilmer.Regular,
-                        paddingHorizontal: 5,
-                      }}>
-                      {item?.title}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: Color.black,
-                        fontFamily: Gilmer.Bold,
-                        paddingHorizontal: 5,
-                      }}>
-                      {item?.value}
-                    </Text>
-                  </View>
-                </View>
-              );
-            })}
-          </View>
-          <View style={{}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 5,
-              }}>
-              Job Description
-            </Text>
-            <RenderHtml
-              source={source}
-              contentWidth={windowWidth}
-              tagsStyles={{
-                body: {
-                  fontSize: 14,
-                  color: Color.cloudyGrey,
-                  textAlign: 'justify',
-                  marginHorizontal: 10,
-                  fontFamily: Gilmer.Medium,
-                  lineHeight: 25,
-                },
-              }}
-            />
-          </View>
-          {/* <View
+            {/* <View
           style={{
             marginVertical: 10,
           }}>
@@ -620,59 +636,59 @@ const DetailedScreen = ({navigation, route}) => {
             })}
           </View>
         </View> */}
-          {singleJobData?.benefits?.length > 0 && (
-            <View
-              style={{
-                marginVertical: 10,
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: Color.black,
-                  fontFamily: Gilmer.Bold,
-                  paddingHorizontal: 5,
-                }}>
-                Key Benifits
-              </Text>
+            {singleJobData?.benefits?.length > 0 && (
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-start',
-                  flexWrap: 'wrap',
                   marginVertical: 10,
-                  marginHorizontal: 10,
                 }}>
-                {singleJobData?.benefits?.map((item, index) => {
-                  return (
-                    <View
-                      key={index}
-                      style={{
-                        backgroundColor: '#DEFCE4',
-                        paddingHorizontal: 10,
-                        padding: 10,
-                        borderRadius: 10,
-                        marginRight: 10,
-                        marginTop: 10,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}>
-                      <Text
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.black,
+                    fontFamily: Gilmer.Bold,
+                    paddingHorizontal: 5,
+                  }}>
+                  Key Benifits
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    flexWrap: 'wrap',
+                    marginVertical: 10,
+                    marginHorizontal: 10,
+                  }}>
+                  {singleJobData?.benefits?.map((item, index) => {
+                    return (
+                      <View
+                        key={index}
                         style={{
-                          fontSize: 14,
-                          color: Color.black,
-                          marginHorizontal: 5,
-                          fontFamily: Gilmer.SemiBold,
+                          backgroundColor: '#DEFCE4',
+                          paddingHorizontal: 10,
+                          padding: 10,
+                          borderRadius: 10,
+                          marginRight: 10,
+                          marginTop: 10,
+                          flexDirection: 'row',
+                          alignItems: 'center',
                         }}>
-                        {item?.benefit_name}
-                      </Text>
-                    </View>
-                  );
-                })}
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            color: Color.black,
+                            marginHorizontal: 5,
+                            fontFamily: Gilmer.SemiBold,
+                          }}>
+                          {item?.benefit_name}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </View>
               </View>
-            </View>
-          )}
-          {/* <View
+            )}
+            {/* <View
           style={{
             marginVertical: 10,
           }}>
@@ -724,21 +740,44 @@ const DetailedScreen = ({navigation, route}) => {
             })}
           </View>
         </View> */}
-          <View style={{}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 5,
-              }}>
-              About Company
-            </Text>
-            <RenderHtml
-              source={company_source}
-              contentWidth={windowWidth}
-              tagsStyles={{
-                body: {
+            <View style={{}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
+                  paddingHorizontal: 5,
+                }}>
+                About Company
+              </Text>
+              <RenderHtml
+                source={company_source}
+                contentWidth={windowWidth}
+                tagsStyles={{
+                  body: {
+                    fontSize: 14,
+                    color: Color.cloudyGrey,
+                    textAlign: 'justify',
+                    marginHorizontal: 10,
+                    marginVertical: 10,
+                    fontFamily: Gilmer.Medium,
+                    lineHeight: 25,
+                  },
+                }}
+              />
+            </View>
+            <View style={{}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
+                  paddingHorizontal: 5,
+                }}>
+                Phone
+              </Text>
+              <Text
+                style={{
                   fontSize: 14,
                   color: Color.cloudyGrey,
                   textAlign: 'justify',
@@ -746,232 +785,214 @@ const DetailedScreen = ({navigation, route}) => {
                   marginVertical: 10,
                   fontFamily: Gilmer.Medium,
                   lineHeight: 25,
-                },
-              }}
-            />
-          </View>
-          <View style={{}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 5,
-              }}>
-              Phone
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                color: Color.cloudyGrey,
-                textAlign: 'justify',
-                marginHorizontal: 10,
-                marginVertical: 10,
-                fontFamily: Gilmer.Medium,
-                lineHeight: 25,
-              }}>
-              {singleJobData?.company?.phone}
-            </Text>
-          </View>
-          <View style={{}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 5,
-              }}>
-              Email
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                color: Color.cloudyGrey,
-                textAlign: 'justify',
-                marginHorizontal: 10,
-                marginVertical: 10,
-                fontFamily: Gilmer.Medium,
-                lineHeight: 25,
-              }}>
-              {singleJobData?.company?.email}
-            </Text>
-          </View>
-          <View style={{}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 5,
-              }}>
-              Address
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                color: Color.cloudyGrey,
-                textAlign: 'justify',
-                marginHorizontal: 10,
-                marginVertical: 10,
-                fontFamily: Gilmer.Medium,
-                lineHeight: 25,
-              }}>
-              {singleJobData?.company?.address}
-            </Text>
-          </View>
-          <View style={{}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 5,
-              }}>
-              Recruiter Details
-            </Text>
-            <View
-              style={{
-                marginVertical: 10,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-              }}>
-              <Image
-                source={{
-                  uri: base_image_url + singleJobData?.company?.logo,
-                }}
+                }}>
+                {singleJobData?.company?.phone}
+              </Text>
+            </View>
+            <View style={{}}>
+              <Text
                 style={{
-                  width: 60,
-                  height: 60,
-                  resizeMode: 'contain',
-                  borderRadius: 100,
-                }}
-              />
+                  fontSize: 16,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
+                  paddingHorizontal: 5,
+                }}>
+                Email
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  textAlign: 'justify',
+                  marginHorizontal: 10,
+                  marginVertical: 10,
+                  fontFamily: Gilmer.Medium,
+                  lineHeight: 25,
+                }}>
+                {singleJobData?.company?.email}
+              </Text>
+            </View>
+            <View style={{}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
+                  paddingHorizontal: 5,
+                }}>
+                Address
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: Color.cloudyGrey,
+                  textAlign: 'justify',
+                  marginHorizontal: 10,
+                  marginVertical: 10,
+                  fontFamily: Gilmer.Medium,
+                  lineHeight: 25,
+                }}>
+                {singleJobData?.company?.address}
+              </Text>
+            </View>
+            <View style={{}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
+                  paddingHorizontal: 5,
+                }}>
+                Recruiter Details
+              </Text>
               <View
                 style={{
+                  marginVertical: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                }}>
+                <Image
+                  source={{
+                    uri: base_image_url + singleJobData?.company?.logo,
+                  }}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    resizeMode: 'contain',
+                    borderRadius: 100,
+                  }}
+                />
+                <View
+                  style={{
+                    paddingHorizontal: 10,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: Color.black,
+                      fontFamily: Gilmer.Medium,
+                    }}>
+                    {singleJobData?.company?.name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: Color.lightBlack,
+                      fontFamily: Gilmer.Medium,
+                      marginVertical: 10,
+                    }}>
+                    {singleJobData?.company?.industry_type?.name}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={{marginVertical: 10}}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: Color.black,
+                  fontFamily: Gilmer.Bold,
                   paddingHorizontal: 10,
+                }}>
+                Similar Jobs
+              </Text>
+              <FlatList
+                data={similarJobdata}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({item, index}) => {
+                  return (
+                    <JobItemCard
+                      item={item}
+                      navigation={navigation}
+                      token={token}
+                      getData={getData}
+                    />
+                  );
+                }}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+          </ScrollView>
+          <Animated.View
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              bottom: 0,
+              width: '100%',
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 20,
+              padding: 10,
+              backgroundColor: Color.softGrey,
+              transform: [{translateY: taby}],
+            }}>
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingVertical: 5,
+              }}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={{
+                  width: 50,
+                  height: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginHorizontal: 10,
+                }}
+                onPress={() => {
+                  getToggleJobs(singleJobData?.id);
+                }}>
+                <Iconviewcomponent
+                  Icontag="FontAwesome"
+                  iconname={singleJobData?.is_saved ? 'bookmark' : 'bookmark-o'}
+                  icon_size={22}
+                  icon_color={
+                    singleJobData?.is_saved ? Color.primary : Color.Venus
+                  }
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  if (singleJobData?.apply_on === 'app') {
+                    navigation.navigate('ApplyJob', {
+                      job_id: singleJobData?.id,
+                    });
+                  } else if (singleJobData?.apply_on === 'email') {
+                    Linking.openURL(singleJobData?.apply_email);
+                  }
+                }}
+                disabled={jobApplied}
+                style={{
+                  flex: 1,
+                  height: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  marginHorizontal: 10,
+                  backgroundColor: jobApplied
+                    ? Color.cloudyGrey
+                    : Color.primary,
                 }}>
                 <Text
                   style={{
-                    fontSize: 15,
-                    color: Color.black,
-                    fontFamily: Gilmer.Medium,
+                    textAlign: 'center',
+                    color: Color.white,
+                    fontFamily: 'Gilmer-Bold',
                   }}>
-                  {singleJobData?.company?.name}
+                  {jobApplied ? 'Applied' : 'Apply Now'}
                 </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: Color.lightBlack,
-                    fontFamily: Gilmer.Medium,
-                    marginVertical: 10,
-                  }}>
-                  {singleJobData?.company?.industry_type?.name}
-                </Text>
-              </View>
+              </TouchableOpacity>
             </View>
-          </View>
-          <View style={{marginVertical: 10}}>
-            <Text
-              style={{
-                fontSize: 20,
-                color: Color.black,
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 10,
-              }}>
-              Similar Jobs
-            </Text>
-
-            <FlatList
-              data={similarJobdata}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({item, index}) => {
-                return (
-                  <JobItemCard
-                    item={item}
-                    navigation={navigation}
-                    token={token}
-                    getData={getData}
-                  />
-                );
-              }}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-        </ScrollView>
-      )}
-      <Animated.View
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          bottom: 0,
-          width: '100%',
-          alignItems: 'center',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          // opacity: headerOpacity,
-          padding: 10,
-          backgroundColor: Color.softGrey,
-          transform: [{translateY: taby}],
-        }}>
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingVertical: 5,
-          }}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={{
-              width: 50,
-              height: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginHorizontal: 10,
-            }}
-            onPress={() => {
-              getToggleJobs(singleJobData?.id);
-            }}>
-            <Iconviewcomponent
-              Icontag={'FontAwesome'}
-              iconname={singleJobData?.is_saved ? 'bookmark' : 'bookmark-o'}
-              icon_size={22}
-              icon_color={singleJobData?.is_saved ? Color.primary : Color.Venus}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              if (singleJobData?.apply_on == 'app') {
-                navigation.navigate('ApplyJob', {job_id: singleJobData?.id});
-              } else if (singleJobData?.apply_on == 'email') {
-                Linking.openURL(singleJobData?.apply_email);
-              }
-            }}
-            disabled={jobApplied}
-            style={{
-              flex: 1,
-              height: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 50,
-              marginHorizontal: 10,
-              backgroundColor: jobApplied ? Color.cloudyGrey : Color.primary,
-            }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                justifyContent: 'center',
-                alignItems: 'center',
-                color: Color.white,
-              }}>
-              {jobApplied ? 'Applied' : 'Apply Now'}
-            </Text>
-          </TouchableOpacity>
+          </Animated.View>
         </View>
-      </Animated.View>
+      )}
     </SafeAreaView>
   );
 };

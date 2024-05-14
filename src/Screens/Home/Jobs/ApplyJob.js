@@ -35,7 +35,7 @@ const ApplyJob = ({navigation, route}) => {
 
   useEffect(() => {
     getAPiData();
-  }, [token]);
+  }, [token, userData]);
 
   const getApplyjob = async () => {
     try {
