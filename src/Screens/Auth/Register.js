@@ -182,7 +182,7 @@ const Register = ({navigation}) => {
             value={password}
             onChangeText={text => {
               // setPassword(text),
-              if (text.length < 7) {
+              if (text.length < 6) {
                 // console.log("min --------- ", text)
                 setMinPass('set minimum character as 6');
                 setPassword(text);

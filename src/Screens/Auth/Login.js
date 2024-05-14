@@ -237,7 +237,7 @@ const Login = () => {
               value={password}
               keyboardType="name-phone-pad"
               onChangeText={password => {
-                if (password.length < 7) {
+                if (password.length < 6) {
                   setMinPass('set minimum character as 6');
                   setPassword(password);
                 } else {
