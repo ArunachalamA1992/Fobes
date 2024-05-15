@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,29 +11,29 @@ import {
   LogBox,
   Dimensions,
 } from 'react-native';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { Iconviewcomponent } from '../../Components/Icontag';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
+import { Gilmer } from '../../Global/FontFamily';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import {Button} from 'react-native-paper';
-import {setCompleteProfile, setUserData} from '../../Redux';
-import {useDispatch, useSelector} from 'react-redux';
+import { Button } from 'react-native-paper';
+import { setCompleteProfile, setUserData } from '../../Redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import common_fn from '../../Config/common_fn';
-import {JobCardHorizontal} from '../../Components/JobItemCard';
+import { JobCardHorizontal } from '../../Components/JobItemCard';
 import FilterModal from './Filter/FilterModal';
 import fetchData from '../../Config/fetchData';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import {base_image_url} from '../../Config/base_url';
+import { base_image_url } from '../../Config/base_url';
 
-var {width} = Dimensions.get('window');
+var { width } = Dimensions.get('window');
 
 LogBox.ignoreAllLogs();
 
-const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
+const FullTime = ({ topCompany, navigation, jobData, token, getData }) => {
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View
         style={{
           marginVertical: 10,
@@ -56,7 +56,7 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
           </Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('JobListScreen')}
-            style={{padding: 5}}>
+            style={{ padding: 5 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -71,7 +71,7 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
         <FlatList
           data={jobData}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return (
               <JobCardHorizontal
                 item={item}
@@ -106,7 +106,7 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
           </Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('CompanyList')}
-            style={{padding: 5}}>
+            style={{ padding: 5 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -121,7 +121,7 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
         <FlatList
           data={topCompany}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -158,7 +158,7 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
                   />
                 ) : (
                   <Image
-                    source={{uri: base_image_url + item?.logo}}
+                    source={{ uri: base_image_url + item?.logo }}
                     style={{
                       width: 80,
                       height: 80,
@@ -251,7 +251,7 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
             Recommended Jobs
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('JobListScreen', {index})}>
+            onPress={() => navigation.navigate('JobListScreen', { index })}>
             <Text
               style={{
                 fontSize: 16,
@@ -266,7 +266,7 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
         <FlatList
           data={jobData}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return (
               <JobCardHorizontal
                 item={item}
@@ -284,9 +284,9 @@ const FullTime = ({topCompany, navigation, jobData, token, getData}) => {
   );
 };
 
-const PartTime = ({topCompany, navigation, jobData, token, getData}) => {
+const PartTime = ({ topCompany, navigation, jobData, token, getData }) => {
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View
         style={{
           marginVertical: 10,
@@ -309,7 +309,7 @@ const PartTime = ({topCompany, navigation, jobData, token, getData}) => {
           </Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('JobListScreen')}
-            style={{padding: 5}}>
+            style={{ padding: 5 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -324,7 +324,7 @@ const PartTime = ({topCompany, navigation, jobData, token, getData}) => {
         <FlatList
           data={jobData}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return (
               <JobCardHorizontal
                 item={item}
@@ -359,7 +359,7 @@ const PartTime = ({topCompany, navigation, jobData, token, getData}) => {
           </Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('CompanyList')}
-            style={{padding: 5}}>
+            style={{ padding: 5 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -374,7 +374,7 @@ const PartTime = ({topCompany, navigation, jobData, token, getData}) => {
         <FlatList
           data={topCompany}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -411,260 +411,7 @@ const PartTime = ({topCompany, navigation, jobData, token, getData}) => {
                   />
                 ) : (
                   <Image
-                    source={{uri: base_image_url + item?.logo}}
-                    style={{
-                      width: 80,
-                      height: 80,
-                      resizeMode: 'contain',
-                      borderRadius: 100,
-                    }}
-                  />
-                )}
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: Color.black,
-                    fontFamily: Gilmer.Bold,
-                    paddingVertical: 5,
-                    textTransform: 'capitalize',
-                  }}
-                  numberOfLines={1}>
-                  {item?.name}
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginVertical: 5,
-                  }}>
-                  <Iconviewcomponent
-                    Icontag={'Fontisto'}
-                    iconname={'map-marker-alt'}
-                    icon_size={20}
-                    icon_color={Color.Venus}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: Color.Venus,
-                      fontFamily: Gilmer.Medium,
-                      paddingHorizontal: 5,
-                    }}>
-                    {item?.district}
-                  </Text>
-                </View>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: Color.primary,
-                    fontFamily: Gilmer.Medium,
-                    textDecorationLine: 'underline',
-                    paddingVertical: 5,
-                  }}>
-                  {item?.openings?.[0]?.vacancies} Jobs Open
-                </Text>
-              </TouchableOpacity>
-            );
-          }}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-      <View
-        style={{
-          marginVertical: 10,
-        }}>
-        <Image
-          source={require('../../assets/images/banner.png')}
-          style={{
-            width: '100%',
-            height: 170,
-            resizeMode: 'contain',
-          }}
-        />
-      </View>
-      <View
-        style={{
-          marginVertical: 10,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              flex: 1,
-              fontSize: 16,
-              color: Color.black,
-              fontFamily: Gilmer.Bold,
-              paddingHorizontal: 10,
-            }}>
-            Recommended Jobs
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('recommendedjob')}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: '#0033A0',
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 10,
-              }}>
-              See All
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={jobData}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => {
-            return (
-              <JobCardHorizontal
-                item={item}
-                navigation={navigation}
-                token={token}
-                getData={getData}
-              />
-            );
-          }}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-    </View>
-  );
-};
-
-const Freelancer = ({topCompany, navigation, jobData, token, getData}) => {
-  return (
-    <View style={{flex: 1}}>
-      <View
-        style={{
-          marginVertical: 10,
-          alignItems: 'center',
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              flex: 1,
-              fontSize: 16,
-              color: Color.black,
-              fontFamily: Gilmer.Bold,
-            }}>
-            You Might Like
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('JobListScreen')}
-            style={{padding: 5}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: '#0033A0',
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 10,
-              }}>
-              See All
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={jobData}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => {
-            return (
-              <JobCardHorizontal
-                item={item}
-                navigation={navigation}
-                token={token}
-                getData={getData}
-              />
-            );
-          }}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-      <View
-        style={{
-          marginVertical: 10,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              flex: 1,
-              fontSize: 16,
-              color: 'black',
-              fontFamily: Gilmer.Bold,
-            }}>
-            Top Companies
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CompanyList')}
-            style={{padding: 5}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: '#0033A0',
-                fontFamily: Gilmer.Bold,
-                paddingHorizontal: 10,
-              }}>
-              See All
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={topCompany}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('CompanyDetails', {
-                    item: item,
-                  });
-                }}
-                key={index}
-                style={{
-                  width: 180,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderColor: Color.white,
-                  borderWidth: 0.5,
-                  marginVertical: 10,
-                  padding: 10,
-                  margin: 5,
-                  borderRadius: 10,
-                  elevation: 1,
-                  backgroundColor: '#EFFAFF',
-                }}>
-                {item?.logo == null ? (
-                  <Image
-                    source={require('../../assets/logos/user.png')}
-                    style={{
-                      width: 80,
-                      height: 80,
-                      resizeMode: 'contain',
-                      borderRadius: 100,
-                      backgroundColor: Color.softGrey,
-                      borderWidth: 0.5,
-                      borderColor: Color.lightgrey,
-                    }}
-                  />
-                ) : (
-                  <Image
-                    source={{uri: base_image_url + item?.logo}}
+                    source={{ uri: base_image_url + item?.logo }}
                     style={{
                       width: 80,
                       height: 80,
@@ -772,7 +519,7 @@ const Freelancer = ({topCompany, navigation, jobData, token, getData}) => {
         <FlatList
           data={jobData}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return (
               <JobCardHorizontal
                 item={item}
@@ -790,7 +537,260 @@ const Freelancer = ({topCompany, navigation, jobData, token, getData}) => {
   );
 };
 
-const HomeScreen = ({navigation}) => {
+const Freelancer = ({ topCompany, navigation, jobData, token, getData }) => {
+  return (
+    <View style={{ flex: 1 }}>
+      <View
+        style={{
+          marginVertical: 10,
+          alignItems: 'center',
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 16,
+              color: Color.black,
+              fontFamily: Gilmer.Bold,
+            }}>
+            You Might Like
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('JobListScreen')}
+            style={{ padding: 5 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#0033A0',
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 10,
+              }}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={jobData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => {
+            return (
+              <JobCardHorizontal
+                item={item}
+                navigation={navigation}
+                token={token}
+                getData={getData}
+              />
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 16,
+              color: 'black',
+              fontFamily: Gilmer.Bold,
+            }}>
+            Top Companies
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CompanyList')}
+            style={{ padding: 5 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#0033A0',
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 10,
+              }}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={topCompany}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('CompanyDetails', {
+                    item: item,
+                  });
+                }}
+                key={index}
+                style={{
+                  width: 180,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderColor: Color.white,
+                  borderWidth: 0.5,
+                  marginVertical: 10,
+                  padding: 10,
+                  margin: 5,
+                  borderRadius: 10,
+                  elevation: 1,
+                  backgroundColor: '#EFFAFF',
+                }}>
+                {item?.logo == null ? (
+                  <Image
+                    source={require('../../assets/logos/user.png')}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      resizeMode: 'contain',
+                      borderRadius: 100,
+                      backgroundColor: Color.softGrey,
+                      borderWidth: 0.5,
+                      borderColor: Color.lightgrey,
+                    }}
+                  />
+                ) : (
+                  <Image
+                    source={{ uri: base_image_url + item?.logo }}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      resizeMode: 'contain',
+                      borderRadius: 100,
+                    }}
+                  />
+                )}
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.black,
+                    fontFamily: Gilmer.Bold,
+                    paddingVertical: 5,
+                    textTransform: 'capitalize',
+                  }}
+                  numberOfLines={1}>
+                  {item?.name}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginVertical: 5,
+                  }}>
+                  <Iconviewcomponent
+                    Icontag={'Fontisto'}
+                    iconname={'map-marker-alt'}
+                    icon_size={20}
+                    icon_color={Color.Venus}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: Color.Venus,
+                      fontFamily: Gilmer.Medium,
+                      paddingHorizontal: 5,
+                    }}>
+                    {item?.district}
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: Color.primary,
+                    fontFamily: Gilmer.Medium,
+                    textDecorationLine: 'underline',
+                    paddingVertical: 5,
+                  }}>
+                  {item?.openings?.[0]?.vacancies} Jobs Open
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        <Image
+          source={require('../../assets/images/banner.png')}
+          style={{
+            width: '100%',
+            height: 170,
+            resizeMode: 'contain',
+          }}
+        />
+      </View>
+      <View
+        style={{
+          marginVertical: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 16,
+              color: Color.black,
+              fontFamily: Gilmer.Bold,
+              paddingHorizontal: 10,
+            }}>
+            Recommended Jobs
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('recommendedjob')}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#0033A0',
+                fontFamily: Gilmer.Bold,
+                paddingHorizontal: 10,
+              }}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={jobData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => {
+            return (
+              <JobCardHorizontal
+                item={item}
+                navigation={navigation}
+                token={token}
+                getData={getData}
+              />
+            );
+          }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+    </View>
+  );
+};
+
+const HomeScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [categoryLoading, setCategoryLoading] = useState(false);
   const dispatch = useDispatch();
@@ -818,10 +818,12 @@ const HomeScreen = ({navigation}) => {
     token,
   } = userData;
 
+  console.log("token ================= : ", token);
+
   const profile_complete_data = useSelector(
     state => state.UserReducer.profile_complete,
   );
-  var {details, skills} = profile_complete_data;
+  var { details, skills } = profile_complete_data;
 
   useEffect(() => {
     setLoading(true);
@@ -942,9 +944,9 @@ const HomeScreen = ({navigation}) => {
   };
 
   const [routes] = React.useState([
-    {key: 'fulltime', title: 'FullTime'},
-    {key: 'parttime', title: 'PartTime'},
-    {key: 'freelancer', title: 'Freelancer'},
+    { key: 'fulltime', title: 'FullTime' },
+    { key: 'parttime', title: 'PartTime' },
+    { key: 'freelancer', title: 'Freelancer' },
   ]);
 
   const getResumeUpload = async item => {
@@ -1024,12 +1026,12 @@ const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
               <SkeletonPlaceholder.Item width="40%" height={10} />
             </SkeletonPlaceholder.Item>
-            <SkeletonPlaceholder.Item style={{marginVertical: 10}}>
+            <SkeletonPlaceholder.Item style={{ marginVertical: 10 }}>
               <SkeletonPlaceholder.Item width="50%" height={10} />
             </SkeletonPlaceholder.Item>
             <SkeletonPlaceholder.Item
@@ -1063,7 +1065,7 @@ const HomeScreen = ({navigation}) => {
               <SkeletonPlaceholder.Item
                 width="40%"
                 height={10}
-                style={{marginHorizontal: 20}}
+                style={{ marginHorizontal: 20 }}
               />
             </SkeletonPlaceholder.Item>
             <SkeletonPlaceholder.Item
@@ -1076,24 +1078,24 @@ const HomeScreen = ({navigation}) => {
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
             </SkeletonPlaceholder.Item>
             <SkeletonPlaceholder.Item
               flex={1}
-              style={{flexDirection: 'row', marginTop: 30}}
+              style={{ flexDirection: 'row', marginTop: 30 }}
               justifyContent={'space-between'}>
               <SkeletonPlaceholder.Item
                 width="30%"
@@ -1111,7 +1113,7 @@ const HomeScreen = ({navigation}) => {
                 borderRadius={50}
               />
             </SkeletonPlaceholder.Item>
-            <SkeletonPlaceholder.Item style={{marginTop: 70}}>
+            <SkeletonPlaceholder.Item style={{ marginTop: 70 }}>
               <SkeletonPlaceholder.Item width="50%" height={10} />
             </SkeletonPlaceholder.Item>
             <SkeletonPlaceholder.Item
@@ -1124,22 +1126,22 @@ const HomeScreen = ({navigation}) => {
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
             </SkeletonPlaceholder.Item>
-            <SkeletonPlaceholder.Item style={{marginTop: 10}}>
+            <SkeletonPlaceholder.Item style={{ marginTop: 10 }}>
               <SkeletonPlaceholder.Item width="50%" height={10} />
             </SkeletonPlaceholder.Item>
             <SkeletonPlaceholder.Item
@@ -1152,22 +1154,22 @@ const HomeScreen = ({navigation}) => {
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
             </SkeletonPlaceholder.Item>
-            <SkeletonPlaceholder.Item style={{marginTop: 10}}>
+            <SkeletonPlaceholder.Item style={{ marginTop: 10 }}>
               <SkeletonPlaceholder.Item width="50%" height={10} />
             </SkeletonPlaceholder.Item>
             <SkeletonPlaceholder.Item
@@ -1180,25 +1182,25 @@ const HomeScreen = ({navigation}) => {
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width={'50%'}
                 height={100}
                 borderRadius={10}
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
             </SkeletonPlaceholder.Item>
           </SkeletonPlaceholder>
         </View>
       ) : (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               marginVertical: 10,
@@ -1290,7 +1292,7 @@ const HomeScreen = ({navigation}) => {
             </TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false} style={{}}>
-            <View style={{flex: 1, marginVertical: 10}}>
+            <View style={{ flex: 1, marginVertical: 10 }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -1306,8 +1308,8 @@ const HomeScreen = ({navigation}) => {
                     profileStatus < 40
                       ? Color.sunShade
                       : profileStatus < 80
-                      ? Color.green
-                      : '#0BA02C'
+                        ? Color.green
+                        : '#0BA02C'
                   }
                   dashedStrokeConfig={{
                     count: 10,
@@ -1516,7 +1518,7 @@ const HomeScreen = ({navigation}) => {
             </View>
             {categoryLoading ? (
               <SkeletonPlaceholder>
-                <SkeletonPlaceholder.Item style={{marginTop: 10}}>
+                <SkeletonPlaceholder.Item style={{ marginTop: 10 }}>
                   <SkeletonPlaceholder.Item width="50%" height={10} />
                 </SkeletonPlaceholder.Item>
                 <SkeletonPlaceholder.Item
@@ -1529,22 +1531,22 @@ const HomeScreen = ({navigation}) => {
                     width={'50%'}
                     height={100}
                     borderRadius={10}
-                    style={{marginHorizontal: 10}}
+                    style={{ marginHorizontal: 10 }}
                   />
                   <SkeletonPlaceholder.Item
                     width={'50%'}
                     height={100}
                     borderRadius={10}
-                    style={{marginHorizontal: 10}}
+                    style={{ marginHorizontal: 10 }}
                   />
                   <SkeletonPlaceholder.Item
                     width={'50%'}
                     height={100}
                     borderRadius={10}
-                    style={{marginHorizontal: 10}}
+                    style={{ marginHorizontal: 10 }}
                   />
                 </SkeletonPlaceholder.Item>
-                <SkeletonPlaceholder.Item style={{marginTop: 10}}>
+                <SkeletonPlaceholder.Item style={{ marginTop: 10 }}>
                   <SkeletonPlaceholder.Item width="50%" height={10} />
                 </SkeletonPlaceholder.Item>
                 <SkeletonPlaceholder.Item
@@ -1557,22 +1559,22 @@ const HomeScreen = ({navigation}) => {
                     width={'50%'}
                     height={100}
                     borderRadius={10}
-                    style={{marginHorizontal: 10}}
+                    style={{ marginHorizontal: 10 }}
                   />
                   <SkeletonPlaceholder.Item
                     width={'50%'}
                     height={100}
                     borderRadius={10}
-                    style={{marginHorizontal: 10}}
+                    style={{ marginHorizontal: 10 }}
                   />
                   <SkeletonPlaceholder.Item
                     width={'50%'}
                     height={100}
                     borderRadius={10}
-                    style={{marginHorizontal: 10}}
+                    style={{ marginHorizontal: 10 }}
                   />
                 </SkeletonPlaceholder.Item>
-                <SkeletonPlaceholder.Item style={{marginTop: 10}}>
+                <SkeletonPlaceholder.Item style={{ marginTop: 10 }}>
                   <SkeletonPlaceholder.Item width="50%" height={10} />
                 </SkeletonPlaceholder.Item>
                 <SkeletonPlaceholder.Item
@@ -1585,19 +1587,19 @@ const HomeScreen = ({navigation}) => {
                     width={'50%'}
                     height={100}
                     borderRadius={10}
-                    style={{marginHorizontal: 10}}
+                    style={{ marginHorizontal: 10 }}
                   />
                   <SkeletonPlaceholder.Item
                     width={'50%'}
                     height={100}
                     borderRadius={10}
-                    style={{marginHorizontal: 10}}
+                    style={{ marginHorizontal: 10 }}
                   />
                   <SkeletonPlaceholder.Item
                     width={'50%'}
                     height={100}
                     borderRadius={10}
-                    style={{marginHorizontal: 10}}
+                    style={{ marginHorizontal: 10 }}
                   />
                 </SkeletonPlaceholder.Item>
               </SkeletonPlaceholder>
@@ -1626,9 +1628,9 @@ const HomeScreen = ({navigation}) => {
                     </Text>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate('JobListScreen', {index})
+                        navigation.navigate('JobListScreen', { index })
                       }
-                      style={{padding: 5}}>
+                      style={{ padding: 5 }}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -1643,7 +1645,7 @@ const HomeScreen = ({navigation}) => {
                   <FlatList
                     data={jobData}
                     keyExtractor={(item, index) => item + index}
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
                         <JobCardHorizontal
                           item={item}
@@ -1710,7 +1712,7 @@ const HomeScreen = ({navigation}) => {
                     </Text>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('CompanyList')}
-                      style={{padding: 5}}>
+                      style={{ padding: 5 }}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -1725,7 +1727,7 @@ const HomeScreen = ({navigation}) => {
                   <FlatList
                     data={topCompany}
                     keyExtractor={(item, index) => item + index}
-                    renderItem={({item, index}) => {
+                    renderItem={({ item, index }) => {
                       return (
                         <TouchableOpacity
                           onPress={() => {
@@ -1762,7 +1764,7 @@ const HomeScreen = ({navigation}) => {
                             />
                           ) : (
                             <Image
-                              source={{uri: base_image_url + item?.logo}}
+                              source={{ uri: base_image_url + item?.logo }}
                               style={{
                                 width: 80,
                                 height: 80,
@@ -1855,14 +1857,18 @@ const HomeScreen = ({navigation}) => {
                   style={{
                     marginVertical: 10,
                   }}>
-                  <Image
-                    source={require('../../assets/images/banner.png')}
-                    style={{
-                      width: '100%',
-                      height: 170,
-                      resizeMode: 'contain',
-                    }}
-                  />
+                  <TouchableOpacity onPress={() =>
+                    navigation.navigate('JobListScreen', {})
+                  }>
+                    <Image
+                      source={require('../../assets/images/banner.png')}
+                      style={{
+                        width: '100%',
+                        height: 170,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </TouchableOpacity>
                 </View>
                 <View
                   style={{
@@ -1888,7 +1894,7 @@ const HomeScreen = ({navigation}) => {
                     </Text>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate('JobListScreen', {index})
+                        navigation.navigate('JobListScreen', { index })
                       }>
                       <Text
                         style={{
@@ -1904,7 +1910,7 @@ const HomeScreen = ({navigation}) => {
                   <FlatList
                     data={recommendedJobs}
                     keyExtractor={(item, index) => item + index}
-                    renderItem={({item}) => {
+                    renderItem={({ item }) => {
                       return (
                         <JobCardHorizontal
                           item={item}
