@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {useNavigation} from '@react-navigation/native';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
+import { useNavigation } from '@react-navigation/native';
+import { Iconviewcomponent } from '../../Components/Icontag';
 import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,7 +23,9 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 
-const DismissKeyboard = ({children}) => (
+import analytics from '@react-native-firebase/analytics';
+
+const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
@@ -42,10 +44,8 @@ const Login = () => {
     try {
       GoogleSignin.configure({
         scopes: ['email', 'profile'],
-        webClientId:
-          '375312400820-b7p9j55sv1i76l7ndh17josclr7blc5t.apps.googleusercontent.com',
+        webClientId: '375312400820-b7p9j55sv1i76l7ndh17josclr7blc5t.apps.googleusercontent.com',
         offlineAccess: false,
-        // webClientId: '1080007356916-6amrf74qvgd060rprqqeegs06s168dn1.apps.googleusercontent.com',
         // offlineAccess: true,
         // hostedDomain: '',
         // forceConsentPrompt: true,
@@ -55,8 +55,21 @@ const Login = () => {
     }
   }, []);
 
+
   const signIn = async () => {
     try {
+      // await analytics.logLogin({
+      //   method: 'facebook',
+      // })
+
+      // console.log("kldfngklsdlgklkl", analytics());          For Analaytics purpose only
+      analytics().logEvent('bicket', {  
+        id: '3745092',
+        item: 'Mens grey shirt',
+        description: ['round neck', 'long sleeved'],
+        size: 'L'
+      });
+
       if (email != '' && password != '') {
         var data = {
           email: email,
@@ -78,7 +91,7 @@ const Login = () => {
         common_fn.showToast('Invalid Email or Password');
       }
     } catch (error) {
-      console.log('error', error);
+      console.log('error in sign_In :', error);
     }
   };
 
@@ -152,7 +165,7 @@ const Login = () => {
         }}>
         <Image
           source={require('../../assets/logos/fobes.png')}
-          style={{width: 100, height: 100, resizeMode: 'contain'}}
+          style={{ width: 100, height: 100, resizeMode: 'contain' }}
         />
         <View
           style={{
@@ -189,7 +202,7 @@ const Login = () => {
             Icontag={'Feather'}
             iconname={'mail'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
             style={styles.numberTextBox}
@@ -217,17 +230,17 @@ const Login = () => {
           </Text>
         ) : null}
 
-        <View style={{marginTop: 20}}>
+        <View style={{ marginTop: 20 }}>
           <View
             style={[
               styles.NumberBoxConatiner,
-              {marginVertical: 5, paddingHorizontal: 15},
+              { marginVertical: 5, paddingHorizontal: 15 },
             ]}>
             <Iconviewcomponent
               Icontag={'MaterialCommunityIcons'}
               iconname={'lock'}
               icon_size={22}
-              iconstyle={{color: Color.transparantBlack}}
+              iconstyle={{ color: Color.transparantBlack }}
             />
             <TextInput
               style={styles.numberTextBox}
@@ -253,7 +266,7 @@ const Login = () => {
                 Icontag={'MaterialCommunityIcons'}
                 iconname={!password_visible ? 'eye-off' : 'eye'}
                 icon_size={22}
-                iconstyle={{color: Color.transparantBlack}}
+                iconstyle={{ color: Color.transparantBlack }}
               />
             </TouchableOpacity>
           </View>
@@ -295,7 +308,7 @@ const Login = () => {
                 color={Color.cloudyGrey}
               />
             </TouchableOpacity>
-            <View style={{marginHorizontal: 5}}>
+            <View style={{ marginHorizontal: 5 }}>
               <Text
                 style={{
                   fontSize: 14,
@@ -347,7 +360,7 @@ const Login = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View
           style={{
             flex: 1,
@@ -393,7 +406,7 @@ const Login = () => {
             source={{
               uri: 'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
             }}
-            style={{width: 45, height: 45, resizeMode: 'contain'}}
+            style={{ width: 45, height: 45, resizeMode: 'contain' }}
           />
           <Text
             style={{
@@ -428,7 +441,9 @@ const Login = () => {
               }}>
               Don’t have an account?{' '}
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Register')}
+            >
               <Text
                 style={{
                   fontSize: 18,

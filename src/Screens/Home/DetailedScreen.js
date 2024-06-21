@@ -209,7 +209,7 @@ const DetailedScreen = ({navigation, route}) => {
   }, [token]);
 
   const share_job = async slug => {
-    const jobDeepLink = `https://fobes.in/job/${slug}`;
+    const jobDeepLink = `https://fobes.in/jobs/${slug}`;
     const message = `Check out this job: ${jobDeepLink}`;
 
     try {
