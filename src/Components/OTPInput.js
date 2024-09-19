@@ -65,7 +65,7 @@ const OTPInput = ({
     );
   };
   useEffect(() => {
-    if (code.length === 4) {
+    if (code.length === 6) {
       Keyboard.dismiss();
     }
   }, [code.length]);

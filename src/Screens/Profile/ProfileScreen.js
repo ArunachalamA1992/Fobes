@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -14,27 +14,27 @@ import {
   Linking,
 } from 'react-native';
 import Color from '../../Global/Color';
-import { Media } from '../../Global/Media';
-import { Gilmer } from '../../Global/FontFamily';
+import {Media} from '../../Global/Media';
+import {Gilmer} from '../../Global/FontFamily';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { Button, Divider } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import {Button, Divider} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
 import common_fn from '../../Config/common_fn';
-import { setCompleteProfile, setUserData } from '../../Redux';
+import {setCompleteProfile, setUserData} from '../../Redux';
 import fetchData from '../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
-import { baseUrl, base_image_url } from '../../Config/base_url';
+import {baseUrl, base_image_url} from '../../Config/base_url';
 import RNFetchBlob from 'rn-fetch-blob';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
-import { Iconviewcomponent } from '../../Components/Icontag';
+import {Iconviewcomponent} from '../../Components/Icontag';
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({navigation}) => {
   const [resumeVisible, setResumeVisible] = useState(false);
   const [imageVisible, setImageVisible] = useState(false);
   const [profileImage, setProfileImage] = useState([]);
@@ -107,7 +107,7 @@ const ProfileScreen = ({ navigation }) => {
   const profile_complete_data = useSelector(
     state => state.UserReducer.profile_complete,
   );
-  var { resume, details, skills } = profile_complete_data;
+  var {resume, details, skills} = profile_complete_data;
   const [profileCompletion] = useState([
     {
       id: 1,
@@ -170,7 +170,7 @@ const ProfileScreen = ({ navigation }) => {
     image_URL.map(itemImage => {
       let ext = getExtension(itemImage);
       ext = '.' + ext[0];
-      const { config, fs } = RNFetchBlob;
+      const {config, fs} = RNFetchBlob;
       let DownloadDir = fs.dirs.DownloadDir;
       config({
         path: DownloadDir + '/Fobes' + '/' + name + ext,
@@ -360,8 +360,8 @@ const ProfileScreen = ({ navigation }) => {
     try {
       if (profileImage?.length > 0) {
         const formData = new FormData();
-        const { uri, fileName, type } = profileImage?.[0];
-        formData.append('profile', { uri, type, name: fileName });
+        const {uri, fileName, type} = profileImage?.[0];
+        formData.append('profile', {uri, type, name: fileName});
         const response = await axios.post(
           `${baseUrl}api/candidates/profile`,
           formData,
@@ -388,15 +388,12 @@ const ProfileScreen = ({ navigation }) => {
         [
           {
             text: 'No',
-            onPress: async () => { },
+            onPress: async () => {},
           },
           {
             text: 'Yes',
             onPress: async () => {
-
-              Linking.openURL(
-                `https://fobes.in/delete-user/${token}`,
-              );
+              Linking.openURL(`https://fobes.in/delete-user/${token}`);
 
               navigation.replace('Auth');
               AsyncStorage.clear();
@@ -410,12 +407,10 @@ const ProfileScreen = ({ navigation }) => {
               //   AsyncStorage.clear();
               //   dispatch(setUserData({}));
               // }
-
-
             },
           },
         ],
-        { cancelable: false },
+        {cancelable: false},
       );
     } catch (error) {
       console.log('error', error);
@@ -438,7 +433,7 @@ const ProfileScreen = ({ navigation }) => {
             }}>
             {image != '' || image != null ? (
               <Image
-                source={{ uri: base_image_url + image }}
+                source={{uri: base_image_url + image}}
                 style={{
                   width: 100,
                   height: 100,
@@ -482,7 +477,7 @@ const ProfileScreen = ({ navigation }) => {
               marginHorizontal: 10,
               marginVertical: 10,
             }}>
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
               <Text
                 style={{
                   fontFamily: Gilmer.Bold,
@@ -664,8 +659,8 @@ const ProfileScreen = ({ navigation }) => {
                 profileStatus < 40
                   ? Color.sunShade
                   : profileStatus < 80
-                    ? Color.green
-                    : '#0BA02C'
+                  ? Color.green
+                  : '#0BA02C'
               }
               dashedStrokeConfig={{
                 count: 10,
@@ -809,7 +804,7 @@ const ProfileScreen = ({ navigation }) => {
           style={{
             backgroundColor: Color.white,
           }}>
-          <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+          <View style={{marginHorizontal: 10, marginVertical: 10}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -963,7 +958,7 @@ const ProfileScreen = ({ navigation }) => {
             {/* );
             })} */}
           </View>
-          <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+          <View style={{marginHorizontal: 10, marginVertical: 10}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -1031,7 +1026,7 @@ const ProfileScreen = ({ navigation }) => {
                         size={30}
                         color={Color.sunShade}
                       />
-                      <View style={{ flex: 1, marginHorizontal: 5 }}>
+                      <View style={{flex: 1, marginHorizontal: 5}}>
                         <Text
                           style={{
                             fontFamily: Gilmer.SemiBold,
@@ -1139,8 +1134,8 @@ const ProfileScreen = ({ navigation }) => {
               </>
             )}
           </View>
-          <Divider style={{ height: 1, marginVertical: 10 }} />
-          <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+          <Divider style={{height: 1, marginVertical: 10}} />
+          <View style={{marginHorizontal: 10, marginVertical: 10}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -1298,7 +1293,7 @@ const ProfileScreen = ({ navigation }) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Experience', { item: {} });
+                navigation.navigate('Experience', {item: {}});
               }}
               style={{
                 backgroundColor: '#DBF3FF',
@@ -1325,7 +1320,7 @@ const ProfileScreen = ({ navigation }) => {
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  navigation.navigate('Experience', { item: item });
+                  navigation.navigate('Experience', {item: item});
                 }}
                 style={{
                   flexDirection: 'row',
@@ -1333,7 +1328,7 @@ const ProfileScreen = ({ navigation }) => {
                   marginVertical: 15,
                 }}>
                 <FIcon name="briefcase" size={25} color={Color.cloudyGrey} />
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                   <Text
                     style={{
                       fontFamily: Gilmer.Medium,
@@ -1374,7 +1369,7 @@ const ProfileScreen = ({ navigation }) => {
                   name="pencil"
                   size={20}
                   color={Color.blue}
-                  style={{ marginHorizontal: 20, marginVertical: 10 }}
+                  style={{marginHorizontal: 20, marginVertical: 10}}
                 />
               </TouchableOpacity>
             );
@@ -1403,7 +1398,7 @@ const ProfileScreen = ({ navigation }) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Education', { item: {} });
+                navigation.navigate('Education', {item: {}});
               }}
               style={{
                 backgroundColor: '#DBF3FF',
@@ -1430,7 +1425,7 @@ const ProfileScreen = ({ navigation }) => {
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  navigation.navigate('Education', { item });
+                  navigation.navigate('Education', {item});
                 }}
                 style={{
                   flexDirection: 'row',
@@ -1442,7 +1437,7 @@ const ProfileScreen = ({ navigation }) => {
                   size={25}
                   color={Color.cloudyGrey}
                 />
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                   <Text
                     style={{
                       fontFamily: Gilmer.Medium,
@@ -1480,7 +1475,7 @@ const ProfileScreen = ({ navigation }) => {
                   name="pencil"
                   size={20}
                   color={Color.blue}
-                  style={{ marginHorizontal: 20, marginVertical: 10 }}
+                  style={{marginHorizontal: 20, marginVertical: 10}}
                 />
               </TouchableOpacity>
             );
@@ -1509,7 +1504,7 @@ const ProfileScreen = ({ navigation }) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Project', { item: {} });
+                navigation.navigate('Project', {item: {}});
               }}
               style={{
                 backgroundColor: '#DBF3FF',
@@ -1536,7 +1531,7 @@ const ProfileScreen = ({ navigation }) => {
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  navigation.navigate('Project', { item: item });
+                  navigation.navigate('Project', {item: item});
                 }}
                 style={{
                   flexDirection: 'row',
@@ -1548,7 +1543,7 @@ const ProfileScreen = ({ navigation }) => {
                   size={25}
                   color={Color.cloudyGrey}
                 />
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                   <Text
                     style={{
                       fontFamily: Gilmer.Medium,
@@ -1588,7 +1583,7 @@ const ProfileScreen = ({ navigation }) => {
                   name="pencil"
                   size={20}
                   color={Color.blue}
-                  style={{ marginHorizontal: 20, marginVertical: 10 }}
+                  style={{marginHorizontal: 20, marginVertical: 10}}
                 />
               </TouchableOpacity>
             );
@@ -1641,7 +1636,7 @@ const ProfileScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           {gender != null && (
-            <View style={{ flex: 1, marginVertical: 10 }}>
+            <View style={{flex: 1, marginVertical: 10}}>
               <Text
                 style={{
                   fontFamily: Gilmer.Medium,
@@ -1666,7 +1661,7 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           )}
           {marital_status != null && (
-            <View style={{ flex: 1, marginVertical: 10 }}>
+            <View style={{flex: 1, marginVertical: 10}}>
               <Text
                 style={{
                   fontFamily: Gilmer.Medium,
@@ -1691,7 +1686,7 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           )}
           {candidate_language?.length > 0 && (
-            <View style={{ flex: 1, marginVertical: 10 }}>
+            <View style={{flex: 1, marginVertical: 10}}>
               <Text
                 style={{
                   fontFamily: Gilmer.Medium,
@@ -1721,7 +1716,7 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           )}
           {birth_date != null && (
-            <View style={{ flex: 1, marginVertical: 10 }}>
+            <View style={{flex: 1, marginVertical: 10}}>
               <Text
                 style={{
                   fontFamily: Gilmer.Medium,
@@ -1780,8 +1775,8 @@ const ProfileScreen = ({ navigation }) => {
         transparent={true}
         animationType="slide"
         visible={resumeVisible}
-        onRequestClose={() => { }}
-        style={{ alignItems: 'center', justifyContent: 'center' }}>
+        onRequestClose={() => {}}
+        style={{alignItems: 'center', justifyContent: 'center'}}>
         <View
           style={{
             flex: 1,
@@ -1789,7 +1784,7 @@ const ProfileScreen = ({ navigation }) => {
             justifyContent: 'center',
           }}>
           <Pressable
-            style={{ flex: 1, backgroundColor: Color.transparantBlack }}
+            style={{flex: 1, backgroundColor: Color.transparantBlack}}
             onPress={() => {
               setResumeVisible(false);
             }}
@@ -1846,7 +1841,7 @@ const ProfileScreen = ({ navigation }) => {
                         size={40}
                         color={Color.sunShade}
                       />
-                      <View style={{ marginHorizontal: 10, flex: 1 }}>
+                      <View style={{marginHorizontal: 10, flex: 1}}>
                         <Text
                           style={{
                             fontFamily: Gilmer.SemiBold,
@@ -1883,7 +1878,7 @@ const ProfileScreen = ({ navigation }) => {
                           onPress={() => {
                             deleteResume(item?.id);
                           }}
-                          style={{ marginVertical: 10 }}>
+                          style={{marginVertical: 10}}>
                           <MCIcon name={'delete'} size={25} color={Color.red} />
                         </TouchableOpacity>
                       </View>

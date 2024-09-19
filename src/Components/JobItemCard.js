@@ -168,7 +168,7 @@ const JobItemCard = props => {
             {item?.company?.name}
           </Text>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             getToggleJobs(item?.id);
           }}>
@@ -178,7 +178,7 @@ const JobItemCard = props => {
             icon_size={22}
             icon_color={item?.is_saved ? Color.primary : Color.Venus}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View
         style={{
@@ -417,7 +417,7 @@ export const JobCardHorizontal = props => {
             {item?.company?.name}
           </Text>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             getToggleJobs(item?.id);
           }}>
@@ -427,7 +427,7 @@ export const JobCardHorizontal = props => {
             icon_size={22}
             icon_color={item?.is_saved ? Color.primary : Color.Venus}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View
         style={{

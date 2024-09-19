@@ -34,6 +34,9 @@ import SearchDataList from './Screens/Home/Search/SearchDataList';
 import {setNotificationCount, setUserData} from './Redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchData from './Config/fetchData';
+import TermsCondition from './Screens/SideMenu/TermsCondition';
+import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
+import CompanyDetails from './Screens/Home/CompanyDetails';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -358,6 +361,26 @@ const MainApp = () => {
           })}
         />
         <Stack.Screen
+          name="CompanyDetails"
+          component={CompanyDetails}
+          options={({navigation, route}) => ({
+            headerTitle: 'Company Details',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
           name="basicdetails"
           component={BasicDetails}
           options={({navigation, route}) => ({
@@ -452,6 +475,45 @@ const MainApp = () => {
                   name="arrow-back"
                   size={30}
                   color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="TermsCondition"
+          component={TermsCondition}
+          options={({navigation, route}) => ({
+            headerTitle: 'Terms & Conditions',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {color: Color.white},
+            headerStyle: {backgroundColor: Color.primary},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.white}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="PrivacyPolicy"
+          component={PrivacyPolicy}
+          options={({navigation, route}) => ({
+            headerTitle: 'Privacy Policy',
+            headerTitleStyle: {color: Color.white},
+            headerStyle: {backgroundColor: Color.primary},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.white}
                   onPress={() => navigation.goBack()}
                 />
               </View>

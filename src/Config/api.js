@@ -29,6 +29,7 @@ export const api = {
     });
   },
   postMethod: (url, data, token) => {
+    console.log('baseUrl + url', baseUrl + url);
     var headers = api.header(token);
     const formData = new FormData();
     Object.keys(data).map(obj => {

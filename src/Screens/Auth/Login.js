@@ -63,7 +63,7 @@ const Login = () => {
           password: password,
         };
         const login = await fetchData.login_with_pass(data, null);
-        if (login?.message == 'Login Successful') {
+        if (login?.status) {
           const combinedData = {
             ...login?.data,
             token: login?.token,
@@ -292,14 +292,14 @@ const Login = () => {
               <MCIcon
                 name={!checked ? 'checkbox-blank-outline' : 'checkbox-marked'}
                 size={20}
-                color={Color.cloudyGrey}
+                color={checked ? Color.primary : Color.cloudyGrey}
               />
             </TouchableOpacity>
             <View style={{marginHorizontal: 5}}>
               <Text
                 style={{
                   fontSize: 14,
-                  color: Color.cloudyGrey,
+                  color: checked ? Color.primary : Color.cloudyGrey,
                   textAlign: 'center',
                   fontFamily: Gilmer.Medium,
                 }}>
@@ -334,8 +334,9 @@ const Login = () => {
             alignItems: 'center',
             marginVertical: 20,
             borderRadius: 50,
-            backgroundColor: Color.primary,
-          }}>
+            backgroundColor: checked ? Color.primary : Color.cloudyGrey,
+          }}
+          disabled={!checked}>
           <Text
             style={{
               fontSize: 16,
@@ -348,7 +349,7 @@ const Login = () => {
         </TouchableOpacity>
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <View
+        {/* <View
           style={{
             flex: 1,
             flexDirection: 'row',
@@ -405,7 +406,7 @@ const Login = () => {
             }}>
             Continue with Google
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View
           style={{
             flex: 1,

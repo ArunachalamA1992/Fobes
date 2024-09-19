@@ -55,7 +55,7 @@ const Applycompletion = ({navigation}) => {
             fontFamily: Gilmer.Medium,
           }}
           textColor={Color.white}>
-          Back To Complete
+          Back To Home
         </Button>
         <Button
           mode="contained"

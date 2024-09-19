@@ -63,8 +63,8 @@ const ResetPass = ({navigation, route}) => {
       };
       if (Password != '' && ConfirmPassword != '') {
         const ResetPass = await fetchData.resetPassword(data);
-        if (ResetPass?.message == 'Updated successfully') {
-          navigation.replace('Login');
+        if (ResetPass?.status) {
+          navigation.navigate('Login');
           common_fn.showToast(ResetPass?.message);
         } else {
           common_fn.showToast(ResetPass?.message);

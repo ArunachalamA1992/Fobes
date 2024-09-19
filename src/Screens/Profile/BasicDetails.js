@@ -78,7 +78,7 @@ const BasicDetails = ({navigation}) => {
   const [selectBasic, setSelectBasic] = useState({
     professional_title: title || '',
     personal_website: website || '',
-    dob: new Date(birth_date) || new Date(),
+    dob: birth_date == undefined ? new Date() : new Date(birth_date),
     qualify: education_id || 0,
     work_experiance:
       selectBasic?.work_experiance != 'fresher'
@@ -96,6 +96,7 @@ const BasicDetails = ({navigation}) => {
     social_profile:
       social_links?.length > 0 ? social_links : [{url: '', social_media: ''}],
   });
+
   const [periorExperience] = useState([
     {
       id: 1,
@@ -207,23 +208,10 @@ const BasicDetails = ({navigation}) => {
   };
 
   const handleConfirm = date => {
-    setSelectBasic({
-      professional_title: selectBasic?.professional_title,
-      personal_website: selectBasic?.personal_website,
+    setSelectBasic(prevState => ({
+      ...prevState,
       dob: date,
-      qualify: selectBasic?.qualify,
-      work_experiance: selectBasic?.work_experiance,
-      experience: selectBasic?.experience,
-      current_ctc: selectBasic?.current_ctc,
-      expected_ctc: selectBasic?.expected_ctc,
-      gender: selectBasic?.gender,
-      city: selectBasic?.city,
-      marital_status: selectBasic?.marital_status,
-      biography: selectBasic?.biography,
-      profession: selectBasic?.profession,
-      availability: selectBasic?.availability,
-      social_profile: selectBasic?.social_profile,
-    });
+    }));
     hideDatePicker();
   };
 
@@ -461,7 +449,9 @@ const BasicDetails = ({navigation}) => {
                   color: Color.cloudyGrey,
                   fontFamily: Gilmer.Medium,
                 }}>
-                {moment(selectBasic?.dob).format('DD-MM-YYYY')}
+                {common_fn.isSameDay(selectBasic?.dob, new Date())
+                  ? 'Select Your DOB'
+                  : moment(selectBasic?.dob).format('DD-MM-YYYY')}
               </Text>
               <FIcon name="calendar" size={20} color={Color.black} />
             </TouchableOpacity>

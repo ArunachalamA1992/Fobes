@@ -119,6 +119,7 @@ const FilterScreen = ({navigation}) => {
       value: 'experienced',
     },
   ]);
+
   const [filterSelectedItem, setFilterSelectedItem] = useState({
     date_posted: [],
     experience: [],
@@ -358,7 +359,7 @@ const FilterScreen = ({navigation}) => {
             }}>
             {datePostedData?.map((item, index) => {
               return (
-                <RadioData
+                <CheckboxData
                   key={index}
                   label={item.title}
                   checked={dateSelectedItem.includes(item.id)}
@@ -387,7 +388,7 @@ const FilterScreen = ({navigation}) => {
             }}>
             {ExperienceData?.map((item, index) => {
               return (
-                <RadioData
+                <CheckboxData
                   key={index}
                   label={item.title}
                   checked={experienceSelectedItem.includes(item.id)}
@@ -397,7 +398,7 @@ const FilterScreen = ({navigation}) => {
             })}
           </View>
         </View>
-        <View style={{marginTop: 10}}>
+        {/* <View style={{marginTop: 10}}>
           <Text
             style={{
               fontSize: 16,
@@ -425,7 +426,7 @@ const FilterScreen = ({navigation}) => {
               );
             })}
           </View>
-        </View>
+        </View> */}
         <View style={{marginTop: 10}}>
           <Text
             style={{
@@ -445,7 +446,7 @@ const FilterScreen = ({navigation}) => {
             }}>
             {jobtypeData?.map((item, index) => {
               return (
-                <RadioData
+                <CheckboxData
                   key={index}
                   label={item.title}
                   checked={jobtypeSelectedItem.includes(item.id)}
@@ -530,7 +531,7 @@ const FilterScreen = ({navigation}) => {
             }}>
             {worktypeData?.map((item, index) => {
               return (
-                <RadioData
+                <CheckboxData
                   key={index}
                   label={item.title}
                   checked={worktypeSelectedItem.includes(item.id)}

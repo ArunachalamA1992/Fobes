@@ -21,6 +21,7 @@ import {Linking} from 'react-native';
 
 const CompanyDetails = ({navigation, route}) => {
   const [itemData] = useState(route?.params?.item);
+  console.log('itemData', itemData);
   const [jobData, setJobData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token} = userData;
@@ -369,7 +370,7 @@ const CompanyDetails = ({navigation, route}) => {
                     alignItems: 'flex-start',
                     paddingVertical: 10,
                   }}>
-                  {itemData?.social_links.map((item, index) => {
+                  {itemData?.social_links?.map((item, index) => {
                     return (
                       <TouchableOpacity
                         key={index}

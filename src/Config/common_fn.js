@@ -1,5 +1,5 @@
 import {Platform, ToastAndroid, LayoutAnimation, UIManager} from 'react-native';
-import {pick} from 'react-native-document-picker';
+import {pick, types} from 'react-native-document-picker';
 
 const common_fn = {
   showToast: msg => {
@@ -71,7 +71,10 @@ const common_fn = {
   profileupdate: async (id, navigation) => {
     try {
       if (id == 1) {
-        const [{name, uri}] = await pick();
+        const [{name, uri}] = await pick({
+          type: [types.pdf, types.doc, types.images],
+          allowMultiSelection: false,
+        });
         return {name, uri};
       } else if (id == 2) {
         return navigation.navigate('Skill');
@@ -96,6 +99,13 @@ const common_fn = {
     const uniqueID = customIDCounter.counter;
     customIDCounter.counter++;
     return uniqueID;
+  },
+  isSameDay: (date1, date2) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
   },
 };
 export default common_fn;

@@ -348,14 +348,14 @@ const VerticalTabView = props => {
     {
       experience: ExperienceData,
     },
-    {
-      distance: [
-        {id: 1, title: 'All'},
-        {id: 2, title: 'Within 5 Km'},
-        {id: 3, title: 'Within 10 Km'},
-        {id: 4, title: 'Within 50 Km'},
-      ],
-    },
+    // {
+    //   distance: [
+    //     {id: 1, title: 'All'},
+    //     {id: 2, title: 'Within 5 Km'},
+    //     {id: 3, title: 'Within 10 Km'},
+    //     {id: 4, title: 'Within 50 Km'},
+    //   ],
+    // },
     {
       job_type: jobtypeData,
     },

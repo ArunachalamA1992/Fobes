@@ -10,7 +10,7 @@ import {
 import Color from '../../../Global/Color';
 import {Gilmer} from '../../../Global/FontFamily';
 import {Iconviewcomponent} from '../../../Components/Icontag';
-import {pick} from 'react-native-document-picker';
+import {pick, types} from 'react-native-document-picker';
 import common_fn from '../../../Config/common_fn';
 import fetchData from '../../../Config/fetchData';
 import {useDispatch, useSelector} from 'react-redux';
@@ -25,6 +25,7 @@ const ApplyJob = ({navigation, route}) => {
   const [job_id] = useState(route?.params?.job_id);
   const userData = useSelector(state => state.UserReducer.userData);
   var {token, candidate_resume} = userData;
+  console.log('candidate_resume', candidate_resume);
 
   const [apply_job, setApply_job] = useState({
     name: '',
@@ -64,6 +65,7 @@ const ApplyJob = ({navigation, route}) => {
   const getAPiData = async () => {
     try {
       const single_data = await fetchData.single_candidate(null, token);
+      console.log('v?.data', single_data?.data);
       if (single_data) {
         const combinedData = {
           ...single_data?.data,
@@ -85,6 +87,7 @@ const ApplyJob = ({navigation, route}) => {
         cv: item?.uri,
       };
       const resume_data = await fetchData.upload_resume(data, token);
+      console.log('resume_data', resume_data);
       if (resume_data?.message == 'CV Added Successful') {
         common_fn.showToast(resume_data?.message);
       }
@@ -110,7 +113,7 @@ const ApplyJob = ({navigation, route}) => {
               }}>
               Full Name{' '}
             </Text>
-            <Text
+            {/* <Text
               style={{
                 fontFamily: Gilmer.Bold,
                 paddingVertical: 5,
@@ -118,7 +121,7 @@ const ApplyJob = ({navigation, route}) => {
                 color: Color.red,
               }}>
               *
-            </Text>
+            </Text> */}
           </View>
           <TextInput
             style={[styles.numberTextBox, {paddingHorizontal: 10}]}
@@ -277,7 +280,10 @@ const ApplyJob = ({navigation, route}) => {
           <TouchableOpacity
             onPress={async () => {
               try {
-                const [{name, uri}] = await pick();
+                const [{name, uri}] = await pick({
+                  type: [types.pdf, types.doc, types.images],
+                  allowMultiSelection: false,
+                });
                 getResumeUpload({name, uri});
               } catch (error) {
                 console.log('error', error);
