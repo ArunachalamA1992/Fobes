@@ -37,6 +37,8 @@ import fetchData from './Config/fetchData';
 import TermsCondition from './Screens/SideMenu/TermsCondition';
 import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
 import CompanyDetails from './Screens/Home/CompanyDetails';
+import firebase from '@react-native-firebase/app';
+import analytics from '@react-native-firebase/analytics';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -45,7 +47,7 @@ const MyDrawer = () => {
   const dispatch = useDispatch();
 
   const linking = {
-    prefixes: ['https://fobes.in/job', 'fobes://'],
+    prefixes: ['https://fobes.in/jobs', 'fobes://'],
     config: {
       initialRouteName: 'Home',
       screens: {
@@ -127,8 +129,30 @@ const MyDrawer = () => {
     </PaperProvider>
   );
 };
+const logAppOpen = async () => {
+  await analytics().logAppOpen();
+};
 
 const App = () => {
+  const firebaseConfig = {
+    apiKey: 'AIzaSyA8etAWCPn0ae48YZTYLpFmFZrZQGek-Sk',
+    authDomain: 'fobes-94a68.appspot.com',
+    projectId: 'fobes-94a68',
+    appId: '1:375312400820:android:7025695b58018bc97832e1',
+  };
+
+  useEffect(() => {
+    try {
+      logAppOpen();
+      console.log('Firebase ============ : ', firebase);
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+    } catch (error) {
+      console.log('catch in App :', error);
+    }
+  }, []);
+
   return (
     <Provider store={Store}>
       <MyDrawer />

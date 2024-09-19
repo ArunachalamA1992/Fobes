@@ -23,6 +23,8 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 
+import analytics from '@react-native-firebase/analytics';
+
 const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -45,7 +47,6 @@ const Login = () => {
         webClientId:
           '375312400820-b7p9j55sv1i76l7ndh17josclr7blc5t.apps.googleusercontent.com',
         offlineAccess: false,
-        // webClientId: '1080007356916-6amrf74qvgd060rprqqeegs06s168dn1.apps.googleusercontent.com',
         // offlineAccess: true,
         // hostedDomain: '',
         // forceConsentPrompt: true,
@@ -57,6 +58,18 @@ const Login = () => {
 
   const signIn = async () => {
     try {
+      // await analytics.logLogin({
+      //   method: 'facebook',
+      // })
+
+      // console.log("kldfngklsdlgklkl", analytics());          For Analaytics purpose only
+      analytics().logEvent('bicket', {
+        id: '3745092',
+        item: 'Mens grey shirt',
+        description: ['round neck', 'long sleeved'],
+        size: 'L',
+      });
+
       if (email != '' && password != '') {
         var data = {
           email: email,
@@ -78,7 +91,7 @@ const Login = () => {
         common_fn.showToast('Invalid Email or Password');
       }
     } catch (error) {
-      console.log('error', error);
+      console.log('error in sign_In :', error);
     }
   };
 
@@ -394,7 +407,7 @@ const Login = () => {
             source={{
               uri: 'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
             }}
-            style={{width: 45, height: 45, resizeMode: 'contain'}}
+            style={{ width: 45, height: 45, resizeMode: 'contain' }}
           />
           <Text
             style={{
