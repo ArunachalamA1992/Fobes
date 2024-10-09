@@ -17,6 +17,7 @@ import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
 import {Gilmer} from '../../Global/FontFamily';
 import Color from '../../Global/Color';
+import {useNavigation} from '@react-navigation/native';
 
 const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -24,7 +25,8 @@ const DismissKeyboard = ({children}) => (
   </TouchableWithoutFeedback>
 );
 
-const PassOtpVerify = ({navigation, route}) => {
+const PassOtpVerify = ({route}) => {
+  const navigation = useNavigation();
   const [id] = useState(route.params.id);
   const [data] = useState(route.params.data);
   const inputRef = useRef();
@@ -82,14 +84,16 @@ const PassOtpVerify = ({navigation, route}) => {
     }
   };
 
-  const VerifyOTP = async navigation => {
+  const VerifyOTP = async () => {
+    console.log('otpCode.length == 6', otpCode.length == 6);
     if (otpCode.length == 6) {
       const VerifyOTP = await fetchData.password_otp({
         id: id,
         otp: otpCode,
       });
-      if (VerifyOTP?.message == 'Success') {
-        navigation.navigate('ResetPass', {email});
+      console.log('VerifyOTP', VerifyOTP?.status);
+      if (VerifyOTP?.status) {
+        navigation.navigate('ResetPass', {email: data?.email});
         common_fn.showToast(VerifyOTP?.message);
       } else {
         setOTPCode('');

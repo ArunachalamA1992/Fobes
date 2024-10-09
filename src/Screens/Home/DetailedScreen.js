@@ -30,6 +30,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { setUserData } from '../../Redux';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 LogBox.ignoreAllLogs();
 
@@ -41,7 +42,7 @@ const IconData = ({ item }) => {
         <Iconviewcomponent
           Icontag={'FontAwesome'}
           iconname={'briefcase'}
-          icon_size={30}
+          icon_size={25}
           icon_color={Color.primary}
         />
       );
@@ -50,7 +51,7 @@ const IconData = ({ item }) => {
         <Iconviewcomponent
           Icontag={'Entypo'}
           iconname={'wallet'}
-          icon_size={30}
+          icon_size={25}
           icon_color={Color.primary}
         />
       );
@@ -59,7 +60,7 @@ const IconData = ({ item }) => {
         <Iconviewcomponent
           Icontag={'FontAwesome5'}
           iconname={'map-marker-alt'}
-          icon_size={30}
+          icon_size={25}
           icon_color={Color.primary}
         />
       );
@@ -68,7 +69,7 @@ const IconData = ({ item }) => {
         <Iconviewcomponent
           Icontag={'MaterialCommunityIcons'}
           iconname={'chair-rolling'}
-          icon_size={30}
+          icon_size={25}
           icon_color={Color.primary}
         />
       );
@@ -155,7 +156,7 @@ const DetailedScreen = ({ navigation, route }) => {
     {
       id: 1,
       title: 'Experience',
-      value: singleJobData?.job_cat_translation?.name || 'N/A',
+      value: singleJobData?.experience_translation?.name || 'N/A',
     },
     {
       id: 2,
@@ -403,24 +404,27 @@ const DetailedScreen = ({ navigation, route }) => {
               }}>
               {singleJobData?.title}
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('CompanyDetails', {
-                  item: singleJobData?.company,
-                });
-              }}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: Color.cloudyGrey,
-                  fontFamily: Gilmer.Medium,
-                  paddingHorizontal: 10,
-                  marginVertical: 5,
+            {singleJobData?.company?.name != '' ? (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('CompanyDetails', {
+                    item: singleJobData?.company,
+                  });
                 }}>
-                {singleJobData?.company?.name}
-              </Text>
-            </TouchableOpacity>
-
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: Color.cloudyGrey,
+                    fontFamily: Gilmer.Medium,
+                    paddingHorizontal: 10,
+                    marginVertical: 5,
+                  }}>
+                  {singleJobData?.company?.name}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <View />
+            )}
             <View
               style={{
                 flexDirection: 'row',
@@ -485,8 +489,8 @@ const DetailedScreen = ({ navigation, route }) => {
                       backgroundColor: '#EFFAFF',
                       padding: 10,
                       flexDirection: 'row',
-                      alignItems: 'center',
-                      marginVertical: 10,
+                      alignItems: 'flex-start',
+                      marginVertical: 5,
                       marginHorizontal: 5,
                       borderRadius: 10,
                     }}>
@@ -494,7 +498,7 @@ const DetailedScreen = ({ navigation, route }) => {
                     <View style={{ marginHorizontal: 5 }}>
                       <Text
                         style={{
-                          fontSize: 14,
+                          fontSize: 12,
                           color: Color.cloudyGrey,
                           fontFamily: Gilmer.Regular,
                           paddingHorizontal: 5,
@@ -503,7 +507,7 @@ const DetailedScreen = ({ navigation, route }) => {
                       </Text>
                       <Text
                         style={{
-                          fontSize: 16,
+                          fontSize: 14,
                           color: Color.black,
                           fontFamily: Gilmer.Bold,
                           paddingHorizontal: 5,
@@ -791,7 +795,9 @@ const DetailedScreen = ({ navigation, route }) => {
                   fontFamily: Gilmer.Medium,
                   lineHeight: 25,
                 }}>
-                {singleJobData?.company?.phone}
+                {singleJobData?.company?.contactInfo?.phone != undefined
+                  ? singleJobData?.company?.contactInfo?.phone
+                  : '---'}
               </Text>
             </View> : null }
             <View style={{}}>
@@ -1010,7 +1016,7 @@ const DetailedScreen = ({ navigation, route }) => {
                       job_id: singleJobData?.id,
                     });
                   } else if (singleJobData?.apply_on === 'email') {
-                    Linking.openURL(singleJobData?.apply_email);
+                    Linking.openURL(`mailto:${singleJobData?.apply_email}`);
                   }
                 }}
                 disabled={jobApplied}

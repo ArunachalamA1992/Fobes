@@ -54,15 +54,17 @@ export const HomeStack = () => {
               onPress={() => {
                 navigation.navigate('Notification');
               }}>
-              <Badge
-                badgeStyle={{
-                  backgroundColor: Color.primary,
-                  position: 'absolute',
-                  right: 0,
-                  zIndex: 1,
-                }}>
-                {notificationCount}
-              </Badge>
+              {notificationCount != 0 ? (
+                <Badge
+                  badgeStyle={{
+                    backgroundColor: Color.primary,
+                    position: 'absolute',
+                    right: 0,
+                    zIndex: 1,
+                  }}>
+                  {notificationCount}
+                </Badge>
+              ) : null}
               <Iconviewcomponent
                 Icontag={'Ionicons'}
                 iconname={'notifications-outline'}

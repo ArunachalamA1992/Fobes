@@ -44,7 +44,8 @@ const ForgotPassword = ({navigation}) => {
       };
       if (email?.trimStart().trimEnd()) {
         const forgot_password = await fetchData.forgot_password(data);
-        if (forgot_password) {
+        console.log('forgot_password', forgot_password);
+        if (forgot_password?.status) {
           navigation.navigate('PassOtpVerify', {
             id: forgot_password?.id,
             data: data,

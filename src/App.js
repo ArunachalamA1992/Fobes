@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { LogBox, StatusBar, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {LogBox, StatusBar, View} from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawerContent from './Components/Nav/CustomDrawerContent';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 
-import { Provider as PaperProvider } from 'react-native-paper';
+import {Provider as PaperProvider} from 'react-native-paper';
 import OnboardOne from './Screens/Onboarding/OnboardOne';
 import OnboardTwo from './Screens/Onboarding/OnboardTwo';
 import OnboardThree from './Screens/Onboarding/OnboardThree';
 import Color from './Global/Color';
-import TabNavigator, { Auth } from './route';
+import TabNavigator, {Auth} from './route';
 import SplashScreen from './SplashScreen';
 import Store from './Redux/Store';
 import AppliedJobs from './Screens/Home/Jobs/AppliedJobs';
@@ -28,12 +28,15 @@ import FilterListScreen from './Screens/Home/Filter/FilterListScreen';
 import ForgotPassword from './Screens/Auth/ForgotPassword';
 import PassOtpVerify from './Screens/Auth/PassOtpVerify';
 import ResetPass from './Screens/Auth/ResetPass';
-import { Linking } from 'react-native';
-import { navigationRef } from '../RootNavigation';
+import {Linking} from 'react-native';
+import {navigationRef} from '../RootNavigation';
 import SearchDataList from './Screens/Home/Search/SearchDataList';
-import { setNotificationCount, setUserData } from './Redux';
+import {setNotificationCount, setUserData} from './Redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchData from './Config/fetchData';
+import TermsCondition from './Screens/SideMenu/TermsCondition';
+import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
+import CompanyDetails from './Screens/Home/CompanyDetails';
 import firebase from '@react-native-firebase/app';
 import analytics from '@react-native-firebase/analytics';
 import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
@@ -79,7 +82,7 @@ const MyDrawer = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const handleDeepLink = ({ url }) => {
+    const handleDeepLink = ({url}) => {
       try {
         const route = url.replace(/.*?:\/\//g, '');
         const id = route.match(/\/([^\/]+)\/?$/)[1];
@@ -95,7 +98,7 @@ const MyDrawer = () => {
       try {
         const initialUrl = await Linking.getInitialURL();
         if (initialUrl) {
-          handleDeepLink({ url: initialUrl });
+          handleDeepLink({url: initialUrl});
         }
       } catch (error) {
         console.error('Error handling initial URL:', error);
@@ -114,17 +117,17 @@ const MyDrawer = () => {
       <NavigationContainer linking={linking} ref={navigationRef}>
         <Drawer.Navigator
           initialRouteName="Home"
-          screenOptions={{ swipeEnabled: false }}
+          screenOptions={{swipeEnabled: false}}
           drawerContent={props => <CustomDrawerContent {...props} />}>
           <Drawer.Screen
             name="Home"
             component={MainApp}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="DetailedScreen"
             component={DetailedScreen}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
         </Drawer.Navigator>
       </NavigationContainer>
@@ -136,7 +139,6 @@ const logAppOpen = async () => {
 };
 
 const App = () => {
-
   const firebaseConfig = {
     apiKey: 'AIzaSyA8etAWCPn0ae48YZTYLpFmFZrZQGek-Sk',
     authDomain: 'fobes-94a68.appspot.com',
@@ -147,15 +149,14 @@ const App = () => {
   useEffect(() => {
     try {
       logAppOpen();
-      console.log("Firebase ============ : ", firebase);
+      console.log('Firebase ============ : ', firebase);
       if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
       }
-
     } catch (error) {
-      console.log("catch in App :", error);
+      console.log('catch in App :', error);
     }
-  }, [])
+  }, []);
 
   return (
     <Provider store={Store}>
@@ -168,7 +169,7 @@ const MainApp = () => {
   const dispatch = useDispatch();
   const [getData, setGetData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { token } = userData;
+  var {token} = userData;
   const notificationCount = useSelector(
     state => state.UserReducer.notificationCount,
   );
@@ -209,32 +210,32 @@ const MainApp = () => {
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="OnboardOne"
           component={OnboardOne}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="OnboardTwo"
           component={OnboardTwo}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="OnboardThree"
           component={OnboardThree}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="Auth"
           component={Auth}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="TabNavigator"
           component={TabNavigator}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="DetailedScreen"
@@ -266,18 +267,18 @@ const MainApp = () => {
           //     </TouchableOpacity>
           //   ),
           // })}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="SearchScreen"
           component={SearchScreen}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: 'Search Jobs',
             headerTitleAlign: 'center',
-            headerTitleStyle: { color: Color.black },
-            headerStyle: { backgroundColor: Color.white },
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -291,13 +292,13 @@ const MainApp = () => {
         <Stack.Screen
           name="SearchDataList"
           component={SearchDataList}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: 'Jobs',
             headerTitleAlign: 'center',
-            headerTitleStyle: { color: Color.black },
-            headerStyle: { backgroundColor: Color.white },
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -311,13 +312,13 @@ const MainApp = () => {
         <Stack.Screen
           name="AppliedJobs"
           component={AppliedJobs}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: 'Applied Jobs',
             headerTitleAlign: 'center',
-            headerTitleStyle: { color: Color.black },
-            headerStyle: { backgroundColor: Color.white },
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -331,13 +332,13 @@ const MainApp = () => {
         <Stack.Screen
           name="Notification"
           component={Notification}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: 'Notification',
             headerTitleAlign: 'center',
-            headerTitleStyle: { color: Color.black },
-            headerStyle: { backgroundColor: Color.white },
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -351,13 +352,13 @@ const MainApp = () => {
         <Stack.Screen
           name="JobStatus"
           component={JobStatus}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: 'Applied Jobs Status',
             headerTitleAlign: 'center',
-            headerTitleStyle: { color: Color.black },
-            headerStyle: { backgroundColor: Color.white },
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -371,13 +372,33 @@ const MainApp = () => {
         <Stack.Screen
           name="Skill"
           component={SkillScreen}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: 'Key Skills',
-            headerTitleStyle: { color: Color.black },
+            headerTitleStyle: {color: Color.black},
             headerTitleAlign: 'center',
-            headerStyle: { backgroundColor: Color.white },
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="CompanyDetails"
+          component={CompanyDetails}
+          options={({navigation, route}) => ({
+            headerTitle: 'Company Details',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
+            headerLeft: () => (
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -391,13 +412,13 @@ const MainApp = () => {
         <Stack.Screen
           name="basicdetails"
           component={BasicDetails}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: 'Basic Details',
-            headerTitleStyle: { color: Color.black },
+            headerTitleStyle: {color: Color.black},
             headerTitleAlign: 'center',
-            headerStyle: { backgroundColor: Color.white },
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -411,17 +432,17 @@ const MainApp = () => {
         <Stack.Screen
           name="Applycompletion"
           component={Applycompletion}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="FilterList"
           component={FilterListScreen}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: '',
-            headerTitleStyle: { color: Color.black },
-            headerStyle: { backgroundColor: Color.white },
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -435,12 +456,12 @@ const MainApp = () => {
         <Stack.Screen
           name="ForgotPassword"
           component={ForgotPassword}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: '',
-            headerTitleStyle: { color: Color.black },
-            headerStyle: { backgroundColor: Color.white },
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -454,12 +475,12 @@ const MainApp = () => {
         <Stack.Screen
           name="PassOtpVerify"
           component={PassOtpVerify}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: '',
-            headerTitleStyle: { color: Color.black },
-            headerStyle: { backgroundColor: Color.white },
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}
@@ -473,12 +494,12 @@ const MainApp = () => {
         <Stack.Screen
           name="ResetPass"
           component={ResetPass}
-          options={({ navigation, route }) => ({
+          options={({navigation, route}) => ({
             headerTitle: '',
-            headerTitleStyle: { color: Color.black },
-            headerStyle: { backgroundColor: Color.white },
+            headerTitleStyle: {color: Color.black},
+            headerStyle: {backgroundColor: Color.white},
             headerLeft: () => (
-              <View style={{ marginHorizontal: 10 }}>
+              <View style={{marginHorizontal: 10}}>
                 <Icon
                   name="arrow-back"
                   size={30}

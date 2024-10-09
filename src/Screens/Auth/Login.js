@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Color from '../../Global/Color';
-import { Gilmer } from '../../Global/FontFamily';
-import { useNavigation } from '@react-navigation/native';
-import { Iconviewcomponent } from '../../Components/Icontag';
+import {Gilmer} from '../../Global/FontFamily';
+import {useNavigation} from '@react-navigation/native';
+import {Iconviewcomponent} from '../../Components/Icontag';
 import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,7 +25,7 @@ import {
 
 import analytics from '@react-native-firebase/analytics';
 
-const DismissKeyboard = ({ children }) => (
+const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
@@ -44,7 +44,8 @@ const Login = () => {
     try {
       GoogleSignin.configure({
         scopes: ['email', 'profile'],
-        webClientId: '375312400820-b7p9j55sv1i76l7ndh17josclr7blc5t.apps.googleusercontent.com',
+        webClientId:
+          '375312400820-b7p9j55sv1i76l7ndh17josclr7blc5t.apps.googleusercontent.com',
         offlineAccess: false,
         // offlineAccess: true,
         // hostedDomain: '',
@@ -54,7 +55,6 @@ const Login = () => {
       console.log('error ----------- : ', error);
     }
   }, []);
-
 
   const signIn = async () => {
     try {
@@ -67,7 +67,7 @@ const Login = () => {
         id: '3745092',
         item: 'Mens grey shirt',
         description: ['round neck', 'long sleeved'],
-        size: 'L'
+        size: 'L',
       });
 
       if (email != '' && password != '') {
@@ -76,7 +76,7 @@ const Login = () => {
           password: password,
         };
         const login = await fetchData.login_with_pass(data, null);
-        if (login?.message == 'Login Successful') {
+        if (login?.status) {
           const combinedData = {
             ...login?.data,
             token: login?.token,
@@ -166,7 +166,7 @@ const Login = () => {
         }}>
         <Image
           source={require('../../assets/logos/fobes.png')}
-          style={{ width: 100, height: 100, resizeMode: 'contain' }}
+          style={{width: 100, height: 100, resizeMode: 'contain'}}
         />
         <View
           style={{
@@ -204,7 +204,7 @@ const Login = () => {
             Icontag={'Feather'}
             iconname={'mail'}
             icon_size={22}
-            iconstyle={{ color: Color.transparantBlack }}
+            iconstyle={{color: Color.transparantBlack}}
           />
           <TextInput
             style={styles.numberTextBox}
@@ -236,13 +236,13 @@ const Login = () => {
           <View
             style={[
               styles.NumberBoxConatiner,
-              { marginVertical: 5, paddingHorizontal: 15 },
+              {marginVertical: 5, paddingHorizontal: 15},
             ]}>
             <Iconviewcomponent
               Icontag={'MaterialCommunityIcons'}
               iconname={'lock'}
               icon_size={22}
-              iconstyle={{ color: Color.transparantBlack }}
+              iconstyle={{color: Color.transparantBlack}}
             />
             <TextInput
               style={styles.numberTextBox}
@@ -268,7 +268,7 @@ const Login = () => {
                 Icontag={'MaterialCommunityIcons'}
                 iconname={!password_visible ? 'eye-off' : 'eye'}
                 icon_size={22}
-                iconstyle={{ color: Color.transparantBlack }}
+                iconstyle={{color: Color.transparantBlack}}
               />
             </TouchableOpacity>
           </View>
@@ -308,14 +308,14 @@ const Login = () => {
               <MCIcon
                 name={!checked ? 'checkbox-blank-outline' : 'checkbox-marked'}
                 size={20}
-                color={Color.cloudyGrey}
+                color={checked ? Color.primary : Color.cloudyGrey}
               />
             </TouchableOpacity>
-            <View style={{ marginHorizontal: 5 }}>
+            <View style={{marginHorizontal: 5}}>
               <Text
                 style={{
                   fontSize: 14,
-                  color: Color.cloudyGrey,
+                  color: checked ? Color.primary : Color.cloudyGrey,
                   textAlign: 'center',
                   fontFamily: Gilmer.Medium,
                 }}>
@@ -351,8 +351,9 @@ const Login = () => {
             alignItems: 'center',
             marginVertical: 20,
             borderRadius: 50,
-            backgroundColor: Color.primary,
-          }}>
+            backgroundColor: checked ? Color.primary : Color.cloudyGrey,
+          }}
+          disabled={!checked}>
           <Text
             style={{
               fontSize: 16,
@@ -388,9 +389,7 @@ const Login = () => {
               }}>
               Don’t have an account?{' '}
             </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Register')}
-            >
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
               <Text
                 style={{
                   fontSize: 18,
