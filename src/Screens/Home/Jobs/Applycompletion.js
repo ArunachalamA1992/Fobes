@@ -1,10 +1,11 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 import Color from '../../../Global/Color';
-import {Gilmer} from '../../../Global/FontFamily';
-import {Button} from 'react-native-paper';
+import { Gilmer } from '../../../Global/FontFamily';
+import { Button } from 'react-native-paper';
+import { LottieCheck } from '../../../Components/Lottie';
 
-const Applycompletion = ({navigation}) => {
+const Applycompletion = ({ navigation }) => {
   return (
     <View
       style={{
@@ -13,9 +14,9 @@ const Applycompletion = ({navigation}) => {
         backgroundColor: Color.white,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        marginBottom: 40,
       }}>
-      <View>
+      <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <LottieCheck style={{ width: 150, height: 150 }} />
         <Text
           style={{
             fontFamily: Gilmer.Bold,
@@ -43,6 +44,7 @@ const Applycompletion = ({navigation}) => {
             navigation.replace('TabNavigator');
           }}
           style={{
+            width: '95%',
             backgroundColor: Color.primary,
             marginVertical: 10,
             height: 50,
@@ -63,8 +65,9 @@ const Applycompletion = ({navigation}) => {
             navigation.replace('AppliedJobs');
           }}
           style={{
+            width: '95%',
             backgroundColor: '#DBF3FF',
-            marginVertical: 10,
+            marginVertical: 20,
             height: 50,
             alignItems: 'center',
             justifyContent: 'center',

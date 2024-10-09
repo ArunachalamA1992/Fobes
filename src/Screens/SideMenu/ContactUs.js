@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,16 +6,18 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  ScrollView,
+  ScrollView, Modal
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Media} from '../../Global/Media';
-import {useSelector} from 'react-redux';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {Gilmer} from '../../Global/FontFamily';
+import { Media } from '../../Global/Media';
+import { useSelector } from 'react-redux';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
 import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { Pressable } from 'react-native';
+import { LottieCheck } from '../../Components/Lottie';
 
 const ContactUs = () => {
   const navigation = useNavigation();
@@ -24,8 +26,10 @@ const ContactUs = () => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
 
+  const [modalVisible, setModalVisible] = useState(true);
+
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
 
   async function sendMessageFunc() {
     try {
@@ -42,9 +46,18 @@ const ContactUs = () => {
         // console.log("response ======== : ", JSON.stringify(contactUsResponse));
         if (contactUsResponse?.status == true) {
           common_fn.showToast(contactUsResponse?.message);
+          setModalVisible(true);
+          setUsername("");
+          setEmail("");
+          setSubject("");
+          setMessage("");
           navigation.replace('Home');
         } else {
           common_fn.showToast(contactUsResponse?.message);
+          setUsername("");
+          setEmail("");
+          setSubject("");
+          setMessage("");
         }
       } else {
         common_fn.showToast('Please fill mandatory fields');
@@ -58,7 +71,7 @@ const ContactUs = () => {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image
-          source={{uri: Media.contactUs}}
+          source={{ uri: Media.contactUs }}
           style={{
             width: '100%',
             height: 220,
@@ -100,7 +113,7 @@ const ContactUs = () => {
                   Icontag={'Feather'}
                   iconname={'phone-call'}
                   icon_size={20}
-                  iconstyle={{color: Color.primary}}
+                  iconstyle={{ color: Color.primary }}
                 />
               </View>
               <Text
@@ -134,7 +147,7 @@ const ContactUs = () => {
                   Icontag={'Ionicons'}
                   iconname={'mail'}
                   icon_size={20}
-                  iconstyle={{color: Color.primary}}
+                  iconstyle={{ color: Color.primary }}
                 />
               </View>
               <Text
@@ -229,7 +242,7 @@ const ContactUs = () => {
             Get In Touch
           </Text>
 
-          <View style={{marginVertical: 20}}>
+          <View style={{ marginVertical: 20 }}>
             <Text
               style={{
                 fontSize: 14,
@@ -345,7 +358,7 @@ const ContactUs = () => {
               alignItems: 'center',
               borderRadius: 5,
             }}>
-            <Text style={{fontSize: 16, color: 'white'}}>Send Message</Text>
+            <Text style={{ fontSize: 16, color: 'white' }}>Send Message</Text>
           </TouchableOpacity>
         </View>
 
@@ -397,6 +410,63 @@ const ContactUs = () => {
             </Text>
           </View>
         </View>
+
+        <Modal
+          transparent={true}
+          animationType="slide"
+          visible={modalVisible}
+          onRequestClose={() => { }}
+          style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: Color.transparantBlack,
+              // alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Pressable
+              style={{ flex: 1, backgroundColor: Color.transparantBlack }}
+              onPress={() => {
+                setModalVisible(false);
+              }}
+            />
+            <View
+              style={{
+                backgroundColor: Color.white,
+                padding: 30,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+              }}>
+              <TouchableOpacity onPress={() => {
+                setModalVisible(false);
+              }}
+                style={{ position: 'absolute', right: 0, padding: 10 }}>
+                <Iconviewcomponent
+                  Icontag={'AntDesign'}
+                  iconname={'closecircleo'}
+                  icon_size={30}
+                  iconstyle={{ color: Color.primary }}
+                />
+              </TouchableOpacity>
+              <Text style={{ width: '100%', textAlign: 'center', fontSize: 20, paddingVertical: 10, color: Color.primary, fontFamily: Gilmer.Medium }}>Thanks for contact us</Text>
+
+              <View
+                style={{
+                  alignItems: 'center',
+                }}>
+                {/* <Image
+                  source={require('../../assets/logos/fobes.png')}
+                  style={{ width: 100, height: 80, resizeMode: 'contain' }}
+                /> */}
+                <LottieCheck />
+
+                <Text style={{ width: '100%', textAlign: 'justify', fontSize: 16, color: Color.lightBlack, fontFamily: Gilmer.Medium }}>We appreciate you contacting the Fobes support team, and we will be in touch with you shortly.</Text>
+              </View>
+
+            </View>
+          </View>
+        </Modal>
+
       </ScrollView>
     </View>
   );

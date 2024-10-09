@@ -21,7 +21,7 @@ import { setCompleteProfile, setUserData } from '../../Redux';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import common_fn from '../../Config/common_fn';
-import { JobCardHorizontal } from '../../Components/JobItemCard';
+import JobItemCard, { JobCardHorizontal } from '../../Components/JobItemCard';
 import FilterModal from './Filter/FilterModal';
 import fetchData from '../../Config/fetchData';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -818,7 +818,6 @@ const HomeScreen = ({ navigation }) => {
     token,
   } = userData;
 
-  console.log("token ================= : ", token);
 
   const profile_complete_data = useSelector(
     state => state.UserReducer.profile_complete,
@@ -836,25 +835,26 @@ const HomeScreen = ({ navigation }) => {
   const [profileCompletion] = useState([
     {
       id: 1,
+      name: 'Personal Details',
+      subname: 'Add personal details to enrich your profile',
+      btname: 'Add Details',
+      icon: 'card-account-details-outline',
+    },
+    {
+      id: 2,
       name: 'Add resume',
       subname: 'Boost profile for your dream job with a standout resume',
       btname: 'Upload Resume',
       icon: 'card-account-details-outline',
     },
     {
-      id: 2,
+      id: 3,
       name: 'Add Your Skills',
       subname: 'Highlight your best Skills to strengthen your profile',
       btname: 'Add Skills',
       icon: 'folder-open',
     },
-    {
-      id: 3,
-      name: 'Personal Details',
-      subname: 'Add personal details to enrich your profile',
-      btname: 'Add Details',
-      icon: 'card-account-details-outline',
-    },
+
   ]);
 
   const filteredProfileCompletion = profileCompletion?.filter(item => {
@@ -895,6 +895,7 @@ const HomeScreen = ({ navigation }) => {
       setCategoryLoading(true);
       var data = `job_type_id=` + index;
       const job_list = await fetchData.filter_job(data, token);
+
       if (job_list) {
         setJobData(job_list?.data);
       }
@@ -1462,6 +1463,8 @@ const HomeScreen = ({ navigation }) => {
                 </View>
               </ScrollView>
             </View>
+
+            <View style={{ width: '100%', paddingVertical: 2, marginVertical: 20, backgroundColor: Color.softGrey }}></View>
             <Text
               style={{
                 flex: 1,
@@ -1519,15 +1522,22 @@ const HomeScreen = ({ navigation }) => {
             {categoryLoading ? (
               <SkeletonPlaceholder>
                 <SkeletonPlaceholder.Item style={{ marginTop: 10 }}>
-                  <SkeletonPlaceholder.Item width="50%" height={10} />
+                  <SkeletonPlaceholder.Item width="95%" height={10} />
                 </SkeletonPlaceholder.Item>
                 <SkeletonPlaceholder.Item
                   style={{
+                    width: '95%',
                     marginVertical: 10,
                     flexDirection: 'row',
                     alignItems: 'center',
                   }}>
                   <SkeletonPlaceholder.Item
+                    width={'95%'}
+                    height={100}
+                    borderRadius={10}
+                    style={{ marginHorizontal: 10 }}
+                  />
+                  {/* <SkeletonPlaceholder.Item
                     width={'50%'}
                     height={100}
                     borderRadius={10}
@@ -1538,16 +1548,10 @@ const HomeScreen = ({ navigation }) => {
                     height={100}
                     borderRadius={10}
                     style={{ marginHorizontal: 10 }}
-                  />
-                  <SkeletonPlaceholder.Item
-                    width={'50%'}
-                    height={100}
-                    borderRadius={10}
-                    style={{ marginHorizontal: 10 }}
-                  />
+                  /> */}
                 </SkeletonPlaceholder.Item>
                 <SkeletonPlaceholder.Item style={{ marginTop: 10 }}>
-                  <SkeletonPlaceholder.Item width="50%" height={10} />
+                  <SkeletonPlaceholder.Item width="95%" height={10} />
                 </SkeletonPlaceholder.Item>
                 <SkeletonPlaceholder.Item
                   style={{
@@ -1556,6 +1560,12 @@ const HomeScreen = ({ navigation }) => {
                     alignItems: 'center',
                   }}>
                   <SkeletonPlaceholder.Item
+                    width={'95%'}
+                    height={100}
+                    borderRadius={10}
+                    style={{ marginHorizontal: 10 }}
+                  />
+                  {/* <SkeletonPlaceholder.Item
                     width={'50%'}
                     height={100}
                     borderRadius={10}
@@ -1566,16 +1576,10 @@ const HomeScreen = ({ navigation }) => {
                     height={100}
                     borderRadius={10}
                     style={{ marginHorizontal: 10 }}
-                  />
-                  <SkeletonPlaceholder.Item
-                    width={'50%'}
-                    height={100}
-                    borderRadius={10}
-                    style={{ marginHorizontal: 10 }}
-                  />
+                  /> */}
                 </SkeletonPlaceholder.Item>
                 <SkeletonPlaceholder.Item style={{ marginTop: 10 }}>
-                  <SkeletonPlaceholder.Item width="50%" height={10} />
+                  <SkeletonPlaceholder.Item width="95%" height={10} />
                 </SkeletonPlaceholder.Item>
                 <SkeletonPlaceholder.Item
                   style={{
@@ -1584,6 +1588,12 @@ const HomeScreen = ({ navigation }) => {
                     alignItems: 'center',
                   }}>
                   <SkeletonPlaceholder.Item
+                    width={'95%'}
+                    height={100}
+                    borderRadius={10}
+                    style={{ marginHorizontal: 10 }}
+                  />
+                  {/* <SkeletonPlaceholder.Item
                     width={'50%'}
                     height={100}
                     borderRadius={10}
@@ -1594,60 +1604,57 @@ const HomeScreen = ({ navigation }) => {
                     height={100}
                     borderRadius={10}
                     style={{ marginHorizontal: 10 }}
-                  />
-                  <SkeletonPlaceholder.Item
-                    width={'50%'}
-                    height={100}
-                    borderRadius={10}
-                    style={{ marginHorizontal: 10 }}
-                  />
+                  /> */}
                 </SkeletonPlaceholder.Item>
               </SkeletonPlaceholder>
             ) : (
               <>
                 <View
                   style={{
+                    width: '100%',
                     marginVertical: 10,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}>
-                    <Text
+                  {jobData.length > 0 ?
+                    <View
                       style={{
-                        flex: 1,
-                        fontSize: 16,
-                        color: Color.black,
-                        fontFamily: Gilmer.Bold,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                       }}>
-                      You Might Like
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('JobListScreen', { index })
-                      }
-                      style={{ padding: 5 }}>
                       <Text
                         style={{
+                          flex: 1,
                           fontSize: 16,
-                          color: '#0033A0',
+                          color: Color.black,
                           fontFamily: Gilmer.Bold,
-                          paddingHorizontal: 10,
                         }}>
-                        See All
+                        You Might Like
                       </Text>
-                    </TouchableOpacity>
-                  </View>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('JobListScreen', { index })
+                        }
+                        style={{ padding: 5 }}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: '#0033A0',
+                            fontFamily: Gilmer.Bold,
+                            paddingHorizontal: 10,
+                          }}>
+                          See All
+                        </Text>
+                      </TouchableOpacity>
+                    </View> : null}
                   <FlatList
                     data={jobData}
                     keyExtractor={(item, index) => item + index}
+                    showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => {
                       return (
-                        <JobCardHorizontal
+                        <JobItemCard
                           item={item}
                           navigation={navigation}
                           token={token}
@@ -1655,13 +1662,14 @@ const HomeScreen = ({ navigation }) => {
                         />
                       );
                     }}
+                    style={{ width: '100%' }}
                     ListEmptyComponent={() => {
                       return (
                         <View
                           style={{
                             alignItems: 'center',
                             justifyContent: 'center',
-                            marginVertical: 10,
+                            marginVertical: 20,
                             width: '100%',
                           }}>
                           <MCIcon
@@ -1685,10 +1693,11 @@ const HomeScreen = ({ navigation }) => {
                         </View>
                       );
                     }}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
+                  // horizontal={true}
+                  // showsHorizontalScrollIndicator={false}
                   />
                 </View>
+                <View style={{ width: '100%', paddingVertical: 2, marginVertical: 20, backgroundColor: Color.softGrey }}></View>
                 <View
                   style={{
                     marginVertical: 10,
@@ -1781,7 +1790,7 @@ const HomeScreen = ({ navigation }) => {
                               paddingVertical: 5,
                               textTransform: 'capitalize',
                             }}
-                            numberOfLines={1}>
+                            numberOfLines={3}>
                             {item?.name}
                           </Text>
                           <View

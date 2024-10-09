@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -9,19 +9,19 @@ import {
 } from 'react-native';
 import Color from '../../Global/Color';
 import StepIndicator from 'react-native-step-indicator';
-import {Gilmer} from '../../Global/FontFamily';
+import { Gilmer } from '../../Global/FontFamily';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FIcon from 'react-native-vector-icons/FontAwesome';
-import {Dropdown} from 'react-native-element-dropdown';
-import {Button, Searchbar} from 'react-native-paper';
+import { Dropdown } from 'react-native-element-dropdown';
+import { Button, Searchbar } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 import axios from 'axios';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
-import {Divider} from 'react-native-elements';
+import { Divider } from 'react-native-elements';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -49,7 +49,7 @@ const customStyles = {
 
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
-const BasicDetails = ({navigation}) => {
+const BasicDetails = ({ navigation }) => {
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [HigherQualification, setHigherQualification] = useState([]);
   const [experienceData, setExperienceData] = useState([]);
@@ -70,6 +70,8 @@ const BasicDetails = ({navigation}) => {
     token,
   } = userData;
 
+  // console.log("userData =============== : ",userData);
+
   const [LocationSuggestion, setLocationSuggestion] = useState({
     data: [],
     visible: false,
@@ -78,7 +80,8 @@ const BasicDetails = ({navigation}) => {
   const [selectBasic, setSelectBasic] = useState({
     professional_title: title || '',
     personal_website: website || '',
-    dob: new Date(birth_date) || new Date(),
+    dob: birth_date ? new Date(birth_date) : new Date(),
+    // dob: new Date(birth_date) || new Date(),
     qualify: education_id || 0,
     work_experiance:
       selectBasic?.work_experiance != 'fresher'
@@ -94,8 +97,11 @@ const BasicDetails = ({navigation}) => {
     profession: {},
     availability: {},
     social_profile:
-      social_links?.length > 0 ? social_links : [{url: '', social_media: ''}],
+      social_links?.length > 0 ? social_links : [{ url: '', social_media: '' }],
   });
+
+  // console.log("DATE OFFFFFFFFF ============ :", new Date());
+
   const [periorExperience] = useState([
     {
       id: 1,
@@ -109,40 +115,15 @@ const BasicDetails = ({navigation}) => {
     },
   ]);
   const [genderData] = useState([
-    {id: 1, title: 'Male', value: 'male'},
-    {id: 2, title: 'Female', value: 'female'},
-    {id: 3, title: 'Other', value: 'other'},
+    { id: 1, title: 'Male', value: 'male' },
+    { id: 2, title: 'Female', value: 'female' },
+    { id: 3, title: 'Other', value: 'other' },
   ]);
   const [maritalStatusData] = useState([
-    {id: 1, title: 'Single', value: 'single'},
-    {id: 2, title: 'Married', value: 'married'},
+    { id: 1, title: 'Single', value: 'single' },
+    { id: 2, title: 'Married', value: 'married' },
   ]);
-  const [ProfessionData] = useState([
-    {
-      name: 'Mobile Developer',
-      profession_id: 1,
-    },
-    {
-      name: 'Web Developer',
-      profession_id: 2,
-    },
-    {
-      name: 'Web Designer',
-      profession_id: 3,
-    },
-    {
-      name: 'Figma Designer',
-      profession_id: 4,
-    },
-    {
-      name: 'Php Developer',
-      profession_id: 5,
-    },
-    {
-      name: 'Team Leader',
-      profession_id: 6,
-    },
-  ]);
+
   const [socialData] = useState([
     {
       id: 1,
@@ -155,33 +136,6 @@ const BasicDetails = ({navigation}) => {
     {
       id: 3,
       icon: 'linkedin-square',
-    },
-  ]);
-  const [AvailableData] = useState([
-    {
-      id: 1,
-      name: '15 Days',
-      value: '15 Days',
-    },
-    {
-      id: 2,
-      name: '1 Month',
-      value: '1_month',
-    },
-    {
-      id: 3,
-      name: '2 Month',
-      value: '2_month',
-    },
-    {
-      id: 4,
-      name: '3 Month',
-      value: '3_month',
-    },
-    {
-      id: 5,
-      name: '4 Month',
-      value: '4_month',
     },
   ]);
 
@@ -246,7 +200,7 @@ const BasicDetails = ({navigation}) => {
       availability: selectBasic?.availability,
       social_profile: [
         ...selectBasic?.social_profile,
-        {id: newId, social_profile: '', selectedIcon: ''},
+        { id: newId, social_profile: '', selectedIcon: '' },
       ],
     });
   };
@@ -280,7 +234,7 @@ const BasicDetails = ({navigation}) => {
           if (candidate_educations?.length > 0) {
             navigation.navigate('StepEducation');
           } else {
-            navigation.navigate('Education', {item: {}});
+            navigation.navigate('Education', { item: {} });
           }
         } else {
           common_fn.showToast(intro_data?.message);
@@ -325,7 +279,7 @@ const BasicDetails = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: Color.white, padding: 10}}>
+    <View style={{ flex: 1, backgroundColor: Color.white, padding: 10 }}>
       <StepIndicator
         customStyles={customStyles}
         currentPosition={0}
@@ -334,7 +288,7 @@ const BasicDetails = ({navigation}) => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -378,8 +332,8 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ marginVertical: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -433,7 +387,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -473,7 +427,7 @@ const BasicDetails = ({navigation}) => {
               onCancel={hideDatePicker}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -492,7 +446,7 @@ const BasicDetails = ({navigation}) => {
                 <F6Icon name="location-dot" size={20} color={Color.lightgrey} />
               )}
               iconColor={Color.grey}
-              inputStyle={{color: Color.black}}
+              inputStyle={{ color: Color.black }}
               onChangeText={search => {
                 setSearchLocation(search);
                 fetchSuggestions(search);
@@ -509,6 +463,7 @@ const BasicDetails = ({navigation}) => {
                   marginTop: 5,
                 }}>
                 {LocationSuggestion?.data?.map((item, index) => {
+                  // console.log("SEARCH ==============  :",item);
                   return (
                     <TouchableOpacity
                       key={index}
@@ -529,7 +484,7 @@ const BasicDetails = ({navigation}) => {
                         {item?.display_name?.split(',')[0]}
                       </Text>
                       {index < LocationSuggestion?.data.length - 1 && (
-                        <Divider style={{height: 1, marginVertical: 5}} />
+                        <Divider style={{ height: 1, marginVertical: 5 }} />
                       )}
                     </TouchableOpacity>
                   );
@@ -537,7 +492,7 @@ const BasicDetails = ({navigation}) => {
               </View>
             )}
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontFamily: Gilmer.Bold,
@@ -613,7 +568,7 @@ const BasicDetails = ({navigation}) => {
               })}
             </View>
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontFamily: Gilmer.Bold,
@@ -707,7 +662,7 @@ const BasicDetails = ({navigation}) => {
               //   }}
               // />
               <Dropdown
-                style={[styles.dropdown, {borderColor: 'blue'}]}
+                style={[styles.dropdown, { borderColor: 'blue' }]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
@@ -742,7 +697,7 @@ const BasicDetails = ({navigation}) => {
               />
             )}
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -786,7 +741,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -830,7 +785,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -839,7 +794,7 @@ const BasicDetails = ({navigation}) => {
               }}>
               Gender
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {genderData.map((item, index) => {
                 return (
                   <TouchableOpacity
@@ -895,7 +850,7 @@ const BasicDetails = ({navigation}) => {
               })}
             </View>
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -904,7 +859,7 @@ const BasicDetails = ({navigation}) => {
               }}>
               Marital Status
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {maritalStatusData.map((item, index) => {
                 return (
                   <TouchableOpacity
@@ -960,7 +915,7 @@ const BasicDetails = ({navigation}) => {
               })}
             </View>
           </View>
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -1004,97 +959,7 @@ const BasicDetails = ({navigation}) => {
               }}
             />
           </View>
-          {/* <View style={{marginVertical: 10}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontWeight: 'bold',
-                marginVertical: 10,
-              }}>
-              Profession
-            </Text>
-            <Dropdown
-              style={[styles.dropdown, {borderColor: 'blue'}]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={ProfessionData}
-              search
-              maxHeight={300}
-              labelField="name"
-              valueField="name"
-              placeholder={'Select item'}
-              searchPlaceholder="Search..."
-              value={selectBasic?.profession}
-              onChange={item => {
-                setSelectBasic({
-                  professional_title: selectBasic?.professional_title,
-                  personal_website: selectBasic?.personal_website,
-                  dob: selectBasic?.dob,
-                  qualify: selectBasic?.qualify,
-                  work_experiance: selectBasic?.work_experiance,
-                  experience: selectBasic?.experience,
-                  current_ctc: selectBasic?.current_ctc,
-                  expected_ctc: selectBasic?.expected_ctc,
-                  gender: selectBasic?.gender,
-                  city: selectBasic?.city,
-                  marital_status: selectBasic?.marital_status,
-                  biography: selectBasic?.biography,
-                  profession: item,
-                  availability: selectBasic?.availability,
-                  social_profile: selectBasic?.social_profile,
-                });
-              }}
-            />
-          </View> */}
-          {/* <View style={{marginVertical: 10}}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.black,
-                fontWeight: 'bold',
-                marginVertical: 10,
-              }}>
-              Your availability
-            </Text>
-            <Dropdown
-              style={[styles.dropdown, {borderColor: 'blue'}]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={AvailableData}
-              search
-              maxHeight={300}
-              labelField="name"
-              valueField="name"
-              placeholder={'Available'}
-              searchPlaceholder="Search..."
-              value={selectBasic?.availability}
-              onChange={item => {
-                setSelectBasic({
-                  professional_title: selectBasic?.professional_title,
-                  personal_website: selectBasic?.personal_website,
-                  dob: selectBasic?.dob,
-                  qualify: selectBasic?.qualify,
-                  work_experiance: selectBasic?.work_experiance,
-                  experience: selectBasic?.experience,
-      current_ctc: selectBasic?.current_ctc,
-      expected_ctc: selectBasic?.expected_ctc,
-                  gender: selectBasic?.gender,
-                  city: selectBasic?.city,
-                  marital_status: selectBasic?.marital_status,
-                  biography: selectBasic?.biography,
-                  profession: selectBasic?.profession,
-                  availability: item,
-                  social_profile: selectBasic?.social_profile,
-                });
-              }}
-            />
-          </View> */}
-          <View style={{marginVertical: 10}}>
+          <View style={{ marginVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -1105,7 +970,7 @@ const BasicDetails = ({navigation}) => {
               Social Profile
             </Text>
             {selectBasic?.social_profile?.map((profile, index) => (
-              <View key={profile.id} style={{marginVertical: 10}}>
+              <View key={profile.id} style={{ marginVertical: 10 }}>
                 <Text
                   style={{
                     fontSize: 16,
@@ -1115,7 +980,7 @@ const BasicDetails = ({navigation}) => {
                   }}>
                   Social Profile {index + 1}
                 </Text>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Dropdown
                     style={{
                       height: 50,

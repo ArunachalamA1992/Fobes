@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import {Gilmer} from '../Global/FontFamily';
+import React, { useEffect, useState } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Gilmer } from '../Global/FontFamily';
 import Color from '../Global/Color';
-import {Iconviewcomponent} from './Icontag';
-import {Media} from '../Global/Media';
+import { Iconviewcomponent } from './Icontag';
+import { Media } from '../Global/Media';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import fetchData from '../Config/fetchData';
 import common_fn from '../Config/common_fn';
-import {base_image_url} from '../Config/base_url';
+import { base_image_url } from '../Config/base_url';
 
 const JobItemCard = props => {
-  var {item, navigation, token, getData} = props;
+  var { item, navigation, token, getData } = props;
   const [resultDate, setResultDate] = useState(null);
   const currentDate = moment();
   const yourDate = moment(item?.created_at);
@@ -27,17 +27,14 @@ const JobItemCard = props => {
       let result;
 
       if (Math.abs(daysAgo) > 0) {
-        result = `${Math.abs(daysAgo)} day${
-          Math.abs(daysAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
+          } ago`;
       } else if (Math.abs(hoursAgo) > 0) {
-        result = `${Math.abs(hoursAgo)} hour${
-          Math.abs(hoursAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
+          } ago`;
       } else {
-        result = `${Math.abs(minutesAgo)} minute${
-          Math.abs(minutesAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
+          } ago`;
       }
 
       setResultDate(result);
@@ -46,7 +43,7 @@ const JobItemCard = props => {
 
   const getToggleJobs = async id => {
     try {
-      var data = {job_id: id};
+      var data = { job_id: id };
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
@@ -59,8 +56,8 @@ const JobItemCard = props => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DetailedScreen', {slug: item?.slug})}
-      style={{
+      onPress={() => navigation.navigate('DetailedScreen', { slug: item?.slug })}
+      style={{ width:'97%',
         marginVertical: 10,
         alignItems: 'center',
         justifyContent: 'center',
@@ -131,7 +128,7 @@ const JobItemCard = props => {
           />
         ) : (
           <Image
-            source={{uri: base_image_url + item?.company?.logo}}
+            source={{ uri: base_image_url + item?.company?.logo }}
             style={{
               width: 60,
               height: 60,
@@ -260,7 +257,7 @@ const JobItemCard = props => {
 };
 
 export const JobCardHorizontal = props => {
-  var {item, navigation, token, getData} = props;
+  var { item, navigation, token, getData } = props;
   const [resultDate, setResultDate] = useState(null);
   const currentDate = moment();
   const yourDate = moment(item?.created_at);
@@ -276,17 +273,14 @@ export const JobCardHorizontal = props => {
       let result;
 
       if (Math.abs(daysAgo) > 0) {
-        result = `${Math.abs(daysAgo)} day${
-          Math.abs(daysAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
+          } ago`;
       } else if (Math.abs(hoursAgo) > 0) {
-        result = `${Math.abs(hoursAgo)} hour${
-          Math.abs(hoursAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
+          } ago`;
       } else {
-        result = `${Math.abs(minutesAgo)} minute${
-          Math.abs(minutesAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
+          } ago`;
       }
 
       setResultDate(result);
@@ -295,7 +289,7 @@ export const JobCardHorizontal = props => {
 
   const getToggleJobs = async id => {
     try {
-      var data = {job_id: id};
+      var data = { job_id: id };
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
@@ -307,7 +301,7 @@ export const JobCardHorizontal = props => {
   };
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DetailedScreen', {slug: item?.slug})}
+      onPress={() => navigation.navigate('DetailedScreen', { slug: item?.slug })}
       style={{
         width: 300,
         marginVertical: 10,
@@ -368,27 +362,29 @@ export const JobCardHorizontal = props => {
           alignItems: 'center',
           marginVertical: 15,
         }}>
-        {item?.company?.logo == null ? (
-          <Image
-            source={Media?.user}
-            style={{
-              width: 60,
-              height: 60,
-              resizeMode: 'contain',
-              borderRadius: 100,
-            }}
-          />
-        ) : (
-          <Image
-            source={{uri: base_image_url + item?.company?.logo}}
-            style={{
-              width: 60,
-              height: 60,
-              resizeMode: 'contain',
-              borderRadius: 100,
-            }}
-          />
-        )}
+        <View style={{ width: 70, height: 70, borderRadius: 100, backgroundColor: Color.lightgrey, padding: 3 }}>
+          {item?.company?.logo == null ? (
+            <Image
+              source={Media?.user}
+              style={{
+                width: '100%',
+                height: '100%',
+                resizeMode: 'contain',
+                borderRadius: 100,
+              }}
+            />
+          ) : (
+            <Image
+              source={{ uri: base_image_url + item?.company?.logo }}
+              style={{
+                width: '100%',
+                height: '100%',
+                resizeMode: 'contain',
+                borderRadius: 100,
+              }}
+            />
+          )}
+        </View>
         <View
           style={{
             flex: 1,

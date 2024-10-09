@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,20 +10,20 @@ import {
   ScrollView,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {Media} from '../../Global/Media';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {JobCardHorizontal} from '../../Components/JobItemCard';
+import { Gilmer } from '../../Global/FontFamily';
+import { Media } from '../../Global/Media';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { JobCardHorizontal } from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import {useSelector} from 'react-redux';
-import {base_image_url} from '../../Config/base_url';
-import {Linking} from 'react-native';
+import { useSelector } from 'react-redux';
+import { base_image_url } from '../../Config/base_url';
+import { Linking } from 'react-native';
 
-const CompanyDetails = ({navigation, route}) => {
+const CompanyDetails = ({ navigation, route }) => {
   const [itemData] = useState(route?.params?.item);
   const [jobData, setJobData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
   useEffect(() => {
     getData();
   }, []);
@@ -46,8 +46,8 @@ const CompanyDetails = ({navigation, route}) => {
             }}
             style={{
               width: '100%',
-              height: 80,
-              resizeMode: 'contain',
+              height: 120,
+              resizeMode: 'cover', backgroundColor: Color.lightgrey
             }}
           />
 
@@ -57,9 +57,9 @@ const CompanyDetails = ({navigation, route}) => {
                 padding: 10,
                 backgroundColor: Color.white,
                 position: 'absolute',
-                top: 40,
+                top: 70,
                 marginHorizontal: 10,
-                borderRadius: 100,
+                borderRadius: 100, elevation: 5
               }}>
               <Image
                 source={Media?.user}
@@ -67,7 +67,7 @@ const CompanyDetails = ({navigation, route}) => {
                   width: 70,
                   height: 70,
                   resizeMode: 'contain',
-                  borderRadius: 100,
+                  borderRadius: 100
                 }}
               />
             </View>
@@ -77,12 +77,12 @@ const CompanyDetails = ({navigation, route}) => {
                 padding: 10,
                 backgroundColor: Color.white,
                 position: 'absolute',
-                top: 40,
+                top: 70,
                 marginHorizontal: 10,
-                borderRadius: 100,
+                borderRadius: 100, elevation: 5
               }}>
               <Image
-                source={{uri: base_image_url + itemData?.logo}}
+                source={{ uri: base_image_url + itemData?.logo }}
                 style={{
                   width: 70,
                   height: 70,
@@ -93,7 +93,7 @@ const CompanyDetails = ({navigation, route}) => {
             </View>
           )}
         </View>
-        <View style={{marginTop: 50, padding: 10}}>
+        <View style={{ marginTop: 50, padding: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -113,33 +113,11 @@ const CompanyDetails = ({navigation, route}) => {
             {itemData?.name}
           </Text>
 
-          {/* <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginVertical: 5,
-            }}>
-            <Iconviewcomponent
-              Icontag={'FontAwesome'}
-              iconname={'star'}
-              icon_size={20}
-              icon_color={Color.sunShade}
-            />
-            <Text
-              style={{
-                fontSize: 12,
-                color: Color.black,
-                fontFamily: Gilmer.Medium,
-                paddingHorizontal: 5,
-              }}>
-              4.5 (500+ reviews)
-            </Text>
-          </View> */}
-
           <View
             style={{
+              width: '100%',
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'space-around',
               alignItems: 'center',
               marginVertical: 5,
             }}>
@@ -184,6 +162,7 @@ const CompanyDetails = ({navigation, route}) => {
                 </Text>
               </View>
             </View>
+
             <View
               style={{
                 flex: 1,
@@ -194,24 +173,27 @@ const CompanyDetails = ({navigation, route}) => {
                 paddingVertical: 20,
                 backgroundColor: '#EFFAFF',
                 borderRadius: 10,
-                marginHorizontal: 5,
+                paddingHorizontal: 10
               }}>
               <Iconviewcomponent
                 Icontag={'FontAwesome'}
                 iconname={'users'}
-                icon_size={36}
+                icon_size={34}
                 icon_color={Color.primary}
               />
               <View
                 style={{
+                  width: '70%', alignItems: 'center',
                   marginHorizontal: 10,
                 }}>
                 <Text
                   style={{
-                    fontSize: 16,
+                    width: '85%',
+                    textAlign: 'center',
+                    fontSize: 14,
                     color: Color.primary,
                     fontFamily: Gilmer.Bold,
-                  }}>
+                  }} numberOfLines={2}>
                   {itemData?.team_size?.name}
                 </Text>
                 <Text
@@ -228,7 +210,7 @@ const CompanyDetails = ({navigation, route}) => {
           </View>
         </View>
 
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -250,7 +232,7 @@ const CompanyDetails = ({navigation, route}) => {
             }}>
             {itemData?.bio?.replace(/<[^>]+>/g, '')}
           </Text>
-          <View style={{padding: 5}}>
+          <View style={{ padding: 5 }}>
             <View style={{}}>
               <Text
                 style={{
@@ -274,7 +256,7 @@ const CompanyDetails = ({navigation, route}) => {
                 {itemData?.phone}
               </Text>
             </View>
-            <View style={{marginVertical: 5}}>
+            <View style={{ marginVertical: 5 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -298,8 +280,8 @@ const CompanyDetails = ({navigation, route}) => {
               </Text>
             </View>
             {itemData?.website === null &&
-            itemData?.website === 'null' &&
-            itemData?.website === '' ? null : (
+              itemData?.website === 'null' &&
+              itemData?.website === '' ? null : (
               <View>
                 <Text
                   style={{
@@ -325,7 +307,7 @@ const CompanyDetails = ({navigation, route}) => {
               </View>
             )}
 
-            <View style={{marginVertical: 5}}>
+            <View style={{ marginVertical: 5 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -349,9 +331,7 @@ const CompanyDetails = ({navigation, route}) => {
               </Text>
             </View>
 
-            {itemData?.social_links === null ? (
-              <View />
-            ) : (
+            {itemData?.social_links.length > 0 ?
               <View>
                 <Text
                   style={{
@@ -455,7 +435,8 @@ const CompanyDetails = ({navigation, route}) => {
                 </TouchableOpacity> */}
                 </View>
               </View>
-            )}
+              : null}
+
           </View>
         </View>
         <View
@@ -480,22 +461,27 @@ const CompanyDetails = ({navigation, route}) => {
               Current Openings
             </Text>
           </View>
-          <FlatList
-            data={itemData?.openings}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({item, index}) => {
-              return (
-                <JobCardHorizontal
-                  item={item}
-                  navigation={navigation}
-                  token={token}
-                  getData={getData}
-                />
-              );
-            }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
+          <View
+            style={{
+              width: '100%', marginVertical: 10
+            }}>
+            <FlatList
+              data={itemData?.openings}
+              keyExtractor={(item, index) => item + index}
+              renderItem={({ item, index }) => {
+                return (
+                  <JobCardHorizontal
+                    item={item}
+                    navigation={navigation}
+                    token={token}
+                    getData={getData}
+                  />
+                );
+              }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

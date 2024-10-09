@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -8,21 +8,21 @@ import {
   View,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Media} from '../../Global/Media';
-import {Gilmer} from '../../Global/FontFamily';
+import { Media } from '../../Global/Media';
+import { Gilmer } from '../../Global/FontFamily';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import fetchData from '../../Config/fetchData';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 import common_fn from '../../Config/common_fn';
 
-const {height} = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
-const Notification = ({navigation}) => {
+const Notification = ({ navigation }) => {
   const [notificationData, setNotificationData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
 
   useEffect(() => {
     getNotification();
@@ -101,15 +101,16 @@ const Notification = ({navigation}) => {
   const groupedNotifications = groupNotificationsByDate();
 
   return (
-    <View style={{flex: 1, backgroundColor: Color.white, padding: 10}}>
+    <View style={{ flex: 1, backgroundColor: Color.white, padding: 10 }}>
       <FlatList
-        data={[
-          {category: 'Today', data: groupedNotifications['Today']},
-          {category: 'Yesterday', data: groupedNotifications['Yesterday']},
-          {category: 'Earlier', data: groupedNotifications['Earlier']},
-        ]}
+        // data={[
+        //   { category: 'Today', data: groupedNotifications['Today'] },
+        //   { category: 'Yesterday', data: groupedNotifications['Yesterday'] },
+        //   { category: 'Earlier', data: groupedNotifications['Earlier'] },
+        // ]}
         keyExtractor={(item, index) => item.category}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
+          console.log("item.data =============== : ",item.data);
           return (
             <View key={index}>
               {item.data.length > 0 && (
@@ -166,10 +167,6 @@ const Notification = ({navigation}) => {
                       alignItems: 'center',
                       justifyContent: 'flex-start',
                     }}>
-                    {/* <Image
-                  source={single_notify.image}
-                  style={{width: 80, height: 80, resizeMode: 'contain'}}
-                /> */}
                     <View
                       style={{
                         flex: 1,
@@ -196,7 +193,7 @@ const Notification = ({navigation}) => {
                         {single_notify?.notification?.title2}
                       </Text>
                     </View>
-                    <View style={{alignItems: 'center'}}>
+                    <View style={{ alignItems: 'center' }}>
                       <Icon
                         name="information-circle"
                         size={20}
@@ -232,11 +229,11 @@ const Notification = ({navigation}) => {
               <MCIcon
                 name="briefcase-variant-off"
                 color={Color.primary}
-                size={20}
+                size={40}
               />
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 16,
                   padding: 5,
                   paddingHorizontal: 20,
                   marginStart: 5,

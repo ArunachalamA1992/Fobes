@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -9,12 +9,12 @@ import {
 } from 'react-native';
 import Color from '../../Global/Color';
 import StepIndicator from 'react-native-step-indicator';
-import {Gilmer} from '../../Global/FontFamily';
-import {Button} from 'react-native-paper';
-import {Dropdown} from 'react-native-element-dropdown';
+import { Gilmer } from '../../Global/FontFamily';
+import { Button } from 'react-native-paper';
+import { Dropdown } from 'react-native-element-dropdown';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -42,10 +42,10 @@ const customStyles = {
 
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
-const EducationDetails = ({navigation, route}) => {
+const EducationDetails = ({ navigation, route }) => {
   const [itemData] = useState(route.params.item);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token, candidate_experiences} = userData;
+  var { token, candidate_experiences } = userData;
   const [yearCompletionData, setYearCompletionData] = useState([]);
 
   const [selectEducation, setSelectEducation] = useState({
@@ -104,18 +104,18 @@ const EducationDetails = ({navigation, route}) => {
         if (candidate_experiences?.length > 0) {
           navigation.navigate('StepEmployment');
         } else {
-          navigation.navigate('Experience', {item: {}});
+          navigation.navigate('Experience', { item: {} });
         }
       } else {
         common_fn.showToast(education_data.message);
       }
     } catch (error) {
-      console.log('error', error);
+      console.log('catch in education_details :', error);
     }
   };
 
   return (
-    <View style={{flex: 1, padding: 10, backgroundColor: Color.white}}>
+    <View style={{ flex: 1, padding: 10, backgroundColor: Color.white }}>
       <StepIndicator
         customStyles={customStyles}
         currentPosition={1}
@@ -192,7 +192,7 @@ const EducationDetails = ({navigation, route}) => {
             })}
           </View>
         </View> */}
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -230,7 +230,7 @@ const EducationDetails = ({navigation, route}) => {
             }}
           />
         </View>
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -397,7 +397,7 @@ const EducationDetails = ({navigation, route}) => {
             </View>
           </View>
         </View> */}
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -408,7 +408,7 @@ const EducationDetails = ({navigation, route}) => {
             Year of Course Completion
           </Text>
           <Dropdown
-            style={[styles.dropdown, {borderColor: 'blue'}]}
+            style={[styles.dropdown, { borderColor: 'blue' }]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}

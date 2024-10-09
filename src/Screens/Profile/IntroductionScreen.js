@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -7,16 +7,16 @@ import {
   View,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
+import { Gilmer } from '../../Global/FontFamily';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import fetchData from '../../Config/fetchData';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import common_fn from '../../Config/common_fn';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const IntroductionScreen = ({navigation}) => {
+const IntroductionScreen = ({ navigation }) => {
   const userData = useSelector(state => state.UserReducer.userData);
-  var {first_name, last_name, bio, token, candidate_experiences} = userData;
+  var { first_name, last_name, bio, token, candidate_experiences } = userData;
   const [intro, setIntro] = useState({
     first_name: first_name || '',
     last_name: last_name || '',
@@ -43,7 +43,7 @@ const IntroductionScreen = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: Color.white, padding: 10}}>
+    <View style={{ flex: 1, backgroundColor: Color.white, padding: 10 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text
           style={{
@@ -67,8 +67,8 @@ const IntroductionScreen = ({navigation}) => {
           }}>
           Introduce yourself to the recruiters
         </Text>
-        <View style={{flex: 1, marginTop: 10}}>
-          <View style={{marginTop: 10}}>
+        <View style={{ flex: 1, marginTop: 10 }}>
+          <View style={{ marginTop: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -78,8 +78,8 @@ const IntroductionScreen = ({navigation}) => {
               First Name
             </Text>
             <TextInput
-              placeholder="First Name"
-              placeholderTextColor={Color.cloudyGrey}
+              placeholder="Enter your First Name"
+              placeholderTextColor={Color.Venus}
               value={intro?.name}
               onChangeText={text => {
                 setIntro({
@@ -97,11 +97,11 @@ const IntroductionScreen = ({navigation}) => {
                 paddingHorizontal: 10,
                 fontSize: 14,
                 color: Color.cloudyGrey,
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
               }}
             />
           </View>
-          <View style={{marginTop: 10}}>
+          <View style={{ marginTop: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -111,8 +111,8 @@ const IntroductionScreen = ({navigation}) => {
               Last Name
             </Text>
             <TextInput
-              placeholder="Last Name"
-              placeholderTextColor={Color.cloudyGrey}
+              placeholder="Enter your Last Name"
+              placeholderTextColor={Color.Venus}
               value={intro?.name}
               onChangeText={text => {
                 setIntro({
@@ -130,11 +130,11 @@ const IntroductionScreen = ({navigation}) => {
                 paddingHorizontal: 10,
                 fontSize: 14,
                 color: Color.cloudyGrey,
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
               }}
             />
           </View>
-          <View style={{marginTop: 10}}>
+          <View style={{ marginTop: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -145,7 +145,7 @@ const IntroductionScreen = ({navigation}) => {
             </Text>
             <TextInput
               placeholder="Enter your headline"
-              placeholderTextColor={Color.cloudyGrey}
+              placeholderTextColor={Color.Venus}
               value={intro?.headline}
               onChangeText={text => {
                 setIntro({
@@ -163,7 +163,7 @@ const IntroductionScreen = ({navigation}) => {
                 paddingHorizontal: 10,
                 fontSize: 14,
                 color: Color.cloudyGrey,
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
               }}
             />
           </View>
@@ -181,9 +181,9 @@ const IntroductionScreen = ({navigation}) => {
                   alignItems: 'flex-start',
                 }}
                 onPress={() => {
-                  navigation.navigate('Experience', {item: item});
+                  navigation.navigate('Experience', { item: item });
                 }}>
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <Text
                     style={{
                       fontFamily: Gilmer.Medium,
@@ -224,7 +224,7 @@ const IntroductionScreen = ({navigation}) => {
                 flexDirection: 'row',
                 alignItems: 'flex-start',
               }}>
-              <View style={{flex: 1}}>
+              <View style={{ flex: 1 }}>
                 <Text
                   style={{
                     fontFamily: Gilmer.Medium,
@@ -251,9 +251,9 @@ const IntroductionScreen = ({navigation}) => {
 
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Experience', {item: {}});
+              navigation.navigate('Experience', { item: {} });
             }}
-            style={{padding: 10}}>
+            style={{ padding: 10 }}>
             <Text
               style={{
                 fontFamily: Gilmer.Bold,
@@ -279,7 +279,7 @@ const IntroductionScreen = ({navigation}) => {
             onPress={async () => {
               try {
                 navigation.navigate('Profile');
-              } catch (err) {}
+              } catch (err) { }
             }}
             style={{
               backgroundColor: '#DBF3FF',
@@ -293,7 +293,7 @@ const IntroductionScreen = ({navigation}) => {
             onPress={async () => {
               try {
                 getAPiData();
-              } catch (err) {}
+              } catch (err) { }
             }}
             style={{
               backgroundColor: Color.primary,

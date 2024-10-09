@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -8,12 +8,12 @@ import {
 } from 'react-native';
 import Color from '../../Global/Color';
 import StepIndicator from 'react-native-step-indicator';
-import {Gilmer} from '../../Global/FontFamily';
+import { Gilmer } from '../../Global/FontFamily';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -45,10 +45,10 @@ const customStyles = {
 
 const labels = ['Basic Details', 'Education', 'Employment', 'Key Skills'];
 
-const EmploymentDetails = ({navigation, route}) => {
+const EmploymentDetails = ({ navigation, route }) => {
   const [itemData] = useState(route.params.item);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
   const [periorExperience] = useState([
     {
       id: 1,
@@ -101,8 +101,8 @@ const EmploymentDetails = ({navigation, route}) => {
     },
   ]);
   const [Current_work_RadioData] = useState([
-    {id: 1, title: 'Yes', value: 1},
-    {id: 2, title: 'No', value: 0},
+    { id: 1, title: 'Yes', value: 1 },
+    { id: 2, title: 'No', value: 0 },
   ]);
   const [checked, setChecked] = useState(
     itemData && itemData.id !== '' && itemData?.end == null ? true : false,
@@ -126,7 +126,7 @@ const EmploymentDetails = ({navigation, route}) => {
 
   const getAPI = async () => {
     try {
-      var data = {
+      let data = {
         experience: [
           {
             company: selectEmployment?.company_name,
@@ -150,6 +150,8 @@ const EmploymentDetails = ({navigation, route}) => {
         data.experience[0].id = itemData.id;
       }
       const experience_data = await fetchData.candidates_profile(data, token);
+      console.log("experience_data ============== :", experience_data);
+
       if (experience_data) {
         common_fn.showToast(experience_data?.message);
         navigation.navigate('Skill');
@@ -218,7 +220,7 @@ const EmploymentDetails = ({navigation, route}) => {
     hideEndDatePicker();
   };
   return (
-    <View style={{flex: 1, padding: 10, backgroundColor: Color.white}}>
+    <View style={{ flex: 1, padding: 10, backgroundColor: Color.white }}>
       <StepIndicator
         customStyles={customStyles}
         currentPosition={2}
@@ -298,7 +300,7 @@ const EmploymentDetails = ({navigation, route}) => {
             })}
           </View>
         </View> */}
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -316,7 +318,7 @@ const EmploymentDetails = ({navigation, route}) => {
             }}>
             Are You Currently Working?
           </Text>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {Current_work_RadioData.map((item, index) => {
               return (
                 <TouchableOpacity
@@ -370,7 +372,7 @@ const EmploymentDetails = ({navigation, route}) => {
             })}
           </View>
         </View>
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontFamily: Gilmer.Bold,
@@ -444,7 +446,7 @@ const EmploymentDetails = ({navigation, route}) => {
             })}
           </View>
         </View>
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -486,7 +488,7 @@ const EmploymentDetails = ({navigation, route}) => {
             }}
           />
         </View>
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -528,7 +530,7 @@ const EmploymentDetails = ({navigation, route}) => {
             }}
           />
         </View>
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -570,7 +572,7 @@ const EmploymentDetails = ({navigation, route}) => {
             }}
           />
         </View>
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <Text
             style={{
               fontSize: 16,
@@ -584,7 +586,7 @@ const EmploymentDetails = ({navigation, route}) => {
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-            <View style={{marginVertical: 10, flex: 1}}>
+            <View style={{ marginVertical: 10, flex: 1 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -616,9 +618,11 @@ const EmploymentDetails = ({navigation, route}) => {
                     color: Color.cloudyGrey,
                     fontFamily: Gilmer.Medium,
                   }}>
-                  {moment(selectEmployment?.duration?.from).format(
-                    'YYYY-MM-DD',
-                  )}
+                  {checked
+                    ? 'Select From Date'
+                    : moment(selectEmployment?.duration?.from).format(
+                      'YYYY-MM-DD',
+                    )}
                 </Text>
                 <FIcon name="calendar" size={20} color={Color.black} />
               </TouchableOpacity>
@@ -630,7 +634,7 @@ const EmploymentDetails = ({navigation, route}) => {
                 onCancel={hideFromDatePicker}
               />
             </View>
-            <View style={{marginVertical: 10, flex: 1}}>
+            <View style={{ marginVertical: 10, flex: 1 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -667,8 +671,8 @@ const EmploymentDetails = ({navigation, route}) => {
                   {checked
                     ? 'Present'
                     : moment(selectEmployment?.duration?.end).format(
-                        'YYYY-MM-DD',
-                      )}
+                      'YYYY-MM-DD',
+                    )}
                 </Text>
                 <FIcon name="calendar" size={20} color={Color.black} />
               </TouchableOpacity>
@@ -682,7 +686,7 @@ const EmploymentDetails = ({navigation, route}) => {
             </View>
           </View>
           <TouchableOpacity
-            style={{flexDirection: 'row', alignItems: 'center'}}
+            style={{ flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
               setChecked(!checked);
             }}>
@@ -702,8 +706,8 @@ const EmploymentDetails = ({navigation, route}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{marginVertical: 10}}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ marginVertical: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text
               style={{
                 paddingVertical: 5,
@@ -875,20 +879,11 @@ const EmploymentDetails = ({navigation, route}) => {
             })}
           </View>
         </View> */}
-        <Button
-          mode="contained"
-          onPress={() => {
-            getAPI();
-          }}
-          style={{
-            backgroundColor: Color.primary,
-          }}
-          labelStyle={{
-            fontSize: 18,
-          }}
-          textColor={Color.white}>
-          Continue
-        </Button>
+
+        <TouchableOpacity onPress={() => getAPI()} style={{ width: '95%', height: 50, justifyContent: 'center', alignItems: 'center', marginVertical: 20, backgroundColor: Color.primary, borderRadius: 30 }}>
+          <Text style={{ fontSize: 14, color: Color.white }}>Continue</Text>
+        </TouchableOpacity>
+
       </ScrollView>
     </View>
   );

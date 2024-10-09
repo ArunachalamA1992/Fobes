@@ -104,6 +104,9 @@ const ProfileScreen = ({ navigation }) => {
     phone,
     token,
   } = userData;
+
+  // console.log('image ========================== : ',image);
+  
   const profile_complete_data = useSelector(
     state => state.UserReducer.profile_complete,
   );
@@ -111,25 +114,25 @@ const ProfileScreen = ({ navigation }) => {
   const [profileCompletion] = useState([
     {
       id: 1,
+      name: 'Personal Details',
+      subname: 'Add personal details to enrich your profile',
+      btname: 'Add Details',
+      icon: 'card-account-details-outline',
+    },
+    {
+      id: 2,
       name: 'Add resume',
       subname: 'Boost profile for your dream job with a standout resume',
       btname: 'Upload Resume',
       icon: 'card-account-details-outline',
     },
     {
-      id: 2,
+      id: 3,
       name: 'Add Your Skills',
       subname: 'Highlight your best Skills to strengthen your profile',
       btname: 'Add Skills',
       icon: 'folder-open',
-    },
-    {
-      id: 3,
-      name: 'Personal Details',
-      subname: 'Add personal details to enrich your profile',
-      btname: 'Add Details',
-      icon: 'card-account-details-outline',
-    },
+    }
   ]);
 
   const filteredProfileCompletion = profileCompletion?.filter(item => {
@@ -342,9 +345,12 @@ const ProfileScreen = ({ navigation }) => {
         maxWidth: 300,
         maxHeight: 550,
         quality: 1,
-        selectionLimit: 0,
+        selectionLimit: 1,
+        multiple: false,
       };
       launchImageLibrary(options, async response => {
+        console.log("Gallery ========== : ",response);
+        
         setProfileImage(response?.assets);
         await uploadProfileImage();
       });
@@ -372,8 +378,9 @@ const ProfileScreen = ({ navigation }) => {
             },
           },
         );
-        console.log('Image upload response:', response);
+        console.log('Image upload response ***************:', response);
         common_fn.showToast(response?.data?.message);
+        setImageVisible(false);
       }
     } catch (error) {
       console.log('Error uploading profile image:', error);
@@ -421,6 +428,7 @@ const ProfileScreen = ({ navigation }) => {
       console.log('error', error);
     }
   };
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -435,6 +443,7 @@ const ProfileScreen = ({ navigation }) => {
             }}
             style={{
               width: 100,
+              height: 100
             }}>
             {image != '' || image != null ? (
               <Image
@@ -542,23 +551,36 @@ const ProfileScreen = ({ navigation }) => {
                   : 'Add your Experience'}
               </Text>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginVertical: 5,
-              }}>
-              <F6Icon name="location-dot" size={20} color={Color.lightBlack} />
-              <Text
+            {district !== null ?
+              <View
                 style={{
-                  fontFamily: Gilmer.Medium,
-                  fontSize: 14,
-                  color: Color.lightBlack,
-                  marginHorizontal: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginVertical: 5,
                 }}>
-                {district}, {country}
-              </Text>
-            </View>
+                <F6Icon name="location-dot" size={20} color={Color.lightBlack} />
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 14,
+                      color: Color.lightBlack,
+                      marginHorizontal: 10,
+                    }}>
+                    {district},
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: Gilmer.Medium,
+                      fontSize: 14,
+                      color: Color.lightBlack,
+                      marginHorizontal: 10,
+                    }}>
+                    {country}
+                  </Text>
+                </View>
+              </View> : null}
+
           </View>
         </View>
         <View
@@ -1006,7 +1028,7 @@ const ProfileScreen = ({ navigation }) => {
               )}
             </View>
             {candidate_resume != null && candidate_resume?.length > 0 ? (
-              candidate_resume?.map((item, index) => {
+              candidate_resume?.map(({ item, index }) => {
                 return (
                   <View
                     key={index}
@@ -1055,7 +1077,9 @@ const ProfileScreen = ({ navigation }) => {
                       </View>
                       <TouchableOpacity
                         onPress={() => {
-                          downloadResume(item?.file, item?.name);
+                          console.log("Down ===========:", item);
+
+                          // downloadResume(item?.file, item?.name);
                         }}>
                         <FIcon
                           name={'download'}
@@ -1871,7 +1895,9 @@ const ProfileScreen = ({ navigation }) => {
                       <View>
                         <TouchableOpacity
                           onPress={() => {
-                            downloadResume(item?.file, item?.name);
+                            console.log("delete ============= : ", item);
+
+                            // downloadResume(item?.file, item?.name);
                           }}>
                           <FIcon
                             name={'download'}
@@ -1890,65 +1916,6 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                   );
                 })}
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  }}>
-                  {/* <Button
-                    mode="contained"
-                    onPress={async () => {
-                      try {
-                        dispatch(
-                          setCompleteProfile({
-                            resume: null,
-                            details: details,
-                            skills: skills,
-                          }),
-                        );
-                      } catch (err) {}
-                    }}
-                    style={{
-                      backgroundColor: '#DBF3FF',
-                      color: Color.red,
-                    }}
-                    textColor="#000">
-                    Delete
-                  </Button> */}
-                  {/* <Button
-                    mode="contained"
-                    onPress={async () => {
-                      try {
-                        const data = await common_fn.profileupdate(
-                          1,
-                          navigation,
-                        );
-                        getUpdate_resume(data);
-                        if (data) {
-                          dispatch(
-                            setCompleteProfile({
-                              resume: data,
-                              details: details,
-                              skills: skills,
-                            }),
-                          );
-                        }
-                      } catch (err) {
-                        console.error('Error occurred:', err);
-                      }
-                    }}
-                    style={{
-                      backgroundColor: Color.primary,
-                      marginHorizontal: 10,
-                      alignItems: 'flex-end',
-                    }}
-                    textColor={Color.white}>
-                    {candidate_resume != null && candidate_resume?.length > 0
-                      ? 'Update Resume'
-                      : 'Upload Resume'}
-                  </Button> */}
-                </View>
               </>
             ) : (
               <>

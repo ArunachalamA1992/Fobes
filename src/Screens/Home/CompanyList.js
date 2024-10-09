@@ -1,43 +1,58 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
   Image,
-  TouchableOpacity,
+  TouchableOpacity, RefreshControl,
 } from 'react-native';
-import {Media} from '../../Global/Media';
+import { Media } from '../../Global/Media';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {useNavigation} from '@react-navigation/native';
+import { Gilmer } from '../../Global/FontFamily';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { useNavigation } from '@react-navigation/native';
 import fetchData from '../../Config/fetchData';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import {base_image_url} from '../../Config/base_url';
+import { base_image_url } from '../../Config/base_url';
 
 const CompanyList = () => {
   const navigation = useNavigation();
   const [compData, setCompData] = useState([]);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
   const [loading, setLoading] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
   const [page, setPage] = useState(1);
   const [endReached, setEndReached] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     getData().finally(() => setLoading(false));
   }, [token]);
 
+  const onRefresh = () => {
+    // Trigger refreshing logic
+    setRefreshing(true);
+    setLoading(true);
+    // Simulate a network request
+    setTimeout(() => {
+      getData();
+      setRefreshing(false); // Stop refreshing after data is fetched
+      setLoading(false);
+    }, 2000); // 2 seconds delay to mimic data fetching
+  };
+
   const getData = async () => {
     try {
       var data = `page=${page}`;
+      setRefreshing(true)
       const comp_list = await fetchData.list_company(data, token);
       if (comp_list) {
         setCompData(comp_list?.data);
+        setRefreshing(false)
       }
     } catch (error) {
       console.log('error', error);
@@ -113,7 +128,7 @@ const CompanyList = () => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
               <SkeletonPlaceholder.Item width="100%" height={150} />
@@ -121,37 +136,37 @@ const CompanyList = () => {
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
               <SkeletonPlaceholder.Item
                 width="100%"
                 height={150}
                 borderRadius={10}
-                style={{marginTop: 10}}
+                style={{ marginTop: 10 }}
               />
             </SkeletonPlaceholder.Item>
           </SkeletonPlaceholder>
@@ -160,10 +175,10 @@ const CompanyList = () => {
         <FlatList
           data={compData}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate('CompanyDetails', {item})}
+                onPress={() => navigation.navigate('CompanyDetails', { item })}
                 key={index}
                 style={{
                   flex: 1,
@@ -176,10 +191,10 @@ const CompanyList = () => {
                   marginTop: 10,
                   paddingHorizontal: 10,
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   {item?.logo === '' &&
-                  item?.logo === null &&
-                  item?.logo === 'null' ? (
+                    item?.logo === null &&
+                    item?.logo === 'null' ? (
                     <Image
                       source={require('../../assets/logos/user.png')}
                       style={{
@@ -194,7 +209,7 @@ const CompanyList = () => {
                     />
                   ) : (
                     <Image
-                      source={{uri: base_image_url + item?.logo}}
+                      source={{ uri: base_image_url + item?.logo }}
                       style={{
                         width: 60,
                         height: 60,
@@ -228,7 +243,7 @@ const CompanyList = () => {
                     <View
                       style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
+                        alignItems: 'center', paddingVertical: 3
                       }}>
                       <Iconviewcomponent
                         Icontag={'Fontisto'}
@@ -247,6 +262,19 @@ const CompanyList = () => {
                         {item.exact_location}
                       </Text>
                     </View>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: Color.primary,
+                        fontFamily: Gilmer.Bold,
+                        textDecorationLine: 'underline',
+                        textAlign: 'right',
+                        paddingVertical: 5,
+                        paddingHorizontal: 10,
+                      }}
+                      numberOfLines={1}>
+                      {item?.openings?.[0]?.vacancies} Jobs Open
+                    </Text>
                   </View>
                   <Iconviewcomponent
                     Icontag={'Ionicons'}
@@ -255,25 +283,16 @@ const CompanyList = () => {
                     icon_color={Color.Venus}
                   />
                 </View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: Color.primary,
-                    fontFamily: Gilmer.Bold,
-                    textDecorationLine: 'underline',
-                    textAlign: 'right',
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                  }}
-                  numberOfLines={1}>
-                  {item?.openings?.[0]?.vacancies} Jobs Open
-                </Text>
+
               </TouchableOpacity>
             );
           }}
           onEndReached={() => {
             loadMoreData();
           }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           onEndReachedThreshold={3}
           showsVerticalScrollIndicator={false}
         />

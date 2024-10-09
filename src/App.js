@@ -36,6 +36,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchData from './Config/fetchData';
 import firebase from '@react-native-firebase/app';
 import analytics from '@react-native-firebase/analytics';
+import PrivacyPolicy from './Screens/SideMenu/PrivacyPolicy';
+import TermsCondition from './Screens/SideMenu/TermsCondition';
+import AboutUs from './Screens/SideMenu/AboutUs';
+import ContactUs from './Screens/SideMenu/ContactUs';
+import FAQs from './Screens/SideMenu/FAQs';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -470,6 +475,102 @@ const MainApp = () => {
           component={ResetPass}
           options={({ navigation, route }) => ({
             headerTitle: '',
+            headerTitleStyle: { color: Color.black },
+            headerStyle: { backgroundColor: Color.white },
+            headerLeft: () => (
+              <View style={{ marginHorizontal: 10 }}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="AboutUs"
+          component={AboutUs}
+          options={({ navigation, route }) => ({
+            headerTitle: 'About Us',
+            headerTitleStyle: { color: Color.black },
+            headerStyle: { backgroundColor: Color.white },
+            headerLeft: () => (
+              <View style={{ marginHorizontal: 10 }}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="ContactUs"
+          component={ContactUs}
+          options={({ navigation, route }) => ({
+            headerTitle: 'Contact Us',
+            headerTitleStyle: { color: Color.black },
+            headerStyle: { backgroundColor: Color.white },
+            headerLeft: () => (
+              <View style={{ marginHorizontal: 10 }}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="FAQs"
+          component={FAQs}
+          options={({ navigation, route }) => ({
+            headerTitle: 'FAQs',
+            headerTitleStyle: { color: Color.black },
+            headerStyle: { backgroundColor: Color.white },
+            headerLeft: () => (
+              <View style={{ marginHorizontal: 10 }}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="PrivacyPolicy"
+          component={PrivacyPolicy}
+          options={({ navigation, route }) => ({
+            headerTitle: 'Privacy Policy',
+            headerTitleStyle: { color: Color.black },
+            headerStyle: { backgroundColor: Color.white },
+            headerLeft: () => (
+              <View style={{ marginHorizontal: 10 }}>
+                <Icon
+                  name="arrow-back"
+                  size={30}
+                  color={Color.black}
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="TermsCondition"
+          component={TermsCondition}
+          options={({ navigation, route }) => ({
+            headerTitle: 'Terms and Condition',
             headerTitleStyle: { color: Color.black },
             headerStyle: { backgroundColor: Color.white },
             headerLeft: () => (

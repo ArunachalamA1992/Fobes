@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {View, Image, StyleSheet, Animated} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Image, StyleSheet, Animated, StatusBar } from 'react-native';
 import Color from './Global/Color';
-import {Gilmer} from './Global/FontFamily';
-import {useNavigation} from '@react-navigation/native';
+import { Gilmer } from './Global/FontFamily';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setAsync, setUserData} from './Redux';
-import {useDispatch} from 'react-redux';
+import { setAsync, setUserData } from './Redux';
+import { useDispatch } from 'react-redux';
 
-const SplashScreen = ({navigation}) => {
+const SplashScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
-  var {replace} = navigation;
+  var { replace } = navigation;
 
   useEffect(() => {
     try {
@@ -39,7 +39,7 @@ const SplashScreen = ({navigation}) => {
     try {
       const value = await AsyncStorage.getItem('UserState');
       if (value !== null) {
-        const {onboardVisible} = JSON.parse(value);
+        const { onboardVisible } = JSON.parse(value);
         if (onboardVisible) {
           navigation.replace('OnboardOne');
           return;
@@ -52,7 +52,7 @@ const SplashScreen = ({navigation}) => {
         return;
       }
 
-      const {token} = JSON.parse(user_data);
+      const { token } = JSON.parse(user_data);
       if (!token) {
         navigation.replace('OnboardOne');
       } else {
@@ -74,14 +74,15 @@ const SplashScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar hidden />
       <Animated.Image
         source={require('./assets/logos/fobes_logo.png')}
-        style={[styles.image, {transform: [{scale: imageScale}]}]}
+        style={[styles.image, { transform: [{ scale: imageScale }] }]}
       />
       <Animated.Text
         style={[
-          {fontSize: 20, color: Color.primary, fontFamily: Gilmer.SemiBold},
-          {transform: [{scale: imageScale}]},
+          { fontSize: 20, color: Color.primary, fontFamily: Gilmer.SemiBold },
+          { transform: [{ scale: imageScale }] },
         ]}>
         Fobes
       </Animated.Text>

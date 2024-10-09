@@ -11,4 +11,7 @@ export const Media = {
     'https://albion-backend.s3.ap-south-1.amazonaws.com/Fobes/privacy.jpg',
   faq: 'https://albion-backend.s3.ap-south-1.amazonaws.com/Fobes/faq.jpg',
   terms: 'https://albion-backend.s3.ap-south-1.amazonaws.com/Fobes/terms.jpg',
+
+  LottieCheck: require('../assets/animate/LottieCheck.json'),
+  LottieCancelled: require('../assets/animate/LottieCancelled.json'),
 };

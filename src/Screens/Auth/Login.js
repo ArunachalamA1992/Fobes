@@ -63,7 +63,7 @@ const Login = () => {
       // })
 
       // console.log("kldfngklsdlgklkl", analytics());          For Analaytics purpose only
-      analytics().logEvent('bicket', {  
+      analytics().logEvent('bicket', {
         id: '3745092',
         item: 'Mens grey shirt',
         description: ['round neck', 'long sleeved'],
@@ -159,6 +159,7 @@ const Login = () => {
     <View style={styles.container}>
       <View
         style={{
+          flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: Color.white,
@@ -196,7 +197,8 @@ const Login = () => {
           </Text>
         </View>
       </View>
-      <View style={{}}>
+
+      <View style={{ flex: 2, width: '95%', justifyContent: 'center', alignItems: 'center' }}>
         <View style={styles.NumberBoxConatiner}>
           <Iconviewcomponent
             Icontag={'Feather'}
@@ -230,7 +232,7 @@ const Login = () => {
           </Text>
         ) : null}
 
-        <View style={{ marginTop: 20 }}>
+        <View style={{ width: '100%', marginTop: 20 }}>
           <View
             style={[
               styles.NumberBoxConatiner,
@@ -251,7 +253,7 @@ const Login = () => {
               keyboardType="name-phone-pad"
               onChangeText={password => {
                 if (password.length < 6) {
-                  setMinPass('set minimum character as 6');
+                  setMinPass('Enter Minimum Six Characters');
                   setPassword(password);
                 } else {
                   setPassword(password);
@@ -275,8 +277,8 @@ const Login = () => {
             <Text
               style={{
                 width: '95%',
-                paddingVertical: 5,
-                fontSize: 14,
+                paddingVertical: 5, paddingHorizontal: 10,
+                fontSize: 12,
                 color: 'red',
               }}>
               {minPass}
@@ -285,6 +287,7 @@ const Login = () => {
         </View>
         <View
           style={{
+            width: '100%',
             justifyContent: 'center',
             flexDirection: 'row',
             alignItems: 'center',
@@ -342,6 +345,7 @@ const Login = () => {
         <TouchableOpacity
           onPress={() => signIn()}
           style={{
+            width: '95%',
             height: 50,
             justifyContent: 'center',
             alignItems: 'center',
@@ -360,6 +364,7 @@ const Login = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View
           style={{
@@ -370,67 +375,9 @@ const Login = () => {
           }}>
           <View
             style={{
-              width: '35%',
-              height: 1,
-              backgroundColor: Color.lightgrey,
-            }}></View>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.cloudyGrey,
-              fontFamily: Gilmer.Medium,
-              paddingHorizontal: 5,
-            }}>
-            or use
-          </Text>
-          <View
-            style={{
-              width: '35%',
-              height: 1,
-              backgroundColor: Color.lightgrey,
-            }}></View>
-        </View>
-        <TouchableOpacity
-          onPress={() => googleSignIn()}
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            borderRadius: 10,
-            padding: 5,
-            backgroundColor: Color.white,
-            elevation: 1,
-          }}>
-          <Image
-            source={{
-              uri: 'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
-            }}
-            style={{ width: 45, height: 45, resizeMode: 'contain' }}
-          />
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 15,
-              color: Color.cloudyGrey,
-              fontFamily: Gilmer.SemiBold,
-              marginHorizontal: 20,
-            }}>
-            Continue with Google
-          </Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              bottom: 10,
             }}>
             <Text
               style={{
@@ -456,7 +403,64 @@ const Login = () => {
             </TouchableOpacity>
           </View>
         </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}>
+          <Text
+            style={{
+              fontSize: 14,
+              color: Color.black,
+              textAlign: 'center',
+              fontFamily: Gilmer.Medium, padding: 3
+            }}>
+            By Signing up, you agree to our{' '}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('TermsCondition');
+            }}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: Color.primary,
+                fontFamily: Gilmer.Bold,
+                textDecorationLine: 'underline', padding: 3,
+              }}>
+              Terms of Use
+            </Text>
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 14,
+              color: Color.black,
+              fontFamily: Gilmer.Medium,
+            }}>
+            {' '}
+            and{' '}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('PrivacyPolicy');
+            }}>
+            <Text
+              style={{
+                fontSize: 14,
+                color: Color.primary,
+                fontFamily: Gilmer.Bold,
+                textDecorationLine: 'underline',
+                paddingHorizontal: 5, padding: 3
+              }}>
+              Privacy Policy
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
+
     </View>
   );
 };
@@ -464,7 +468,7 @@ const Login = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 20, alignItems: 'center',
     backgroundColor: Color.white,
   },
   NumberBoxConatiner: {

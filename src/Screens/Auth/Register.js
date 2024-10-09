@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,21 +8,21 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {useTheme} from 'react-native-paper';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
+import { useTheme } from 'react-native-paper';
+import { Iconviewcomponent } from '../../Components/Icontag';
 import fetchData from '../../Config/fetchData';
 import common_fn from '../../Config/common_fn';
 
-const Register = ({navigation}) => {
-  var {replace} = navigation;
+const Register = ({ navigation }) => {
+  var { replace } = navigation;
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [emailValidError, setEmailValidError] = useState('');
   const [password, setPassword] = useState('');
   const [minPass, setMinPass] = useState('');
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const [password_visible, setPasswordvisibility] = useState(false);
 
   const handleValidEmail = val => {
@@ -71,7 +71,7 @@ const Register = ({navigation}) => {
         }}>
         <Image
           source={require('../../assets/logos/fobes.png')}
-          style={{width: 100, height: 100, resizeMode: 'contain'}}
+          style={{ width: 100, height: 100, resizeMode: 'contain' }}
         />
         <Text
           style={{
@@ -107,10 +107,10 @@ const Register = ({navigation}) => {
             Icontag={'Ionicons'}
             iconname={'person'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
-            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
             placeholder="Full Name"
             placeholderTextColor={Color.transparantBlack}
             value={username}
@@ -125,10 +125,10 @@ const Register = ({navigation}) => {
             Icontag={'Ionicons'}
             iconname={'mail'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
-            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
             placeholder="Email Address"
             placeholderTextColor={Color.transparantBlack}
             onChangeText={text => {
@@ -155,10 +155,10 @@ const Register = ({navigation}) => {
             Icontag={'Ionicons'}
             iconname={'call'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
-            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
             placeholder="Mobile Number"
             placeholderTextColor={Color.transparantBlack}
             value={phone}
@@ -172,10 +172,10 @@ const Register = ({navigation}) => {
             Icontag={'MaterialCommunityIcons'}
             iconname={'lock'}
             icon_size={22}
-            iconstyle={{color: Color.transparantBlack}}
+            iconstyle={{ color: Color.transparantBlack }}
           />
           <TextInput
-            style={[styles.numberTextBox, {paddingHorizontal: 10}]}
+            style={[styles.numberTextBox, { paddingHorizontal: 10 }]}
             placeholder="Create Password"
             placeholderTextColor={Color.transparantBlack}
             secureTextEntry={!password_visible}
@@ -202,7 +202,7 @@ const Register = ({navigation}) => {
               Icontag={'MaterialCommunityIcons'}
               iconname={!password_visible ? 'eye-off' : 'eye'}
               icon_size={22}
-              iconstyle={{color: Color.transparantBlack}}
+              iconstyle={{ color: Color.transparantBlack }}
             />
           </TouchableOpacity>
         </View>
@@ -227,11 +227,11 @@ const Register = ({navigation}) => {
           alignItems: 'center',
           borderRadius: 50,
         }}>
-        <Text style={{fontSize: 16, color: Color.white, textAlign: 'center'}}>
+        <Text style={{ fontSize: 16, color: Color.white, textAlign: 'center' }}>
           Sign Up
         </Text>
       </TouchableOpacity>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View
           style={{
             flex: 1,
@@ -241,27 +241,35 @@ const Register = ({navigation}) => {
           }}>
           <View
             style={{
-              width: '35%',
-              height: 1,
-              backgroundColor: Color.lightgrey,
-            }}></View>
-          <Text
-            style={{
-              fontSize: 16,
-              color: Color.cloudyGrey,
-              fontFamily: Gilmer.Medium,
-              paddingHorizontal: 5,
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
-            or use
-          </Text>
-          <View
-            style={{
-              width: '35%',
-              height: 1,
-              backgroundColor: Color.lightgrey,
-            }}></View>
+            <Text
+              style={{
+                fontSize: 15,
+                color: Color.cloudyGrey,
+                fontFamily: Gilmer.Medium,
+                textAlign: 'center',
+              }}>
+              Already have an account?{' '}
+            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: Color.primary,
+                  fontFamily: Gilmer.Heavy,
+                  textAlign: 'center',
+                  textDecorationLine: 'underline',
+                }}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
@@ -288,36 +296,8 @@ const Register = ({navigation}) => {
             }}>
             Signup With Google
           </Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 15,
-              color: Color.cloudyGrey,
-              fontFamily: Gilmer.Medium,
-              textAlign: 'center',
-            }}>
-            Already have an account?{' '}
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: Color.primary,
-                fontFamily: Gilmer.Heavy,
-                textAlign: 'center',
-                textDecorationLine: 'underline',
-              }}>
-              Sign In
-            </Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity> */}
+
         <View
           style={{
             flexDirection: 'row',

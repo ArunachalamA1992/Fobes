@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,24 +15,25 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import Color from '../../Global/Color';
-import {Gilmer} from '../../Global/FontFamily';
-import {Media} from '../../Global/Media';
-import {Iconviewcomponent} from '../../Components/Icontag';
+import { Gilmer } from '../../Global/FontFamily';
+import { Media } from '../../Global/Media';
+import { Iconviewcomponent } from '../../Components/Icontag';
 import JobItemCard from '../../Components/JobItemCard';
 import fetchData from '../../Config/fetchData';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import RenderHtml from 'react-native-render-html';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import common_fn from '../../Config/common_fn';
-import {base_image_url} from '../../Config/base_url';
+import { base_image_url } from '../../Config/base_url';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import {setUserData} from '../../Redux';
+import { setUserData } from '../../Redux';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 LogBox.ignoreAllLogs();
 
-const IconData = ({item}) => {
+const IconData = ({ item }) => {
   const formattedItem = item.replace(/_/g, '').toLowerCase();
   switch (formattedItem) {
     case 'experience':
@@ -73,15 +74,15 @@ const IconData = ({item}) => {
       );
   }
 };
-const DetailedScreen = ({navigation, route}) => {
+const DetailedScreen = ({ navigation, route }) => {
   const [slug] = useState(route?.params?.slug);
-  const {width: windowWidth} = useWindowDimensions();
+  const { width: windowWidth } = useWindowDimensions();
   const [singleJobData, setSingleJobdata] = useState({});
   const [loading, setLoading] = useState(false);
   const [similarJobdata, setSimilarJobdata] = useState([]);
   const [jobApplied, setJobApplied] = useState(false);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {token} = userData;
+  var { token } = userData;
   const scrollY = useRef(new Animated.Value(0)).current;
   const taby = scrollY.interpolate({
     inputRange: [0, 100],
@@ -111,6 +112,9 @@ const DetailedScreen = ({navigation, route}) => {
       ]);
       // setSimilarJobdata(similarJobData?.data);
       setSingleJobdata(singleJobData?.data[0]);
+      console.log("sdgbksdngnsdkl  ", singleJobData);
+
+
 
       const PendingProduct = await fetchData.list_job_Applied(null, token);
       const appliedJobs = PendingProduct?.data.map(item => item?.job?.id);
@@ -133,17 +137,14 @@ const DetailedScreen = ({navigation, route}) => {
       let result;
 
       if (Math.abs(daysAgo) > 0) {
-        result = `${Math.abs(daysAgo)} day${
-          Math.abs(daysAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(daysAgo)} day${Math.abs(daysAgo) !== 1 ? 's' : ''
+          } ago`;
       } else if (Math.abs(hoursAgo) > 0) {
-        result = `${Math.abs(hoursAgo)} hour${
-          Math.abs(hoursAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(hoursAgo)} hour${Math.abs(hoursAgo) !== 1 ? 's' : ''
+          } ago`;
       } else {
-        result = `${Math.abs(minutesAgo)} minute${
-          Math.abs(minutesAgo) !== 1 ? 's' : ''
-        } ago`;
+        result = `${Math.abs(minutesAgo)} minute${Math.abs(minutesAgo) !== 1 ? 's' : ''
+          } ago`;
       }
 
       setResultDate(result);
@@ -159,9 +160,8 @@ const DetailedScreen = ({navigation, route}) => {
     {
       id: 2,
       title: 'Salary',
-      value: `₹ ${singleJobData?.min_salary || 'N/A'} - ${
-        singleJobData?.max_salary || 'N/A'
-      }`,
+      value: `₹ ${singleJobData?.min_salary || 'N/A'} - ${singleJobData?.max_salary || 'N/A'
+        }`,
     },
     {
       id: 3,
@@ -185,7 +185,7 @@ const DetailedScreen = ({navigation, route}) => {
 
   const getToggleJobs = async id => {
     try {
-      var data = {job_id: id};
+      var data = { job_id: id };
       const Saved_Jobs = await fetchData.toggle_bookmarks(data, token);
       if (Saved_Jobs) {
         common_fn.showToast(Saved_Jobs?.message);
@@ -213,11 +213,15 @@ const DetailedScreen = ({navigation, route}) => {
     const message = `Check out this job: ${jobDeepLink}`;
 
     try {
-      await Share.share({message});
+      await Share.share({ message });
     } catch (error) {
       console.error(error.message);
     }
   };
+
+
+  // console.log("company ============= : ", singleJobData?.company.phone);
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -239,7 +243,7 @@ const DetailedScreen = ({navigation, route}) => {
         </TouchableOpacity>
       </View>
       {loading ? (
-        <View style={{padding: 10}}>
+        <View style={{ padding: 10 }}>
           <SkeletonPlaceholder>
             <SkeletonPlaceholder.Item style={{}}>
               <SkeletonPlaceholder.Item
@@ -248,7 +252,7 @@ const DetailedScreen = ({navigation, route}) => {
                 borderRadius={100}
               />
             </SkeletonPlaceholder.Item>
-            <SkeletonPlaceholder.Item style={{marginTop: 10}}>
+            <SkeletonPlaceholder.Item style={{ marginTop: 10 }}>
               <SkeletonPlaceholder.Item width="40%" height={10} />
               <SkeletonPlaceholder.Item
                 width="80%"
@@ -357,14 +361,14 @@ const DetailedScreen = ({navigation, route}) => {
           </SkeletonPlaceholder>
         </View>
       ) : (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <ScrollView
-            style={{flex: 1, padding: 10}}
-            contentContainerStyle={{paddingBottom: 120}}
+            style={{ flex: 1, padding: 10 }}
+            contentContainerStyle={{ paddingBottom: 120 }}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={16}
             onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {y: scrollY}}}],
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
               {
                 useNativeDriver: false,
               },
@@ -373,18 +377,18 @@ const DetailedScreen = ({navigation, route}) => {
               <Image
                 source={Media?.user}
                 style={{
-                  width: 60,
-                  height: 60,
+                  width: 80,
+                  height: 80,
                   resizeMode: 'contain',
                   borderRadius: 100,
                 }}
               />
             ) : (
               <Image
-                source={{uri: base_image_url + singleJobData?.company?.logo}}
+                source={{ uri: base_image_url + singleJobData?.company?.logo }}
                 style={{
-                  width: 60,
-                  height: 60,
+                  width: 80,
+                  height: 80,
                   resizeMode: 'contain',
                   borderRadius: 100,
                 }}
@@ -395,9 +399,9 @@ const DetailedScreen = ({navigation, route}) => {
                 fontSize: 20,
                 color: Color.black,
                 fontFamily: Gilmer.Bold,
-                paddingHorizontal: 10,
+                paddingHorizontal: 10, paddingVertical: 10
               }}>
-              {singleJobData?.title} | {singleJobData?.role}
+              {singleJobData?.title}
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -487,7 +491,7 @@ const DetailedScreen = ({navigation, route}) => {
                       borderRadius: 10,
                     }}>
                     <IconData item={item?.title} />
-                    <View style={{marginHorizontal: 5}}>
+                    <View style={{ marginHorizontal: 5 }}>
                       <Text
                         style={{
                           fontSize: 14,
@@ -766,6 +770,7 @@ const DetailedScreen = ({navigation, route}) => {
                 }}
               />
             </View>
+            {singleJobData?.company?.phone != undefined ?
             <View style={{}}>
               <Text
                 style={{
@@ -788,7 +793,7 @@ const DetailedScreen = ({navigation, route}) => {
                 }}>
                 {singleJobData?.company?.phone}
               </Text>
-            </View>
+            </View> : null }
             <View style={{}}>
               <Text
                 style={{
@@ -835,7 +840,9 @@ const DetailedScreen = ({navigation, route}) => {
                 {singleJobData?.company?.address}
               </Text>
             </View>
-            <View style={{}}>
+
+            <View style={{ width: '100%', paddingVertical: 5, marginVertical: 5, backgroundColor: Color.softGrey }}></View>
+            <View style={{ paddingVertical: 20 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -847,72 +854,110 @@ const DetailedScreen = ({navigation, route}) => {
               </Text>
               <View
                 style={{
-                  marginVertical: 10,
+                  width: '100%',
+                  paddingVertical: 20,
                   flexDirection: 'row',
                   alignItems: 'center',
-                  justifyContent: 'flex-start',
+                  justifyContent: 'space-between',
                 }}>
-                <Image
-                  source={{
-                    uri: base_image_url + singleJobData?.company?.logo,
-                  }}
-                  style={{
-                    width: 60,
-                    height: 60,
-                    resizeMode: 'contain',
-                    borderRadius: 100,
-                  }}
-                />
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                  <Image
+                    source={{
+                      uri: base_image_url + singleJobData?.company?.logo,
+                    }}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      resizeMode: 'contain',
+                      borderRadius: 100, backgroundColor: Color.Venus
+                    }}
+                  />
+                </View>
                 <View
                   style={{
+                    flex: 3, justifyContent: 'flex-start', alignItems: 'flex-start',
                     paddingHorizontal: 10,
                   }}>
                   <Text
                     style={{
-                      fontSize: 15,
-                      color: Color.black,
-                      fontFamily: Gilmer.Medium,
-                    }}>
+                      fontSize: 16,
+                      color: Color.black, textAlign: 'justify',
+                      fontFamily: Gilmer.Bold, paddingVertical: 2, letterSpacing: 0.5
+                    }} numberOfLines={2}>
                     {singleJobData?.company?.name}
                   </Text>
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: 13,
                       color: Color.lightBlack,
                       fontFamily: Gilmer.Medium,
-                      marginVertical: 10,
+                      marginVertical: 5,
                     }}>
                     {singleJobData?.company?.industry_type?.name}
                   </Text>
                 </View>
               </View>
             </View>
-            <View style={{marginVertical: 10}}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: Color.black,
-                  fontFamily: Gilmer.Bold,
-                  paddingHorizontal: 10,
-                }}>
-                Similar Jobs
-              </Text>
-              <FlatList
-                data={similarJobdata}
-                keyExtractor={(item, index) => item + index}
-                renderItem={({item, index}) => {
-                  return (
-                    <JobItemCard
-                      item={item}
-                      navigation={navigation}
-                      token={token}
-                      getData={getData}
-                    />
-                  );
-                }}
-                showsVerticalScrollIndicator={false}
-              />
-            </View>
+            <View style={{ width: '100%', paddingVertical: 5, marginVertical: 5, backgroundColor: Color.softGrey }}></View>
+            {similarJobdata.length > 0 ?
+              <View style={{ marginVertical: 10 }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: Color.black,
+                    fontFamily: Gilmer.Bold,
+                    paddingHorizontal: 10,
+                  }}>
+                  Similar Jobs
+                </Text>
+                <FlatList
+                  data={similarJobdata}
+                  keyExtractor={(item, index) => item + index}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <JobItemCard
+                        item={item}
+                        navigation={navigation}
+                        token={token}
+                        getData={getData}
+                      />
+                    );
+                  }}
+                  ListEmptyComponent={() => {
+                    return (
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginVertical: 40,
+                          width: '100%',
+                        }}>
+                        <MCIcon
+                          name="briefcase-variant-off"
+                          color={Color.primary}
+                          size={20}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            padding: 5,
+                            paddingHorizontal: 20,
+                            marginStart: 5,
+                            borderRadius: 5,
+                            marginVertical: 10,
+                            color: Color.primary,
+                            fontFamily: Gilmer.Bold,
+                          }}>
+                          No Jobs Found
+                        </Text>
+                      </View>
+                    );
+                  }}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+              : null}
+
           </ScrollView>
           <Animated.View
             style={{
@@ -926,7 +971,7 @@ const DetailedScreen = ({navigation, route}) => {
               marginTop: 20,
               padding: 10,
               backgroundColor: Color.softGrey,
-              transform: [{translateY: taby}],
+              transform: [{ translateY: taby }],
             }}>
             <View
               style={{
